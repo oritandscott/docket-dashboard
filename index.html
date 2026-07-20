@@ -367,6 +367,7 @@
       <li><a href="#pipeline">Pipeline <span class="num">02</span></a></li>
       <li><a href="#tracker">Tracker <span class="num">03</span></a></li>
       <li><a href="#notes">Notes <span class="num">04</span></a></li>
+      <li><a href="#blogdrafts">Blog Drafts <span class="num">05</span></a></li>
     </ul>
     <div class="sidebar-foot">Saved automatically to this device.</div>
   </nav>
@@ -451,6 +452,15 @@
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
       <div class="save-indicator" id="save-indicator">Saved ✓</div>
+    </section>
+
+    <!-- BLOG DRAFTS -->
+    <section class="panel" id="blogdrafts">
+      <div class="tab-label">05 · Blog Drafts</div>
+      <h2>Blog Drafts</h2>
+      <div class="panel-sub">Every morning, a new draft is researched and written, then saved to WordPress for your review. Nothing publishes until you approve it there.</div>
+      <button class="btn btn-ghost" id="refresh-drafts-btn" type="button">Check for drafts</button>
+      <div id="drafts-list" style="margin-top:1rem;"></div>
     </section>
 
   </main>
@@ -716,12 +726,53 @@
     return div.innerHTML;
   }
 
+  // ---------- BLOG DRAFTS ----------
+  const draftsList = document.getElementById('drafts-list');
+  const refreshDraftsBtn = document.getElementById('refresh-drafts-btn');
+
+  async function loadDrafts(){
+    draftsList.innerHTML = '<div class="empty-hint">Checking WordPress…</div>';
+    try {
+      const resp = await fetch('/api/list-drafts');
+      const data = await resp.json();
+      if(!resp.ok){
+        draftsList.innerHTML = `<div class="empty-hint">Couldn't reach WordPress: ${escapeHtml(data.error || 'unknown error')}</div>`;
+        return;
+      }
+      if(!data.drafts || data.drafts.length === 0){
+        draftsList.innerHTML = '<div class="empty-hint">No drafts waiting right now. Check back after tomorrow morning\'s run.</div>';
+        return;
+      }
+      draftsList.innerHTML = '';
+      data.drafts.forEach(d => {
+        const row = document.createElement('div');
+        row.className = 'row-card';
+        row.style.alignItems = 'flex-start';
+        const dateStr = new Date(d.date).toLocaleDateString(undefined, {month:'short', day:'numeric'});
+        row.innerHTML = `
+          <div style="flex:1;">
+            <div class="client-name">${escapeHtml(d.title)}</div>
+            <div class="client-note">${escapeHtml(d.excerpt || '')}</div>
+            <div class="row-time mono" style="margin-top:.3rem;">${dateStr}</div>
+          </div>
+          <a class="btn" href="${d.editLink}" target="_blank" rel="noopener">Review →</a>
+        `;
+        draftsList.appendChild(row);
+      });
+    } catch(e){
+      draftsList.innerHTML = `<div class="empty-hint">Something went wrong checking for drafts.</div>`;
+    }
+  }
+
+  refreshDraftsBtn.addEventListener('click', loadDrafts);
+
   // ---------- INIT ----------
   renderHeader();
   renderSchedule();
   renderTasks();
   renderPipeline();
   renderTracker();
+  loadDrafts();
 })();
 </script>
 </body>
