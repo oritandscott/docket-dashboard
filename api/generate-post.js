@@ -18,10 +18,9 @@ export default async function handler(req, res) {
   try {
     const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
     const WP_SITE_URL = process.env.WP_SITE_URL; // e.g. https://oasisarizonaliving.com
-    const WP_USERNAME = process.env.WP_USERNAME;
-    const WP_APP_PASSWORD = process.env.WP_APP_PASSWORD;
+    const DOCKET_SHARED_SECRET = process.env.DOCKET_SHARED_SECRET;
 
-    if (!ANTHROPIC_API_KEY || !WP_SITE_URL || !WP_USERNAME || !WP_APP_PASSWORD) {
+    if (!ANTHROPIC_API_KEY || !WP_SITE_URL || !DOCKET_SHARED_SECRET) {
       return res.status(500).json({ error: 'Missing one or more required environment variables.' });
     }
 
@@ -90,18 +89,16 @@ First use web search to find a real, currently trending real estate topic. Once 
 
     const post = toolUse.input;
 
-    const wpAuth = Buffer.from(`${WP_USERNAME}:${WP_APP_PASSWORD}`).toString('base64');
-    const wpRes = await fetch(`${WP_SITE_URL.replace(/\/$/, '')}/wp-json/wp/v2/posts`, {
+    const wpRes = await fetch(`${WP_SITE_URL.replace(/\/$/, '')}/wp-json/docket/v1/create-draft`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Basic ${wpAuth}`,
+        'X-Docket-Secret': DOCKET_SHARED_SECRET,
       },
       body: JSON.stringify({
         title: post.title,
-        content: post.body_html,
+        body_html: post.body_html,
         excerpt: post.excerpt || '',
-        status: 'draft',
       }),
     });
 
@@ -113,9 +110,9 @@ First use web search to find a real, currently trending real estate topic. Once 
     const wpData = await wpRes.json();
     return res.status(200).json({
       success: true,
-      postId: wpData.id,
+      postId: wpData.postId,
       title: post.title,
-      editLink: `${WP_SITE_URL.replace(/\/$/, '')}/wp-admin/post.php?post=${wpData.id}&action=edit`,
+      editLink: wpData.editLink,
     });
   } catch (err) {
     return res.status(500).json({ error: err.message });
