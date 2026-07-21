@@ -39,19 +39,17 @@ Hard rules:
 - Base the post on a real, currently trending real estate search topic that you find via web search today. Do not invent statistics; if you cite a number, it should come from something you found in search.
 - ${focusInstruction}
 - Target length: 700-900 words.
+- Never use HTML entity codes anywhere (not &#8217; &amp; &rsquo; etc). Type real punctuation characters directly: a plain apostrophe ' or curly ' , real dashes, real quote marks. This applies to the title, excerpt, and body_html alike.
+- Do not repeat the title anywhere inside body_html -- WordPress displays the title field on its own automatically. body_html should begin directly with the featured image placeholder described below, followed by the opening paragraph.
 
 Structure, in this exact order:
-1. A large title heading at the very top of body_html, using this exact pattern (TITLE TEXT must match the title field exactly):
-<!-- wp:heading {"level":1} -->
-<h1 style="font-size:2.4rem; font-weight:700; line-height:1.2; margin-bottom:0.5rem;">TITLE TEXT</h1>
-<!-- /wp:heading -->
-2. Immediately after the title, one large featured/hero image placeholder using this pattern:
+1. One large featured/hero image placeholder at the very start of body_html, using this exact pattern (do not add any style or width attributes -- copy this exactly, only changing the description text):
 <!-- wp:image {"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="https://placehold.co/1200x628/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" style="width:100%;height:auto;"/></figure>
+<figure class="wp-block-image size-large"><img src="https://placehold.co/1200x628/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image"/></figure>
 <!-- /wp:image -->
-3. The rest of the post as normal HTML (<p>, <h2>, <ul>/<li>), with two or three smaller secondary image placeholders spread naturally near relevant H2 sections. These should float so paragraph text wraps around them -- alternate between left and right alignment across the images for visual variety, using this pattern (swap alignleft/float:left for alignright/float:right on alternating images):
-<!-- wp:image {"align":"left","sizeSlug":"medium","width":380} -->
-<figure class="wp-block-image alignleft size-medium" style="float:left; margin:0.3rem 1.5rem 1rem 0; max-width:380px;"><img src="https://placehold.co/700x420/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" style="max-width:380px;width:100%;height:auto;"/></figure>
+2. The rest of the post as normal HTML (<p>, <h2>, <ul>/<li>), with two or three smaller secondary image placeholders spread naturally near relevant H2 sections. These should float so paragraph text wraps around them -- alternate between left and right across the images for visual variety, using this exact pattern each time (only change "left"/"alignleft" to "right"/"alignright" to alternate, and the description text -- do not add any other style or width attributes):
+<!-- wp:image {"align":"left","sizeSlug":"medium"} -->
+<figure class="wp-block-image alignleft size-medium"><img src="https://placehold.co/700x420/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image"/></figure>
 <!-- /wp:image -->
 Give every <h2> in the post the attribute style="clear:both;" so headings never collide with a floated image above them.
 
