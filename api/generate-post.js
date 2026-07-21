@@ -47,10 +47,8 @@ Structure, in this exact order:
 <!-- wp:image {"sizeSlug":"large"} -->
 <figure class="wp-block-image size-large"><img src="https://placehold.co/1200x628/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image"/></figure>
 <!-- /wp:image -->
-2. The rest of the post as normal HTML (<p>, <h2>, <ul>/<li>), with two or three smaller secondary image placeholders spread naturally near relevant H2 sections. Place each one directly before a paragraph that is at least 3-4 sentences long, so there is enough text to visibly wrap around the image before the next heading -- never place one of these images immediately before an <h2>. These should float so paragraph text wraps around them -- alternate between left and right across the images for visual variety, using this exact pattern each time (only change "left"/"alignleft" to "right"/"alignright" to alternate, and the description text -- do not add any other style or width attributes):
-<!-- wp:image {"align":"left","sizeSlug":"medium"} -->
-<figure class="wp-block-image alignleft size-medium"><img src="https://placehold.co/700x420/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image"/></figure>
-<!-- /wp:image -->
+2. The rest of the post as normal HTML (<p>, <h2>, <ul>/<li>), with two or three smaller secondary image placeholders spread naturally near relevant H2 sections. Each one must be embedded as the very first thing inside a paragraph that is at least 3-4 sentences long (not as its own separate block/paragraph), so the text genuinely wraps around it -- never place one of these images immediately before an <h2>, and never put one alone in its own <p> with no other text. Alternate between alignleft and alignright across the images for visual variety. Use exactly this pattern (only change the class and description text):
+<p><img src="https://placehold.co/500x320/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" class="alignleft" /> Paragraph text starts immediately here and continues for several sentences so it visibly wraps around the image...</p>
 
 For every placeholder, replace SHORT DESCRIPTION with a specific 3-6 word description of what image belongs there, using + instead of spaces and no punctuation (e.g. Modern+Scottsdale+home+exterior+sunset).
 
