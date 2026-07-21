@@ -3,26 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>The Docket — Real Estate Dashboard</title>
-<meta name="theme-color" content="#16274A">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2218%22 fill=%22%2316274A%22/><text x=%2250%22 y=%2266%22 font-size=%2255%22 text-anchor=%22middle%22 fill=%22%23C9A15D%22 font-family=%22Georgia,serif%22>D</text></svg>">
+<title>Oasis Docket Dashboard</title>
+<meta name="theme-color" content="#0B0B0C">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2218%22 fill=%22%23141416%22/><text x=%2250%22 y=%2266%22 font-size=%2255%22 text-anchor=%22middle%22 fill=%22%23C9A15D%22 font-family=%22Georgia,serif%22>O</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --blueprint:#16274A;
-    --blueprint-deep:#101d3a;
-    --blueprint-line:#6E93C4;
-    --paper:#F6F3EA;
-    --paper-card:#FFFDF7;
-    --ink:#1B2436;
-    --ink-soft:#5B6478;
+    --blueprint:#141416;
+    --blueprint-deep:#000000;
+    --blueprint-line:#8F8F94;
+    --paper:#0B0B0C;
+    --paper-card:#19191B;
+    --ink:#ECECEC;
+    --ink-soft:#9A9A9E;
     --gold:#C9A15D;
-    --stamp-green:#3F6B4A;
-    --stamp-red:#A6442F;
-    --stamp-blue:#3A5A8C;
-    --line:rgba(27,36,54,.14);
+    --stamp-green:#5FAE73;
+    --stamp-red:#CC5C42;
+    --stamp-blue:#6FA8D9;
+    --line:rgba(255,255,255,.12);
     --radius:6px;
   }
   *{box-sizing:border-box;}
@@ -43,8 +43,8 @@
     width:238px;
     flex-shrink:0;
     background:
-      repeating-linear-gradient(0deg, rgba(110,147,196,.08) 0 1px, transparent 1px 28px),
-      repeating-linear-gradient(90deg, rgba(110,147,196,.08) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(0deg, rgba(201,161,93,.05) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(90deg, rgba(201,161,93,.05) 0 1px, transparent 1px 28px),
       linear-gradient(180deg, var(--blueprint), var(--blueprint-deep));
     color:#EDE9DD;
     padding:1.75rem 1.4rem;
@@ -123,6 +123,7 @@
     font-weight:600;
     font-size:clamp(1.6rem,3vw,2.15rem);
     margin:0 0 .3rem;
+    color:var(--gold);
   }
   .home-header p{
     margin:0;
@@ -137,7 +138,7 @@
     border-radius:var(--radius);
     padding:1.9rem 1.8rem 1.7rem;
     margin-bottom:2.4rem;
-    box-shadow:0 1px 2px rgba(22,39,74,.04), 0 8px 24px -18px rgba(22,39,74,.35);
+    box-shadow:0 1px 0 rgba(255,255,255,.04), 0 10px 26px -16px rgba(0,0,0,.7);
     scroll-margin-top:1.5rem;
   }
   .tab-label{
@@ -159,6 +160,7 @@
     font-style:italic;
     font-size:1.5rem;
     margin:.3rem 0 1.3rem;
+    color:var(--gold);
   }
   .panel-sub{
     font-size:.82rem;
@@ -183,7 +185,7 @@
     align-items:center;
     gap:.7rem;
     padding:.6rem .7rem;
-    background:#fff;
+    background:var(--paper-card);
     border:1px solid var(--line);
     border-radius:4px;
   }
@@ -198,7 +200,7 @@
     background:none;border:none;cursor:pointer;color:var(--ink-soft);
     font-size:1.1rem;line-height:1;padding:.15rem .35rem;border-radius:3px;
   }
-  .del-btn:hover{color:var(--stamp-red);background:rgba(166,68,47,.08);}
+  .del-btn:hover{color:var(--stamp-red);background:rgba(204,92,66,.15);}
   .empty-hint{
     font-size:.85rem;color:var(--ink-soft);font-style:italic;
     padding:.7rem;border:1px dashed var(--line);border-radius:4px;
@@ -210,7 +212,7 @@
     padding:.55rem .7rem;
     border:1px solid var(--line);
     border-radius:4px;
-    background:#fff;
+    background:var(--paper-card);
     color:var(--ink);
   }
   input:focus,textarea:focus,select:focus{
@@ -233,9 +235,9 @@
   .btn:hover{background:var(--blueprint-deep);}
   .btn:active{transform:translateY(1px);}
   .btn-ghost{
-    background:transparent;color:var(--blueprint);
+    background:transparent;color:var(--gold);border-color:var(--gold);
   }
-  .btn-ghost:hover{background:rgba(22,39,74,.06);}
+  .btn-ghost:hover{background:rgba(201,161,93,.12);}
 
   .task-row{display:flex;align-items:center;gap:.65rem;padding:.55rem .3rem;border-bottom:1px solid var(--line);}
   .task-row:last-child{border-bottom:none;}
@@ -251,7 +253,7 @@
     align-items:center;
     gap:.9rem;
     padding:.7rem .8rem;
-    background:#fff;
+    background:var(--paper-card);
     border:1px solid var(--line);
     border-radius:4px;
     margin-bottom:.55rem;
@@ -273,8 +275,7 @@
     cursor:pointer;
   }
   .stamp.stage-New{color:var(--stamp-blue);}
-  .stamp.stage-Active{color:var(--gold-dark, #8a6a2e);}
-  .stamp.stage-Active{color:#8a6a2e;}
+  .stamp.stage-Active{color:#D9A84E;}
   .stamp.stage-Under-Contract{color:var(--stamp-red);}
   .stamp.stage-Closed{color:var(--stamp-green);}
   .pipeline-add{
@@ -293,7 +294,7 @@
     font-family:'IBM Plex Mono',monospace;
     font-size:clamp(3.2rem,8vw,4.6rem);
     font-weight:600;
-    color:var(--blueprint);
+    color:var(--gold);
     line-height:1;
     letter-spacing:-.02em;
   }
@@ -302,12 +303,12 @@
     width:42px;height:42px;
     font-size:1.3rem;
     border-radius:4px;
-    border:1px solid var(--blueprint);
-    background:#fff;
-    color:var(--blueprint);
+    border:1px solid var(--line);
+    background:var(--paper-card);
+    color:var(--ink);
     cursor:pointer;
   }
-  .step-btn:hover{background:var(--blueprint);color:#fff;}
+  .step-btn:hover{background:var(--gold);color:#0B0B0B;border-color:var(--gold);}
   .tracker-set{display:flex;gap:.5rem;align-items:center;}
   .tracker-set input{width:100px;}
 
@@ -358,8 +359,8 @@
 
   <nav class="sidebar">
     <div class="brand">
-      <div class="mark">The Docket</div>
-      <div class="sub">Field Sheet &amp; Pipeline</div>
+      <img src="assets/oasis-logo.png" alt="Oasis Arizona Living" style="width:100%;max-width:180px;height:auto;display:block;">
+      <div class="sub" style="margin-top:.6rem;">Docket Dashboard</div>
     </div>
     <div class="side-date mono" id="side-date"></div>
     <ul class="nav">
@@ -367,13 +368,17 @@
       <li><a href="#pipeline">Pipeline <span class="num">02</span></a></li>
       <li><a href="#tracker">Tracker <span class="num">03</span></a></li>
       <li><a href="#notes">Notes <span class="num">04</span></a></li>
-      <li><a href="#blogdrafts">Blog Drafts <span class="num">05</span></a></li>
+      <li><a href="#blogdrafts">Ghostwriter <span class="num">05</span></a></li>
     </ul>
     <div class="sidebar-foot">Saved automatically to this device.</div>
   </nav>
 
   <main class="main">
     <div class="home-header">
+      <div style="display:flex;align-items:center;gap:1.4rem;margin-bottom:1.2rem;flex-wrap:wrap;">
+        <img src="assets/kw-realty-phoenix.png" alt="Keller Williams Realty Phoenix" style="height:32px;width:auto;display:block;">
+        <img src="assets/kw-luxury-international.png" alt="Keller Williams Luxury International" style="height:26px;width:auto;display:block;">
+      </div>
       <h1 id="greeting">Good day.</h1>
       <p id="today-date"></p>
     </div>
@@ -456,9 +461,9 @@
 
     <!-- BLOG DRAFTS -->
     <section class="panel" id="blogdrafts">
-      <div class="tab-label">05 · Blog Drafts</div>
-      <h2>Blog Drafts</h2>
-      <div class="panel-sub">Every morning, a new draft is researched and written, then saved to WordPress for your review. Nothing publishes until you approve it there.</div>
+      <div class="tab-label">05 · Ghostwriter</div>
+      <h2>Ghostwriter</h2>
+      <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
       <button class="btn btn-ghost" id="refresh-drafts-btn" type="button">Check for drafts</button>
       <div id="drafts-list" style="margin-top:1rem;"></div>
     </section>
@@ -795,7 +800,7 @@
       container.innerHTML = '';
       data.images.forEach((img, idx) => {
         const row = document.createElement('div');
-        row.style.cssText = 'border:1px solid var(--line);border-radius:4px;padding:.6rem;margin-bottom:.5rem;background:#fff;';
+        row.style.cssText = 'border:1px solid var(--line);border-radius:4px;padding:.6rem;margin-bottom:.5rem;background:var(--paper-card);';
         row.innerHTML = `
           <div style="font-size:.8rem;font-weight:600;margin-bottom:.4rem;">${escapeHtml(img.label)}${img.isPlaceholder ? '' : ' <span style="color:var(--stamp-green);font-weight:400;">(already swapped)</span>'}</div>
           <div class="inline-form" style="margin-top:0;">
