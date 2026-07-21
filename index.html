@@ -365,10 +365,10 @@
     <div class="side-date mono" id="side-date"></div>
     <ul class="nav">
       <li><a href="#today">Today <span class="num">01</span></a></li>
-      <li><a href="#pipeline">Pipeline <span class="num">02</span></a></li>
-      <li><a href="#tracker">Tracker <span class="num">03</span></a></li>
-      <li><a href="#notes">Notes <span class="num">04</span></a></li>
-      <li><a href="#blogdrafts">Ghostwriter <span class="num">05</span></a></li>
+      <li><a href="#blogdrafts">Ghostwriter <span class="num">02</span></a></li>
+      <li><a href="#pipeline">Pipeline <span class="num">03</span></a></li>
+      <li><a href="#tracker">Tracker <span class="num">04</span></a></li>
+      <li><a href="#notes">Notes <span class="num">05</span></a></li>
     </ul>
     <div class="sidebar-foot">Saved automatically to this device.</div>
   </nav>
@@ -409,9 +409,18 @@
       </div>
     </section>
 
+    <!-- BLOG DRAFTS -->
+    <section class="panel" id="blogdrafts">
+      <div class="tab-label">02 · Ghostwriter</div>
+      <h2>Ghostwriter</h2>
+      <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
+      <button class="btn btn-ghost" id="refresh-drafts-btn" type="button">Check for drafts</button>
+      <div id="drafts-list" style="margin-top:1rem;"></div>
+    </section>
+
     <!-- PIPELINE -->
     <section class="panel" id="pipeline">
-      <div class="tab-label">02 · Pipeline</div>
+      <div class="tab-label">03 · Pipeline</div>
       <h2>Pipeline</h2>
       <div class="panel-sub">Every active client, at a glance. Tap the stamp to move their stage.</div>
       <div id="pipeline-list"></div>
@@ -429,7 +438,7 @@
 
     <!-- TRACKER -->
     <section class="panel" id="tracker">
-      <div class="tab-label">03 · Tracker</div>
+      <div class="tab-label">04 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
       <div class="tracker-wrap">
@@ -452,20 +461,11 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes">
-      <div class="tab-label">04 · Notes</div>
+      <div class="tab-label">05 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
       <div class="save-indicator" id="save-indicator">Saved ✓</div>
-    </section>
-
-    <!-- BLOG DRAFTS -->
-    <section class="panel" id="blogdrafts">
-      <div class="tab-label">05 · Ghostwriter</div>
-      <h2>Ghostwriter</h2>
-      <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
-      <button class="btn btn-ghost" id="refresh-drafts-btn" type="button">Check for drafts</button>
-      <div id="drafts-list" style="margin-top:1rem;"></div>
     </section>
 
   </main>
