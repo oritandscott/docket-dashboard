@@ -40,6 +40,12 @@ Hard rules:
 - ${focusInstruction}
 - Target length: 700-900 words.
 
+Image placeholders: a human will add real photos later. Insert real WordPress image blocks (not plain divs) so they are individually clickable and replaceable in the WordPress editor -- one right after the opening paragraph (the featured/hero image), and two or three more spread naturally near relevant H2 sections further down. Each placeholder must use exactly this pattern, including the block comments:
+<!-- wp:image {"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="https://placehold.co/1200x628/e5e5e5/666666?text=SHORT+DESCRIPTION+HERE" alt="Placeholder - click to replace with a real image"/></figure>
+<!-- /wp:image -->
+Replace SHORT DESCRIPTION HERE with a specific 3-6 word description of what image belongs there, using + instead of spaces and no punctuation (e.g. Modern+Scottsdale+home+exterior+sunset). Keep the rest of the post as plain HTML outside these blocks.
+
 First use web search to find a real, currently trending real estate topic. Once you have enough information, call the publish_blog_post tool exactly once with the finished post. Do not output the post as plain text -- it must be submitted through the tool call.`;
 
     const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
