@@ -49,10 +49,11 @@ Structure, in this exact order:
 <!-- wp:image {"sizeSlug":"large"} -->
 <figure class="wp-block-image size-large"><img src="https://placehold.co/1200x628/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" style="width:100%;height:auto;"/></figure>
 <!-- /wp:image -->
-3. The rest of the post as normal HTML (<p>, <h2>, <ul>/<li>), with two or three smaller secondary image placeholders spread naturally near relevant H2 sections, using this smaller pattern instead:
-<!-- wp:image {"sizeSlug":"medium","width":480} -->
-<figure class="wp-block-image size-medium" style="max-width:480px;"><img src="https://placehold.co/700x420/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" style="max-width:480px;width:100%;height:auto;"/></figure>
+3. The rest of the post as normal HTML (<p>, <h2>, <ul>/<li>), with two or three smaller secondary image placeholders spread naturally near relevant H2 sections. These should float so paragraph text wraps around them -- alternate between left and right alignment across the images for visual variety, using this pattern (swap alignleft/float:left for alignright/float:right on alternating images):
+<!-- wp:image {"align":"left","sizeSlug":"medium","width":380} -->
+<figure class="wp-block-image alignleft size-medium" style="float:left; margin:0.3rem 1.5rem 1rem 0; max-width:380px;"><img src="https://placehold.co/700x420/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" style="max-width:380px;width:100%;height:auto;"/></figure>
 <!-- /wp:image -->
+Give every <h2> in the post the attribute style="clear:both;" so headings never collide with a floated image above them.
 
 For every placeholder, replace SHORT DESCRIPTION with a specific 3-6 word description of what image belongs there, using + instead of spaces and no punctuation (e.g. Modern+Scottsdale+home+exterior+sunset).
 
