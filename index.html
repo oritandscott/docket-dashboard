@@ -754,6 +754,8 @@
             <div class="client-name">${escapeHtml(d.title)}</div>
             <div class="client-note">${escapeHtml(d.excerpt || '')}</div>
             <div class="row-time mono" style="margin-top:.3rem;">${dateStr}</div>
+            <button class="btn btn-ghost manage-images-btn" data-id="${d.id}" style="margin-top:.5rem;font-size:.78rem;padding:.4rem .7rem;">Manage Images</button>
+            <div class="image-manager" id="image-manager-${d.id}" style="display:none;margin-top:.8rem;"></div>
           </div>
           <a class="btn" href="${d.editLink}" target="_blank" rel="noopener">Review →</a>
         `;
@@ -765,6 +767,87 @@
   }
 
   refreshDraftsBtn.addEventListener('click', loadDrafts);
+
+  draftsList.addEventListener('click', async (e) => {
+    if (!e.target.matches('.manage-images-btn')) return;
+    const id = e.target.dataset.id;
+    const container = document.getElementById(`image-manager-${id}`);
+    const isOpen = container.style.display !== 'none';
+    if (isOpen) {
+      container.style.display = 'none';
+      e.target.textContent = 'Manage Images';
+      return;
+    }
+    e.target.textContent = 'Hide Images';
+    container.style.display = 'block';
+    container.innerHTML = '<div class="empty-hint">Loading images…</div>';
+    try {
+      const resp = await fetch(`/api/get-post-images?postId=${id}`);
+      const data = await resp.json();
+      if (!resp.ok) {
+        container.innerHTML = `<div class="empty-hint">${escapeHtml(data.error || 'Could not load images')}</div>`;
+        return;
+      }
+      if (!data.images || data.images.length === 0) {
+        container.innerHTML = '<div class="empty-hint">No images found in this post.</div>';
+        return;
+      }
+      container.innerHTML = '';
+      data.images.forEach((img, idx) => {
+        const row = document.createElement('div');
+        row.style.cssText = 'border:1px solid var(--line);border-radius:4px;padding:.6rem;margin-bottom:.5rem;background:#fff;';
+        row.innerHTML = `
+          <div style="font-size:.8rem;font-weight:600;margin-bottom:.4rem;">${escapeHtml(img.label)}${img.isPlaceholder ? '' : ' <span style="color:var(--stamp-green);font-weight:400;">(already swapped)</span>'}</div>
+          <div class="inline-form" style="margin-top:0;">
+            <input type="text" placeholder="Paste real image URL here…" class="swap-url-input" style="flex:1;min-width:160px;">
+            <button class="btn swap-btn" type="button" data-postid="${id}" data-oldsrc="${escapeHtml(img.src)}">Swap</button>
+          </div>
+          <div class="swap-status" style="font-size:.78rem;margin-top:.3rem;"></div>
+        `;
+        container.appendChild(row);
+      });
+    } catch (err) {
+      container.innerHTML = '<div class="empty-hint">Something went wrong loading images.</div>';
+    }
+  });
+
+  draftsList.addEventListener('click', async (e) => {
+    if (!e.target.matches('.swap-btn')) return;
+    const btn = e.target;
+    const row = btn.closest('div').parentElement;
+    const input = row.querySelector('.swap-url-input');
+    const status = row.querySelector('.swap-status');
+    const newSrc = input.value.trim();
+    if (!newSrc) {
+      status.textContent = 'Paste a URL first.';
+      status.style.color = 'var(--stamp-red)';
+      return;
+    }
+    btn.disabled = true;
+    status.textContent = 'Swapping…';
+    status.style.color = 'var(--ink-soft)';
+    try {
+      const resp = await fetch('/api/swap-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postId: Number(btn.dataset.postid), oldSrc: btn.dataset.oldsrc, newSrc }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) {
+        status.textContent = data.error || 'Swap failed.';
+        status.style.color = 'var(--stamp-red)';
+        btn.disabled = false;
+        return;
+      }
+      status.textContent = 'Done ✓';
+      status.style.color = 'var(--stamp-green)';
+      btn.dataset.oldsrc = newSrc;
+    } catch (err) {
+      status.textContent = 'Something went wrong.';
+      status.style.color = 'var(--stamp-red)';
+      btn.disabled = false;
+    }
+  });
 
   // ---------- INIT ----------
   renderHeader();
