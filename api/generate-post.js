@@ -45,7 +45,7 @@ Hard rules:
 Structure, in this exact order:
 1. One large featured/hero image placeholder at the very start of body_html, using this exact pattern (do not add any style or width attributes -- copy this exactly, only changing the description text):
 <!-- wp:image {"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="https://placehold.co/1200x628/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image"/></figure>
+<figure class="wp-block-image size-large docket-hero"><img src="https://placehold.co/1200x628/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" class="docket-hero-img"/></figure>
 <!-- /wp:image -->
 2. The rest of the post as normal HTML (<p>, <h2>, <ul>/<li>), with two or three smaller secondary image placeholders spread naturally near relevant H2 sections. Each one must be embedded as the very first thing inside a paragraph that is at least 3-4 sentences long (not as its own separate block/paragraph), so the text genuinely wraps around it -- never place one of these images immediately before an <h2>, and never put one alone in its own <p> with no other text. Alternate between alignleft and alignright across the images for visual variety. Use exactly this pattern (only change the class and description text):
 <p><img src="https://placehold.co/500x320/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" class="alignleft" /> Paragraph text starts immediately here and continues for several sentences so it visibly wraps around the image...</p>
@@ -63,7 +63,7 @@ First use web search to find a real, currently trending real estate topic. Once 
       },
       body: JSON.stringify({
         model: 'claude-sonnet-5',
-        max_tokens: 4000,
+        max_tokens: 8000,
         system: systemPrompt,
         messages: [
           { role: 'user', content: "Find a real, currently trending real estate topic and write today's post now." },
@@ -93,6 +93,11 @@ First use web search to find a real, currently trending real estate topic. Once 
     }
 
     const claudeData = await claudeRes.json();
+
+    if (claudeData.stop_reason === 'max_tokens') {
+      return res.status(502).json({ error: 'Response was cut off before finishing (hit token limit). Try again.', stop_reason: claudeData.stop_reason });
+    }
+
     const toolUse = (claudeData.content || []).find((b) => b.type === 'tool_use' && b.name === 'publish_blog_post');
 
     if (!toolUse) {
@@ -100,6 +105,10 @@ First use web search to find a real, currently trending real estate topic. Once 
     }
 
     const post = toolUse.input;
+
+    if (!post.title || !post.body_html) {
+      return res.status(502).json({ error: 'Tool call was missing title or body_html', post });
+    }
 
     const wpRes = await fetch(`${WP_SITE_URL.replace(/\/$/, '')}/wp-json/docket/v1/create-draft`, {
       method: 'POST',
