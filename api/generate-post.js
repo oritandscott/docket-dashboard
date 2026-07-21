@@ -40,11 +40,21 @@ Hard rules:
 - ${focusInstruction}
 - Target length: 700-900 words.
 
-Image placeholders: a human will add real photos later. Insert real WordPress image blocks (not plain divs) so they are individually clickable and replaceable in the WordPress editor -- one right after the opening paragraph (the featured/hero image), and two or three more spread naturally near relevant H2 sections further down. Each placeholder must use exactly this pattern, including the block comments:
+Structure, in this exact order:
+1. A large title heading at the very top of body_html, using this exact pattern (TITLE TEXT must match the title field exactly):
+<!-- wp:heading {"level":1} -->
+<h1 style="font-size:2.4rem; font-weight:700; line-height:1.2; margin-bottom:0.5rem;">TITLE TEXT</h1>
+<!-- /wp:heading -->
+2. Immediately after the title, one large featured/hero image placeholder using this pattern:
 <!-- wp:image {"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="https://placehold.co/1200x628/e5e5e5/666666?text=SHORT+DESCRIPTION+HERE" alt="Placeholder - click to replace with a real image"/></figure>
+<figure class="wp-block-image size-large"><img src="https://placehold.co/1200x628/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" style="width:100%;height:auto;"/></figure>
 <!-- /wp:image -->
-Replace SHORT DESCRIPTION HERE with a specific 3-6 word description of what image belongs there, using + instead of spaces and no punctuation (e.g. Modern+Scottsdale+home+exterior+sunset). Keep the rest of the post as plain HTML outside these blocks.
+3. The rest of the post as normal HTML (<p>, <h2>, <ul>/<li>), with two or three smaller secondary image placeholders spread naturally near relevant H2 sections, using this smaller pattern instead:
+<!-- wp:image {"sizeSlug":"medium","width":480} -->
+<figure class="wp-block-image size-medium" style="max-width:480px;"><img src="https://placehold.co/700x420/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" style="max-width:480px;width:100%;height:auto;"/></figure>
+<!-- /wp:image -->
+
+For every placeholder, replace SHORT DESCRIPTION with a specific 3-6 word description of what image belongs there, using + instead of spaces and no punctuation (e.g. Modern+Scottsdale+home+exterior+sunset).
 
 First use web search to find a real, currently trending real estate topic. Once you have enough information, call the publish_blog_post tool exactly once with the finished post. Do not output the post as plain text -- it must be submitted through the tool call.`;
 
