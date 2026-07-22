@@ -387,10 +387,11 @@
     <ul class="nav">
       <li><a href="#today">Today <span class="num">01</span></a></li>
       <li><a href="#blogdrafts">Ghostwriter <span class="num">02</span></a></li>
-      <li><a href="#comments">YouTube Comments <span class="num">03</span></a></li>
-      <li><a href="#pipeline">Pipeline <span class="num">04</span></a></li>
-      <li><a href="#tracker">Tracker <span class="num">05</span></a></li>
-      <li><a href="#notes">Notes <span class="num">06</span></a></li>
+      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">03</span></a></li>
+      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">04</span></a></li>
+      <li><a href="#pipeline">Pipeline <span class="num">05</span></a></li>
+      <li><a href="#tracker">Tracker <span class="num">06</span></a></li>
+      <li><a href="#notes">Notes <span class="num">07</span></a></li>
     </ul>
     <div class="sidebar-foot">Saved automatically to this device.</div>
   </nav>
@@ -440,23 +441,37 @@
       <div id="drafts-list" style="margin-top:1rem;"></div>
     </section>
 
-    <!-- COMMENTS -->
-    <section class="panel" id="comments">
+    <!-- YOUTUBE COMMENTS: CHANNEL 1 -->
+    <section class="panel" id="comments-channel1">
       <div class="tab-label">03 · YouTube Comments</div>
-      <h2>YouTube Comments</h2>
-      <div class="panel-sub">Recent comments from both YouTube channels. Type a reply and hit Send -- nothing posts until you do.</div>
-      <button class="btn btn-ghost" id="refresh-comments-btn" type="button">Check for new comments</button>
-      <div id="comments-list" style="margin-top:1rem;"></div>
+      <h2>YouTube Comments - Oasis Arizona Living Channel</h2>
+      <div class="panel-sub">Recent comments from the Oasis Arizona Living channel. Type a reply and hit Send -- nothing posts until you do.</div>
+      <button class="btn btn-ghost" id="refresh-comments-channel1-btn" type="button">Check for new comments</button>
+      <div id="comments-list-channel1" style="margin-top:1rem;"></div>
 
       <details class="history-details">
         <summary class="history-summary">Replied &amp; dismissed history</summary>
-        <div id="comments-history" style="margin-top:.8rem;"></div>
+        <div id="comments-history-channel1" style="margin-top:.8rem;"></div>
+      </details>
+    </section>
+
+    <!-- YOUTUBE COMMENTS: CHANNEL 2 -->
+    <section class="panel" id="comments-channel2">
+      <div class="tab-label">04 · YouTube Comments</div>
+      <h2>YouTube Comments - Moving to Phoenix Channel</h2>
+      <div class="panel-sub">Recent comments from the Moving to Phoenix channel. Type a reply and hit Send -- nothing posts until you do.</div>
+      <button class="btn btn-ghost" id="refresh-comments-channel2-btn" type="button">Check for new comments</button>
+      <div id="comments-list-channel2" style="margin-top:1rem;"></div>
+
+      <details class="history-details">
+        <summary class="history-summary">Replied &amp; dismissed history</summary>
+        <div id="comments-history-channel2" style="margin-top:.8rem;"></div>
       </details>
     </section>
 
     <!-- PIPELINE -->
     <section class="panel" id="pipeline">
-      <div class="tab-label">04 · Pipeline</div>
+      <div class="tab-label">05 · Pipeline</div>
       <h2>Pipeline</h2>
       <div class="panel-sub">Every active client, at a glance. Tap the stamp to move their stage.</div>
       <div id="pipeline-list"></div>
@@ -474,7 +489,7 @@
 
     <!-- TRACKER -->
     <section class="panel" id="tracker">
-      <div class="tab-label">05 · Tracker</div>
+      <div class="tab-label">06 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
       <div class="tracker-wrap">
@@ -497,7 +512,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes">
-      <div class="tab-label">06 · Notes</div>
+      <div class="tab-label">07 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
@@ -900,30 +915,30 @@
   });
 
   // ---------- COMMENTS ----------
-  const commentsList = document.getElementById('comments-list');
-  const refreshCommentsBtn = document.getElementById('refresh-comments-btn');
-  const commentsHistory = document.getElementById('comments-history');
-  let currentComments = {};
+  async function fetchYoutubeComments(){
+    const resp = await fetch('/api/youtube-comments');
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'unknown error');
+    return data.comments || [];
+  }
 
-  async function loadComments(){
-    commentsList.innerHTML = '<div class="empty-hint">Checking YouTube…</div>';
-    try {
-      const resp = await fetch('/api/youtube-comments');
-      const data = await resp.json();
-      if(!resp.ok){
-        commentsList.innerHTML = `<div class="empty-hint">Couldn't reach YouTube: ${escapeHtml(data.error || 'unknown error')}</div>`;
-        return;
-      }
-      const handledIds = new Set(state.handledComments.map(h => h.id));
-      const visible = (data.comments || []).filter(c => !handledIds.has(c.id));
+  function makeCommentsPanel(channelKey, ids){
+    const listEl = document.getElementById(ids.list);
+    const historyEl = document.getElementById(ids.history);
+    let currentComments = {};
+
+    function render(allComments){
+      const channelComments = allComments.filter(c => c.channel === channelKey);
+      const handledIds = new Set(state.handledComments.filter(h => h.channel === channelKey).map(h => h.id));
+      const visible = channelComments.filter(c => !handledIds.has(c.id));
       currentComments = {};
-      (data.comments || []).forEach(c => { currentComments[c.id] = c; });
+      channelComments.forEach(c => { currentComments[c.id] = c; });
 
-      if(visible.length === 0){
-        commentsList.innerHTML = '<div class="empty-hint">No comments found. Check back later.</div>';
+      if (visible.length === 0) {
+        listEl.innerHTML = '<div class="empty-hint">No comments found. Check back later.</div>';
         return;
       }
-      commentsList.innerHTML = '';
+      listEl.innerHTML = '';
       visible.forEach(c => {
         const row = document.createElement('div');
         row.className = 'row-card';
@@ -933,7 +948,7 @@
         const dateStr = new Date(c.publishedAt).toLocaleDateString(undefined, {month:'short', day:'numeric'});
         row.innerHTML = `
           <div>
-            <div class="client-name">${escapeHtml(c.authorName)} <span class="row-time mono" style="font-weight:400;min-width:0;">· ${escapeHtml(c.channelLabel)} · ${dateStr}</span></div>
+            <div class="client-name">${escapeHtml(c.authorName)} <span class="row-time mono" style="font-weight:400;min-width:0;">· ${dateStr}</span></div>
             <div class="client-note" style="margin:.3rem 0 .2rem;">${escapeHtml(c.text)}</div>
             <div style="font-size:.78rem;margin-top:.15rem;">
               On: <a href="${c.videoUrl}" target="_blank" rel="noopener" style="color:var(--gold);">${escapeHtml(c.videoTitle || 'View on YouTube')} →</a>
@@ -948,115 +963,137 @@
           </div>
           <div class="reply-status" style="font-size:.78rem;margin-top:.3rem;"></div>
         `;
-        commentsList.appendChild(row);
+        listEl.appendChild(row);
       });
-    } catch(e){
-      commentsList.innerHTML = '<div class="empty-hint">Something went wrong checking for comments.</div>';
     }
-  }
 
-  function markCommentHandled(comment, action, replyText){
-    if (!comment) return;
-    if (!state.handledComments.some(h => h.id === comment.id)) {
-      state.handledComments.push({
-        id: comment.id,
-        authorName: comment.authorName,
-        text: comment.text,
-        channelLabel: comment.channelLabel,
-        videoTitle: comment.videoTitle,
-        videoUrl: comment.videoUrl,
-        action,
-        replyText: replyText || null,
-        handledAt: new Date().toISOString(),
-      });
-      save();
-    }
-    renderCommentsHistory();
-  }
-
-  function renderCommentsHistory(){
-    const items = [...state.handledComments].sort((a, b) => new Date(b.handledAt) - new Date(a.handledAt));
-    if (items.length === 0) {
-      commentsHistory.innerHTML = '<div class="empty-hint">Nothing replied to or dismissed yet.</div>';
-      return;
-    }
-    commentsHistory.innerHTML = '';
-    items.forEach(h => {
-      const row = document.createElement('div');
-      row.className = 'row-card history-row';
-      row.style.alignItems = 'stretch';
-      row.style.flexDirection = 'column';
-      const dateStr = new Date(h.handledAt).toLocaleDateString(undefined, {month:'short', day:'numeric'});
-      row.innerHTML = `
-        <div>
-          <div class="client-name">${escapeHtml(h.authorName)}
-            <span class="history-tag ${h.action}">${h.action === 'replied' ? 'Replied' : 'Dismissed'}</span>
-            <span class="row-time mono" style="font-weight:400;min-width:0;"> · ${escapeHtml(h.channelLabel || '')} · ${dateStr}</span>
+    function renderHistory(){
+      const items = state.handledComments
+        .filter(h => h.channel === channelKey)
+        .sort((a, b) => new Date(b.handledAt) - new Date(a.handledAt));
+      if (items.length === 0) {
+        historyEl.innerHTML = '<div class="empty-hint">Nothing replied to or dismissed yet.</div>';
+        return;
+      }
+      historyEl.innerHTML = '';
+      items.forEach(h => {
+        const row = document.createElement('div');
+        row.className = 'row-card history-row';
+        row.style.alignItems = 'stretch';
+        row.style.flexDirection = 'column';
+        const dateStr = new Date(h.handledAt).toLocaleDateString(undefined, {month:'short', day:'numeric'});
+        row.innerHTML = `
+          <div>
+            <div class="client-name">${escapeHtml(h.authorName)}
+              <span class="history-tag ${h.action}">${h.action === 'replied' ? 'Replied' : 'Dismissed'}</span>
+              <span class="row-time mono" style="font-weight:400;min-width:0;"> · ${dateStr}</span>
+            </div>
+            <div class="client-note" style="margin:.3rem 0 .2rem;">${escapeHtml(h.text)}</div>
+            ${h.videoUrl ? `<a href="${h.videoUrl}" target="_blank" rel="noopener" style="font-size:.78rem;color:var(--gold);">On: ${escapeHtml(h.videoTitle || 'View on YouTube')} →</a>` : ''}
+            ${h.replyText ? `<div style="font-size:.78rem;margin-top:.4rem;padding:.5rem .6rem;background:var(--blueprint-deep);border-radius:4px;"><span style="color:var(--ink-soft);">Your reply:</span> ${escapeHtml(h.replyText)}</div>` : ''}
           </div>
-          <div class="client-note" style="margin:.3rem 0 .2rem;">${escapeHtml(h.text)}</div>
-          ${h.videoUrl ? `<a href="${h.videoUrl}" target="_blank" rel="noopener" style="font-size:.78rem;color:var(--gold);">On: ${escapeHtml(h.videoTitle || 'View on YouTube')} →</a>` : ''}
-          ${h.replyText ? `<div style="font-size:.78rem;margin-top:.4rem;padding:.5rem .6rem;background:var(--blueprint-deep);border-radius:4px;"><span style="color:var(--ink-soft);">Your reply:</span> ${escapeHtml(h.replyText)}</div>` : ''}
-        </div>
-      `;
-      commentsHistory.appendChild(row);
-    });
-  }
+        `;
+        historyEl.appendChild(row);
+      });
+    }
 
-  refreshCommentsBtn.addEventListener('click', loadComments);
+    function markHandled(comment, action, replyText){
+      if (!comment) return;
+      if (!state.handledComments.some(h => h.id === comment.id)) {
+        state.handledComments.push({
+          id: comment.id,
+          channel: channelKey,
+          authorName: comment.authorName,
+          text: comment.text,
+          videoTitle: comment.videoTitle,
+          videoUrl: comment.videoUrl,
+          action,
+          replyText: replyText || null,
+          handledAt: new Date().toISOString(),
+        });
+        save();
+      }
+      renderHistory();
+    }
 
-  commentsList.addEventListener('click', async (e) => {
-    if (e.target.matches('.dismiss-btn')) {
+    listEl.addEventListener('click', async (e) => {
+      if (e.target.matches('.dismiss-btn')) {
+        const btn = e.target;
+        const row = btn.closest('.row-card');
+        markHandled(currentComments[btn.dataset.id], 'dismissed');
+        row.style.opacity = '0';
+        setTimeout(() => row.remove(), 200);
+        return;
+      }
+
+      if (!e.target.matches('.reply-btn')) return;
       const btn = e.target;
       const row = btn.closest('.row-card');
-      markCommentHandled(currentComments[btn.dataset.id], 'dismissed');
-      row.style.opacity = '0';
-      setTimeout(() => row.remove(), 200);
-      return;
-    }
-
-    if (!e.target.matches('.reply-btn')) return;
-    const btn = e.target;
-    const row = btn.closest('.row-card');
-    const input = row.querySelector('.reply-input');
-    const status = row.querySelector('.reply-status');
-    const text = input.value.trim();
-    if (!text) {
-      status.textContent = 'Type something first.';
-      status.style.color = 'var(--stamp-red)';
-      return;
-    }
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
-    status.textContent = '';
-    try {
-      const resp = await fetch('/api/youtube-reply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ channel: btn.dataset.channel, parentId: btn.dataset.parentid, text }),
-      });
-      const data = await resp.json();
-      if (!resp.ok) {
-        status.textContent = data.error || 'Could not send reply.';
+      const input = row.querySelector('.reply-input');
+      const status = row.querySelector('.reply-status');
+      const text = input.value.trim();
+      if (!text) {
+        status.textContent = 'Type something first.';
+        status.style.color = 'var(--stamp-red)';
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      status.textContent = '';
+      try {
+        const resp = await fetch('/api/youtube-reply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ channel: btn.dataset.channel, parentId: btn.dataset.parentid, text }),
+        });
+        const data = await resp.json();
+        if (!resp.ok) {
+          status.textContent = data.error || 'Could not send reply.';
+          status.style.color = 'var(--stamp-red)';
+          btn.disabled = false;
+          btn.textContent = 'Send';
+          return;
+        }
+        status.textContent = 'Reply sent ✓';
+        status.style.color = 'var(--stamp-green)';
+        input.value = '';
+        btn.textContent = 'Sent';
+        markHandled(currentComments[btn.dataset.parentid], 'replied', text);
+        row.style.transition = 'opacity .4s';
+        setTimeout(() => { row.style.opacity = '0'; }, 700);
+        setTimeout(() => row.remove(), 1100);
+      } catch (err) {
+        status.textContent = 'Something went wrong sending the reply.';
         status.style.color = 'var(--stamp-red)';
         btn.disabled = false;
         btn.textContent = 'Send';
-        return;
       }
-      status.textContent = 'Reply sent ✓';
-      status.style.color = 'var(--stamp-green)';
-      input.value = '';
-      btn.textContent = 'Sent';
-      markCommentHandled(currentComments[btn.dataset.parentid], 'replied', text);
-      row.style.transition = 'opacity .4s';
-      setTimeout(() => { row.style.opacity = '0'; }, 700);
-      setTimeout(() => row.remove(), 1100);
-    } catch (err) {
-      status.textContent = 'Something went wrong sending the reply.';
-      status.style.color = 'var(--stamp-red)';
-      btn.disabled = false;
-      btn.textContent = 'Send';
+    });
+
+    return { render, renderHistory };
+  }
+
+  const commentsPanelChannel1 = makeCommentsPanel('channel1', { list: 'comments-list-channel1', history: 'comments-history-channel1' });
+  const commentsPanelChannel2 = makeCommentsPanel('channel2', { list: 'comments-list-channel2', history: 'comments-history-channel2' });
+
+  async function refreshAllComments(){
+    const list1 = document.getElementById('comments-list-channel1');
+    const list2 = document.getElementById('comments-list-channel2');
+    list1.innerHTML = '<div class="empty-hint">Checking YouTube…</div>';
+    list2.innerHTML = '<div class="empty-hint">Checking YouTube…</div>';
+    try {
+      const all = await fetchYoutubeComments();
+      commentsPanelChannel1.render(all);
+      commentsPanelChannel2.render(all);
+    } catch (e) {
+      const msg = `<div class="empty-hint">Couldn't reach YouTube: ${escapeHtml(e.message || 'unknown error')}</div>`;
+      list1.innerHTML = msg;
+      list2.innerHTML = msg;
     }
-  });
+  }
+
+  document.getElementById('refresh-comments-channel1-btn').addEventListener('click', refreshAllComments);
+  document.getElementById('refresh-comments-channel2-btn').addEventListener('click', refreshAllComments);
 
   // ---------- INIT ----------
   renderHeader();
@@ -1065,8 +1102,9 @@
   renderPipeline();
   renderTracker();
   loadDrafts();
-  renderCommentsHistory();
-  loadComments();
+  commentsPanelChannel1.renderHistory();
+  commentsPanelChannel2.renderHistory();
+  refreshAllComments();
 })();
 </script>
 </body>
