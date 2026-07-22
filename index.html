@@ -822,7 +822,10 @@
             <button class="btn btn-ghost manage-images-btn" data-id="${d.id}" style="margin-top:.5rem;font-size:.78rem;padding:.4rem .7rem;">Manage Images</button>
             <div class="image-manager" id="image-manager-${d.id}" style="display:none;margin-top:.8rem;"></div>
           </div>
-          <a class="btn" href="${d.editLink}" target="_blank" rel="noopener">Review →</a>
+          <div style="display:flex;flex-direction:column;gap:.4rem;align-items:flex-end;">
+            <a class="btn" href="${d.editLink}" target="_blank" rel="noopener">Review →</a>
+            <button class="btn-text dismiss-draft-btn" type="button" data-id="${d.id}" title="Don't use this draft">Dismiss</button>
+          </div>
         `;
         draftsList.appendChild(row);
       });
@@ -832,6 +835,36 @@
   }
 
   refreshDraftsBtn.addEventListener('click', loadDrafts);
+
+  draftsList.addEventListener('click', async (e) => {
+    if (!e.target.matches('.dismiss-draft-btn')) return;
+    const btn = e.target;
+    const id = btn.dataset.id;
+    btn.disabled = true;
+    btn.textContent = 'Dismissing…';
+    try {
+      const resp = await fetch('/api/dismiss-draft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postId: Number(id) }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) {
+        btn.disabled = false;
+        btn.textContent = 'Dismiss';
+        alert(data.error || 'Could not dismiss this draft.');
+        return;
+      }
+      const row = btn.closest('.row-card');
+      row.style.transition = 'opacity .3s';
+      row.style.opacity = '0';
+      setTimeout(() => row.remove(), 300);
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Dismiss';
+      alert('Something went wrong reaching WordPress.');
+    }
+  });
 
   draftsList.addEventListener('click', async (e) => {
     if (!e.target.matches('.manage-images-btn')) return;
