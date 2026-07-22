@@ -1,6 +1,7 @@
 // Called by the dashboard's "Comments" panel. Pulls recent top-level
-// comments from both YouTube channels so they can be reviewed and replied
-// to from the dashboard. Read-only -- never posts anything.
+// comments from both YouTube channels, plus the title and publish date of
+// the video each one was left on, so they can be reviewed and replied to
+// from the dashboard. Read-only -- never posts anything.
 
 async function getAccessToken(refreshToken) {
   const res = await fetch('https://oauth2.googleapis.com/token', {
@@ -50,6 +51,36 @@ async function fetchChannelComments(channelKey, channelId, channelLabel, accessT
   });
 }
 
+// Looks up title + publish date for a batch of video IDs in one call.
+// videos.list accepts up to 50 comma-separated IDs per request.
+async function fetchVideoDetails(videoIds, accessToken) {
+  const details = new Map();
+  const uniqueIds = [...new Set(videoIds)];
+
+  for (let i = 0; i < uniqueIds.length; i += 50) {
+    const batch = uniqueIds.slice(i, i + 50);
+    const url = new URL('https://www.googleapis.com/youtube/v3/videos');
+    url.searchParams.set('part', 'snippet');
+    url.searchParams.set('id', batch.join(','));
+
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+    if (!res.ok) {
+      // Don't fail the whole request just because video lookups didn't work --
+      // comments are still useful without titles attached.
+      continue;
+    }
+    const data = await res.json();
+    (data.items || []).forEach((item) => {
+      details.set(item.id, {
+        title: item.snippet.title,
+        publishedAt: item.snippet.publishedAt,
+      });
+    });
+  }
+
+  return details;
+}
+
 export default async function handler(req, res) {
   try {
     const channels = [
@@ -73,15 +104,34 @@ export default async function handler(req, res) {
       });
     }
 
-    const results = await Promise.all(
+    const perChannel = await Promise.all(
       channels.map(async (c) => {
         const accessToken = await getAccessToken(c.refreshToken);
-        return fetchChannelComments(c.key, c.id, c.label, accessToken);
+        const comments = await fetchChannelComments(c.key, c.id, c.label, accessToken);
+        return { comments, accessToken };
       })
     );
 
-    const comments = results
-      .flat()
+    const allComments = perChannel.flatMap((r) => r.comments);
+    const anyAccessToken = perChannel[0]?.accessToken;
+
+    let videoDetails = new Map();
+    if (anyAccessToken && allComments.length > 0) {
+      videoDetails = await fetchVideoDetails(
+        allComments.map((c) => c.videoId),
+        anyAccessToken
+      );
+    }
+
+    const comments = allComments
+      .map((c) => {
+        const details = videoDetails.get(c.videoId);
+        return {
+          ...c,
+          videoTitle: details?.title || null,
+          videoPublishedAt: details?.publishedAt || null,
+        };
+      })
       .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
 
     return res.status(200).json({ comments });
