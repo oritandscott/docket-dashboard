@@ -1083,8 +1083,27 @@
     list2.innerHTML = '<div class="empty-hint">Checking YouTube…</div>';
     try {
       const all = await fetchYoutubeComments();
+
+      // Backfill: earlier versions of this dashboard saved handled-comment
+      // records without a channel tag. Now that we have a live fetch, match
+      // those old records up against it and tag them so they land in the
+      // right channel's history instead of vanishing from both.
+      let migrated = false;
+      state.handledComments.forEach(h => {
+        if (!h.channel) {
+          const match = all.find(c => c.id === h.id);
+          if (match) {
+            h.channel = match.channel;
+            migrated = true;
+          }
+        }
+      });
+      if (migrated) save();
+
       commentsPanelChannel1.render(all);
       commentsPanelChannel2.render(all);
+      commentsPanelChannel1.renderHistory();
+      commentsPanelChannel2.renderHistory();
     } catch (e) {
       const msg = `<div class="empty-hint">Couldn't reach YouTube: ${escapeHtml(e.message || 'unknown error')}</div>`;
       list1.innerHTML = msg;
