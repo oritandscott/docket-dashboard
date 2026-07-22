@@ -366,9 +366,10 @@
     <ul class="nav">
       <li><a href="#today">Today <span class="num">01</span></a></li>
       <li><a href="#blogdrafts">Ghostwriter <span class="num">02</span></a></li>
-      <li><a href="#pipeline">Pipeline <span class="num">03</span></a></li>
-      <li><a href="#tracker">Tracker <span class="num">04</span></a></li>
-      <li><a href="#notes">Notes <span class="num">05</span></a></li>
+      <li><a href="#comments">Comments <span class="num">03</span></a></li>
+      <li><a href="#pipeline">Pipeline <span class="num">04</span></a></li>
+      <li><a href="#tracker">Tracker <span class="num">05</span></a></li>
+      <li><a href="#notes">Notes <span class="num">06</span></a></li>
     </ul>
     <div class="sidebar-foot">Saved automatically to this device.</div>
   </nav>
@@ -418,9 +419,18 @@
       <div id="drafts-list" style="margin-top:1rem;"></div>
     </section>
 
+    <!-- COMMENTS -->
+    <section class="panel" id="comments">
+      <div class="tab-label">03 · Comments</div>
+      <h2>Comments</h2>
+      <div class="panel-sub">Recent comments from both YouTube channels. Type a reply and hit Send -- nothing posts until you do.</div>
+      <button class="btn btn-ghost" id="refresh-comments-btn" type="button">Check for new comments</button>
+      <div id="comments-list" style="margin-top:1rem;"></div>
+    </section>
+
     <!-- PIPELINE -->
     <section class="panel" id="pipeline">
-      <div class="tab-label">03 · Pipeline</div>
+      <div class="tab-label">04 · Pipeline</div>
       <h2>Pipeline</h2>
       <div class="panel-sub">Every active client, at a glance. Tap the stamp to move their stage.</div>
       <div id="pipeline-list"></div>
@@ -438,7 +448,7 @@
 
     <!-- TRACKER -->
     <section class="panel" id="tracker">
-      <div class="tab-label">04 · Tracker</div>
+      <div class="tab-label">05 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
       <div class="tracker-wrap">
@@ -461,7 +471,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes">
-      <div class="tab-label">05 · Notes</div>
+      <div class="tab-label">06 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
@@ -854,6 +864,93 @@
     }
   });
 
+  // ---------- COMMENTS ----------
+  const commentsList = document.getElementById('comments-list');
+  const refreshCommentsBtn = document.getElementById('refresh-comments-btn');
+
+  async function loadComments(){
+    commentsList.innerHTML = '<div class="empty-hint">Checking YouTube…</div>';
+    try {
+      const resp = await fetch('/api/youtube-comments');
+      const data = await resp.json();
+      if(!resp.ok){
+        commentsList.innerHTML = `<div class="empty-hint">Couldn't reach YouTube: ${escapeHtml(data.error || 'unknown error')}</div>`;
+        return;
+      }
+      if(!data.comments || data.comments.length === 0){
+        commentsList.innerHTML = '<div class="empty-hint">No comments found. Check back later.</div>';
+        return;
+      }
+      commentsList.innerHTML = '';
+      data.comments.forEach(c => {
+        const row = document.createElement('div');
+        row.className = 'row-card';
+        row.style.alignItems = 'stretch';
+        row.style.flexDirection = 'column';
+        const dateStr = new Date(c.publishedAt).toLocaleDateString(undefined, {month:'short', day:'numeric'});
+        row.innerHTML = `
+          <div>
+            <div class="client-name">${escapeHtml(c.authorName)} <span class="row-time mono" style="font-weight:400;min-width:0;">· ${escapeHtml(c.channelLabel)} · ${dateStr}</span></div>
+            <div class="client-note" style="margin:.3rem 0 .2rem;">${escapeHtml(c.text)}</div>
+            <a href="${c.videoUrl}" target="_blank" rel="noopener" style="font-size:.78rem;color:var(--gold);">View on YouTube →</a>
+            ${c.replyCount > 0 ? `<div style="font-size:.78rem;color:var(--stamp-green);margin-top:.3rem;">${c.replyCount} repl${c.replyCount === 1 ? 'y' : 'ies'} already</div>` : ''}
+          </div>
+          <div class="inline-form" style="margin-top:.6rem;">
+            <input type="text" placeholder="Type a reply…" class="reply-input" style="flex:1;min-width:160px;">
+            <button class="btn reply-btn" type="button" data-channel="${c.channel}" data-parentid="${c.id}">Send</button>
+          </div>
+          <div class="reply-status" style="font-size:.78rem;margin-top:.3rem;"></div>
+        `;
+        commentsList.appendChild(row);
+      });
+    } catch(e){
+      commentsList.innerHTML = '<div class="empty-hint">Something went wrong checking for comments.</div>';
+    }
+  }
+
+  refreshCommentsBtn.addEventListener('click', loadComments);
+
+  commentsList.addEventListener('click', async (e) => {
+    if (!e.target.matches('.reply-btn')) return;
+    const btn = e.target;
+    const row = btn.closest('.row-card');
+    const input = row.querySelector('.reply-input');
+    const status = row.querySelector('.reply-status');
+    const text = input.value.trim();
+    if (!text) {
+      status.textContent = 'Type something first.';
+      status.style.color = 'var(--stamp-red)';
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    status.textContent = '';
+    try {
+      const resp = await fetch('/api/youtube-reply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ channel: btn.dataset.channel, parentId: btn.dataset.parentid, text }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) {
+        status.textContent = data.error || 'Could not send reply.';
+        status.style.color = 'var(--stamp-red)';
+        btn.disabled = false;
+        btn.textContent = 'Send';
+        return;
+      }
+      status.textContent = 'Reply sent ✓';
+      status.style.color = 'var(--stamp-green)';
+      input.value = '';
+      btn.textContent = 'Sent';
+    } catch (err) {
+      status.textContent = 'Something went wrong sending the reply.';
+      status.style.color = 'var(--stamp-red)';
+      btn.disabled = false;
+      btn.textContent = 'Send';
+    }
+  });
+
   // ---------- INIT ----------
   renderHeader();
   renderSchedule();
@@ -861,6 +958,7 @@
   renderPipeline();
   renderTracker();
   loadDrafts();
+  loadComments();
 })();
 </script>
 </body>
