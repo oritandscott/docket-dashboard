@@ -491,7 +491,8 @@
       tasks: [],
       clients: [],
       tracker: { label: 'Deals this month', value: 0 },
-      notes: ''
+      notes: '',
+      handledComments: []
     };
   }
 
@@ -877,16 +878,18 @@
         commentsList.innerHTML = `<div class="empty-hint">Couldn't reach YouTube: ${escapeHtml(data.error || 'unknown error')}</div>`;
         return;
       }
-      if(!data.comments || data.comments.length === 0){
+      const visible = (data.comments || []).filter(c => !state.handledComments.includes(c.id));
+      if(visible.length === 0){
         commentsList.innerHTML = '<div class="empty-hint">No comments found. Check back later.</div>';
         return;
       }
       commentsList.innerHTML = '';
-      data.comments.forEach(c => {
+      visible.forEach(c => {
         const row = document.createElement('div');
         row.className = 'row-card';
         row.style.alignItems = 'stretch';
         row.style.flexDirection = 'column';
+        row.dataset.commentId = c.id;
         const dateStr = new Date(c.publishedAt).toLocaleDateString(undefined, {month:'short', day:'numeric'});
         row.innerHTML = `
           <div>
@@ -898,6 +901,7 @@
           <div class="inline-form" style="margin-top:.6rem;">
             <input type="text" placeholder="Type a reply…" class="reply-input" style="flex:1;min-width:160px;">
             <button class="btn reply-btn" type="button" data-channel="${c.channel}" data-parentid="${c.id}">Send</button>
+            <button class="btn btn-ghost dismiss-btn" type="button" data-id="${c.id}" title="Not replying to this one">Dismiss</button>
           </div>
           <div class="reply-status" style="font-size:.78rem;margin-top:.3rem;"></div>
         `;
@@ -908,9 +912,25 @@
     }
   }
 
+  function markCommentHandled(id){
+    if (!state.handledComments.includes(id)) {
+      state.handledComments.push(id);
+      save();
+    }
+  }
+
   refreshCommentsBtn.addEventListener('click', loadComments);
 
   commentsList.addEventListener('click', async (e) => {
+    if (e.target.matches('.dismiss-btn')) {
+      const btn = e.target;
+      const row = btn.closest('.row-card');
+      markCommentHandled(btn.dataset.id);
+      row.style.opacity = '0';
+      setTimeout(() => row.remove(), 200);
+      return;
+    }
+
     if (!e.target.matches('.reply-btn')) return;
     const btn = e.target;
     const row = btn.closest('.row-card');
@@ -943,6 +963,10 @@
       status.style.color = 'var(--stamp-green)';
       input.value = '';
       btn.textContent = 'Sent';
+      markCommentHandled(btn.dataset.parentid);
+      row.style.transition = 'opacity .4s';
+      setTimeout(() => { row.style.opacity = '0'; }, 700);
+      setTimeout(() => row.remove(), 1100);
     } catch (err) {
       status.textContent = 'Something went wrong sending the reply.';
       status.style.color = 'var(--stamp-red)';
