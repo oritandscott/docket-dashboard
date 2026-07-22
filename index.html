@@ -895,7 +895,10 @@
           <div>
             <div class="client-name">${escapeHtml(c.authorName)} <span class="row-time mono" style="font-weight:400;min-width:0;">· ${escapeHtml(c.channelLabel)} · ${dateStr}</span></div>
             <div class="client-note" style="margin:.3rem 0 .2rem;">${escapeHtml(c.text)}</div>
-            <a href="${c.videoUrl}" target="_blank" rel="noopener" style="font-size:.78rem;color:var(--gold);">View on YouTube →</a>
+            <div style="font-size:.78rem;margin-top:.15rem;">
+              On: <a href="${c.videoUrl}" target="_blank" rel="noopener" style="color:var(--gold);">${escapeHtml(c.videoTitle || 'View on YouTube')} →</a>
+              ${c.videoPublishedAt ? `<span class="row-time mono" style="font-weight:400;min-width:0;color:var(--ink-soft);"> · published ${new Date(c.videoPublishedAt).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'})}</span>` : ''}
+            </div>
             ${c.replyCount > 0 ? `<div style="font-size:.78rem;color:var(--stamp-green);margin-top:.3rem;">${c.replyCount} repl${c.replyCount === 1 ? 'y' : 'ies'} already</div>` : ''}
           </div>
           <div class="inline-form" style="margin-top:.6rem;">
