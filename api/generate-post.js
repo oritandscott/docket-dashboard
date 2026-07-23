@@ -79,8 +79,9 @@ First use web search to find a real, currently trending real estate topic. Once 
                 title: { type: 'string', description: 'Post headline' },
                 body_html: { type: 'string', description: 'Full WordPress-ready HTML body using <p>, <h2>, <ul>/<li> as needed. No <html>, <head>, or <body> tags.' },
                 excerpt: { type: 'string', description: 'One or two sentence summary' },
+                slug: { type: 'string', description: "URL slug for the post, at most 5 words, lowercase, hyphen-separated (e.g. 'phoenix-home-values-rising'). Do not just take the first 5 words of the title -- pick whichever words a reader would need to understand what the post is about at a glance, even out of context. Skip filler words (a, the, how, why, your, tips) unless one is truly load-bearing for meaning." },
               },
-              required: ['title', 'body_html', 'excerpt'],
+              required: ['title', 'body_html', 'excerpt', 'slug'],
             },
           },
         ],
@@ -120,6 +121,7 @@ First use web search to find a real, currently trending real estate topic. Once 
         title: post.title,
         body_html: post.body_html,
         excerpt: post.excerpt || '',
+        slug: post.slug || '',
       }),
     });
 
