@@ -5,6 +5,34 @@
 
 export const config = { maxDuration: 60 };
 
+// Backstop against the model occasionally slipping HTML entity codes into
+// text fields (most often the title) despite being told not to. Decodes the
+// common named entities plus any numeric/hex entity, so real punctuation
+// characters make it into WordPress no matter what the model outputs.
+function decodeHtmlEntities(str) {
+  if (!str) return str;
+  const named = {
+    '&#8217;': '\u2019', '&rsquo;': '\u2019',
+    '&#8216;': '\u2018', '&lsquo;': '\u2018',
+    '&#8220;': '\u201C', '&ldquo;': '\u201C',
+    '&#8221;': '\u201D', '&rdquo;': '\u201D',
+    '&#8211;': '\u2013', '&ndash;': '\u2013',
+    '&#8212;': '\u2014', '&mdash;': '\u2014',
+    '&nbsp;': ' ',
+    '&quot;': '"',
+    '&#39;': "'", '&apos;': "'",
+    '&amp;': '&',
+  };
+  let out = str;
+  for (const [entity, char] of Object.entries(named)) {
+    out = out.split(entity).join(char);
+  }
+  // Any remaining numeric entities, e.g. &#8230; or &#x2026;
+  out = out.replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)));
+  out = out.replace(/&#x([0-9a-fA-F]+);/g, (_, code) => String.fromCharCode(parseInt(code, 16)));
+  return out;
+}
+
 export default async function handler(req, res) {
   // If Vercel's CRON_SECRET is set, only Vercel's own scheduler (or someone
   // with the secret) can trigger this.
@@ -141,6 +169,12 @@ First use web search to find a real, currently trending real estate topic. Once 
       return res.status(502).json({ error: 'Tool call was missing title or body_html', post });
     }
 
+    // Clean up any stray entity codes before this ever reaches WordPress.
+    const cleanTitle = decodeHtmlEntities(post.title);
+    const cleanBodyHtml = decodeHtmlEntities(post.body_html);
+    const cleanExcerpt = decodeHtmlEntities(post.excerpt || '');
+    const cleanSlug = decodeHtmlEntities(post.slug || '');
+
     const wpRes = await fetch(`${WP_SITE_URL.replace(/\/$/, '')}/wp-json/docket/v1/create-draft`, {
       method: 'POST',
       headers: {
@@ -148,10 +182,10 @@ First use web search to find a real, currently trending real estate topic. Once 
         'X-Docket-Secret': DOCKET_SHARED_SECRET,
       },
       body: JSON.stringify({
-        title: post.title,
-        body_html: post.body_html,
-        excerpt: post.excerpt || '',
-        slug: post.slug || '',
+        title: cleanTitle,
+        body_html: cleanBodyHtml,
+        excerpt: cleanExcerpt,
+        slug: cleanSlug,
       }),
     });
 
@@ -164,7 +198,7 @@ First use web search to find a real, currently trending real estate topic. Once 
     return res.status(200).json({
       success: true,
       postId: wpData.postId,
-      title: post.title,
+      title: cleanTitle,
       editLink: wpData.editLink,
     });
   } catch (err) {
