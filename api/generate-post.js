@@ -30,6 +30,36 @@ export default async function handler(req, res) {
       ? 'Focus specifically on the Phoenix, Arizona metro real estate market (Phoenix, Scottsdale, Tempe, Gilbert, Chandler, Mesa, Queen Creek, San Tan Valley, etc).'
       : 'Focus on a national U.S. real estate trend, but where it makes sense, tie it back to what it means for Phoenix-area buyers and sellers.';
 
+    // Pull recent post titles so the writer knows what's already been
+    // covered. This is used to encourage variety, not to force it -- if
+    // the same underlying story is still genuinely the most important
+    // thing happening, the writer can still cover it, but should find a
+    // fresh angle rather than restating the last post.
+    let recentTitles = [];
+    try {
+      const historyRes = await fetch(`${WP_SITE_URL.replace(/\/$/, '')}/wp-json/docket/v1/topic-history`, {
+        headers: { 'X-Docket-Secret': DOCKET_SHARED_SECRET },
+      });
+      if (historyRes.ok) {
+        const historyData = await historyRes.json();
+        recentTitles = (historyData.history || []).map((h) => h.title).filter(Boolean);
+      }
+    } catch (e) {
+      // If history can't be fetched, just proceed without it rather than failing the whole run.
+    }
+
+    // Hard cap: don't let the same core topic run more than 2 days in a
+    // row, regardless of how important the writer judges it to be. We
+    // only look at the two most recent posts for this.
+    const lastTwoTitles = recentTitles.slice(0, 2);
+    const capInstruction = lastTwoTitles.length === 2
+      ? `\n\nHard rule: your last two posts were "${lastTwoTitles[0]}" and "${lastTwoTitles[1]}". If those are the same core story (e.g. both about the same market shift), you MUST pick a different core topic today, even if you believe that story is still the most important one. Save it for later once it's not been the lead two days running.`
+      : '';
+
+    const historyInstruction = recentTitles.length > 0
+      ? `\n\nRecently covered (most recent first):\n${recentTitles.map((t) => `- ${t}`).join('\n')}\n\nDon't just restate one of these. If the biggest story today is genuinely the same underlying trend as a recent post, find a new angle, a new data point, or a different implication (e.g. what it means for sellers vs. buyers, a specific city within the metro, financing implications) rather than writing a near-duplicate. If there's a different story that matters today, prefer that.${capInstruction}`
+      : '';
+
     const systemPrompt = `You are a ghostwriter for The Oasis Team, a Phoenix-area real estate team (Orit & Scott Vacek, Keller Williams Realty Phoenix). Write in their established voice: confident, warm, locally expert, punchy hook-style headlines. Byline the post "Orit & Scott, The Oasis Team."
 
 Hard rules:
@@ -40,7 +70,7 @@ Hard rules:
 - ${focusInstruction}
 - Target length: 700-900 words.
 - Never use HTML entity codes anywhere (not &#8217; &amp; &rsquo; etc). Type real punctuation characters directly: a plain apostrophe ' or curly ' , real dashes, real quote marks. This applies to the title, excerpt, and body_html alike.
-- Do not repeat the title anywhere inside body_html -- WordPress displays the title field on its own automatically. body_html should begin directly with the featured image placeholder described below, followed by the opening paragraph.
+- Do not repeat the title anywhere inside body_html -- WordPress displays the title field on its own automatically. body_html should begin directly with the featured image placeholder described below, followed by the opening paragraph.${historyInstruction}
 
 Structure, in this exact order:
 1. One large featured/hero image placeholder at the very start of body_html, using this exact pattern (do not add any style or width attributes -- copy this exactly, only changing the description text):
