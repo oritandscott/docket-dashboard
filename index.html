@@ -550,6 +550,11 @@
           ? { id: h, authorName: 'Unknown', text: '', channelLabel: '', videoTitle: null, videoUrl: null, action: 'dismissed', replyText: null, handledAt: new Date(0).toISOString() }
           : h
       );
+      // Drop schedule items from before today. Items with no date field
+      // at all predate this field being tracked -- there's no way to know
+      // their real original date, so they're treated as stale leftovers.
+      const todayStr = todayISO();
+      merged.schedule = (merged.schedule || []).filter(item => item.date && item.date >= todayStr);
       return merged;
     }catch(e){
       return defaultData();
@@ -564,6 +569,11 @@
 
   function uid(){
     return Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+  }
+
+  function todayISO(){
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   }
 
   // ---------- HEADER / DATE ----------
@@ -590,8 +600,9 @@
     sorted.forEach(item => {
       const li = document.createElement('li');
       li.className = 'row-card';
+      const dateLabel = item.date ? new Date(item.date + 'T00:00:00').toLocaleDateString(undefined, {month:'short', day:'numeric'}) : '';
       li.innerHTML = `
-        <span class="row-time mono">${formatTime(item.time)}</span>
+        <span class="row-time mono">${dateLabel ? escapeHtml(dateLabel) + ' &middot; ' : ''}${formatTime(item.time)}</span>
         <span class="row-text">${escapeHtml(item.title)}</span>
         <button class="del-btn" data-id="${item.id}" data-type="schedule" aria-label="Remove">×</button>
       `;
@@ -612,7 +623,7 @@
     const time = document.getElementById('schedule-time').value;
     const title = document.getElementById('schedule-title').value.trim();
     if(!time || !title) return;
-    state.schedule.push({ id: uid(), time, title });
+    state.schedule.push({ id: uid(), time, title, date: todayISO() });
     save();
     renderSchedule();
     e.target.reset();
