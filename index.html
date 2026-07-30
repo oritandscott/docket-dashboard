@@ -438,6 +438,11 @@
       <h2>Ghostwriter</h2>
       <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
       <button class="btn btn-ghost" id="refresh-drafts-btn" type="button">Check for drafts</button>
+      <form class="inline-form" id="request-topic-form" style="margin-top:.8rem;">
+        <input type="text" id="request-topic-input" placeholder="Write about a specific topic…" style="flex:1;min-width:200px;">
+        <button class="btn" type="submit" id="request-topic-btn">Write it</button>
+      </form>
+      <div id="request-topic-status" style="font-size:.82rem;margin-top:.5rem;"></div>
       <div id="drafts-list" style="margin-top:1rem;"></div>
     </section>
 
@@ -846,6 +851,44 @@
   }
 
   refreshDraftsBtn.addEventListener('click', loadDrafts);
+
+  const requestTopicForm = document.getElementById('request-topic-form');
+  const requestTopicInput = document.getElementById('request-topic-input');
+  const requestTopicBtn = document.getElementById('request-topic-btn');
+  const requestTopicStatus = document.getElementById('request-topic-status');
+
+  requestTopicForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const topic = requestTopicInput.value.trim();
+    if (!topic) return;
+    requestTopicBtn.disabled = true;
+    requestTopicBtn.textContent = 'Writing…';
+    requestTopicStatus.textContent = 'This can take a minute or two…';
+    requestTopicStatus.style.color = 'var(--ink-soft)';
+    try {
+      const resp = await fetch('/api/generate-post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) {
+        requestTopicStatus.textContent = data.error || 'Something went wrong writing that post.';
+        requestTopicStatus.style.color = 'var(--stamp-red)';
+        return;
+      }
+      requestTopicStatus.textContent = `Done -- "${data.title}" is ready to review below.`;
+      requestTopicStatus.style.color = 'var(--stamp-green)';
+      requestTopicInput.value = '';
+      loadDrafts();
+    } catch (err) {
+      requestTopicStatus.textContent = 'Something went wrong reaching the writer.';
+      requestTopicStatus.style.color = 'var(--stamp-red)';
+    } finally {
+      requestTopicBtn.disabled = false;
+      requestTopicBtn.textContent = 'Write it';
+    }
+  });
 
   draftsList.addEventListener('click', async (e) => {
     if (!e.target.matches('.dismiss-draft-btn')) return;
