@@ -141,6 +141,12 @@
     box-shadow:0 1px 0 rgba(255,255,255,.04), 0 10px 26px -16px rgba(0,0,0,.7);
     scroll-margin-top:1.5rem;
   }
+  /* Per-section background tints */
+  #today.panel{background:#2A2A2E;}
+  #blogdrafts.panel{background:#101F35;}
+  #comments-channel1.panel, #comments-channel2.panel{background:#10251A;}
+  #anniversaries.panel{background:#33200C;}
+  #pipeline.panel{background:#331313;}
   .tab-label{
     position:absolute;
     top:-13px;
@@ -403,8 +409,8 @@
       <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">04</span></a></li>
       <li><a href="#anniversaries">Home Anniversaries <span class="num">05</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
       <li><a href="#pipeline">Pipeline <span class="num">06</span></a></li>
-      <li><a href="#tracker">Tracker <span class="num">07</span></a></li>
-      <li><a href="#notes">Notes <span class="num">08</span></a></li>
+      <li hidden><a href="#tracker">Tracker <span class="num">07</span></a></li>
+      <li><a href="#notes">Notes <span class="num">07</span></a></li>
     </ul>
     <div class="sidebar-foot">Saved automatically to this device.</div>
   </nav>
@@ -514,8 +520,8 @@
       </form>
     </section>
 
-    <!-- TRACKER -->
-    <section class="panel" id="tracker">
+    <!-- TRACKER (hidden for now -- not in use) -->
+    <section class="panel" id="tracker" hidden>
       <div class="tab-label">07 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
@@ -539,7 +545,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes">
-      <div class="tab-label">08 · Notes</div>
+      <div class="tab-label">07 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
