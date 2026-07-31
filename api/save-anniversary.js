@@ -2,6 +2,9 @@
 // a congratulations email. Upserts one record into data/anniversaries.json via
 // the GitHub Contents API (this app has no database, so the JSON file in the
 // repo IS the store, and a commit here triggers a normal Vercel redeploy).
+// Uses its own ANNIVERSARY_SHARED_SECRET rather than the WordPress bridge's
+// DOCKET_SHARED_SECRET, since that one is a write-only "Sensitive" Vercel var
+// (can't be read back once saved) and is load-bearing for unrelated endpoints.
 
 const REPO = 'oritandscott/docket-dashboard';
 const FILE_PATH = 'data/anniversaries.json';
@@ -13,14 +16,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    const DOCKET_SHARED_SECRET = process.env.DOCKET_SHARED_SECRET;
+    const ANNIVERSARY_SHARED_SECRET = process.env.ANNIVERSARY_SHARED_SECRET;
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-    if (!DOCKET_SHARED_SECRET || !GITHUB_TOKEN) {
+    if (!ANNIVERSARY_SHARED_SECRET || !GITHUB_TOKEN) {
       return res.status(500).json({ error: 'Missing one or more required environment variables.' });
     }
 
-    if (req.headers['x-docket-secret'] !== DOCKET_SHARED_SECRET) {
+    if (req.headers['x-docket-secret'] !== ANNIVERSARY_SHARED_SECRET) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
