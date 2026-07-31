@@ -220,6 +220,18 @@
   }
   .history-tag.replied{background:rgba(95,174,115,.16);color:var(--stamp-green);}
   .history-tag.dismissed{background:rgba(154,154,158,.16);color:var(--ink-soft);}
+  .history-tag.variant-a{background:rgba(111,168,217,.16);color:var(--stamp-blue);}
+  .history-tag.variant-b{background:rgba(201,161,93,.16);color:var(--gold);}
+  .tab-badge{
+    display:inline-block;min-width:16px;height:16px;padding:0 4px;margin-left:.5rem;
+    background:var(--gold);color:#0B0B0B;border-radius:8px;font-size:.62rem;line-height:16px;
+    text-align:center;font-weight:700;vertical-align:middle;
+  }
+  .nav-badge{
+    display:inline-block;min-width:15px;height:15px;padding:0 4px;margin-left:.4rem;
+    background:var(--gold);color:#0B0B0B;border-radius:8px;font-size:.6rem;line-height:15px;
+    text-align:center;font-weight:700;
+  }
   .inline-form{display:flex;gap:.5rem;margin-top:.4rem;flex-wrap:wrap;}
   input[type="text"],input[type="time"],input[type="number"],textarea,select{
     font-family:'Inter',sans-serif;
@@ -389,9 +401,10 @@
       <li><a href="#blogdrafts">Ghostwriter <span class="num">02</span></a></li>
       <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">03</span></a></li>
       <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">04</span></a></li>
-      <li><a href="#pipeline">Pipeline <span class="num">05</span></a></li>
-      <li><a href="#tracker">Tracker <span class="num">06</span></a></li>
-      <li><a href="#notes">Notes <span class="num">07</span></a></li>
+      <li><a href="#anniversaries">Home Anniversaries <span class="num">05</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#pipeline">Pipeline <span class="num">06</span></a></li>
+      <li><a href="#tracker">Tracker <span class="num">07</span></a></li>
+      <li><a href="#notes">Notes <span class="num">08</span></a></li>
     </ul>
     <div class="sidebar-foot">Saved automatically to this device.</div>
   </nav>
@@ -474,9 +487,18 @@
       </details>
     </section>
 
+    <!-- HOME ANNIVERSARIES -->
+    <section class="panel" id="anniversaries">
+      <div class="tab-label">05 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
+      <h2>Home Anniversaries</h2>
+      <div class="panel-sub">Clients with an upcoming Home Anniversary. Click through to review the drafted email -- nothing sends until you do.</div>
+      <button class="btn btn-ghost" id="refresh-anniversaries-btn" type="button">Check for Home Anniversaries</button>
+      <div id="anniversaries-list" style="margin-top:1rem;"></div>
+    </section>
+
     <!-- PIPELINE -->
     <section class="panel" id="pipeline">
-      <div class="tab-label">05 · Pipeline</div>
+      <div class="tab-label">06 · Pipeline</div>
       <h2>Pipeline</h2>
       <div class="panel-sub">Every active client, at a glance. Tap the stamp to move their stage.</div>
       <div id="pipeline-list"></div>
@@ -494,7 +516,7 @@
 
     <!-- TRACKER -->
     <section class="panel" id="tracker">
-      <div class="tab-label">06 · Tracker</div>
+      <div class="tab-label">07 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
       <div class="tracker-wrap">
@@ -517,7 +539,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes">
-      <div class="tab-label">07 · Notes</div>
+      <div class="tab-label">08 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
@@ -538,7 +560,8 @@
       clients: [],
       tracker: { label: 'Deals this month', value: 0 },
       notes: '',
-      handledComments: []
+      handledComments: [],
+      seenAnniversaryIds: []
     };
   }
 
@@ -1001,6 +1024,96 @@
     }
   });
 
+  // ---------- HOME ANNIVERSARIES ----------
+  function anniversaryStats(purchaseDate){
+    const [y, m, d] = purchaseDate.split('-').map(Number);
+    const today = new Date(); today.setHours(0,0,0,0);
+    let next = new Date(today.getFullYear(), m - 1, d);
+    if (next < today) next = new Date(today.getFullYear() + 1, m - 1, d);
+    const daysAway = Math.round((next - today) / 86400000);
+    const years = next.getFullYear() - y;
+    return { daysAway, years };
+  }
+
+  async function fetchAnniversaries(){
+    const resp = await fetch('/data/anniversaries.json?t=' + Date.now());
+    if (!resp.ok) throw new Error('Could not load anniversaries.json');
+    return resp.json();
+  }
+
+  function updateAnniversaryBadges(unseenCount){
+    const navBadge = document.getElementById('anniversaries-nav-badge');
+    const tabBadge = document.getElementById('anniversaries-tab-badge');
+    [navBadge, tabBadge].forEach(el => {
+      if (unseenCount > 0) {
+        el.textContent = unseenCount;
+        el.style.display = 'inline-block';
+      } else {
+        el.style.display = 'none';
+      }
+    });
+  }
+
+  function renderAnniversaries(records){
+    const list = document.getElementById('anniversaries-list');
+    list.innerHTML = '';
+    if (records.length === 0) {
+      list.innerHTML = '<div class="empty-hint">No upcoming Home Anniversaries right now.</div>';
+      return;
+    }
+    const seen = new Set(state.seenAnniversaryIds);
+    const withStats = records
+      .map(r => Object.assign({}, r, anniversaryStats(r.purchaseDate)))
+      .sort((a, b) => a.daysAway - b.daysAway);
+
+    withStats.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'row-card';
+      row.style.alignItems = 'stretch';
+      row.style.flexDirection = 'column';
+      const isNew = !seen.has(r.id);
+      const variantLabel = r.emailVariant === 'B' ? 'Discovered' : 'On file';
+      const variantClass = r.emailVariant === 'B' ? 'variant-b' : 'variant-a';
+      row.innerHTML = `
+        <div>
+          <div class="client-name">${escapeHtml(r.name)}${isNew ? ' <span class="tab-badge">New</span>' : ''}</div>
+          <div class="client-note">${escapeHtml(r.address || '')}</div>
+          <div style="font-size:.78rem;margin-top:.3rem;">
+            ${r.daysAway === 0 ? 'Today' : `${r.daysAway} day${r.daysAway === 1 ? '' : 's'} away`}
+            &middot; ${r.years} year${r.years === 1 ? '' : 's'} in the home
+            <span class="history-tag ${variantClass}">${variantLabel}</span>
+          </div>
+        </div>
+        <div class="inline-form" style="margin-top:.6rem;">
+          <a class="btn btn-ghost" href="https://mail.google.com/mail/u/0/#drafts?compose=${encodeURIComponent(r.draftId)}" target="_blank" rel="noopener">Open draft &rarr;</a>
+        </div>
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  async function refreshAnniversaries(markSeen){
+    const list = document.getElementById('anniversaries-list');
+    try {
+      const records = await fetchAnniversaries();
+      renderAnniversaries(records);
+      if (markSeen) {
+        records.forEach(r => {
+          if (!state.seenAnniversaryIds.includes(r.id)) state.seenAnniversaryIds.push(r.id);
+        });
+        save();
+        updateAnniversaryBadges(0);
+      } else {
+        const unseen = records.filter(r => !state.seenAnniversaryIds.includes(r.id));
+        updateAnniversaryBadges(unseen.length);
+      }
+    } catch (e) {
+      list.innerHTML = `<div class="empty-hint">Couldn't load Home Anniversaries: ${escapeHtml(e.message || 'unknown error')}</div>`;
+    }
+  }
+
+  document.getElementById('refresh-anniversaries-btn').addEventListener('click', () => refreshAnniversaries(true));
+
   // ---------- COMMENTS ----------
   async function fetchYoutubeComments(){
     const resp = await fetch('/api/youtube-comments');
@@ -1211,6 +1324,7 @@
   commentsPanelChannel1.renderHistory();
   commentsPanelChannel2.renderHistory();
   refreshAllComments();
+  refreshAnniversaries(false);
 })();
 </script>
 </body>
