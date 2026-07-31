@@ -1,11 +1,1 @@
-[
-  {
-    "id": "live-test-1",
-    "name": "Test Verification",
-    "address": "123 Test St, Phoenix, AZ",
-    "purchaseDate": "2020-01-01",
-    "emailVariant": "A",
-    "draftId": "test-draft-id",
-    "addedAt": "2026-07-31T22:39:22.716Z"
-  }
-]
+[]
