@@ -67,13 +67,14 @@
   .brand .sub{
     margin-top:.35rem;
     font-family:'IBM Plex Mono',monospace;
-    font-size:1.02rem;
+    font-size:.72rem;
     font-weight:700;
-    letter-spacing:.09em;
+    letter-spacing:.06em;
     text-transform:uppercase;
     color:var(--gold);
-    width:100%;
-    max-width:180px;
+    width:180px;
+    text-align:center;
+    white-space:nowrap;
   }
   .side-date{
     font-family:'IBM Plex Mono',monospace;
@@ -120,7 +121,15 @@
     padding:2.6rem clamp(1.2rem, 4vw, 3.4rem) 4rem;
     min-width:0;
   }
-  .home-header{margin-bottom:2.2rem;}
+  .home-header{
+    margin:-2.6rem calc(-1 * clamp(1.2rem, 4vw, 3.4rem)) 2.2rem;
+    padding:2.6rem clamp(1.2rem, 4vw, 3.4rem) 1.4rem;
+    background:var(--paper);
+    position:sticky;
+    top:0;
+    z-index:5;
+    border-bottom:1px solid var(--line);
+  }
   .home-header h1{
     font-family:'Fraunces',serif;
     font-weight:600;
@@ -426,9 +435,9 @@
       <li hidden><a href="#tracker">Tracker <span class="num">08</span></a></li>
       <li hidden><a href="#notes">Notes <span class="num">08</span></a></li>
     </ul>
-    <div style="display:flex;flex-direction:column;gap:.9rem;margin-top:1.3rem;">
+    <div style="display:flex;flex-direction:column;gap:1.7rem;margin-top:2.1rem;">
       <img src="assets/kw-realty-phoenix.png" alt="Keller Williams Realty Phoenix" style="width:100%;max-width:180px;height:auto;display:block;">
-      <img src="assets/kw-luxury-international.png" alt="Keller Williams Luxury International" style="width:100%;max-width:180px;height:auto;display:block;">
+      <img src="assets/kw-luxury-international.png" alt="Keller Williams Luxury International" style="width:100%;max-width:198px;height:auto;display:block;">
     </div>
     <div class="sidebar-foot">Saved automatically to this device.</div>
   </nav>
