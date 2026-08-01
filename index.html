@@ -145,6 +145,15 @@
   #today.panel{background:#2A2A2E;}
   #blogdrafts.panel{background:#101F35;}
   #comments-channel1.panel, #comments-channel2.panel{background:#10251A;}
+  .channel-banner{
+    display:block;
+    width:100%;
+    max-height:110px;
+    object-fit:cover;
+    border-radius:4px;
+    margin:.3rem 0 1.1rem;
+    border:1px solid var(--line);
+  }
   #anniversaries.panel{background:#33200C;}
   #pipeline.panel{background:#331313;}
   .tab-label{
@@ -469,6 +478,7 @@
     <section class="panel" id="comments-channel1">
       <div class="tab-label">03 · YouTube Comments</div>
       <h2>YouTube Comments - Oasis Arizona Living Channel</h2>
+      <img class="channel-banner" src="assets/banner-oasis-arizona-living.jpg" alt="Oasis Arizona Living channel banner">
       <div class="panel-sub">Recent comments from the Oasis Arizona Living channel. Type a reply and hit Send -- nothing posts until you do.</div>
       <button class="btn btn-ghost" id="refresh-comments-channel1-btn" type="button">Check for new comments</button>
       <div id="comments-list-channel1" style="margin-top:1rem;"></div>
@@ -483,6 +493,7 @@
     <section class="panel" id="comments-channel2">
       <div class="tab-label">04 · YouTube Comments</div>
       <h2>YouTube Comments - Moving to Phoenix Channel</h2>
+      <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">Recent comments from the Moving to Phoenix channel. Type a reply and hit Send -- nothing posts until you do.</div>
       <button class="btn btn-ghost" id="refresh-comments-channel2-btn" type="button">Check for new comments</button>
       <div id="comments-list-channel2" style="margin-top:1rem;"></div>
