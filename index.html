@@ -414,13 +414,14 @@
     <div class="side-date mono" id="side-date"></div>
     <ul class="nav">
       <li><a href="#today">Today <span class="num">01</span></a></li>
-      <li><a href="#blogdrafts">Ghostwriter <span class="num">02</span></a></li>
-      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">03</span></a></li>
-      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">04</span></a></li>
-      <li><a href="#anniversaries">Home Anniversaries <span class="num">05</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
-      <li><a href="#pipeline">Pipeline <span class="num">06</span></a></li>
-      <li hidden><a href="#tracker">Tracker <span class="num">07</span></a></li>
-      <li hidden><a href="#notes">Notes <span class="num">07</span></a></li>
+      <li><a href="#navigator">Navigator App <span class="num">02</span></a></li>
+      <li><a href="#blogdrafts">Ghostwriter <span class="num">03</span></a></li>
+      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">04</span></a></li>
+      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">05</span></a></li>
+      <li><a href="#anniversaries">Home Anniversaries <span class="num">06</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#pipeline">Pipeline <span class="num">07</span></a></li>
+      <li hidden><a href="#tracker">Tracker <span class="num">08</span></a></li>
+      <li hidden><a href="#notes">Notes <span class="num">08</span></a></li>
     </ul>
     <div class="sidebar-foot">Saved automatically to this device.</div>
   </nav>
@@ -461,9 +462,39 @@
       </div>
     </section>
 
+    <!-- NAVIGATOR APP -->
+    <section class="panel" id="navigator">
+      <div class="tab-label">02 · Navigator App</div>
+      <h2>Navigator App - Active Sellers and Buyers</h2>
+      <div class="panel-sub">Quick links into the Oasis Team Navigator app.</div>
+      <a class="btn" href="https://nav.oasisgroupaz.com/admin" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:1.2rem;">Go to Main Editor (All Listings &amp; Buyers) &rarr;</a>
+      <div id="navigator-list" style="display:flex;flex-direction:column;gap:.55rem;">
+        <div class="row-card" style="justify-content:space-between;">
+          <div>
+            <div class="client-name">4007 E. Agave Rd., Phoenix</div>
+            <div class="client-note">Nancy Barnes &amp; John Barnes</div>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-shrink:0;">
+            <a class="btn btn-ghost" href="https://nav.oasisgroupaz.com/t/FAivSDwsyENp-EMI" target="_blank" rel="noopener">Client View</a>
+            <a class="btn btn-ghost" href="https://nav.oasisgroupaz.com/admin/cms99z74m000004l592xbroy4" target="_blank" rel="noopener">Editor</a>
+          </div>
+        </div>
+        <div class="row-card" style="justify-content:space-between;">
+          <div>
+            <div class="client-name">8119 E. Palm Lane, Scottsdale</div>
+            <div class="client-note">Jess Rahimzadeh &amp; Kavon Rahimzadeh</div>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-shrink:0;">
+            <a class="btn btn-ghost" href="https://nav.oasisgroupaz.com/t/OPmvng24XvTLVPpy" target="_blank" rel="noopener">Client View</a>
+            <a class="btn btn-ghost" href="https://nav.oasisgroupaz.com/admin/cms6cdwxc000004i3svx1bjnj" target="_blank" rel="noopener">Editor</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- BLOG DRAFTS -->
     <section class="panel" id="blogdrafts">
-      <div class="tab-label">02 · Ghostwriter</div>
+      <div class="tab-label">03 · Ghostwriter</div>
       <h2>Ghostwriter</h2>
       <img class="channel-banner" src="assets/banner-ghostwriter-oasis-blog.jpg" alt="The Oasis Blog">
       <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
@@ -478,7 +509,7 @@
 
     <!-- YOUTUBE COMMENTS: CHANNEL 1 -->
     <section class="panel" id="comments-channel1">
-      <div class="tab-label">03 · YouTube Comments</div>
+      <div class="tab-label">04 · YouTube Comments</div>
       <h2>YouTube Comments - Oasis Arizona Living Channel</h2>
       <img class="channel-banner" src="assets/banner-oasis-arizona-living.jpg" alt="Oasis Arizona Living channel banner">
       <div class="panel-sub">Recent comments from the Oasis Arizona Living channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -493,7 +524,7 @@
 
     <!-- YOUTUBE COMMENTS: CHANNEL 2 -->
     <section class="panel" id="comments-channel2">
-      <div class="tab-label">04 · YouTube Comments</div>
+      <div class="tab-label">05 · YouTube Comments</div>
       <h2>YouTube Comments - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">Recent comments from the Moving to Phoenix channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -508,7 +539,7 @@
 
     <!-- HOME ANNIVERSARIES -->
     <section class="panel" id="anniversaries">
-      <div class="tab-label">05 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
+      <div class="tab-label">06 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
       <h2>Home Anniversaries</h2>
       <img class="channel-banner" src="assets/banner-command-header.png" alt="KW Command header">
       <div class="panel-sub">Clients with an upcoming Home Anniversary. Click through to review the drafted email -- nothing sends until you do.</div>
@@ -518,7 +549,7 @@
 
     <!-- PIPELINE -->
     <section class="panel" id="pipeline">
-      <div class="tab-label">06 · Pipeline</div>
+      <div class="tab-label">07 · Pipeline</div>
       <h2>Pipeline</h2>
       <div class="panel-sub">Every active client, at a glance. Tap the stamp to move their stage.</div>
       <div id="pipeline-list"></div>
@@ -536,7 +567,7 @@
 
     <!-- TRACKER (hidden for now -- not in use) -->
     <section class="panel" id="tracker" hidden>
-      <div class="tab-label">07 · Tracker</div>
+      <div class="tab-label">08 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
       <div class="tracker-wrap">
@@ -559,7 +590,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes" hidden>
-      <div class="tab-label">07 · Notes</div>
+      <div class="tab-label">08 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
