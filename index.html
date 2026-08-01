@@ -130,17 +130,23 @@
     z-index:5;
     border-bottom:1px solid var(--line);
   }
+  .home-header .greeting-row{
+    display:flex;
+    align-items:baseline;
+    gap:1.1rem;
+    flex-wrap:wrap;
+  }
   .home-header h1{
     font-family:'Fraunces',serif;
     font-weight:600;
     font-size:clamp(1.6rem,3vw,2.15rem);
-    margin:0 0 .3rem;
+    margin:0;
     color:var(--gold);
   }
   .home-header p{
     margin:0;
     color:var(--ink-soft);
-    font-size:.95rem;
+    font-size:1.15rem;
   }
 
   .panel{
@@ -444,8 +450,10 @@
 
   <main class="main">
     <div class="home-header">
-      <h1 id="greeting">Good day.</h1>
-      <p id="today-date"></p>
+      <div class="greeting-row">
+        <h1 id="greeting">Good day.</h1>
+        <p id="today-date"></p>
+      </div>
     </div>
 
     <!-- TODAY -->
