@@ -1186,12 +1186,14 @@
     list.appendChild(renderAnniversarySubsection('Home Anniversaries in the Next 7 Days', next7, seen));
     list.appendChild(renderAnniversarySubsection('Home Anniversaries 8\u201330 Days Out', next8to30, seen));
 
-    if (opts.confirmClick && next7.length === 0 && next8to30.length === 0) {
+    if (opts.confirmClick) {
       const msg = document.createElement('div');
       msg.className = 'empty-hint';
       msg.style.marginTop = '.75rem';
       const checkedAt = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-      msg.textContent = `No additional Home Anniversaries right now in these two categories. (Checked ${checkedAt})`;
+      msg.textContent = (next7.length === 0 && next8to30.length === 0)
+        ? `No additional Home Anniversaries right now in these two categories. (Checked ${checkedAt})`
+        : `Checked ${checkedAt} — list above is current.`;
       list.appendChild(msg);
     }
   }
