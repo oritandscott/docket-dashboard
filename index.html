@@ -1133,6 +1133,11 @@
     const isNew = !seen.has(r.id);
     const variantLabel = r.emailVariant === 'B' ? 'Discovered' : 'On file';
     const variantClass = r.emailVariant === 'B' ? 'variant-b' : 'variant-a';
+    // Actionable = a real Apple Mail draft exists (created 7 days out by the
+    // home-anniversary-outreach automation). Trust an explicit status field
+    // when present; fall back to the days-away bucket for older records
+    // saved before status was tracked.
+    const isActionable = r.status ? r.status === 'actionable' : r.daysAway <= 7;
     row.innerHTML = `
       <div>
         <div class="client-name">${escapeHtml(r.name)}${isNew ? ' <span class="tab-badge">New</span>' : ''}</div>
@@ -1143,9 +1148,11 @@
           <span class="history-tag ${variantClass}">${variantLabel}</span>
         </div>
       </div>
-      <div class="inline-form" style="margin-top:.6rem;">
-        <a class="btn btn-ghost" href="https://mail.google.com/mail/u/0/#drafts?compose=${encodeURIComponent(r.draftId)}" target="_blank" rel="noopener">Open draft &rarr;</a>
-      </div>
+      ${isActionable
+        ? `<div class="inline-form" style="margin-top:.6rem;">
+        <span style="font-size:.78rem;color:var(--stamp-green);">Draft ready &mdash; check Apple Mail on Scott's Mac</span>
+      </div>`
+        : ''}
     `;
     return row;
   }

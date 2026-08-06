@@ -27,9 +27,15 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const { id, name, address, purchaseDate, emailVariant, draftId } = req.body || {};
-    if (!id || !name || !purchaseDate || !draftId) {
-      return res.status(400).json({ error: 'Missing required fields: id, name, purchaseDate, draftId' });
+    const { id, name, address, purchaseDate, emailVariant, draftId, status } = req.body || {};
+    if (!id || !name || !purchaseDate) {
+      return res.status(400).json({ error: 'Missing required fields: id, name, purchaseDate' });
+    }
+    // draftId is only expected for actionable (7-day-out) entries, which get a
+    // real Apple Mail draft. Upcoming-tier (8-30 day) entries are heads-up
+    // only and legitimately have no draftId yet.
+    if (status === 'actionable' && !draftId) {
+      return res.status(400).json({ error: 'status "actionable" requires a draftId' });
     }
 
     const ghHeaders = {
@@ -54,7 +60,8 @@ export default async function handler(req, res) {
       address: address || '',
       purchaseDate,
       emailVariant: emailVariant || 'A',
-      draftId,
+      status: status || null,
+      draftId: draftId || null,
       addedAt: existingIndex === -1 ? new Date().toISOString() : current[existingIndex].addedAt,
     };
 
