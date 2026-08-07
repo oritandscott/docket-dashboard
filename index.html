@@ -562,8 +562,26 @@
       <div class="tab-label">06 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
       <h2>Home Anniversaries</h2>
       <img class="channel-banner" src="assets/banner-command-header.png" alt="KW Command header">
-      <div class="panel-sub">Clients with an upcoming Home Anniversary. Click through to review the drafted email -- nothing sends until you do.</div>
-      <button class="btn btn-ghost" id="refresh-anniversaries-btn" type="button">Check for Home Anniversaries</button>
+      <div class="panel-sub">Clients with an upcoming Home Anniversary. 8&ndash;30 days out, pick a template or dismiss. At 7 days, the draft is created automatically from whatever template is selected -- nothing sends until you do.</div>
+      <div class="inline-form">
+        <button class="btn btn-ghost" id="refresh-anniversaries-btn" type="button">Check for Home Anniversaries</button>
+        <button class="btn btn-text" id="manage-templates-btn" type="button" style="border:1px solid var(--line);border-radius:4px;">Manage Templates</button>
+      </div>
+      <div id="templates-manager" style="display:none;margin-top:.9rem;padding:.8rem;border:1px dashed var(--line);border-radius:4px;">
+        <div id="templates-list" style="margin-bottom:.7rem;"></div>
+        <div style="font-size:.82rem;font-weight:600;color:var(--ink-soft);margin-bottom:.4rem;" id="template-form-heading">Add a new template</div>
+        <input type="hidden" id="template-form-id" value="">
+        <div class="inline-form" style="flex-direction:column;align-items:stretch;">
+          <input type="text" id="template-form-label" placeholder="Template name (e.g. Variant D — First-time buyer)">
+          <input type="text" id="template-form-subject" placeholder="Subject line">
+          <textarea id="template-form-body" rows="6" placeholder="Body -- use [First Name(s)], [Property Address], [N], [$VALUE] as placeholders"></textarea>
+          <div class="inline-form">
+            <button class="btn" id="template-form-save" type="button">Save Template</button>
+            <button class="btn btn-text" id="template-form-cancel" type="button">Cancel edit</button>
+          </div>
+          <div class="empty-hint" id="template-form-status" style="display:none;"></div>
+        </div>
+      </div>
       <div id="anniversaries-list" style="margin-top:1rem;"></div>
     </section>
 
@@ -1096,6 +1114,8 @@
   });
 
   // ---------- HOME ANNIVERSARIES ----------
+  let templatesCache = [];
+
   function anniversaryStats(purchaseDate){
     const [y, m, d] = purchaseDate.split('-').map(Number);
     const today = new Date(); today.setHours(0,0,0,0);
@@ -1112,6 +1132,12 @@
     return resp.json();
   }
 
+  async function fetchTemplates(){
+    const resp = await fetch('/data/email-templates.json?t=' + Date.now());
+    if (!resp.ok) throw new Error('Could not load email-templates.json');
+    return resp.json();
+  }
+
   function updateAnniversaryBadges(unseenCount){
     const navBadge = document.getElementById('anniversaries-nav-badge');
     const tabBadge = document.getElementById('anniversaries-tab-badge');
@@ -1125,19 +1151,39 @@
     });
   }
 
+  async function updateAnniversaryRecord(id, patch){
+    const resp = await fetch('/api/update-anniversary', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, ...patch }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Update failed');
+    return data.record;
+  }
+
+  function templateLabel(variantId){
+    const t = templatesCache.find(t => t.id === variantId);
+    return t ? t.label : variantId;
+  }
+
   function renderAnniversaryRow(r, seen){
     const row = document.createElement('div');
     row.className = 'row-card';
     row.style.alignItems = 'stretch';
     row.style.flexDirection = 'column';
     const isNew = !seen.has(r.id);
-    const variantLabel = r.emailVariant === 'B' ? 'Discovered' : 'On file';
-    const variantClass = r.emailVariant === 'B' ? 'variant-b' : 'variant-a';
     // Actionable = a real Apple Mail draft exists (created 7 days out by the
-    // home-anniversary-outreach automation). Trust an explicit status field
-    // when present; fall back to the days-away bucket for older records
-    // saved before status was tracked.
+    // home-anniversary-outreach automation, using whichever template was
+    // selected here while the entry sat in the 8-30 day zone). Trust an
+    // explicit status field when present; fall back to the days-away bucket
+    // for older records saved before status was tracked.
     const isActionable = r.status ? r.status === 'actionable' : r.daysAway <= 7;
+
+    const templateOptions = templatesCache.map(t =>
+      `<option value="${escapeHtml(t.id)}" ${t.id === r.emailVariant ? 'selected' : ''}>${escapeHtml(t.label)}</option>`
+    ).join('');
+
     row.innerHTML = `
       <div>
         <div class="client-name">${escapeHtml(r.name)}${isNew ? ' <span class="tab-badge">New</span>' : ''}</div>
@@ -1145,15 +1191,47 @@
         <div style="font-size:.78rem;margin-top:.3rem;">
           ${r.daysAway === 0 ? 'Today' : `${r.daysAway} day${r.daysAway === 1 ? '' : 's'} away`}
           &middot; ${r.years} year${r.years === 1 ? '' : 's'} in the home
-          <span class="history-tag ${variantClass}">${variantLabel}</span>
+          ${isActionable ? `<span class="history-tag replied">${escapeHtml(templateLabel(r.emailVariant))}</span>` : ''}
         </div>
       </div>
       ${isActionable
         ? `<div class="inline-form" style="margin-top:.6rem;">
         <span style="font-size:.78rem;color:var(--stamp-green);">Draft ready &mdash; check Apple Mail on Scott's Mac</span>
       </div>`
-        : ''}
+        : `<div class="inline-form" style="margin-top:.6rem;">
+        <select class="anniv-template-select" data-id="${escapeHtml(r.id)}" style="flex:1;min-width:200px;">${templateOptions}</select>
+        <button class="btn btn-text anniv-dismiss-btn" data-id="${escapeHtml(r.id)}" data-name="${escapeHtml(r.name)}" type="button" style="border:1px solid var(--line);border-radius:4px;">Dismiss</button>
+        <span class="empty-hint anniv-row-status" style="display:none;padding:.3rem .5rem;"></span>
+      </div>`}
     `;
+
+    if (!isActionable) {
+      const select = row.querySelector('.anniv-template-select');
+      const statusEl = row.querySelector('.anniv-row-status');
+      select.addEventListener('change', async () => {
+        statusEl.style.display = 'inline';
+        statusEl.textContent = 'Saving…';
+        try {
+          await updateAnniversaryRecord(r.id, { emailVariant: select.value });
+          statusEl.textContent = 'Saved — will draft from this template at 7 days out.';
+        } catch (e) {
+          statusEl.textContent = `Couldn't save: ${e.message}`;
+        }
+      });
+      const dismissBtn = row.querySelector('.anniv-dismiss-btn');
+      dismissBtn.addEventListener('click', async () => {
+        if (!confirm(`Dismiss ${dismissBtn.dataset.name}? They won't be surfaced again for this anniversary.`)) return;
+        dismissBtn.disabled = true;
+        try {
+          await updateAnniversaryRecord(r.id, { dismissed: true });
+          row.remove();
+        } catch (e) {
+          alert(`Couldn't dismiss: ${e.message}`);
+          dismissBtn.disabled = false;
+        }
+      });
+    }
+
     return row;
   }
 
@@ -1184,6 +1262,7 @@
     list.innerHTML = '';
     const seen = new Set(state.seenAnniversaryIds);
     const withStats = records
+      .filter(r => !r.dismissed)
       .map(r => Object.assign({}, r, anniversaryStats(r.purchaseDate)))
       .sort((a, b) => a.daysAway - b.daysAway);
 
@@ -1191,7 +1270,7 @@
     const next8to30 = withStats.filter(r => r.daysAway > 7 && r.daysAway <= 30);
 
     list.appendChild(renderAnniversarySubsection('Home Anniversaries in the Next 7 Days', next7, seen));
-    list.appendChild(renderAnniversarySubsection('Home Anniversaries 8\u201330 Days Out', next8to30, seen));
+    list.appendChild(renderAnniversarySubsection('Home Anniversaries 8–30 Days Out', next8to30, seen));
 
     if (opts.confirmClick) {
       const msg = document.createElement('div');
@@ -1209,7 +1288,8 @@
     opts = opts || {};
     const list = document.getElementById('anniversaries-list');
     try {
-      const records = await fetchAnniversaries();
+      const [records, templates] = await Promise.all([fetchAnniversaries(), fetchTemplates()]);
+      templatesCache = templates;
       renderAnniversaries(records, { confirmClick: !!opts.confirmClick });
       if (markSeen) {
         records.forEach(r => {
@@ -1227,6 +1307,94 @@
   }
 
   document.getElementById('refresh-anniversaries-btn').addEventListener('click', () => refreshAnniversaries(true, { confirmClick: true }));
+
+  // ---------- EMAIL TEMPLATES MANAGER ----------
+  function renderTemplatesList(){
+    const list = document.getElementById('templates-list');
+    list.innerHTML = '';
+    templatesCache.forEach(t => {
+      const row = document.createElement('div');
+      row.className = 'row-card';
+      row.style.marginBottom = '.4rem';
+      row.innerHTML = `
+        <div style="flex:1;">
+          <div class="client-name">${escapeHtml(t.label)}</div>
+          <div class="client-note">${escapeHtml(t.subject)}</div>
+        </div>
+        <button class="btn btn-text template-edit-btn" type="button">Edit</button>
+      `;
+      row.querySelector('.template-edit-btn').addEventListener('click', () => loadTemplateIntoForm(t));
+      list.appendChild(row);
+    });
+  }
+
+  function loadTemplateIntoForm(t){
+    document.getElementById('template-form-id').value = t.id;
+    document.getElementById('template-form-label').value = t.label;
+    document.getElementById('template-form-subject').value = t.subject;
+    document.getElementById('template-form-body').value = t.body;
+    document.getElementById('template-form-heading').textContent = `Editing: ${t.label}`;
+  }
+
+  function resetTemplateForm(){
+    document.getElementById('template-form-id').value = '';
+    document.getElementById('template-form-label').value = '';
+    document.getElementById('template-form-subject').value = '';
+    document.getElementById('template-form-body').value = '';
+    document.getElementById('template-form-heading').textContent = 'Add a new template';
+  }
+
+  document.getElementById('manage-templates-btn').addEventListener('click', async () => {
+    const panel = document.getElementById('templates-manager');
+    const opening = panel.style.display === 'none';
+    panel.style.display = opening ? 'block' : 'none';
+    if (opening) {
+      try {
+        templatesCache = await fetchTemplates();
+        renderTemplatesList();
+      } catch (e) {
+        document.getElementById('templates-list').innerHTML =
+          `<div class="empty-hint">Couldn't load templates: ${escapeHtml(e.message)}</div>`;
+      }
+    }
+  });
+
+  document.getElementById('template-form-cancel').addEventListener('click', resetTemplateForm);
+
+  document.getElementById('template-form-save').addEventListener('click', async () => {
+    const statusEl = document.getElementById('template-form-status');
+    const id = document.getElementById('template-form-id').value.trim();
+    const label = document.getElementById('template-form-label').value.trim();
+    const subject = document.getElementById('template-form-subject').value.trim();
+    const body = document.getElementById('template-form-body').value.trim();
+    if (!label || !subject || !body) {
+      statusEl.style.display = 'block';
+      statusEl.style.color = 'var(--stamp-red)';
+      statusEl.textContent = 'Name, subject, and body are all required.';
+      return;
+    }
+    statusEl.style.display = 'block';
+    statusEl.style.color = '';
+    statusEl.textContent = 'Saving…';
+    try {
+      const resp = await fetch('/api/save-template', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(id ? { id, label, subject, body } : { label, subject, body }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || 'Save failed');
+      statusEl.textContent = 'Saved.';
+      templatesCache = await fetchTemplates();
+      renderTemplatesList();
+      resetTemplateForm();
+      // Refresh the anniversaries list so any open dropdowns pick up the new/edited template.
+      refreshAnniversaries(false, {});
+    } catch (e) {
+      statusEl.style.color = 'var(--stamp-red)';
+      statusEl.textContent = `Couldn't save: ${e.message}`;
+    }
+  });
 
   // ---------- COMMENTS ----------
   async function fetchYoutubeComments(){

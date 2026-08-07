@@ -1,0 +1,20 @@
+[
+  {
+    "id": "A",
+    "label": "Variant A — Primary residence, bought with us",
+    "subject": "Happy Home Anniversary, [First Name]!",
+    "body": "Hey [First Name(s)],\n\nHappy Home Anniversary! It's hard to believe it's already been [N] years since you closed on your home at [Property Address] — time flies.\n\nWe pulled together a quick market snapshot for your home — the current RPR automated estimate is around [$VALUE] (based on current variables - let us know if you have a different opinion). The attached personalized report has the full breakdown, including recent trends and comparable sales in your area.\n\nWe'd love to grab a few minutes for a quick check-in call — whether it's about a move, a refinance, home improvements, or just what's next for you and your family.\n\nHope you and yours are doing wonderfully!\n\nWarmly,\nOrit & Scott\n\n(Estimated values/trends referenced are approximate and not a guarantee of current market value.)"
+  },
+  {
+    "id": "B",
+    "label": "Variant B — Bought before Aug 2026, without us",
+    "subject": "Congratulations on [N] Years in Your Home!",
+    "body": "Hey [First Name(s)],\n\nCongratulations on [N] years in your home at [Property Address]! We wanted to reach out and help you stay informed on its value and equity growth.\n\nWe pulled together a quick market snapshot — the current RPR automated estimate is around [$VALUE] (based on current variables - let us know if you have a different opinion). The attached personalized report has the full breakdown, including recent trends and comparable sales in your area.\n\nWe'd love to grab a few minutes for a quick check-in call — whether it's about a move, a refinance, home improvements, or just what's next for you and your family.\n\nWarmly,\nOrit & Scott\n\n(Estimated values/trends referenced are approximate and not a guarantee of current market value.)"
+  },
+  {
+    "id": "C",
+    "label": "Variant C — Investment / secondary property",
+    "subject": "Happy Anniversary on Your Investment Property!",
+    "body": "Hey [First Name(s)],\n\nHappy anniversary on [Property Address]! It's been [N] year(s) since you added this one to your portfolio, and we still think of every property — this one included — as an investment worth actively managing, not just owning.\n\nHere's where it stands: the current RPR automated estimate is around [$VALUE] (based on current variables - let us know if you have a different opinion), [1-line market/rent trend if available]. Full breakdown is in the attached report.\n\nWe'd love to set up a 30-minute call to go over how this investment is performing and talk through some ways to make it perform even better — whether that's a rent adjustment, refinance timing, or thinking through a hold-vs-sell decision.\n\nWarmly,\nOrit & Scott\n\n(Estimated values/trends referenced are approximate and not a guarantee of current market value.)"
+  }
+]
