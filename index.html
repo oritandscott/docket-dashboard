@@ -433,14 +433,14 @@
     <ul class="nav">
       <li><a href="#today">Today <span class="num">01</span></a></li>
       <li><a href="#navigator">Navigator App <span class="num">02</span></a></li>
-      <li><a href="#blogdrafts">Ghostwriter <span class="num">03</span></a></li>
-      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">04</span></a></li>
-      <li><a href="#video-production-mtp">Video Production - Moving to Phoenix <span class="num">05</span></a></li>
-      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">06</span></a></li>
-      <li><a href="#anniversaries">Home Anniversaries <span class="num">07</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#video-production-mtp">Video Production - Moving to Phoenix <span class="num">03</span></a></li>
+      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">04</span></a></li>
+      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">05</span></a></li>
+      <li><a href="#anniversaries">Home Anniversaries <span class="num">06</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#blogdrafts">Ghostwriter <span class="num">07</span></a></li>
       <li><a href="#pipeline">Pipeline <span class="num">08</span></a></li>
       <li hidden><a href="#tracker">Tracker <span class="num">09</span></a></li>
-      <li hidden><a href="#notes">Notes <span class="num">09</span></a></li>
+      <li hidden><a href="#notes">Notes <span class="num">10</span></a></li>
     </ul>
     <div style="display:flex;flex-direction:column;gap:1.7rem;margin-top:2.1rem;">
       <img src="assets/kw-realty-phoenix.png" alt="Keller Williams Realty Phoenix" style="width:100%;max-width:180px;height:auto;display:block;">
@@ -513,39 +513,9 @@
       </div>
     </section>
 
-    <!-- BLOG DRAFTS -->
-    <section class="panel" id="blogdrafts">
-      <div class="tab-label">03 · Ghostwriter</div>
-      <h2>Ghostwriter</h2>
-      <img class="channel-banner" src="assets/banner-ghostwriter-oasis-blog.jpg" alt="The Oasis Blog">
-      <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
-      <button class="btn btn-ghost" id="refresh-drafts-btn" type="button">Check for drafts</button>
-      <form class="inline-form" id="request-topic-form" style="margin-top:.8rem;">
-        <input type="text" id="request-topic-input" placeholder="Write about a specific topic…" style="flex:1;min-width:200px;">
-        <button class="btn" type="submit" id="request-topic-btn">Write it</button>
-      </form>
-      <div id="request-topic-status" style="font-size:.82rem;margin-top:.5rem;"></div>
-      <div id="drafts-list" style="margin-top:1rem;"></div>
-    </section>
-
-    <!-- YOUTUBE COMMENTS: CHANNEL 1 -->
-    <section class="panel" id="comments-channel1">
-      <div class="tab-label">04 · YouTube Comments</div>
-      <h2>YouTube Comments - Oasis Arizona Living Channel</h2>
-      <img class="channel-banner" src="assets/banner-oasis-arizona-living.jpg" alt="Oasis Arizona Living channel banner">
-      <div class="panel-sub">Recent comments from the Oasis Arizona Living channel. Type a reply and hit Send -- nothing posts until you do.</div>
-      <button class="btn btn-ghost" id="refresh-comments-channel1-btn" type="button">Check for new comments</button>
-      <div id="comments-list-channel1" style="margin-top:1rem;"></div>
-
-      <details class="history-details">
-        <summary class="history-summary">Replied &amp; dismissed history</summary>
-        <div id="comments-history-channel1" style="margin-top:.8rem;"></div>
-      </details>
-    </section>
-
     <!-- VIDEO PRODUCTION: MOVING TO PHOENIX CHANNEL -->
     <section class="panel" id="video-production-mtp">
-      <div class="tab-label">05 · Video Production</div>
+      <div class="tab-label">03 · Video Production</div>
       <h2>Video Production - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">One-click links for producing Moving to Phoenix content -- Drive folders, the channel itself, and anything else worth having a click away.</div>
@@ -564,7 +534,7 @@
 
     <!-- YOUTUBE COMMENTS: CHANNEL 2 -->
     <section class="panel" id="comments-channel2">
-      <div class="tab-label">06 · YouTube Comments</div>
+      <div class="tab-label">04 · YouTube Comments</div>
       <h2>YouTube Comments - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">Recent comments from the Moving to Phoenix channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -577,9 +547,24 @@
       </details>
     </section>
 
+    <!-- YOUTUBE COMMENTS: CHANNEL 1 -->
+    <section class="panel" id="comments-channel1">
+      <div class="tab-label">05 · YouTube Comments</div>
+      <h2>YouTube Comments - Oasis Arizona Living Channel</h2>
+      <img class="channel-banner" src="assets/banner-oasis-arizona-living.jpg" alt="Oasis Arizona Living channel banner">
+      <div class="panel-sub">Recent comments from the Oasis Arizona Living channel. Type a reply and hit Send -- nothing posts until you do.</div>
+      <button class="btn btn-ghost" id="refresh-comments-channel1-btn" type="button">Check for new comments</button>
+      <div id="comments-list-channel1" style="margin-top:1rem;"></div>
+
+      <details class="history-details">
+        <summary class="history-summary">Replied &amp; dismissed history</summary>
+        <div id="comments-history-channel1" style="margin-top:.8rem;"></div>
+      </details>
+    </section>
+
     <!-- HOME ANNIVERSARIES -->
     <section class="panel" id="anniversaries">
-      <div class="tab-label">07 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
+      <div class="tab-label">06 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
       <h2>Home Anniversaries</h2>
       <img class="channel-banner" src="assets/banner-command-header.png" alt="KW Command header">
       <div class="panel-sub">Clients with an upcoming Home Anniversary. 8&ndash;30 days out, pick a template or dismiss. At 7 days, the draft is created automatically from whatever template is selected -- nothing sends until you do.</div>
@@ -603,6 +588,21 @@
         </div>
       </div>
       <div id="anniversaries-list" style="margin-top:1rem;"></div>
+    </section>
+
+    <!-- BLOG DRAFTS -->
+    <section class="panel" id="blogdrafts">
+      <div class="tab-label">07 · Ghostwriter</div>
+      <h2>Ghostwriter</h2>
+      <img class="channel-banner" src="assets/banner-ghostwriter-oasis-blog.jpg" alt="The Oasis Blog">
+      <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
+      <button class="btn btn-ghost" id="refresh-drafts-btn" type="button">Check for drafts</button>
+      <form class="inline-form" id="request-topic-form" style="margin-top:.8rem;">
+        <input type="text" id="request-topic-input" placeholder="Write about a specific topic…" style="flex:1;min-width:200px;">
+        <button class="btn" type="submit" id="request-topic-btn">Write it</button>
+      </form>
+      <div id="request-topic-status" style="font-size:.82rem;margin-top:.5rem;"></div>
+      <div id="drafts-list" style="margin-top:1rem;"></div>
     </section>
 
     <!-- PIPELINE -->
@@ -648,7 +648,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes" hidden>
-      <div class="tab-label">09 · Notes</div>
+      <div class="tab-label">10 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
