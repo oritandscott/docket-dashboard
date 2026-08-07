@@ -435,11 +435,12 @@
       <li><a href="#navigator">Navigator App <span class="num">02</span></a></li>
       <li><a href="#blogdrafts">Ghostwriter <span class="num">03</span></a></li>
       <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">04</span></a></li>
-      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">05</span></a></li>
-      <li><a href="#anniversaries">Home Anniversaries <span class="num">06</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
-      <li><a href="#pipeline">Pipeline <span class="num">07</span></a></li>
-      <li hidden><a href="#tracker">Tracker <span class="num">08</span></a></li>
-      <li hidden><a href="#notes">Notes <span class="num">08</span></a></li>
+      <li><a href="#video-production-mtp">Video Production - Moving to Phoenix <span class="num">05</span></a></li>
+      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">06</span></a></li>
+      <li><a href="#anniversaries">Home Anniversaries <span class="num">07</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#pipeline">Pipeline <span class="num">08</span></a></li>
+      <li hidden><a href="#tracker">Tracker <span class="num">09</span></a></li>
+      <li hidden><a href="#notes">Notes <span class="num">09</span></a></li>
     </ul>
     <div style="display:flex;flex-direction:column;gap:1.7rem;margin-top:2.1rem;">
       <img src="assets/kw-realty-phoenix.png" alt="Keller Williams Realty Phoenix" style="width:100%;max-width:180px;height:auto;display:block;">
@@ -542,9 +543,42 @@
       </details>
     </section>
 
+    <!-- VIDEO PRODUCTION: MOVING TO PHOENIX CHANNEL -->
+    <section class="panel" id="video-production-mtp">
+      <div class="tab-label">05 · Video Production</div>
+      <h2>Video Production - Moving to Phoenix Channel</h2>
+      <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
+      <div class="panel-sub">One-click links for producing Moving to Phoenix content -- the footage Drive, the channel itself, and anything else worth having a click away.</div>
+
+      <div style="display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.3rem;">
+        <div class="row-card" style="justify-content:space-between;align-items:center;">
+          <div style="flex:1;min-width:160px;">
+            <div class="client-name">Google Drive</div>
+            <input type="url" id="video-prod-drive-input" placeholder="Paste the Drive folder link…" style="width:100%;margin-top:.35rem;">
+          </div>
+          <a class="btn btn-ghost" id="video-prod-drive-open" href="#" target="_blank" rel="noopener" style="flex-shrink:0;margin-left:.8rem;display:none;">Open &rarr;</a>
+        </div>
+        <div class="row-card" style="justify-content:space-between;align-items:center;">
+          <div style="flex:1;min-width:160px;">
+            <div class="client-name">YouTube Channel</div>
+            <input type="url" id="video-prod-youtube-input" placeholder="Paste the channel link…" style="width:100%;margin-top:.35rem;">
+          </div>
+          <a class="btn btn-ghost" id="video-prod-youtube-open" href="#" target="_blank" rel="noopener" style="flex-shrink:0;margin-left:.8rem;display:none;">Open &rarr;</a>
+        </div>
+      </div>
+
+      <div style="font-size:.82rem;font-weight:600;color:var(--ink-soft);margin-bottom:.4rem;">Additional links</div>
+      <div id="video-prod-extra-list" style="margin-bottom:.7rem;"></div>
+      <form class="inline-form" id="video-prod-link-form">
+        <input type="text" id="video-prod-link-name" placeholder="Link name (e.g. B-roll folder)" required style="flex:1;min-width:140px;">
+        <input type="url" id="video-prod-link-url" placeholder="https://…" required style="flex:2;min-width:200px;">
+        <button class="btn" type="submit">Add link</button>
+      </form>
+    </section>
+
     <!-- YOUTUBE COMMENTS: CHANNEL 2 -->
     <section class="panel" id="comments-channel2">
-      <div class="tab-label">05 · YouTube Comments</div>
+      <div class="tab-label">06 · YouTube Comments</div>
       <h2>YouTube Comments - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">Recent comments from the Moving to Phoenix channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -559,7 +593,7 @@
 
     <!-- HOME ANNIVERSARIES -->
     <section class="panel" id="anniversaries">
-      <div class="tab-label">06 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
+      <div class="tab-label">07 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
       <h2>Home Anniversaries</h2>
       <img class="channel-banner" src="assets/banner-command-header.png" alt="KW Command header">
       <div class="panel-sub">Clients with an upcoming Home Anniversary. 8&ndash;30 days out, pick a template or dismiss. At 7 days, the draft is created automatically from whatever template is selected -- nothing sends until you do.</div>
@@ -587,7 +621,7 @@
 
     <!-- PIPELINE -->
     <section class="panel" id="pipeline">
-      <div class="tab-label">07 · Pipeline</div>
+      <div class="tab-label">08 · Pipeline</div>
       <h2>Pipeline</h2>
       <div class="panel-sub">Every active client, at a glance. Tap the stamp to move their stage.</div>
       <div id="pipeline-list"></div>
@@ -605,7 +639,7 @@
 
     <!-- TRACKER (hidden for now -- not in use) -->
     <section class="panel" id="tracker" hidden>
-      <div class="tab-label">08 · Tracker</div>
+      <div class="tab-label">09 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
       <div class="tracker-wrap">
@@ -628,7 +662,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes" hidden>
-      <div class="tab-label">08 · Notes</div>
+      <div class="tab-label">09 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
@@ -650,7 +684,8 @@
       tracker: { label: 'Deals this month', value: 0 },
       notes: '',
       handledComments: [],
-      seenAnniversaryIds: []
+      seenAnniversaryIds: [],
+      videoProdLinks: { drive: '', youtube: '', extra: [] }
     };
   }
 
@@ -670,6 +705,10 @@
       // Drop schedule items from before today. Items with no date field
       // at all predate this field being tracked -- there's no way to know
       // their real original date, so they're treated as stale leftovers.
+      if (!merged.videoProdLinks || typeof merged.videoProdLinks !== 'object') {
+        merged.videoProdLinks = { drive: '', youtube: '', extra: [] };
+      }
+      merged.videoProdLinks.extra = Array.isArray(merged.videoProdLinks.extra) ? merged.videoProdLinks.extra : [];
       const todayStr = todayISO();
       merged.schedule = (merged.schedule || []).filter(item => item.date && item.date >= todayStr);
       return merged;
@@ -918,6 +957,104 @@
     div.textContent = str;
     return div.innerHTML;
   }
+
+  // ---------- VIDEO PRODUCTION: MOVING TO PHOENIX ----------
+  function renderVideoProdLinks(){
+    const links = state.videoProdLinks;
+
+    const driveInput = document.getElementById('video-prod-drive-input');
+    const driveOpen = document.getElementById('video-prod-drive-open');
+    driveInput.value = links.drive || '';
+    if (links.drive) {
+      driveOpen.href = links.drive;
+      driveOpen.style.display = 'inline-flex';
+    } else {
+      driveOpen.removeAttribute('href');
+      driveOpen.style.display = 'none';
+    }
+
+    const ytInput = document.getElementById('video-prod-youtube-input');
+    const ytOpen = document.getElementById('video-prod-youtube-open');
+    ytInput.value = links.youtube || '';
+    if (links.youtube) {
+      ytOpen.href = links.youtube;
+      ytOpen.style.display = 'inline-flex';
+    } else {
+      ytOpen.removeAttribute('href');
+      ytOpen.style.display = 'none';
+    }
+
+    const extraWrap = document.getElementById('video-prod-extra-list');
+    extraWrap.innerHTML = '';
+    if (links.extra.length === 0) {
+      extraWrap.innerHTML = '<div class="empty-hint">No additional links yet -- add one below.</div>';
+    } else {
+      links.extra.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'row-card';
+        row.style.justifyContent = 'space-between';
+        row.style.marginBottom = '.4rem';
+
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'client-name';
+        nameDiv.textContent = item.name;
+
+        const actions = document.createElement('div');
+        actions.style.display = 'flex';
+        actions.style.gap = '.5rem';
+        actions.style.flexShrink = '0';
+
+        const openLink = document.createElement('a');
+        openLink.className = 'btn btn-ghost';
+        openLink.href = item.url;
+        openLink.target = '_blank';
+        openLink.rel = 'noopener';
+        openLink.textContent = 'Open \u2192';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'btn btn-text';
+        removeBtn.type = 'button';
+        removeBtn.textContent = 'Remove';
+        removeBtn.addEventListener('click', () => {
+          state.videoProdLinks.extra = state.videoProdLinks.extra.filter(l => l.id !== item.id);
+          save();
+          renderVideoProdLinks();
+        });
+
+        actions.appendChild(openLink);
+        actions.appendChild(removeBtn);
+        row.appendChild(nameDiv);
+        row.appendChild(actions);
+        extraWrap.appendChild(row);
+      });
+    }
+  }
+
+  document.getElementById('video-prod-drive-input').addEventListener('change', e => {
+    state.videoProdLinks.drive = e.target.value.trim();
+    save();
+    renderVideoProdLinks();
+  });
+
+  document.getElementById('video-prod-youtube-input').addEventListener('change', e => {
+    state.videoProdLinks.youtube = e.target.value.trim();
+    save();
+    renderVideoProdLinks();
+  });
+
+  document.getElementById('video-prod-link-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const nameInput = document.getElementById('video-prod-link-name');
+    const urlInput = document.getElementById('video-prod-link-url');
+    const name = nameInput.value.trim();
+    const url = urlInput.value.trim();
+    if (!name || !url) return;
+    state.videoProdLinks.extra.push({ id: uid(), name, url });
+    save();
+    nameInput.value = '';
+    urlInput.value = '';
+    renderVideoProdLinks();
+  });
 
   // ---------- BLOG DRAFTS ----------
   const draftsList = document.getElementById('drafts-list');
@@ -1602,6 +1739,7 @@
   renderTasks();
   renderPipeline();
   renderTracker();
+  renderVideoProdLinks();
   loadDrafts();
   commentsPanelChannel1.renderHistory();
   commentsPanelChannel2.renderHistory();
