@@ -18,5 +18,15 @@
     "status": "upcoming",
     "draftId": null,
     "addedAt": "2026-08-07T15:24:53.013Z"
+  },
+  {
+    "id": "63ec19d88983f2e83c3ad29a",
+    "name": "Arman Talle",
+    "address": "6849 East Pasadena Avenue, Paradise Valley, AZ 85253",
+    "purchaseDate": "2012-08-23",
+    "emailVariant": "B",
+    "status": "upcoming",
+    "draftId": null,
+    "addedAt": "2026-08-07T15:25:05.119Z"
   }
 ]
