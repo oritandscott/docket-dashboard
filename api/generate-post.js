@@ -33,6 +33,80 @@ function decodeHtmlEntities(str) {
   return out;
 }
 
+// Searches Unsplash for a single photo matching the given query, sized to
+// the requested width. Returns null (never throws) on any failure -- a
+// missed search just means that slot keeps its placehold.co placeholder
+// instead of breaking the whole post.
+async function unsplashSearch(query, accessKey, width) {
+  try {
+    const res = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=1&orientation=landscape`,
+      { headers: { Authorization: `Client-ID ${accessKey}` } }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const photo = data.results && data.results[0];
+    if (!photo) return null;
+    return {
+      url: `${photo.urls.raw}&w=${width}&q=80&fm=jpg&fit=crop`,
+      photographerName: photo.user.name,
+      photographerLink: `${photo.user.links.html}?utm_source=oasis_docket_dashboard&utm_medium=referral`,
+      downloadLocation: photo.links.download_location,
+    };
+  } catch (e) {
+    return null;
+  }
+}
+
+// Unsplash requires pinging this endpoint whenever a photo is actually
+// used, so photographers get credited for the usage. Non-fatal if it fails.
+async function triggerUnsplashDownload(downloadLocation, accessKey) {
+  try {
+    await fetch(downloadLocation, { headers: { Authorization: `Client-ID ${accessKey}` } });
+  } catch (e) {
+    // ignore -- not worth failing the post over a tracking ping
+  }
+}
+
+// Replaces every placehold.co placeholder image in body_html with a real,
+// relevant Unsplash photo, using the same short description text the model
+// already writes into each placeholder's `text=` param as the search query.
+// Falls back to leaving individual placeholders untouched if a search comes
+// up empty or Unsplash isn't reachable -- this never blocks post creation.
+async function fillInRealImages(bodyHtml, accessKey) {
+  if (!accessKey) return bodyHtml;
+
+  const imgRegex = /<img src="https:\/\/placehold\.co\/(\d+)x(\d+)\/[^"]*\?text=([^"]+)" alt="Placeholder - click to replace with a real image" class="([^"]*)"\s*\/?>/g;
+  const matches = [...bodyHtml.matchAll(imgRegex)];
+  if (matches.length === 0) return bodyHtml;
+
+  let result = bodyHtml;
+  const credits = [];
+
+  for (const match of matches) {
+    const [fullTag, width, , encodedText, className] = match;
+    const query = decodeURIComponent(encodedText.replace(/\+/g, ' '));
+    const photo = await unsplashSearch(query, accessKey, Number(width));
+    if (!photo) continue;
+
+    let newTag = `<img src="${photo.url}" alt="${query}" class="${className}" />`;
+    if (className.includes('docket-hero-img')) {
+      newTag += `<figcaption style="font-size:.72rem;color:#999;margin-top:.3rem;">Photo by <a href="${photo.photographerLink}" target="_blank" rel="noopener">${photo.photographerName}</a> on <a href="https://unsplash.com/?utm_source=oasis_docket_dashboard&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a></figcaption>`;
+    }
+    result = result.replace(fullTag, newTag);
+    credits.push({ name: photo.photographerName, link: photo.photographerLink });
+    await triggerUnsplashDownload(photo.downloadLocation, accessKey);
+  }
+
+  if (credits.length > 0) {
+    const uniqueCredits = [...new Map(credits.map((c) => [c.name, c])).values()];
+    const creditLine = uniqueCredits.map((c) => `<a href="${c.link}" target="_blank" rel="noopener">${c.name}</a>`).join(', ');
+    result += `\n<p style="font-size:.75rem;color:#999;margin-top:2rem;">Photos: ${creditLine} on <a href="https://unsplash.com/?utm_source=oasis_docket_dashboard&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a></p>`;
+  }
+
+  return result;
+}
+
 export default async function handler(req, res) {
   // If Vercel's CRON_SECRET is set, only Vercel's own scheduler (or someone
   // with the secret) can trigger this.
@@ -186,9 +260,12 @@ First use web search to find a real, currently trending real estate topic. Once 
 
     // Clean up any stray entity codes before this ever reaches WordPress.
     const cleanTitle = decodeHtmlEntities(post.title);
-    const cleanBodyHtml = decodeHtmlEntities(post.body_html);
+    let cleanBodyHtml = decodeHtmlEntities(post.body_html);
     const cleanExcerpt = decodeHtmlEntities(post.excerpt || '');
     const cleanSlug = decodeHtmlEntities(post.slug || '');
+
+    // Swap placeholder images for real Unsplash photos, if a key is configured.
+    cleanBodyHtml = await fillInRealImages(cleanBodyHtml, process.env.UNSPLASH_ACCESS_KEY);
 
     const wpRes = await fetch(`${WP_SITE_URL.replace(/\/$/, '')}/wp-json/docket/v1/create-draft`, {
       method: 'POST',
