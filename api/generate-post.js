@@ -188,10 +188,8 @@ Hard rules:
 - Do not repeat the title anywhere inside body_html -- WordPress displays the title field on its own automatically. body_html should begin directly with the featured image placeholder described below, followed by the opening paragraph.${historyInstruction}
 
 Structure, in this exact order:
-1. One large featured/hero image placeholder at the very start of body_html, using this exact pattern (do not add any style or width attributes -- copy this exactly, only changing the description text):
-<!-- wp:image {"sizeSlug":"large"} -->
+1. One large featured/hero image placeholder at the very start of body_html, using this exact pattern (do not add any style or width attributes, and do NOT wrap it in <!-- wp:image --> block comments -- copy this exactly, only changing the description text):
 <figure class="wp-block-image size-large docket-hero"><img src="https://placehold.co/1200x628/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" class="docket-hero-img"/></figure>
-<!-- /wp:image -->
 2. The rest of the post as normal HTML (<p>, <h2>, <ul>/<li>), with two or three smaller secondary image placeholders spread naturally near relevant H2 sections. Each one must be embedded as the very first thing inside a paragraph that is at least 3-4 sentences long (not as its own separate block/paragraph), so the text genuinely wraps around it -- never place one of these images immediately before an <h2>, and never put one alone in its own <p> with no other text. Alternate between alignleft and alignright across the images for visual variety. Use exactly this pattern (only change the class and description text):
 <p><img src="https://placehold.co/500x320/e5e5e5/666666?text=SHORT+DESCRIPTION" alt="Placeholder - click to replace with a real image" class="alignleft" /> Paragraph text starts immediately here and continues for several sentences so it visibly wraps around the image...</p>
 
