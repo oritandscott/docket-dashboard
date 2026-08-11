@@ -1270,6 +1270,7 @@
       status.textContent = 'Done ✓';
       status.style.color = 'var(--stamp-green)';
       btn.dataset.oldsrc = newSrc;
+      input.value = "";
     } catch (err) {
       status.textContent = 'Something went wrong.';
       status.style.color = 'var(--stamp-red)';
