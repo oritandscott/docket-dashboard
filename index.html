@@ -1227,7 +1227,7 @@
         row.innerHTML = `
           <div style="font-size:.8rem;font-weight:600;margin-bottom:.4rem;">${escapeHtml(img.label)}${img.isPlaceholder ? '' : ' <span style="color:var(--stamp-green);font-weight:400;">(already swapped)</span>'}</div>
           <div class="inline-form" style="margin-top:0;">
-            <input type="text" placeholder="Paste real image URL here…" class="swap-url-input" style="flex:1;min-width:160px;">
+            <input type="text" placeholder="Image URL for Subject: ${escapeHtml(img.label)}" class="swap-url-input" style="flex:1;min-width:160px;">
             <button class="btn swap-btn" type="button" data-postid="${id}" data-oldsrc="${escapeHtml(img.src)}">Swap</button>
           </div>
           <div class="swap-status" style="font-size:.78rem;margin-top:.3rem;"></div>
@@ -1267,10 +1267,11 @@
         btn.disabled = false;
         return;
       }
-      status.textContent = 'Done ✓';
+      status.textContent = '✓ Image successfully inserted.';
       status.style.color = 'var(--stamp-green)';
       btn.dataset.oldsrc = newSrc;
       input.value = "";
+      btn.disabled = false;
     } catch (err) {
       status.textContent = 'Something went wrong.';
       status.style.color = 'var(--stamp-red)';
