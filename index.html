@@ -133,6 +133,7 @@
   .home-header .greeting-row{
     display:flex;
     align-items:baseline;
+    justify-content:space-between;
     gap:1.1rem;
     flex-wrap:wrap;
   }
@@ -143,10 +144,20 @@
     margin:0;
     color:var(--gold);
   }
+  .home-header .header-right{
+    display:flex;
+    align-items:baseline;
+    gap:1.6rem;
+    margin-left:auto;
+  }
   .home-header p{
     margin:0;
     color:var(--ink-soft);
-    font-size:1.15rem;
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:1.35rem;
+    letter-spacing:.01em;
   }
 
   .panel{
@@ -456,7 +467,10 @@
     <div class="home-header">
       <div class="greeting-row">
         <h1 id="greeting">Good day.</h1>
-        <p id="today-date"></p>
+        <div class="header-right">
+          <p id="today-date"></p>
+          <p id="zero-day-countdown"></p>
+        </div>
       </div>
     </div>
 
@@ -726,6 +740,12 @@
     const dateStr = now.toLocaleDateString(undefined, opts);
     document.getElementById('today-date').textContent = dateStr;
     document.getElementById('side-date').textContent = now.toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'});
+
+    // "Zero Day" countdown -- weeks remaining until September 1, 2030.
+    const zeroDay = new Date(2030, 8, 1); // month is 0-indexed: 8 = September
+    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
+    const weeksLeft = Math.max(0, Math.ceil((zeroDay - now) / msPerWeek));
+    document.getElementById('zero-day-countdown').textContent = `${weeksLeft} Weeks to Zero Day`;
   }
 
   // ---------- TODAY: SCHEDULE ----------
