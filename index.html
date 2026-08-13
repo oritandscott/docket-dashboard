@@ -741,11 +741,16 @@
     document.getElementById('today-date').textContent = dateStr;
     document.getElementById('side-date').textContent = now.toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'});
 
-    // "Zero Day" countdown -- weeks remaining until September 1, 2030.
+    // "Zero Day" countdown -- weeks + days remaining until September 1, 2029.
     const zeroDay = new Date(2029, 8, 1); // month is 0-indexed: 8 = September
-    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-    const weeksLeft = Math.max(0, Math.ceil((zeroDay - now) / msPerWeek));
-    document.getElementById('zero-day-countdown').textContent = `${weeksLeft} Weeks to Zero Day`;
+    const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const totalDaysLeft = Math.max(0, Math.round((zeroDay - todayMidnight) / msPerDay));
+    const weeksLeft = Math.floor(totalDaysLeft / 7);
+    const daysLeft = totalDaysLeft % 7;
+    const weekLabel = weeksLeft === 1 ? 'Week' : 'Weeks';
+    const dayLabel = daysLeft === 1 ? 'Day' : 'Days';
+    document.getElementById('zero-day-countdown').textContent = `${weeksLeft} ${weekLabel} and ${daysLeft} ${dayLabel} to Zero Day`;
   }
 
   // ---------- TODAY: SCHEDULE ----------
