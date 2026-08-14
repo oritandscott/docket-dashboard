@@ -433,6 +433,24 @@
     .nav a{white-space:nowrap;border-left:none;border-bottom:3px solid transparent;padding:.5rem .6rem;}
     .main{padding:1.6rem 1.1rem 3rem;}
   }
+  #weekender.panel{background:#132A33;}
+  .weekender-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-top:.3rem;}
+  @media (max-width:780px){.weekender-grid{grid-template-columns:1fr;}}
+  .weekender-box{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:.85rem .9rem;
+  }
+  .weekender-box-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.66rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:.4rem;
+  }
+  .weekender-box-value{font-size:.95rem;font-weight:600;line-height:1.35;}
 </style>
 </head>
 <body>
@@ -451,10 +469,11 @@
       <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">04</span></a></li>
       <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">05</span></a></li>
       <li><a href="#anniversaries">Home Anniversaries <span class="num">06</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
-      <li><a href="#blogdrafts">Ghostwriter <span class="num">07</span></a></li>
-      <li><a href="#pipeline">Pipeline <span class="num">08</span></a></li>
-      <li hidden><a href="#tracker">Tracker <span class="num">09</span></a></li>
-      <li hidden><a href="#notes">Notes <span class="num">10</span></a></li>
+      <li><a href="#weekender">Thursday Weekender <span class="num">07</span></a></li>
+      <li><a href="#blogdrafts">Ghostwriter <span class="num">08</span></a></li>
+      <li><a href="#pipeline">Pipeline <span class="num">09</span></a></li>
+      <li hidden><a href="#tracker">Tracker <span class="num">10</span></a></li>
+      <li hidden><a href="#notes">Notes <span class="num">11</span></a></li>
     </ul>
     <div style="display:flex;flex-direction:column;gap:1.7rem;margin-top:2.1rem;">
       <img src="assets/kw-realty-phoenix.png" alt="Keller Williams Realty Phoenix" style="width:100%;max-width:180px;height:auto;display:block;">
@@ -607,9 +626,32 @@
       <div id="anniversaries-list" style="margin-top:1rem;"></div>
     </section>
 
+    <!-- THURSDAY WEEKENDER -->
+    <section class="panel" id="weekender">
+      <div class="tab-label">07 · Thursday Weekender</div>
+      <h2>Thursday Weekender</h2>
+      <div class="panel-sub">The WEEKENDER Mailchimp draft builds itself every Thursday at 1:05pm from Angela Kiernan's event email. This tracks that run.</div>
+      <div class="weekender-grid">
+        <div class="weekender-box">
+          <div class="weekender-box-label">Next run</div>
+          <div class="weekender-box-value" id="weekender-next-run-value">&mdash;</div>
+        </div>
+        <div class="weekender-box">
+          <div class="weekender-box-label">Status</div>
+          <div class="weekender-box-value" id="weekender-state-value">&mdash;</div>
+        </div>
+        <div class="weekender-box">
+          <div class="weekender-box-label">Details</div>
+          <div class="weekender-box-value" id="weekender-detail-value" style="font-weight:400;font-size:.88rem;">&mdash;</div>
+        </div>
+      </div>
+      <div class="empty-hint" id="weekender-updated-value" style="margin-top:.9rem;border:none;padding:0;font-style:normal;"></div>
+      <button class="btn btn-ghost" id="refresh-weekender-btn" type="button" style="margin-top:.9rem;">Check status</button>
+    </section>
+
     <!-- BLOG DRAFTS -->
     <section class="panel" id="blogdrafts">
-      <div class="tab-label">07 · Ghostwriter</div>
+      <div class="tab-label">08 · Ghostwriter</div>
       <h2>Ghostwriter</h2>
       <img class="channel-banner" src="assets/banner-ghostwriter-oasis-blog.jpg" alt="The Oasis Blog">
       <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
@@ -624,7 +666,7 @@
 
     <!-- PIPELINE -->
     <section class="panel" id="pipeline">
-      <div class="tab-label">08 · Pipeline</div>
+      <div class="tab-label">09 · Pipeline</div>
       <h2>Pipeline</h2>
       <div class="panel-sub">Every active client, at a glance. Tap the stamp to move their stage.</div>
       <div id="pipeline-list"></div>
@@ -642,7 +684,7 @@
 
     <!-- TRACKER (hidden for now -- not in use) -->
     <section class="panel" id="tracker" hidden>
-      <div class="tab-label">09 · Tracker</div>
+      <div class="tab-label">10 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
       <div class="tracker-wrap">
@@ -665,7 +707,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes" hidden>
-      <div class="tab-label">10 · Notes</div>
+      <div class="tab-label">11 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
@@ -1787,6 +1829,81 @@
   document.getElementById('refresh-comments-channel1-btn').addEventListener('click', refreshAllComments);
   document.getElementById('refresh-comments-channel2-btn').addEventListener('click', refreshAllComments);
 
+  // ---------- THURSDAY WEEKENDER ----------
+  async function fetchWeekenderStatus(){
+    const resp = await fetch('/data/weekender-status.json?t=' + Date.now());
+    if (!resp.ok) throw new Error('Could not load weekender-status.json');
+    return resp.json();
+  }
+
+  function nextWeekenderRun(){
+    // Fires Thursdays at 1:05pm America/Phoenix (Arizona is fixed UTC-7, no DST).
+    const nowUtcMs = Date.now();
+    const nowPhoenixMs = nowUtcMs - 7 * 60 * 60000;
+    const nowPhoenix = new Date(nowPhoenixMs);
+    const target = new Date(nowPhoenixMs);
+    target.setUTCHours(13, 5, 0, 0);
+    let daysUntilThursday = (4 - nowPhoenix.getUTCDay() + 7) % 7;
+    if (daysUntilThursday === 0 && nowPhoenix.getTime() >= target.getTime()) {
+      daysUntilThursday = 7;
+    }
+    target.setUTCDate(nowPhoenix.getUTCDate() + daysUntilThursday);
+    return target;
+  }
+
+  function formatWeekenderRun(d){
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    let h = d.getUTCHours();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12; if (h === 0) h = 12;
+    const m = String(d.getUTCMinutes()).padStart(2, '0');
+    return `${days[d.getUTCDay()]}, ${months[d.getUTCMonth()]} ${d.getUTCDate()} at ${h}:${m} ${ampm}`;
+  }
+
+  function renderWeekenderStatus(data){
+    const nextRunEl = document.getElementById('weekender-next-run-value');
+    const stateEl = document.getElementById('weekender-state-value');
+    const detailEl = document.getElementById('weekender-detail-value');
+    const updatedEl = document.getElementById('weekender-updated-value');
+
+    nextRunEl.textContent = formatWeekenderRun(nextWeekenderRun());
+
+    const state = (data && data.state) || 'idle';
+    const labels = {
+      idle:    { text: 'Idle \u2014 waiting for Thursday', color: 'var(--ink-soft)' },
+      running: { text: 'Running\u2026',                     color: 'var(--stamp-blue)' },
+      done:    { text: 'Done \u2014 ready for review',      color: 'var(--stamp-green)' },
+      error:   { text: 'Error \u2014 needs attention',      color: 'var(--stamp-red)' },
+    };
+    const s = labels[state] || labels.idle;
+    stateEl.textContent = s.text;
+    stateEl.style.color = s.color;
+
+    let detail = (data && data.message) ? data.message : '\u2014';
+    if (data && data.campaignTitle) {
+      detail = data.message ? `${data.campaignTitle} \u2014 ${data.message}` : data.campaignTitle;
+    }
+    detailEl.innerHTML = (data && data.editUrl)
+      ? `${escapeHtml(detail)} <a href="${escapeHtml(data.editUrl)}" target="_blank" rel="noopener" style="color:var(--gold);">Open draft &rarr;</a>`
+      : escapeHtml(detail);
+
+    updatedEl.textContent = (data && data.updatedAt)
+      ? `Last update: ${new Date(data.updatedAt).toLocaleString('en-US', { timeZone: 'America/Phoenix', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}`
+      : '';
+  }
+
+  async function refreshWeekenderStatus(){
+    try {
+      const data = await fetchWeekenderStatus();
+      renderWeekenderStatus(data);
+    } catch (e) {
+      renderWeekenderStatus({ state: 'idle', message: 'No status recorded yet.' });
+    }
+  }
+
+  document.getElementById('refresh-weekender-btn').addEventListener('click', refreshWeekenderStatus);
+
   // ---------- INIT ----------
   renderHeader();
   renderSchedule();
@@ -1799,6 +1916,7 @@
   commentsPanelChannel2.renderHistory();
   refreshAllComments();
   refreshAnniversaries(false);
+  refreshWeekenderStatus();
 })();
 </script>
 </body>
