@@ -1,8 +1,8 @@
 {
-  "state": "error",
-  "message": "This week's Angela Kiernan/Magnus Title email hasn't arrived yet (checked Inbox, Spam, Trash as of 1:35pm Phoenix; only the unrelated Driggs Title lookalike was found).",
+  "state": "running",
+  "message": "Email found (Skip the End-of-Summer Blues). Draft replicated, all stale links fixed. Capturing this week's event screenshots now.",
   "campaignTitle": null,
   "editUrl": null,
-  "updatedAt": "2026-08-20T20:36:31.674Z",
+  "updatedAt": "2026-08-20T21:24:25.154Z",
   "lastSuccessAt": null
 }
