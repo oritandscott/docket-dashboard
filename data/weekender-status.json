@@ -1,8 +1,8 @@
 {
-  "state": "idle",
-  "message": null,
+  "state": "running",
+  "message": "Kicked off manually after the 1:05pm scheduled trigger appears to have been missed.",
   "campaignTitle": null,
   "editUrl": null,
-  "updatedAt": null,
+  "updatedAt": "2026-08-20T20:33:38.278Z",
   "lastSuccessAt": null
 }
