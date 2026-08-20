@@ -1,8 +1,8 @@
 {
-  "state": "running",
-  "message": "Building this week's draft...",
+  "state": "error",
+  "message": "This week's Angela Kiernan/Magnus Title email hasn't arrived yet (checked Inbox, Spam, Trash as of 1:35pm Phoenix; only the unrelated Driggs Title lookalike was found).",
   "campaignTitle": null,
   "editUrl": null,
-  "updatedAt": "2026-08-20T20:35:51.425Z",
+  "updatedAt": "2026-08-20T20:36:31.674Z",
   "lastSuccessAt": null
 }
