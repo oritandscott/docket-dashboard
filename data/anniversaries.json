@@ -7,7 +7,8 @@
     "emailVariant": "A",
     "status": "upcoming",
     "draftId": null,
-    "addedAt": "2026-07-31T23:15:54.648Z"
+    "addedAt": "2026-07-31T23:15:54.648Z",
+    "dismissed": true
   },
   {
     "id": "65c913cafad5cea43d13675f_65c913cab8053dfee35ed7af",
