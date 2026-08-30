@@ -789,7 +789,7 @@
 
   async function saveToday(){
     try {
-      const resp = await fetch('/api/update-today', {
+      const resp = await fetch('/api/today', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ schedule: state.schedule, tasks: state.tasks }),
@@ -1694,7 +1694,7 @@
 
   // ---------- COMMENTS ----------
   async function fetchYoutubeComments(){
-    const resp = await fetch('/api/youtube-comments');
+    const resp = await fetch('/api/youtube');
     const data = await resp.json();
     if (!resp.ok) throw new Error(data.error || 'unknown error');
     return data.comments || [];
@@ -1819,7 +1819,7 @@
       btn.textContent = 'Sending…';
       status.textContent = '';
       try {
-        const resp = await fetch('/api/youtube-reply', {
+        const resp = await fetch('/api/youtube', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ channel: btn.dataset.channel, parentId: btn.dataset.parentid, text }),
