@@ -773,6 +773,55 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }
 
+  // ---------- TODAY: SHARED STORAGE ----------
+  // Schedule + Top 3 Tasks used to live only in this browser's localStorage
+  // (see STORAGE_KEY above), which meant every device had its own silently
+  // disconnected copy. data/today.json is the shared source of truth now,
+  // same GitHub-Contents-API-as-database pattern already used for Home
+  // Anniversaries. save() above still runs for the rest of state (clients,
+  // tracker, notes, etc.) as a fast local cache; saveToday() persists
+  // schedule/tasks to the shared file so every device sees the same thing.
+  async function fetchToday(){
+    const resp = await fetch('/data/today.json?t=' + Date.now());
+    if (!resp.ok) throw new Error('Could not load today.json');
+    return resp.json();
+  }
+
+  async function saveToday(){
+    try {
+      const resp = await fetch('/api/update-today', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ schedule: state.schedule, tasks: state.tasks }),
+      });
+      if (!resp.ok) {
+        const data = await resp.json().catch(() => ({}));
+        throw new Error(data.error || 'Save failed');
+      }
+    } catch (e) {
+      // Shared save failed (offline, etc.) -- the local cache above still
+      // has this device's copy, so the UI doesn't lose the edit, but it
+      // won't show up on other devices until a save succeeds.
+      console.error('Could not save Today to the shared dashboard:', e);
+    }
+  }
+
+  async function refreshToday(){
+    try {
+      const data = await fetchToday();
+      const todayStr = todayISO();
+      state.schedule = (data.schedule || []).filter(item => item.date && item.date >= todayStr);
+      state.tasks = data.tasks || [];
+      save();
+      renderSchedule();
+      renderTasks();
+    } catch (e) {
+      // Couldn't reach the shared file (offline, etc.) -- leave whatever
+      // rendered from the local cache alone rather than blanking the page.
+      console.error('Could not load Today from the shared dashboard:', e);
+    }
+  }
+
   function uid(){
     return Date.now().toString(36) + Math.random().toString(36).slice(2,7);
   }
@@ -843,6 +892,7 @@
     state.schedule.push({ id: uid(), time, title, date: todayISO() });
     save();
     renderSchedule();
+    saveToday();
     e.target.reset();
   });
 
@@ -876,6 +926,7 @@
     state.tasks.push({ id: uid(), text, done: false });
     save();
     renderTasks();
+    saveToday();
     e.target.reset();
   });
 
@@ -883,7 +934,7 @@
     if(e.target.matches('input[type="checkbox"]')){
       const id = e.target.dataset.id;
       const task = state.tasks.find(t => t.id === id);
-      if(task){ task.done = e.target.checked; save(); renderTasks(); }
+      if(task){ task.done = e.target.checked; save(); renderTasks(); saveToday(); }
     }
   });
 
@@ -892,6 +943,7 @@
       state.tasks = state.tasks.filter(t => t.id !== e.target.dataset.id);
       save();
       renderTasks();
+      saveToday();
     }
   });
 
@@ -900,6 +952,7 @@
       state.schedule = state.schedule.filter(s => s.id !== e.target.dataset.id);
       save();
       renderSchedule();
+      saveToday();
     }
   });
 
@@ -1927,6 +1980,7 @@
   refreshAllComments();
   refreshAnniversaries(false);
   refreshWeekenderStatus();
+  refreshToday();
 })();
 </script>
 </body>
