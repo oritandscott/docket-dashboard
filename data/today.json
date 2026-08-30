@@ -1,4 +1,19 @@
 {
-  "schedule": [],
-  "tasks": []
+  "schedule": [
+    {
+      "id": "mtgakfbasphwb",
+      "time": "9:00 AM",
+      "title": "TEST - safe to ignore",
+      "date": "2026-08-30",
+      "source": "automation"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "mtgakfbaskh03",
+      "text": "TEST task - safe to ignore",
+      "done": false,
+      "source": "automation"
+    }
+  ]
 }
