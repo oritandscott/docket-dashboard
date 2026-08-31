@@ -1,4 +1,32 @@
 {
-  "schedule": [],
-  "tasks": []
+  "schedule": [
+    {
+      "id": "mth4y35gq4zq1",
+      "time": "09:00",
+      "title": "Monday Follow-Up & Appts (personal block)",
+      "date": "2026-08-31",
+      "source": "automation"
+    },
+    {
+      "id": "mth4y35gfrtg5",
+      "time": "13:00",
+      "title": "What Would A Mega Agent Do? — KWIF Gilbert (Red)",
+      "date": "2026-08-31",
+      "source": "automation"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "mth4y35gltgyt",
+      "text": "Review listing activity — 4007 E Agave Rd",
+      "done": false,
+      "source": "automation"
+    },
+    {
+      "id": "mth4y35g2ouly",
+      "text": "Check Homebot — past-client outreach ops",
+      "done": false,
+      "source": "automation"
+    }
+  ]
 }
