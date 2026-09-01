@@ -1,17 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mth4y35gq4zq1",
+      "id": "mtikjxei15leo",
       "time": "09:00",
-      "title": "Monday Follow-Up & Appts (personal block)",
-      "date": "2026-08-31",
+      "title": "Video Focus Day — YouTube content (all day)",
+      "date": "2026-09-01",
       "source": "automation"
     },
     {
-      "id": "mth4y35gfrtg5",
-      "time": "13:00",
-      "title": "What Would A Mega Agent Do? — KWIF Gilbert (Red)",
-      "date": "2026-08-31",
+      "id": "mtikjxeiw7rrj",
+      "time": "12:00",
+      "title": "Ryan Melville Mastermind — KW Phoenix (Gold)",
+      "date": "2026-09-01",
       "source": "automation"
     }
   ],
@@ -25,6 +25,12 @@
     {
       "id": "mth4y35g2ouly",
       "text": "Check Homebot — past-client outreach ops",
+      "done": false,
+      "source": "automation"
+    },
+    {
+      "id": "mtikjxeiz220e",
+      "text": "Ryan Melville mastermind beats KWIF Wealth conflict, 12pm",
       "done": false,
       "source": "automation"
     }
