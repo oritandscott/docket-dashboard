@@ -1,17 +1,24 @@
 {
   "schedule": [
     {
-      "id": "mtikjxei15leo",
+      "id": "mtjzwmsix4o63",
       "time": "09:00",
-      "title": "Video Focus Day — YouTube content (all day)",
-      "date": "2026-09-01",
+      "title": "Flex Day — no fixed office hours",
+      "date": "2026-09-02",
       "source": "automation"
     },
     {
-      "id": "mtikjxeiw7rrj",
+      "id": "mtjzwmsi8u6zo",
+      "time": "09:00",
+      "title": "Orit & Itamar (personal) — 9:00-10:00 AM",
+      "date": "2026-09-02",
+      "source": "automation"
+    },
+    {
+      "id": "mtjzwmsibmh3e",
       "time": "12:00",
-      "title": "Ryan Melville Mastermind — KW Phoenix (Gold)",
-      "date": "2026-09-01",
+      "title": "Cromford Report w/ Tina Tamboer — KW Phoenix Tempe",
+      "date": "2026-09-02",
       "source": "automation"
     }
   ],
