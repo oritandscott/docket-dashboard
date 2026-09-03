@@ -1,24 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mtjzwmsix4o63",
+      "id": "mtlfch4i13vfa",
       "time": "09:00",
-      "title": "Flex Day — no fixed office hours",
-      "date": "2026-09-02",
+      "title": "Sphere Contacts Outreach (Thursday)",
+      "date": "2026-09-03",
       "source": "automation"
     },
     {
-      "id": "mtjzwmsi8u6zo",
-      "time": "09:00",
-      "title": "Orit & Itamar (personal) — 9:00-10:00 AM",
-      "date": "2026-09-02",
-      "source": "automation"
-    },
-    {
-      "id": "mtjzwmsibmh3e",
-      "time": "12:00",
-      "title": "Cromford Report w/ Tina Tamboer — KW Phoenix Tempe",
-      "date": "2026-09-02",
+      "id": "mtlfch4i07cy4",
+      "time": "13:00",
+      "title": "Weekender Newsletter Send — 1:00 PM",
+      "date": "2026-09-03",
       "source": "automation"
     }
   ],
