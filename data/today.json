@@ -1,17 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mtlfch4i13vfa",
+      "id": "mtmuqzm9294em",
       "time": "09:00",
-      "title": "Sphere Contacts Outreach (Thursday)",
-      "date": "2026-09-03",
+      "title": "SPHERE / Open House (all day)",
+      "date": "2026-09-04",
       "source": "automation"
     },
     {
-      "id": "mtlfch4i07cy4",
-      "time": "13:00",
-      "title": "Weekender Newsletter Send — 1:00 PM",
-      "date": "2026-09-03",
+      "id": "mtmuqzm9jhvyy",
+      "time": "16:30",
+      "title": "Showing — 8119 E Palm Ln, Scottsdale",
+      "date": "2026-09-04",
       "source": "automation"
     }
   ],
