@@ -1,17 +1,10 @@
 {
   "schedule": [
     {
-      "id": "mtmuqzm9294em",
+      "id": "mtoa4uupc57e7",
       "time": "09:00",
-      "title": "SPHERE / Open House (all day)",
-      "date": "2026-09-04",
-      "source": "automation"
-    },
-    {
-      "id": "mtmuqzm9jhvyy",
-      "time": "16:30",
-      "title": "Showing — 8119 E Palm Ln, Scottsdale",
-      "date": "2026-09-04",
+      "title": "Open House — All Day",
+      "date": "2026-09-05",
       "source": "automation"
     }
   ],
