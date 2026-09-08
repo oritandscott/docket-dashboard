@@ -1,10 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mtr51wuu726ub",
+      "id": "mtspw8rk9br4t",
       "time": "09:00",
-      "title": "Follow-Up & Appts (Labor Day - offices closed)",
-      "date": "2026-09-07",
+      "title": "Video Focus Tuesday — content/recording day",
+      "date": "2026-09-08",
+      "source": "automation"
+    },
+    {
+      "id": "mtspw8rkgpah4",
+      "time": "14:00",
+      "title": "Showing — 4007 E Agave Rd, Phoenix (30 min)",
+      "date": "2026-09-08",
       "source": "automation"
     }
   ],
