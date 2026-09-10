@@ -566,6 +566,13 @@
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">One-click links for producing Moving to Phoenix content -- Drive folders, the channel itself, and anything else worth having a click away.</div>
 
+      <div class="weekender-box" id="bookacall-status-box" style="margin-bottom:1rem;">
+        <div class="weekender-box-label">Book-A-Call Form
+          <button class="btn-text" type="button" id="bookacall-refresh-btn" style="padding:0;margin-left:.5rem;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;">Check now</button>
+        </div>
+        <div class="weekender-box-value" id="bookacall-status-value">Checking&hellip;</div>
+      </div>
+
       <div style="font-size:.82rem;font-weight:600;color:var(--ink-soft);margin-bottom:.4rem;">Project Links</div>
       <div id="video-prod-extra-list" style="margin-bottom:.7rem;"></div>
       <input type="hidden" id="video-prod-link-id" value="">
@@ -1212,6 +1219,44 @@
       setVideoLinkStatus(`Couldn't save: ${e.message}`, true);
     }
   });
+
+  // ---------- BOOK-A-CALL RESPONSE STATUS ----------
+  // Live indicator at the top of the Video Production panel: has anyone
+  // submitted the "Book-A-Call" Google Form yet? Backed by a read-only
+  // Google Forms API check in api/save-video-link.js (GET).
+  async function refreshBookACallStatus(){
+    const valueEl = document.getElementById('bookacall-status-value');
+    valueEl.style.color = '';
+    valueEl.textContent = 'Checking…';
+    try {
+      const resp = await fetch('/api/save-video-link');
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || 'Check failed');
+
+      if (data.configured === false) {
+        valueEl.style.color = 'var(--ink-soft)';
+        valueEl.textContent = 'Not set up yet.';
+        return;
+      }
+
+      if (!data.hasResponses) {
+        valueEl.style.color = 'var(--stamp-red)';
+        valueEl.textContent = 'No responses yet.';
+        return;
+      }
+
+      const latest = data.latestResponseAt
+        ? new Date(data.latestResponseAt).toLocaleString('en-US', { timeZone: 'America/Phoenix', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
+        : null;
+      valueEl.style.color = 'var(--stamp-green)';
+      valueEl.textContent = `${data.count} response${data.count === 1 ? '' : 's'} received${latest ? ` — latest ${latest}` : ''}.`;
+    } catch (e) {
+      valueEl.style.color = 'var(--stamp-red)';
+      valueEl.textContent = `Couldn't check: ${e.message}`;
+    }
+  }
+
+  document.getElementById('bookacall-refresh-btn').addEventListener('click', refreshBookACallStatus);
 
   // ---------- BLOG DRAFTS ----------
   const draftsList = document.getElementById('drafts-list');
@@ -1974,6 +2019,7 @@
   renderPipeline();
   renderTracker();
   refreshVideoLinks();
+  refreshBookACallStatus();
   loadDrafts();
   commentsPanelChannel1.renderHistory();
   commentsPanelChannel2.renderHistory();
