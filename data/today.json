@@ -1,27 +1,6 @@
 {
-  "schedule": [
-    {
-      "id": "mtspw8rk9br4t",
-      "time": "09:00",
-      "title": "Video Focus Tuesday — content/recording day",
-      "date": "2026-09-08",
-      "source": "automation"
-    },
-    {
-      "id": "mtspw8rkgpah4",
-      "time": "14:00",
-      "title": "Showing — 4007 E Agave Rd, Phoenix (30 min)",
-      "date": "2026-09-08",
-      "source": "automation"
-    }
-  ],
+  "schedule": [],
   "tasks": [
-    {
-      "id": "mth4y35gltgyt",
-      "text": "Review listing activity — 4007 E Agave Rd",
-      "done": false,
-      "source": "automation"
-    },
     {
       "id": "mth4y35g2ouly",
       "text": "Check Homebot — past-client outreach ops",
