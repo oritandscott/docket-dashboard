@@ -451,6 +451,37 @@
     margin-bottom:.4rem;
   }
   .weekender-box-value{font-size:.95rem;font-weight:600;line-height:1.35;}
+  #video-production-mtp.panel{background:#2A2A2E;}
+  #bookacall-status-box .weekender-box-label{
+    display:flex;
+    align-items:center;
+    gap:.7rem;
+    font-family:'Fraunces',serif;
+    font-size:1.5rem;
+    line-height:1;
+    letter-spacing:0;
+    text-transform:none;
+    font-weight:600;
+    font-style:italic;
+    color:var(--stamp-red);
+    margin-bottom:.6rem;
+  }
+  #bookacall-refresh-btn{
+    height:1.5rem;
+    line-height:1.5rem;
+    padding:0 .8rem;
+    background:var(--stamp-red);
+    color:#fff;
+    border:none;
+    border-radius:4px;
+    font-family:'Inter',sans-serif;
+    font-size:.72rem;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    cursor:pointer;
+  }
+  #bookacall-refresh-btn:hover{background:#b3492f;color:#fff;text-decoration:none;}
 </style>
 </head>
 <body>
@@ -568,7 +599,7 @@
 
       <div class="weekender-box" id="bookacall-status-box" style="margin-bottom:1rem;">
         <div class="weekender-box-label">Book-A-Call Form
-          <button class="btn-text" type="button" id="bookacall-refresh-btn" style="padding:0;margin-left:.5rem;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;">Check now</button>
+          <button type="button" id="bookacall-refresh-btn">Check now</button>
         </div>
         <div class="weekender-box-value" id="bookacall-status-value">Checking&hellip;</div>
       </div>
