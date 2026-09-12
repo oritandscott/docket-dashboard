@@ -191,5 +191,15 @@
     "status": "upcoming",
     "draftId": null,
     "addedAt": "2026-09-11T14:21:16.472Z"
+  },
+  {
+    "id": "6785655da9add22fdc7d5d9a_68c1e0ed0cd3ec8e24974890",
+    "name": "Dave & Nina Eary",
+    "address": "3738 East Kachina Drive, Phoenix, AZ 85044",
+    "purchaseDate": "2025-09-19",
+    "emailVariant": "C",
+    "status": "actionable",
+    "draftId": "Happy Anniversary on Your Investment Property!",
+    "addedAt": "2026-09-12T11:17:35.944Z"
   }
 ]
