@@ -1,8 +1,8 @@
 {
-  "state": "running",
-  "message": "Building this week's draft...",
+  "state": "error",
+  "message": "This week's Angela Kiernan email WAS found (subject: Fall Favorite Events are Here, received 1:01pm Phoenix time) but this run has no access to the Mac Mini/browser pane needed for the visual builder editing and screenshotting steps. The scheduled task is not currently set to require this computer. No draft was started to avoid leaving a half-finished campaign.",
   "campaignTitle": null,
   "editUrl": null,
-  "updatedAt": "2026-09-17T20:07:32.445Z",
+  "updatedAt": "2026-09-17T20:08:22.066Z",
   "lastSuccessAt": "2026-08-20T22:01:39.501Z"
 }
