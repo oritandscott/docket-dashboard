@@ -1,59 +1,10 @@
 {
   "schedule": [
     {
-      "id": "mu5fffa1a7ynz",
+      "id": "mu6uuk9y4yjw2",
       "time": "09:00",
-      "title": "Sphere Contacts — past clients/referrals",
-      "date": "2026-09-17",
-      "source": "automation"
-    },
-    {
-      "id": "mu5fffa1zhqo9",
-      "time": "10:00",
-      "title": "AI Automations for Leaders — KWIF (Red)",
-      "date": "2026-09-17",
-      "source": "automation"
-    },
-    {
-      "id": "mu5fffa1qtrh3",
-      "time": "10:00",
-      "title": "Own Your Value: Commission Talk — KW Phx (Gold)",
-      "date": "2026-09-17",
-      "source": "automation"
-    },
-    {
-      "id": "mu5fffa1t07rg",
-      "time": "10:30",
-      "title": "Food Truck: Its Seoul Good — KW Phoenix (Gold)",
-      "date": "2026-09-17",
-      "source": "automation"
-    },
-    {
-      "id": "mu5fffa1guk41",
-      "time": "11:00",
-      "title": "Headshot Session — KW Phoenix (Gold)",
-      "date": "2026-09-17",
-      "source": "automation"
-    },
-    {
-      "id": "mu5fffa13qmfw",
-      "time": "13:00",
-      "title": "Send Weekender Newsletter",
-      "date": "2026-09-17",
-      "source": "automation"
-    },
-    {
-      "id": "mu5fffa15o31r",
-      "time": "13:00",
-      "title": "Broker Class: Buyer Broker Agreement — KWIF (Red)",
-      "date": "2026-09-17",
-      "source": "automation"
-    },
-    {
-      "id": "mu5fffa10u003",
-      "time": "18:00",
-      "title": "KWIF Pumpkin Bash Agent Info Call — KWIF (Red)",
-      "date": "2026-09-17",
+      "title": "Sphere / Open House",
+      "date": "2026-09-18",
       "source": "automation"
     }
   ],
