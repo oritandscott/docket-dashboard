@@ -267,6 +267,28 @@
   .history-tag.dismissed{background:rgba(154,154,158,.16);color:var(--ink-soft);}
   .history-tag.variant-a{background:rgba(111,168,217,.16);color:var(--stamp-blue);}
   .history-tag.variant-b{background:rgba(201,161,93,.16);color:var(--gold);}
+  .pill{
+    display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.03em;
+    padding:.15rem .5rem;border-radius:10px;text-transform:uppercase;white-space:nowrap;
+  }
+  .pill-idea{background:rgba(154,154,158,.16);color:var(--ink-soft);}
+  .pill-planned{background:rgba(111,168,217,.16);color:var(--stamp-blue);}
+  .pill-in-progress{background:rgba(201,161,93,.16);color:var(--gold);}
+  .pill-running{background:rgba(95,174,115,.16);color:var(--stamp-green);}
+  .pill-blocked{background:rgba(204,92,66,.16);color:var(--stamp-red);}
+  .pill-needs-check{background:rgba(204,92,66,.16);color:var(--stamp-red);}
+  .pill-done{background:rgba(95,174,115,.16);color:var(--stamp-green);}
+  .machine-tag{
+    display:inline-block;font-size:.68rem;font-weight:600;padding:.15rem .5rem;
+    border-radius:3px;border:1px solid var(--line);color:var(--ink-soft);white-space:nowrap;
+  }
+  .project-row{background:var(--paper-card);border:1px solid var(--line);border-radius:4px;padding:.7rem .85rem;margin-bottom:.5rem;}
+  .project-row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem;flex-wrap:wrap;}
+  .project-row-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.3rem;}
+  .project-row-notes{font-size:.85rem;color:var(--ink-soft);margin-top:.4rem;}
+  .project-row-flag{font-size:.8rem;color:var(--gold);margin-top:.35rem;}
+  .project-row-waiting{font-size:.8rem;color:var(--stamp-red);margin-top:.35rem;font-weight:600;}
+  .project-row-actions{display:flex;gap:.4rem;flex-shrink:0;}
   .tab-badge{
     display:inline-block;min-width:16px;height:16px;padding:0 4px;margin-left:.5rem;
     background:var(--gold);color:#0B0B0B;border-radius:8px;font-size:.62rem;line-height:16px;
@@ -503,8 +525,9 @@
       <li><a href="#weekender">Thursday Weekender <span class="num">07</span></a></li>
       <li><a href="#blogdrafts">Ghostwriter <span class="num">08</span></a></li>
       <li><a href="#pipeline">Pipeline <span class="num">09</span></a></li>
-      <li hidden><a href="#tracker">Tracker <span class="num">10</span></a></li>
-      <li hidden><a href="#notes">Notes <span class="num">11</span></a></li>
+      <li><a href="#masterlist">Master Project List <span class="num">10</span><span class="nav-badge" id="masterlist-nav-badge" style="display:none;"></span></a></li>
+      <li hidden><a href="#tracker">Tracker <span class="num">11</span></a></li>
+      <li hidden><a href="#notes">Notes <span class="num">12</span></a></li>
     </ul>
     <div style="display:flex;flex-direction:column;gap:1.7rem;margin-top:2.1rem;">
       <img src="assets/kw-realty-phoenix.png" alt="Keller Williams Realty Phoenix" style="width:100%;max-width:180px;height:auto;display:block;">
@@ -678,7 +701,7 @@
     <section class="panel" id="weekender">
       <div class="tab-label">07 · Thursday Weekender</div>
       <h2>Thursday Weekender</h2>
-      <div class="panel-sub">The WEEKENDER Mailchimp draft builds itself every Thursday at 1:05pm from Angela Kiernan's event email. This tracks that run.</div>
+      <div class="panel-sub">The WEEKENDER Mailchimp draft builds itself every Thursday at 1:05pm from Angela Kiernan's event email. This tracks that run. <strong>Currently broken</strong> — the build that used to run on the MacBook Pro was abandoned; see the Master Project List for the fix in progress.</div>
       <div class="weekender-grid">
         <div class="weekender-box">
           <div class="weekender-box-label">Next run</div>
@@ -695,6 +718,23 @@
       </div>
       <div class="empty-hint" id="weekender-updated-value" style="margin-top:.9rem;border:none;padding:0;font-style:normal;"></div>
       <button class="btn btn-ghost" id="refresh-weekender-btn" type="button" style="margin-top:.9rem;">Check status</button>
+
+      <div style="font-size:.82rem;font-weight:600;color:var(--ink-soft);margin:1.3rem 0 .4rem;">Oasis Mini status</div>
+      <div class="empty-hint" id="weekender-mini-status-value" style="font-style:normal;">&mdash;</div>
+
+      <div style="font-size:.82rem;font-weight:600;color:var(--ink-soft);margin:1.3rem 0 .4rem;">This weekend's open house</div>
+      <div class="inline-form" style="flex-direction:column;align-items:stretch;">
+        <input type="text" id="openhouse-address" placeholder="Address">
+        <div class="inline-form">
+          <input type="text" id="openhouse-date" placeholder="Date (e.g. Sat, Sep 20)" style="flex:1;">
+          <input type="text" id="openhouse-time" placeholder="Time (e.g. 11am-2pm)" style="flex:1;">
+        </div>
+        <textarea id="openhouse-notes" rows="2" placeholder="Anything else worth noting"></textarea>
+        <div class="inline-form">
+          <button class="btn" id="openhouse-save-btn" type="button">Save open house</button>
+        </div>
+        <div class="empty-hint" id="openhouse-status" style="display:none;"></div>
+      </div>
     </section>
 
     <!-- BLOG DRAFTS -->
@@ -730,9 +770,78 @@
       </form>
     </section>
 
+    <!-- MASTER PROJECT LIST -->
+    <section class="panel" id="masterlist">
+      <div class="tab-label">10 · Master Project List</div>
+      <h2>Master Project List</h2>
+      <div class="panel-sub">Every automation running on your behalf, every idea on deck, which machine each one runs on, and where you and Claude are still waiting on each other. Add a new idea any time — this is the one list.</div>
+
+      <div style="font-size:.82rem;font-weight:600;color:var(--ink-soft);margin-bottom:.5rem;">Machines</div>
+      <div class="weekender-grid" id="machine-strip">
+        <div class="weekender-box">
+          <div class="weekender-box-label">Oasis Mini <span class="mono" style="font-weight:400;">24/7</span></div>
+          <div class="weekender-box-value" id="machine-mini-value">&mdash;</div>
+        </div>
+        <div class="weekender-box">
+          <div class="weekender-box-label">MacBook Pro</div>
+          <div class="weekender-box-value" style="font-weight:400;font-size:.85rem;">Only reachable while linked and awake — not for anything that needs to run unattended.</div>
+        </div>
+        <div class="weekender-box">
+          <div class="weekender-box-label">Cloud / Vercel</div>
+          <div class="weekender-box-value" style="font-weight:400;font-size:.85rem;">Always on. Right home for anything that's pure API/data — no browser, no local app.</div>
+        </div>
+      </div>
+
+      <div id="needed-callout" style="display:none;margin-top:1.1rem;padding:.8rem .9rem;border:1px solid var(--gold);border-radius:4px;background:rgba(201,161,93,.08);">
+        <div style="font-size:.82rem;font-weight:600;color:var(--gold);margin-bottom:.4rem;">Needed from you</div>
+        <div id="needed-list"></div>
+      </div>
+
+      <div style="font-size:.82rem;font-weight:600;color:var(--ink-soft);margin:1.2rem 0 .4rem;">Add a project or idea</div>
+      <input type="hidden" id="project-form-id" value="">
+      <div class="inline-form" style="flex-direction:column;align-items:stretch;">
+        <input type="text" id="project-form-title" placeholder="Title (e.g. Pre-List packet automation)">
+        <textarea id="project-form-notes" rows="2" placeholder="What is this, and why does it matter?"></textarea>
+        <div class="inline-form">
+          <select id="project-form-status">
+            <option value="idea">Idea</option>
+            <option value="planned">Planned</option>
+            <option value="in-progress">In progress</option>
+            <option value="running">Running</option>
+            <option value="blocked">Blocked</option>
+            <option value="needs-check">Needs check</option>
+            <option value="done">Done</option>
+          </select>
+          <select id="project-form-machine">
+            <option value="unassigned">Machine: unassigned</option>
+            <option value="mini">Oasis Mini</option>
+            <option value="macbook">MacBook Pro</option>
+            <option value="cloud">Cloud / Vercel</option>
+          </select>
+          <select id="project-form-kind">
+            <option value="idea">Idea / new build</option>
+            <option value="automation">Existing automation</option>
+          </select>
+        </div>
+        <input type="text" id="project-form-waiting" placeholder="Waiting on you for… (optional — leave blank if nothing's needed)">
+        <input type="text" id="project-form-redundancy" placeholder="Redundancy note (optional — e.g. overlaps with X)">
+        <div class="inline-form">
+          <button class="btn" id="project-form-save" type="button">Save to list</button>
+          <button class="btn btn-text" id="project-form-cancel" type="button" style="display:none;">Cancel edit</button>
+        </div>
+        <div class="empty-hint" id="project-form-status" style="display:none;"></div>
+      </div>
+
+      <div style="font-size:.82rem;font-weight:600;color:var(--ink-soft);margin:1.4rem 0 .4rem;">Running &amp; existing automations</div>
+      <div id="projects-automations-list"></div>
+
+      <div style="font-size:.82rem;font-weight:600;color:var(--ink-soft);margin:1.4rem 0 .4rem;">Ideas &amp; new projects</div>
+      <div id="projects-ideas-list"></div>
+    </section>
+
     <!-- TRACKER (hidden for now -- not in use) -->
     <section class="panel" id="tracker" hidden>
-      <div class="tab-label">10 · Tracker</div>
+      <div class="tab-label">11 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
       <div class="tracker-wrap">
@@ -755,7 +864,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes" hidden>
-      <div class="tab-label">11 · Notes</div>
+      <div class="tab-label">12 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
@@ -1379,7 +1488,7 @@
     btn.disabled = true;
     btn.textContent = 'Dismissing…';
     try {
-      const resp = await fetch('/api/dismiss-draft', {
+      const resp = await fetch('/api/list-drafts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ postId: Number(id) }),
@@ -1461,7 +1570,7 @@
     status.textContent = 'Swapping…';
     status.style.color = 'var(--ink-soft)';
     try {
-      const resp = await fetch('/api/swap-image', {
+      const resp = await fetch('/api/get-post-images', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ postId: Number(btn.dataset.postid), oldSrc: btn.dataset.oldsrc, newSrc }),
@@ -2043,6 +2152,251 @@
 
   document.getElementById('refresh-weekender-btn').addEventListener('click', refreshWeekenderStatus);
 
+  // ---------- MACHINE STATUS (Oasis Mini heartbeat) ----------
+  function renderMachineStatusInto(el, mini){
+    if (!mini || !mini.lastHeartbeat) {
+      el.textContent = mini && mini.note ? mini.note : 'No heartbeat received yet.';
+      el.style.color = 'var(--ink-soft)';
+      return;
+    }
+    const ageMs = Date.now() - new Date(mini.lastHeartbeat).getTime();
+    const stale = ageMs > 60 * 60 * 1000; // no word in an hour -- flag it
+    const when = new Date(mini.lastHeartbeat).toLocaleString('en-US', { timeZone: 'America/Phoenix', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    const tasks = (mini.runningTasks && mini.runningTasks.length) ? ` — running: ${mini.runningTasks.join(', ')}` : '';
+    el.textContent = `${stale ? '⚠ ' : '● '}Last heard from: ${when}${tasks}`;
+    el.style.color = stale ? 'var(--stamp-red)' : 'var(--stamp-green)';
+  }
+
+  async function refreshMachineStatus(){
+    let data = null;
+    try {
+      const resp = await fetch('/data/machine-status.json?t=' + Date.now());
+      if (resp.ok) data = await resp.json();
+    } catch (e) { /* fall through to not-configured state */ }
+    const mini = data && data.mini;
+    const stripEl = document.getElementById('machine-mini-value');
+    if (stripEl) renderMachineStatusInto(stripEl, mini);
+    const weekenderMiniEl = document.getElementById('weekender-mini-status-value');
+    if (weekenderMiniEl) renderMachineStatusInto(weekenderMiniEl, mini);
+  }
+
+  // ---------- OPEN HOUSE ----------
+  async function fetchOpenHouse(){
+    const resp = await fetch('/data/open-house.json?t=' + Date.now());
+    if (!resp.ok) throw new Error('Could not load open-house.json');
+    return resp.json();
+  }
+
+  async function refreshOpenHouse(){
+    try {
+      const data = await fetchOpenHouse();
+      document.getElementById('openhouse-address').value = data.address || '';
+      document.getElementById('openhouse-date').value = data.date || '';
+      document.getElementById('openhouse-time').value = data.time || '';
+      document.getElementById('openhouse-notes').value = data.notes || '';
+    } catch (e) { /* leave fields blank */ }
+  }
+
+  document.getElementById('openhouse-save-btn').addEventListener('click', async () => {
+    const statusEl = document.getElementById('openhouse-status');
+    statusEl.style.display = 'block';
+    statusEl.style.color = '';
+    statusEl.textContent = 'Saving…';
+    try {
+      const resp = await fetch('/api/save-project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          resource: 'openhouse',
+          address: document.getElementById('openhouse-address').value.trim(),
+          date: document.getElementById('openhouse-date').value.trim(),
+          time: document.getElementById('openhouse-time').value.trim(),
+          notes: document.getElementById('openhouse-notes').value.trim(),
+        }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || 'Save failed');
+      statusEl.style.color = 'var(--stamp-green)';
+      statusEl.textContent = 'Saved.';
+    } catch (e) {
+      statusEl.style.color = 'var(--stamp-red)';
+      statusEl.textContent = `Couldn't save: ${e.message}`;
+    }
+  });
+
+  // ---------- MASTER PROJECT LIST ----------
+  let projectsCache = [];
+  const STATUS_LABELS = {
+    idea: 'Idea', planned: 'Planned', 'in-progress': 'In progress', running: 'Running',
+    blocked: 'Blocked', 'needs-check': 'Needs check', done: 'Done',
+  };
+  const MACHINE_LABELS = { mini: 'Oasis Mini', macbook: 'MacBook Pro', cloud: 'Cloud / Vercel', unassigned: 'Unassigned' };
+
+  async function fetchProjects(){
+    const resp = await fetch('/data/projects.json?t=' + Date.now());
+    if (!resp.ok) throw new Error('Could not load projects.json');
+    return resp.json();
+  }
+
+  function projectRow(p){
+    const row = document.createElement('div');
+    row.className = 'project-row';
+    const statusClass = 'pill-' + p.status;
+    row.innerHTML = `
+      <div class="project-row-top">
+        <div style="flex:1;min-width:180px;">
+          <div class="client-name">${escapeHtml(p.title)}</div>
+          <div class="project-row-tags">
+            <span class="pill ${statusClass}">${escapeHtml(STATUS_LABELS[p.status] || p.status)}</span>
+            <span class="machine-tag">${escapeHtml(MACHINE_LABELS[p.machine] || p.machine)}</span>
+          </div>
+        </div>
+        <div class="project-row-actions">
+          <button class="btn btn-text project-edit-btn" type="button">Edit</button>
+          <button class="btn btn-text project-remove-btn" type="button">Remove</button>
+        </div>
+      </div>
+      ${p.notes ? `<div class="project-row-notes">${escapeHtml(p.notes)}</div>` : ''}
+      ${p.redundancyNote ? `<div class="project-row-flag">⚑ ${escapeHtml(p.redundancyNote)}</div>` : ''}
+      ${p.waitingOn ? `<div class="project-row-waiting">Needed from you: ${escapeHtml(p.waitingOn)}</div>` : ''}
+    `;
+    row.querySelector('.project-edit-btn').addEventListener('click', () => loadProjectIntoForm(p));
+    row.querySelector('.project-remove-btn').addEventListener('click', () => removeProject(p));
+    return row;
+  }
+
+  function renderProjects(){
+    const automationsEl = document.getElementById('projects-automations-list');
+    const ideasEl = document.getElementById('projects-ideas-list');
+    automationsEl.innerHTML = '';
+    ideasEl.innerHTML = '';
+
+    const automations = projectsCache.filter(p => p.kind === 'automation');
+    const ideas = projectsCache.filter(p => p.kind !== 'automation');
+
+    if (automations.length === 0) {
+      automationsEl.innerHTML = '<div class="empty-hint">Nothing logged yet.</div>';
+    } else {
+      automations.forEach(p => automationsEl.appendChild(projectRow(p)));
+    }
+    if (ideas.length === 0) {
+      ideasEl.innerHTML = '<div class="empty-hint">No ideas yet — add one above.</div>';
+    } else {
+      ideas.forEach(p => ideasEl.appendChild(projectRow(p)));
+    }
+
+    const needed = projectsCache.filter(p => p.waitingOn);
+    const calloutEl = document.getElementById('needed-callout');
+    const neededListEl = document.getElementById('needed-list');
+    if (needed.length === 0) {
+      calloutEl.style.display = 'none';
+    } else {
+      calloutEl.style.display = 'block';
+      neededListEl.innerHTML = needed.map(p =>
+        `<div style="font-size:.85rem;margin-bottom:.3rem;"><strong>${escapeHtml(p.title)}:</strong> ${escapeHtml(p.waitingOn)}</div>`
+      ).join('');
+    }
+
+    const badge = document.getElementById('masterlist-nav-badge');
+    if (needed.length > 0) { badge.style.display = 'inline-block'; badge.textContent = needed.length; }
+    else { badge.style.display = 'none'; }
+  }
+
+  function loadProjectIntoForm(p){
+    document.getElementById('project-form-id').value = p.id;
+    document.getElementById('project-form-title').value = p.title;
+    document.getElementById('project-form-notes').value = p.notes || '';
+    document.getElementById('project-form-status').value = p.status;
+    document.getElementById('project-form-machine').value = p.machine;
+    document.getElementById('project-form-kind').value = p.kind;
+    document.getElementById('project-form-waiting').value = p.waitingOn || '';
+    document.getElementById('project-form-redundancy').value = p.redundancyNote || '';
+    document.getElementById('project-form-save').textContent = 'Save changes';
+    document.getElementById('project-form-cancel').style.display = 'inline-flex';
+    document.getElementById('masterlist').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function resetProjectForm(){
+    document.getElementById('project-form-id').value = '';
+    document.getElementById('project-form-title').value = '';
+    document.getElementById('project-form-notes').value = '';
+    document.getElementById('project-form-status').value = 'idea';
+    document.getElementById('project-form-machine').value = 'unassigned';
+    document.getElementById('project-form-kind').value = 'idea';
+    document.getElementById('project-form-waiting').value = '';
+    document.getElementById('project-form-redundancy').value = '';
+    document.getElementById('project-form-save').textContent = 'Save to list';
+    document.getElementById('project-form-cancel').style.display = 'none';
+  }
+
+  function setProjectFormStatus(msg, isError){
+    const el = document.getElementById('project-form-status');
+    el.style.display = msg ? 'block' : 'none';
+    el.style.color = isError ? 'var(--stamp-red)' : '';
+    el.textContent = msg;
+  }
+
+  document.getElementById('project-form-cancel').addEventListener('click', resetProjectForm);
+
+  document.getElementById('project-form-save').addEventListener('click', async () => {
+    const id = document.getElementById('project-form-id').value.trim();
+    const title = document.getElementById('project-form-title').value.trim();
+    if (!title) { setProjectFormStatus('A title is required.', true); return; }
+    setProjectFormStatus('Saving…', false);
+    try {
+      const resp = await fetch('/api/save-project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          resource: 'project',
+          id: id || undefined,
+          title,
+          notes: document.getElementById('project-form-notes').value.trim(),
+          status: document.getElementById('project-form-status').value,
+          machine: document.getElementById('project-form-machine').value,
+          kind: document.getElementById('project-form-kind').value,
+          waitingOn: document.getElementById('project-form-waiting').value.trim(),
+          redundancyNote: document.getElementById('project-form-redundancy').value.trim(),
+        }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || 'Save failed');
+      setProjectFormStatus('', false);
+      resetProjectForm();
+      projectsCache = await fetchProjects();
+      renderProjects();
+    } catch (e) {
+      setProjectFormStatus(`Couldn't save: ${e.message}`, true);
+    }
+  });
+
+  async function removeProject(p){
+    if (!confirm(`Remove "${p.title}" from the list?`)) return;
+    try {
+      const resp = await fetch('/api/save-project', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ resource: 'project', id: p.id }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || 'Remove failed');
+      projectsCache = await fetchProjects();
+      renderProjects();
+    } catch (e) {
+      alert(`Couldn't remove: ${e.message}`);
+    }
+  }
+
+  async function refreshProjects(){
+    try {
+      projectsCache = await fetchProjects();
+      renderProjects();
+    } catch (e) {
+      document.getElementById('projects-ideas-list').innerHTML =
+        `<div class="empty-hint">Couldn't load the project list: ${escapeHtml(e.message)}</div>`;
+    }
+  }
+
   // ---------- INIT ----------
   renderHeader();
   renderSchedule();
@@ -2058,6 +2412,9 @@
   refreshAnniversaries(false);
   refreshWeekenderStatus();
   refreshToday();
+  refreshMachineStatus();
+  refreshOpenHouse();
+  refreshProjects();
 })();
 </script>
 </body>
