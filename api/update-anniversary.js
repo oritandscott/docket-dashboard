@@ -3,8 +3,8 @@
 // Unlike save-anniversary.js (which the daily Cowork automation calls
 // server-to-server with ANNIVERSARY_SHARED_SECRET), this endpoint is meant to
 // be called directly from the dashboard UI, so it does not require that
-// secret -- same trust model as the existing Blog Drafts panel endpoints
-// (dismiss-draft.js / list-drafts.js). The GITHUB_TOKEN that actually
+// secret -- same trust model as the existing Blog Drafts panel endpoint
+// (list-drafts.js). The GITHUB_TOKEN that actually
 // authorizes the write stays server-side the whole time.
 
 const REPO = 'oritandscott/docket-dashboard';
