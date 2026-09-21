@@ -17,6 +17,15 @@ const FILE_PATH = 'data/machine-status.json';
 const BRANCH = 'main';
 
 export default async function handler(req, res) {
+  // Daily Dashboard Digest (see api/_digest.js). Merged in here rather than
+  // given its own file to stay under Vercel Hobby's 12-function cap. Called
+  // by the cron in vercel.json as /api/machine-status?job=digest; every other
+  // request behaves exactly as before.
+  if (req.query && req.query.job === 'digest') {
+    const { runDigest } = await import('./_digest.js');
+    return runDigest(req, res);
+  }
+
   try {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     if (!GITHUB_TOKEN) {
