@@ -35,11 +35,11 @@
 {
   "id": "proj-1a0b4e2cc892nwv",
   "title": "Home Anniversary Outreach",
-  "notes": "Confirmed running as a Routine on the Oasis Mini. Found via screenshot (9/22) on Scott's MacBook Pro's Routines page (a separate area from Settings > Scheduled tasks): a routine literally named \"OLD HOME ANNIV on MACBOOK PRO - PAUSED\" is actually still ACTIVE, firing daily at ~8:00 AM — its own name claims it's paused but the real status flag says otherwise. This is the live duplicate causing the redundancy, and it's genuinely still running, not just leftover config.",
+  "notes": "Confirmed running as a Routine on the Oasis Mini. Resolved (9/22): the live duplicate on Scott's MacBook Pro, \"OLD HOME ANNIV on MACBOOK PRO - PAUSED\" (a misleadingly-named routine that was actually still Active, firing daily ~8am), has been Archived by Scott directly in the app. Confirmed via the session's own \"This session is archived\" banner — no longer running on the Pro. Mini is now the sole source for this automation.",
   "kind": "automation", "status": "running", "machine": "mini",
-  "redundancyNote": "Live duplicate on Scott's MacBook Pro: \"OLD HOME ANNIV on MACBOOK PRO - PAUSED\" (misleading name — actual status is Active, daily ~8am). Needs the real Pause/toggle switched, not just trusting the title.",
-  "waitingOn": "Scott: open \"OLD HOME ANNIV on MACBOOK PRO - PAUSED\" under Routines on the MacBook Pro and actually toggle it off — the name says paused but the status shown is Active.",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T23:07:27.000Z"
+  "redundancyNote": "",
+  "waitingOn": "",
+  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T23:20:46.000Z"
 },
 {
   "id": "proj-1a0b4e2cc8a9zsw",
@@ -131,6 +131,14 @@
   "kind": "idea", "status": "idea", "machine": "cloud",
   "redundancyNote": "", "waitingOn": "",
   "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T22:06:55.000Z"
+},
+{
+  "id": "proj-1a0b4e2cc97qsyw",
+  "title": "MLS Activity Sync",
+  "notes": "Discovered via audit (9/22): a local Routine on Scott's MacBook Pro, Mondays ~10am. Checks ARMLS/Flexmls \"Activity Report\" emails and logs a short MLS Activity entry per listing in Oasis Navigator. Confirmed healthy — ran successfully yesterday (9/21), added 2 entries for the 4007 E. Agave Rd, Phoenix transaction. Good candidate to move to the Mini for the same reason as the others: local routines only run while the Pro itself is awake and online, so this silently gets skipped if Scott is traveling with it on a Monday. Unlike the browser-only automations, this one depends on an actual local checkout of the oasis-navigator codebase (it ran npm ci and generated a Prisma client mid-run) — moving it means setting up that project on the Mini too, not just recreating the routine text.",
+  "kind": "automation", "status": "running", "machine": "macbook",
+  "redundancyNote": "", "waitingOn": "",
+  "createdAt": "2026-09-22T23:20:46.000Z", "updatedAt": "2026-09-22T23:20:46.000Z"
 },
 {
   "id": "proj-1a0b4e2cc96m1tl",
