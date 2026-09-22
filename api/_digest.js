@@ -605,7 +605,7 @@ function buildEmail({ book, yt, drafts, cal, nav, ann }, now) {
   const html = `<!doctype html><html><body style="margin:0;padding:0;background:${C.bg};">
   <div style="max-width:640px;margin:0 auto;padding:24px 20px;">
     <div style="font:600 12px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:${C.accent};">Docket Dashboard</div>
-    <h1 style="margin:4px 0 8px;font:700 34px Georgia,serif;color:${C.navy};">Your Morning Digest</h1>
+    <h1 style="margin:4px 0 8px;font:700 34px Georgia,serif;color:${C.red};">Your Morning Digest</h1>
     ${p(esc(intro))}
     ${sections.join('\n')}
     <p style="margin:32px 0 0;font:12px Arial,sans-serif;color:${C.muted};border-top:1px solid ${C.line};padding-top:12px;">
