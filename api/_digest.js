@@ -229,7 +229,11 @@ function normalizeKWLabel(calName, location, ev, cal, eventColors, calendarColor
   if (!/KWRP/.test(calName)) return { calName, location };
   if (MCDOWELL_RE.test(location)) return { calName: 'KWRP Scottsdale', location: '' };
   if (WARNER_RE.test(location)) return { calName: 'KWRP Tempe', location: '' };
-  if (calName === 'KWRP') {
+  // Any KWRP-named calendar that doesn't already spell out a city ("KWRP",
+  // "KWRP Events", "KWRP Events + Training Calendar", ...) is ambiguous, so
+  // fall back to the calendar's/event's assigned color to tell Tempe (blue),
+  // Scottsdale (yellow/gold), and KWIF (red) apart.
+  if (!/Tempe|Scottsdale/i.test(calName)) {
     const eventHex = ev.colorId && eventColors[ev.colorId] && eventColors[ev.colorId].background;
     const calHex = cal.backgroundColor || (cal.colorId && calendarColors[cal.colorId] && calendarColors[cal.colorId].background);
     const family = colorFamily(eventHex) || colorFamily(calHex);
@@ -244,6 +248,28 @@ function normalizeKWLabel(calName, location, ev, cal, eventColors, calendarColor
   // strip a street address so the brief doesn't get cluttered.
   if (STREET_ADDRESS_RE.test(location)) return { calName, location: '' };
   return { calName, location };
+}
+
+// Pulls a live link out of a calendar event, if it has one: a video-call
+// link (Meet/Zoom/etc. via hangoutLink or conferenceData), else the first
+// URL found in the location or description. Trims trailing punctuation that
+// tends to get swept up when a URL is pasted into a sentence.
+const URL_RE = /(https?:\/\/[^\s<>"']+)/i;
+const cleanUrl = (u) => u.replace(/[)\]>.,;:'"]+$/, '');
+
+function extractEventLink(ev) {
+  if (ev.hangoutLink) return cleanUrl(ev.hangoutLink);
+  if (ev.conferenceData && Array.isArray(ev.conferenceData.entryPoints)) {
+    const video = ev.conferenceData.entryPoints.find((e) => e.entryPointType === 'video' && e.uri);
+    if (video) return cleanUrl(video.uri);
+    const any = ev.conferenceData.entryPoints.find((e) => e.uri);
+    if (any) return cleanUrl(any.uri);
+  }
+  const locMatch = ev.location && URL_RE.exec(ev.location);
+  if (locMatch) return cleanUrl(locMatch[1]);
+  const descMatch = ev.description && URL_RE.exec(ev.description);
+  if (descMatch) return cleanUrl(descMatch[1]);
+  return '';
 }
 
 async function loadCalendar(now) {
@@ -291,10 +317,12 @@ async function loadCalendar(now) {
         if (!startISO) return;
         const rawCalName = cal.summaryOverride || cal.summary || cal.id;
         const { calName, location } = normalizeKWLabel(rawCalName, ev.location || '', ev, cal, eventColors, calendarColors);
+        const link = extractEventLink(ev);
         const key = `${(ev.summary || '').trim().toLowerCase()}|${startISO}`;
         if (seen.has(key)) { // same event on several calendars: merge, list every calendar
           const existing = seen.get(key);
           if (!existing.calendars.includes(calName)) existing.calendars.push(calName);
+          if (!existing.link && link) existing.link = link;
           return;
         }
         const entry = {
@@ -303,6 +331,7 @@ async function loadCalendar(now) {
           startISO,
           endISO: allDay ? ev.end && ev.end.date : ev.end && ev.end.dateTime,
           location,
+          link,
           calendars: [calName],
           dayISO: allDay ? ev.start.date : phoenixDateISO(new Date(startISO)),
           sortMs: allDay ? new Date(`${ev.start.date}T00:00:00-07:00`).getTime() : new Date(startISO).getTime(),
@@ -643,6 +672,26 @@ function renderDrafts(r) {
   return html + p(link(`${DASHBOARD_URL}/#blogdrafts`, 'Open Ghostwriter'));
 }
 
+// Office grouping: within a day, events are clustered by KW office so the
+// reader can tell at a glance what's happening where. Order and color match
+// each office's Google Calendar color; anything not from one of the three
+// named KW calendars falls into "Other" with no special color.
+const OFFICE_ORDER = ['KWRP Tempe', 'KWIF', 'KWRP Scottsdale'];
+const OFFICE_COLOR = { 'KWRP Tempe': C.blue, 'KWIF': C.red, 'KWRP Scottsdale': C.accent };
+const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/u/0/r';
+const officeBucket = (e) => (OFFICE_ORDER.includes(e.calendars[0]) ? e.calendars[0] : 'Other');
+
+function renderCalEvent(e) {
+  const time = e.allDay ? 'ALL DAY'
+    : fmt(new Date(e.startISO), { hour: 'numeric', minute: '2-digit' }) + (e.endISO ? '–' + fmt(new Date(e.endISO), { hour: 'numeric', minute: '2-digit' }) : '');
+  return `<div style="margin:10px 0;">
+    <div style="font:700 11px Arial,sans-serif;color:${C.muted};letter-spacing:.04em;">${esc(time)}</div>
+    <div style="margin-top:2px;font:15px/1.4 Arial,sans-serif;color:${C.text};"><strong>${esc(e.title)}</strong> <span style="color:${C.muted};font-size:12px;">&middot; ${esc(e.calendars.join(', '))}</span></div>
+    ${e.location ? `<div style="margin-top:1px;color:${C.muted};font-size:12px;">${esc(e.location)}</div>` : ''}
+    ${e.link ? `<div style="margin-top:2px;font-size:12px;">${link(e.link, 'Join / view link')}</div>` : ''}
+  </div>`;
+}
+
 function renderCalendar(r) {
   if (!r.ok) return h2('Calendar') + problem('the calendar', r.error);
   let html = h2('On the calendar: today and tomorrow');
@@ -652,15 +701,24 @@ function renderCalendar(r) {
   [...byDay.entries()].forEach(([dayISO, evs]) => {
     const long = fmt(new Date(`${dayISO}T12:00:00-07:00`), { weekday: 'long', month: 'short', day: 'numeric' });
     const heading = (dayISO === r.todayISO ? `Today, ${long}` : dayISO === r.tomorrowISO ? `Tomorrow, ${long}` : long).toUpperCase();
-    const eventsHtml = evs.map((e) => {
-      const time = e.allDay ? 'ALL DAY'
-        : fmt(new Date(e.startISO), { hour: 'numeric', minute: '2-digit' }) + (e.endISO ? '–' + fmt(new Date(e.endISO), { hour: 'numeric', minute: '2-digit' }) : '');
-      return `<div style="margin:10px 0;">
-        <div style="font:700 11px Arial,sans-serif;color:${C.muted};letter-spacing:.04em;">${esc(time)}</div>
-        <div style="margin-top:2px;font:15px/1.4 Arial,sans-serif;color:${C.text};"><strong>${esc(e.title)}</strong> <span style="color:${C.muted};font-size:12px;">&middot; ${esc(e.calendars.join(', '))}</span></div>
-        ${e.location ? `<div style="margin-top:1px;color:${C.muted};font-size:12px;">${esc(e.location)}</div>` : ''}
-      </div>`;
+
+    const groups = new Map();
+    evs.forEach((e) => {
+      const key = officeBucket(e);
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(e);
+    });
+    const orderedKeys = [...OFFICE_ORDER.filter((k) => groups.has(k)), ...(groups.has('Other') ? ['Other'] : [])];
+    // Only bother with sub-headings when a day actually spans more than one
+    // office; a single-office day just lists its events like before.
+    const showSubheadings = orderedKeys.length > 1;
+    const eventsHtml = orderedKeys.map((key) => {
+      const groupHtml = groups.get(key).map(renderCalEvent).join('');
+      if (!showSubheadings) return groupHtml;
+      const color = OFFICE_COLOR[key] || C.navy;
+      return `<div style="margin:10px 0 2px;font:700 12px Arial,sans-serif;color:${color};letter-spacing:.05em;text-transform:uppercase;">${esc(key)}</div>${groupHtml}`;
     }).join('');
+
     // <details> gives a native collapse/expand arrow with no JavaScript; it
     // degrades gracefully (always shown, no arrow) in clients that don't
     // support it, so open by default keeps it safe everywhere.
@@ -669,6 +727,7 @@ function renderCalendar(r) {
       <div style="margin-top:4px;">${eventsHtml}</div>
     </details>`;
   });
+  html += `<div style="margin:18px 0 6px;"><a href="${esc(GOOGLE_CALENDAR_URL)}" style="display:inline-block;padding:10px 20px;border:2px solid ${C.blue};border-radius:6px;color:${C.blue};font:700 13px Arial,sans-serif;letter-spacing:.05em;text-decoration:none;">GO TO THE GOOGLE CALENDAR</a></div>`;
   if (r.failedCalendars) html += muted(`${r.failedCalendars} calendar(s) couldn't be read this morning.`);
   return html;
 }
