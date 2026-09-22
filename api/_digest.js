@@ -201,6 +201,51 @@ async function loadDrafts(win) {
 
 // ---------- section: Google Calendar (every calendar the account can see) ----------
 
+// KWRP/KWIF office cleanup: several Keller Williams calendars are shared
+// across offices, so the raw calendar name alone doesn't say which office an
+// event is at. Where the event's location is a known office address, that
+// tells us the office; where a "KWRP" calendar has no useful location, its
+// assigned color does (Blue = Tempe, Yellow = Scottsdale, Red = KWIF). Either
+// way, once we know the office we drop the street address to keep the brief
+// short.
+const MCDOWELL_RE = /6400\s*E\.?\s*McDowell/i;
+const WARNER_RE = /2077\s*E\.?\s*Warner/i;
+const STREET_ADDRESS_RE = /\d+\s+[A-Za-z].*\b(Rd|Rd\.|St|St\.|Ave|Ave\.|Dr|Dr\.|Ln|Ln\.|Blvd|Blvd\.|Way|Pkwy|Pkwy\.)\b|,\s*[A-Z]{2}\s*\d{5}/;
+
+function colorFamily(hex) {
+  if (!hex) return null;
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return null;
+  const r = parseInt(m[1].slice(0, 2), 16), g = parseInt(m[1].slice(2, 4), 16), b = parseInt(m[1].slice(4, 6),16);
+  if (r > 180 && g > 150 && b < 130) return 'yellow';
+  if (b > r && b > g && b > 120) return 'blue';
+  if (r > g && r > b && g < 130 && b < 130) return 'red';
+  return null;
+}
+
+// Normalizes a KW event's displayed calendar label and location in place,
+// returning { calName, location }.
+function normalizeKWLabel(calName, location, ev, cal, eventColors, calendarColors) {
+  if (!/KWRP/.test(calName)) return { calName, location };
+  if (MCDOWELL_RE.test(location)) return { calName: 'KWRP Scottsdale', location: '' };
+  if (WARNER_RE.test(location)) return { calName: 'KWRP Tempe', location: '' };
+  if (calName === 'KWRP') {
+    const eventHex = ev.colorId && eventColors[ev.colorId] && eventColors[ev.colorId].background;
+    const calHex = cal.backgroundColor || (cal.colorId && calendarColors[cal.colorId] && calendarColors[cal.colorId].background);
+    const family = colorFamily(eventHex) || colorFamily(calHex);
+    // Only a real street address is "address info" worth dropping; a room
+    // name like "KWEV University Room" is still useful, so keep it.
+    const keptLocation = STREET_ADDRESS_RE.test(location) ? '' : location;
+    if (family === 'blue') return { calName: 'KWRP Tempe', location: keptLocation };
+    if (family === 'yellow') return { calName: 'KWRP Scottsdale', location: keptLocation };
+    if (family === 'red') return { calName: 'KWIF', location: keptLocation };
+  }
+  // Unrecognized KW calendar/location combo: leave the name as-is, but still
+  // strip a street address so the brief doesn't get cluttered.
+  if (STREET_ADDRESS_RE.test(location)) return { calName, location: '' };
+  return { calName, location };
+}
+
 async function loadCalendar(now) {
   const { GCAL_CLIENT_ID: id, GCAL_CLIENT_SECRET: secret, GCAL_REFRESH_TOKEN: refresh } = process.env;
   if (!id || !secret || !refresh) throw new Error('Calendar credentials are not set up');
@@ -212,9 +257,15 @@ async function loadCalendar(now) {
   const timeMin = new Date(`${todayISO}T00:00:00-07:00`);
   const timeMax = new Date(timeMin.getTime() + (CALENDAR_DAYS_AHEAD + 1) * 24 * 60 * 60 * 1000);
 
-  const listRes = await fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList?maxResults=250', { headers });
+  const [listRes, colorsRes] = await Promise.all([
+    fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList?maxResults=250', { headers }),
+    fetch('https://www.googleapis.com/calendar/v3/colors', { headers }),
+  ]);
   if (!listRes.ok) throw new Error(`Google Calendar returned ${listRes.status}`);
   const calendars = ((await listRes.json()).items || []).filter((c) => !c.deleted && !c.hidden);
+  const colorsData = colorsRes.ok ? await colorsRes.json() : { event: {}, calendar: {} };
+  const eventColors = colorsData.event || {};
+  const calendarColors = colorsData.calendar || {};
 
   const seen = new Map();
   const events = [];
@@ -238,7 +289,8 @@ async function loadCalendar(now) {
         const allDay = !!(ev.start && ev.start.date);
         const startISO = allDay ? ev.start.date : ev.start && ev.start.dateTime;
         if (!startISO) return;
-        const calName = cal.summaryOverride || cal.summary || cal.id;
+        const rawCalName = cal.summaryOverride || cal.summary || cal.id;
+        const { calName, location } = normalizeKWLabel(rawCalName, ev.location || '', ev, cal, eventColors, calendarColors);
         const key = `${(ev.summary || '').trim().toLowerCase()}|${startISO}`;
         if (seen.has(key)) { // same event on several calendars: merge, list every calendar
           const existing = seen.get(key);
@@ -250,7 +302,7 @@ async function loadCalendar(now) {
           allDay,
           startISO,
           endISO: allDay ? ev.end && ev.end.date : ev.end && ev.end.dateTime,
-          location: ev.location || '',
+          location,
           calendars: [calName],
           dayISO: allDay ? ev.start.date : phoenixDateISO(new Date(startISO)),
           sortMs: allDay ? new Date(`${ev.start.date}T00:00:00-07:00`).getTime() : new Date(startISO).getTime(),
@@ -434,10 +486,58 @@ async function loadNavigator(win, now) {
 
 // ---------- section: Home Anniversaries (same list the dashboard shows) ----------
 
+// The source data sometimes has a couple record ("Bill & Debbie Bednar") AND
+// separate individual records for the same purchase ("Bill Bednar", "Debbie
+// Bednar") -- a duplication bug upstream. Other couples never got a combined
+// record at all (just two individuals). Group records by purchase (same
+// address + date) and collapse each group to one line: prefer an explicit
+// "&" record if one exists, otherwise synthesize one from two individuals,
+// so duplicates never reach the email and real couples aren't split up.
+function synthesizeCoupleName(a, b) {
+  const aParts = String(a.name).trim().split(/\s+/);
+  const bParts = String(b.name).trim().split(/\s+/);
+  const aLast = aParts[aParts.length - 1];
+  const bLast = bParts[bParts.length - 1];
+  if (aParts.length > 1 && bParts.length > 1 && aLast.toLowerCase() === bLast.toLowerCase()) {
+    return `${aParts.slice(0, -1).join(' ')} & ${b.name.trim()}`;
+  }
+  return `${a.name.trim()} & ${b.name.trim()}`;
+}
+
+function mergeAnniversaryRecords(records) {
+  const groups = new Map();
+  records.forEach((r) => {
+    const key = r.address && String(r.address).trim()
+      ? `${r.purchaseDate}|${String(r.address).trim().toLowerCase()}`
+      : `id:${r.id || Math.random()}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(r);
+  });
+  const merged = [];
+  groups.forEach((group) => {
+    const combined = group.find((r) => /&/.test(r.name));
+    const individuals = group.filter((r) => !/&/.test(r.name));
+    if (combined) {
+      merged.push(combined); // duplicate individual records for the same purchase are dropped
+    } else if (individuals.length === 2) {
+      const [a, b] = individuals;
+      merged.push({
+        ...a,
+        name: synthesizeCoupleName(a, b),
+        dismissed: Boolean(a.dismissed || b.dismissed),
+        status: a.status === 'actionable' || b.status === 'actionable' ? 'actionable' : a.status,
+      });
+    } else {
+      individuals.forEach((r) => merged.push(r));
+    }
+  });
+  return merged;
+}
+
 async function loadAnniversaries(now) {
   const res = await fetch(`${DASHBOARD_URL}/data/anniversaries.json?t=${Date.now()}`);
   if (!res.ok) throw new Error(`Anniversary list returned ${res.status}`);
-  const records = await res.json();
+  const records = mergeAnniversaryRecords(await res.json());
   const todayISO = phoenixDateISO(now);
   const [ty, tm, td] = todayISO.split('-').map(Number);
   const todayUTC = Date.UTC(ty, tm - 1, td);
@@ -464,9 +564,26 @@ async function loadAnniversaries(now) {
 
 // ---------- email rendering ----------
 
-const C = { navy: '#101F35', text: '#2b2b2b', muted: '#6b7280', line: '#e5e7eb', accent: '#b8862b', bg: '#f6f4ef', red: '#c4161c' };
+const C = { navy: '#101F35', text: '#2b2b2b', muted: '#6b7280', line: '#e5e7eb', accent: '#b8862b', bg: '#f6f4ef', red: '#ee1c25', blue: '#1257e0' };
 
-const h2 = (t) => `<h2 style="margin:32px 0 10px;font:700 24px Georgia,serif;color:${C.red};border-bottom:1px solid ${C.line};padding-bottom:6px;">${esc(t)}</h2>`;
+// Title-cases a heading, leaving small connector words (and, in, at, the, ...)
+// lowercase unless they're the first or last word, and never lowercases the
+// rest of a word (so "YouTube" and "Book-A-Call" keep their own casing).
+const SMALL_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'nor', 'of', 'on', 'or', 'per', 'so', 'the', 'to', 'vs', 'via', 'yet']);
+function titleCase(str) {
+  const words = String(str).split(' ');
+  return words.map((w, i) => {
+    const m = /^([("']*)([A-Za-z][A-Za-z'-]*)([:)",.!?]*)$/.exec(w);
+    if (!m) return w;
+    const [, lead, core, trail] = m;
+    if (i !== 0 && i !== words.length - 1 && SMALL_WORDS.has(core.toLowerCase())) {
+      return lead + core.toLowerCase() + trail;
+    }
+    return lead + core.charAt(0).toUpperCase() + core.slice(1) + trail;
+  }).join(' ');
+}
+
+const h2 = (t) => `<h2 style="margin:32px 0 10px;font:700 24px Georgia,serif;color:${C.red};border-bottom:1px solid ${C.line};padding-bottom:6px;">${esc(titleCase(t))}</h2>`;
 const p = (t, extra = '') => `<p style="margin:6px 0;font:15px/1.5 Arial,sans-serif;color:${C.text};${extra}">${t}</p>`;
 const muted = (t) => p(esc(t), `color:${C.muted};`);
 const problem = (name, err) => p(`Couldn't check ${esc(name)} this morning (${esc(err)}). Worth a look in the dashboard.`, `color:#9a3412;`);
@@ -534,14 +651,23 @@ function renderCalendar(r) {
   r.events.forEach((e) => { if (!byDay.has(e.dayISO)) byDay.set(e.dayISO, []); byDay.get(e.dayISO).push(e); });
   [...byDay.entries()].forEach(([dayISO, evs]) => {
     const long = fmt(new Date(`${dayISO}T12:00:00-07:00`), { weekday: 'long', month: 'short', day: 'numeric' });
-    const heading = dayISO === r.todayISO ? `Today, ${long}` : dayISO === r.tomorrowISO ? `Tomorrow, ${long}` : long;
-    html += `<div style="margin:12px 0 4px;font:600 14px Arial,sans-serif;color:${C.navy};">${esc(heading)}</div>`;
-    evs.forEach((e) => {
-      const time = e.allDay ? 'All day'
+    const heading = (dayISO === r.todayISO ? `Today, ${long}` : dayISO === r.tomorrowISO ? `Tomorrow, ${long}` : long).toUpperCase();
+    const eventsHtml = evs.map((e) => {
+      const time = e.allDay ? 'ALL DAY'
         : fmt(new Date(e.startISO), { hour: 'numeric', minute: '2-digit' }) + (e.endISO ? '–' + fmt(new Date(e.endISO), { hour: 'numeric', minute: '2-digit' }) : '');
-      html += `<div style="margin:3px 0;font:14px/1.45 Arial,sans-serif;"><span style="display:inline-block;min-width:118px;color:${C.muted};">${esc(time)}</span><strong>${esc(e.title)}</strong>
-        <span style="color:${C.muted};font-size:12px;"> &middot; ${esc(e.calendars.join(', '))}</span>${e.location ? `<div style="margin-left:118px;color:${C.muted};font-size:12px;">${esc(e.location)}</div>` : ''}</div>`;
-    });
+      return `<div style="margin:10px 0;">
+        <div style="font:700 11px Arial,sans-serif;color:${C.muted};letter-spacing:.04em;">${esc(time)}</div>
+        <div style="margin-top:2px;font:15px/1.4 Arial,sans-serif;color:${C.text};"><strong>${esc(e.title)}</strong> <span style="color:${C.muted};font-size:12px;">&middot; ${esc(e.calendars.join(', '))}</span></div>
+        ${e.location ? `<div style="margin-top:1px;color:${C.muted};font-size:12px;">${esc(e.location)}</div>` : ''}
+      </div>`;
+    }).join('');
+    // <details> gives a native collapse/expand arrow with no JavaScript; it
+    // degrades gracefully (always shown, no arrow) in clients that don't
+    // support it, so open by default keeps it safe everywhere.
+    html += `<details open style="margin:14px 0;">
+      <summary style="cursor:pointer;font:700 17px Arial,sans-serif;color:${C.blue};letter-spacing:.03em;">${esc(heading)}</summary>
+      <div style="margin-top:4px;">${eventsHtml}</div>
+    </details>`;
   });
   if (r.failedCalendars) html += muted(`${r.failedCalendars} calendar(s) couldn't be read this morning.`);
   return html;
@@ -591,7 +717,7 @@ function buildEmail({ book, yt, drafts, cal, nav, ann }, now) {
   const n = newBook + newComments + newDrafts + newNav;
 
   const dateLabel = fmt(now, { weekday: 'short', month: 'short', day: 'numeric' });
-  const subject = `Dashboard digest — ${dateLabel} — ${n === 0 ? 'quiet morning' : `${n} new`}`;
+  const subject = `Dashboard Digest — ${dateLabel} — ${n === 0 ? 'quiet morning' : `${n} new`}`;
 
   const intro = n === 0
     ? 'Good morning, Orit & Scott. Quiet morning: nothing new in the dashboard overnight. Here is what is on the calendar.'
