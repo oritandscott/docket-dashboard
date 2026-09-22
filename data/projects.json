@@ -26,20 +26,20 @@
 {
   "id": "proj-1a0b4e2cc88e2nv",
   "title": "Thursday Weekender — weekly Mailchimp event campaign build",
-  "notes": "Confirmed by Scott (9/22): there IS a Weekender Routine set up on the Oasis Mini, matching the pattern the old disabled cloud task's name hinted at (\"...CORRECT ONE IS A ROUTINE\"). The old cloud-level task (disabled, last fired 9/17) was the abandoned predecessor and can stay off. Still worth a live check once a session is linked to the Mini to confirm the Routine is actually firing Thursdays and producing a clean draft, not just that it exists.",
+  "notes": "Confirmed running as a Routine on the Oasis Mini — built during a long work session last Thursday (9/17-18); the Routine's own \"last edited\" date matches, so this is the real, current build, not something to redo. On Scott's MacBook Pro (checked via Settings > Scheduled tasks, 9/22 screenshot): two old predecessor entries, \"OLD Weekender Automation (Mac Mini)\" and \"OLD Weekender AutO 2 *CORRECT ONE IS A ROUTINE\", both already show status Paused — no live redundancy on the Pro, nothing further to do there for Weekender.",
   "kind": "automation", "status": "running", "machine": "mini",
-  "redundancyNote": "Name collision, not redundancy: this is a completely different project from 'Mailchimp Weekender list-hygiene' below. Same nickname, two unrelated things — worth renaming one to avoid confusion.",
+  "redundancyNote": "Name collision, not redundancy: this is a completely different project from 'Mailchimp Weekender list-hygiene' below. Same nickname, two unrelated things — worth renaming one to avoid confusion. (Also, cosmetically: the two old Paused entries on the MacBook Pro could be deleted for tidiness, but that's optional — they're inert.)",
   "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T22:52:58.000Z"
+  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T23:06:58.000Z"
 },
 {
   "id": "proj-1a0b4e2cc892nwv",
   "title": "Home Anniversary Outreach",
-  "notes": "Confirmed running as a Routine on the Oasis Mini (this is why it never showed up in the cloud scheduled-task list). Correction (9/22): it's ALSO still present as a Routine on Scott's MacBook Pro — genuinely redundant, not previously cleaned up as earlier notes assumed. Per Scott's rule, once the Mini's copy is confirmed firing correctly, the MacBook Pro copy should be turned off there.",
+  "notes": "Confirmed running as a Routine on the Oasis Mini. Found via screenshot (9/22) on Scott's MacBook Pro's Routines page (a separate area from Settings > Scheduled tasks): a routine literally named \"OLD HOME ANNIV on MACBOOK PRO - PAUSED\" is actually still ACTIVE, firing daily at ~8:00 AM — its own name claims it's paused but the real status flag says otherwise. This is the live duplicate causing the redundancy, and it's genuinely still running, not just leftover config.",
   "kind": "automation", "status": "running", "machine": "mini",
-  "redundancyNote": "Duplicate Routine also exists on Scott's MacBook Pro — safe to deactivate there once the Mini's copy is confirmed reliably firing (it's the one meant to survive, since it runs 24/7 and isn't disrupted when the Pro travels).",
-  "waitingOn": "Scott: turn off the 'Home Anniversary Outreach' Routine on the MacBook Pro (I can't reach that panel by remote control — it has to be done in the app itself).",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T22:54:29.000Z"
+  "redundancyNote": "Live duplicate on Scott's MacBook Pro: \"OLD HOME ANNIV on MACBOOK PRO - PAUSED\" (misleading name — actual status is Active, daily ~8am). Needs the real Pause/toggle switched, not just trusting the title.",
+  "waitingOn": "Scott: open \"OLD HOME ANNIV on MACBOOK PRO - PAUSED\" under Routines on the MacBook Pro and actually toggle it off — the name says paused but the status shown is Active.",
+  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T23:07:27.000Z"
 },
 {
   "id": "proj-1a0b4e2cc8a9zsw",
