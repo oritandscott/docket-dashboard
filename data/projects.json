@@ -26,20 +26,20 @@
 {
   "id": "proj-1a0b4e2cc88e2nv",
   "title": "Thursday Weekender — weekly Mailchimp event campaign build",
-  "notes": "The cloud-level scheduled task for this (named \"OLD Weekender Automation (Mac Mini) *CORRECT ONE IS A ROUTINE\") is disabled and stale — last actually fired 9/17, next run shows a past date. Its own name suggests it was intentionally retired in favor of a different, locally-stored routine on the Oasis Mini itself (the same pattern that turned out to be true for Home Anniversary Outreach below — those don't show up in the cloud scheduled-task list at all). Needs a direct answer from Scott/Orit: is a Weekender build already running successfully on the Mini as a local routine, or is this genuinely still not rebuilt?",
-  "kind": "automation", "status": "needs-check", "machine": "mini",
+  "notes": "Confirmed by Scott (9/22): there IS a Weekender Routine set up on the Oasis Mini, matching the pattern the old disabled cloud task's name hinted at (\"...CORRECT ONE IS A ROUTINE\"). The old cloud-level task (disabled, last fired 9/17) was the abandoned predecessor and can stay off. Still worth a live check once a session is linked to the Mini to confirm the Routine is actually firing Thursdays and producing a clean draft, not just that it exists.",
+  "kind": "automation", "status": "running", "machine": "mini",
   "redundancyNote": "Name collision, not redundancy: this is a completely different project from 'Mailchimp Weekender list-hygiene' below. Same nickname, two unrelated things — worth renaming one to avoid confusion.",
-  "waitingOn": "Confirm whether the Weekender build is already running as a local scheduled task on the Oasis Mini (per the trigger's own \"CORRECT ONE IS A ROUTINE\" note) — if not, link a Cowork session to the Mini so it can be rebuilt there.",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T22:06:55.000Z"
+  "waitingOn": "",
+  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T22:52:58.000Z"
 },
 {
   "id": "proj-1a0b4e2cc892nwv",
   "title": "Home Anniversary Outreach",
-  "notes": "Confirmed: runs only on the Oasis Mini (24/7) as a locally-stored scheduled task — this is why it never showed up in the cloud scheduled-task list. The duplicate that had been firing daily on Scott's MacBook Pro (unnoticed, since it was never actually paused) has been deleted.",
+  "notes": "Confirmed running as a Routine on the Oasis Mini (this is why it never showed up in the cloud scheduled-task list). Correction (9/22): it's ALSO still present as a Routine on Scott's MacBook Pro — genuinely redundant, not previously cleaned up as earlier notes assumed. Per Scott's rule, once the Mini's copy is confirmed firing correctly, the MacBook Pro copy should be turned off there.",
   "kind": "automation", "status": "running", "machine": "mini",
-  "redundancyNote": "",
-  "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T22:06:55.000Z"
+  "redundancyNote": "Duplicate Routine also exists on Scott's MacBook Pro — safe to deactivate there once the Mini's copy is confirmed reliably firing (it's the one meant to survive, since it runs 24/7 and isn't disrupted when the Pro travels).",
+  "waitingOn": "Scott: turn off the 'Home Anniversary Outreach' Routine on the MacBook Pro (I can't reach that panel by remote control — it has to be done in the app itself).",
+  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T22:54:29.000Z"
 },
 {
   "id": "proj-1a0b4e2cc8a9zsw",
@@ -127,7 +127,7 @@
 {
   "id": "proj-1a0b4e2cc95mpey",
   "title": "Scheduler view — all scheduled tasks, status & problems",
-  "notes": "A live view of every scheduled task/routine and its status. Refreshed audit (2026-09-22): 3 tasks show up at the cloud/account level — Weekly Database Email Draft (healthy, cloud), Daily Morning Brief (healthy, cloud), and OLD Weekender Automation (Mac Mini) (disabled, stale since 9/17 — its own name hints it was retired in favor of a local routine). IMPORTANT BLIND SPOT confirmed this round: locally-stored scheduled tasks that live only on a specific computer's Cowork desktop app (like Home Anniversary Outreach on the Oasis Mini) never show up in this cloud list at all — so this count always understates what's actually running on the Mini. A live version would need a way for the dashboard's Vercel backend to read scheduled-task status directly, which it can't do today — for now this list is refreshed by hand and can't see local-only tasks without a session linked to that specific machine.",
+  "notes": "A live view of every scheduled task/routine and its status. Refreshed audit (2026-09-22): 3 tasks show up at the cloud/account level — Weekly Database Email Draft (healthy, cloud), Daily Morning Brief (healthy, cloud), and OLD Weekender Automation (Mac Mini) (disabled, stale since 9/17, superseded — see below). IMPORTANT BLIND SPOT confirmed this round: the Oasis Mini runs its own local \"Routines\" (Home Anniversary Outreach, Weekender — both confirmed 9/22) that live only in that machine's own Claude app and never show up in this cloud list at all, and aren't visible to Claude even when a session is linked to that machine — only Scott/Orit can see that list directly in the app's own Settings/Routines panel. So this cloud count always understates what's actually running on the Mini. A live version would need either a way for the dashboard's Vercel backend to read scheduled-task/Routine status directly (which it can't do today) or the Mini's Routines themselves posting a heartbeat, the way the machine-status panel already expects — for now this list is refreshed by hand from what Scott/Orit report seeing in the app.",
   "kind": "idea", "status": "idea", "machine": "cloud",
   "redundancyNote": "", "waitingOn": "",
   "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T22:06:55.000Z"
