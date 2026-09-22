@@ -711,7 +711,7 @@ function renderCalendar(r) {
   if (r.events.length === 0) return html + muted(`Nothing scheduled across ${r.calendarCount} calendars for today or tomorrow.`);
   const byDay = new Map();
   r.events.forEach((e) => { if (!byDay.has(e.dayISO)) byDay.set(e.dayISO, []); byDay.get(e.dayISO).push(e); });
-  [...byDay.entries()].forEach(([dayISO, evs]) => {
+  [...byDay.entries()].forEach(([dayISO, evs], dayIdx) => {
     const long = fmt(new Date(`${dayISO}T12:00:00-07:00`), { weekday: 'long', month: 'short', day: 'numeric' });
     const heading = (dayISO === r.todayISO ? `Today, ${long}` : dayISO === r.tomorrowISO ? `Tomorrow, ${long}` : long).toUpperCase();
 
@@ -740,7 +740,11 @@ function renderCalendar(r) {
     // <details> gives a native collapse/expand arrow with no JavaScript; it
     // degrades gracefully (always shown, no arrow) in clients that don't
     // support it, so open by default keeps it safe everywhere.
-    html += `<details open style="margin:14px 0;">
+    // Every day after the first (i.e. Tomorrow, and any day beyond it) gets
+    // a full-width divider and extra top space above its heading, so it
+    // reads as a clean break from the previous day's events.
+    const dayDivider = dayIdx > 0 ? `<hr style="margin:28px 0 0;border:none;border-top:1px solid ${C.line};">` : '';
+    html += `${dayDivider}<details open style="margin:${dayIdx > 0 ? '20px' : '14px'} 0 14px;">
       <summary style="cursor:pointer;font:700 17px Arial,sans-serif;color:${C.blue};letter-spacing:.03em;">${esc(heading)}</summary>
       <div style="margin-top:4px;">${eventsHtml}</div>
     </details>`;
