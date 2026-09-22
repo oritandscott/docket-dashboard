@@ -224,15 +224,28 @@ function colorFamily(hex) {
 }
 
 // Normalizes a KW event's displayed calendar label and location in place,
-// returning { calName, location }.
+// returning { calName, location }. Handles both KWRP-named calendars (three
+// possible offices: Tempe/Scottsdale/Gilbert-KWIF, so these need
+// address/color disambiguation) and KWIF-named calendars (a single office,
+// Gilbert, so these just need their label canonicalized).
 function normalizeKWLabel(calName, location, ev, cal, eventColors, calendarColors) {
-  if (!/KWRP/.test(calName)) return { calName, location };
+  const isKWRP = /KWRP/i.test(calName);
+  const isKWIF = /KWIF/i.test(calName);
+  if (!isKWRP && !isKWIF) return { calName, location };
+
+  if (isKWIF) {
+    // Only one KWIF office (Gilbert), so no address/color guessing needed --
+    // just canonicalize the label and drop a street address like the others.
+    const keptLocation = STREET_ADDRESS_RE.test(location) ? '' : location;
+    return { calName: 'KWIF Gilbert', location: keptLocation };
+  }
+
   if (MCDOWELL_RE.test(location)) return { calName: 'KWRP Scottsdale', location: '' };
   if (WARNER_RE.test(location)) return { calName: 'KWRP Tempe', location: '' };
   // Any KWRP-named calendar that doesn't already spell out a city ("KWRP",
   // "KWRP Events", "KWRP Events + Training Calendar", ...) is ambiguous, so
   // fall back to the calendar's/event's assigned color to tell Tempe (blue),
-  // Scottsdale (yellow/gold), and KWIF (red) apart.
+  // Scottsdale (yellow/gold), and KWIF Gilbert (red) apart.
   if (!/Tempe|Scottsdale/i.test(calName)) {
     const eventHex = ev.colorId && eventColors[ev.colorId] && eventColors[ev.colorId].background;
     const calHex = cal.backgroundColor || (cal.colorId && calendarColors[cal.colorId] && calendarColors[cal.colorId].background);
@@ -242,7 +255,7 @@ function normalizeKWLabel(calName, location, ev, cal, eventColors, calendarColor
     const keptLocation = STREET_ADDRESS_RE.test(location) ? '' : location;
     if (family === 'blue') return { calName: 'KWRP Tempe', location: keptLocation };
     if (family === 'yellow') return { calName: 'KWRP Scottsdale', location: keptLocation };
-    if (family === 'red') return { calName: 'KWIF', location: keptLocation };
+    if (family === 'red') return { calName: 'KWIF Gilbert', location: keptLocation };
   }
   // Unrecognized KW calendar/location combo: leave the name as-is, but still
   // strip a street address so the brief doesn't get cluttered.
@@ -674,10 +687,10 @@ function renderDrafts(r) {
 
 // Office grouping: within a day, events are clustered by KW office so the
 // reader can tell at a glance what's happening where. Order and color match
-// each office's Google Calendar color; anything not from one of the three
-// named KW calendars falls into "Other" with no special color.
-const OFFICE_ORDER = ['KWRP Tempe', 'KWIF', 'KWRP Scottsdale'];
-const OFFICE_COLOR = { 'KWRP Tempe': C.blue, 'KWIF': C.red, 'KWRP Scottsdale': C.accent };
+// each office's Google Calendar color; "Other" is strictly a catch-all for
+// events with no identifiable office, so it's always last.
+const OFFICE_ORDER = ['KWRP Tempe', 'KWIF Gilbert', 'KWRP Scottsdale'];
+const OFFICE_COLOR = { 'KWRP Tempe': C.blue, 'KWIF Gilbert': C.red, 'KWRP Scottsdale': C.accent };
 const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/u/0/r';
 const officeBucket = (e) => (OFFICE_ORDER.includes(e.calendars[0]) ? e.calendars[0] : 'Other');
 
@@ -708,6 +721,8 @@ function renderCalendar(r) {
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(e);
     });
+    // "Other" (no identifiable office) always sorts last, after the named
+    // KW offices in their fixed order.
     const orderedKeys = [...OFFICE_ORDER.filter((k) => groups.has(k)), ...(groups.has('Other') ? ['Other'] : [])];
     // Only bother with sub-headings when a day actually spans more than one
     // office; a single-office day just lists its events like before.
@@ -716,7 +731,10 @@ function renderCalendar(r) {
       const groupHtml = groups.get(key).map(renderCalEvent).join('');
       if (!showSubheadings) return groupHtml;
       const color = OFFICE_COLOR[key] || C.navy;
-      return `<div style="margin:10px 0 2px;font:700 12px Arial,sans-serif;color:${color};letter-spacing:.05em;text-transform:uppercase;">${esc(key)}</div>${groupHtml}`;
+      // Extra top margin gives clear visual separation from the previous
+      // office's events; the events themselves are tabbed in one level so
+      // it's obvious at a glance which office each one belongs to.
+      return `<div style="margin:26px 0 6px;font:700 15px Arial,sans-serif;color:${color};letter-spacing:.05em;text-transform:uppercase;">${esc(key)}</div><div style="margin-left:22px;">${groupHtml}</div>`;
     }).join('');
 
     // <details> gives a native collapse/expand arrow with no JavaScript; it
