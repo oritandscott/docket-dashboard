@@ -464,9 +464,9 @@ async function loadAnniversaries(now) {
 
 // ---------- email rendering ----------
 
-const C = { navy: '#101F35', text: '#2b2b2b', muted: '#6b7280', line: '#e5e7eb', accent: '#b8862b', bg: '#f6f4ef' };
+const C = { navy: '#101F35', text: '#2b2b2b', muted: '#6b7280', line: '#e5e7eb', accent: '#b8862b', bg: '#f6f4ef', red: '#c4161c' };
 
-const h2 = (t) => `<h2 style="margin:28px 0 8px;font:600 17px Georgia,serif;color:${C.navy};border-bottom:1px solid ${C.line};padding-bottom:6px;">${esc(t)}</h2>`;
+const h2 = (t) => `<h2 style="margin:32px 0 10px;font:700 24px Georgia,serif;color:${C.red};border-bottom:1px solid ${C.line};padding-bottom:6px;">${esc(t)}</h2>`;
 const p = (t, extra = '') => `<p style="margin:6px 0;font:15px/1.5 Arial,sans-serif;color:${C.text};${extra}">${t}</p>`;
 const muted = (t) => p(esc(t), `color:${C.muted};`);
 const problem = (name, err) => p(`Couldn't check ${esc(name)} this morning (${esc(err)}). Worth a look in the dashboard.`, `color:#9a3412;`);
@@ -605,7 +605,7 @@ function buildEmail({ book, yt, drafts, cal, nav, ann }, now) {
   const html = `<!doctype html><html><body style="margin:0;padding:0;background:${C.bg};">
   <div style="max-width:640px;margin:0 auto;padding:24px 20px;">
     <div style="font:600 12px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:${C.accent};">Docket Dashboard</div>
-    <h1 style="margin:4px 0 8px;font:600 24px Georgia,serif;color:${C.navy};">Your morning digest</h1>
+    <h1 style="margin:4px 0 8px;font:700 34px Georgia,serif;color:${C.navy};">Your Morning Digest</h1>
     ${p(esc(intro))}
     ${sections.join('\n')}
     <p style="margin:32px 0 0;font:12px Arial,sans-serif;color:${C.muted};border-top:1px solid ${C.line};padding-top:12px;">
