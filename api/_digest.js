@@ -899,8 +899,8 @@ function buildEmail({ book, yt, drafts, cal, nav, ann, weather }, now) {
 
   // Book-A-Call goes first when there is anything, since it is the most time-sensitive.
   const sections = newBook > 0
-    ? [renderBookACall(book), renderCalendar(cal), renderWeather(weather, now), renderNavigator(nav), renderYouTube(yt), renderDrafts(drafts), renderAnniversaries(ann)]
-    : [renderCalendar(cal), renderWeather(weather, now), renderBookACall(book), renderNavigator(nav), renderYouTube(yt), renderDrafts(drafts), renderAnniversaries(ann)];
+    ? [renderBookACall(book), renderWeather(weather, now), renderCalendar(cal), renderNavigator(nav), renderYouTube(yt), renderDrafts(drafts), renderAnniversaries(ann)]
+    : [renderWeather(weather, now), renderCalendar(cal), renderBookACall(book), renderNavigator(nav), renderYouTube(yt), renderDrafts(drafts), renderAnniversaries(ann)];
 
   const html = `<!doctype html><html><body style="margin:0;padding:0;background:${C.bg};">
   <div style="max-width:640px;margin:0 auto;padding:24px 20px;">
