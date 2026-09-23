@@ -1,4 +1,5 @@
 {
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ':(exclude)data/machine-status.json'",
   "crons": [
     {
       "path": "/api/generate-post",
