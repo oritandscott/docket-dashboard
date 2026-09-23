@@ -148,8 +148,8 @@
     "address": "7810 South 29th Place, Phoenix, AZ 85042",
     "purchaseDate": "2020-09-30",
     "emailVariant": "B",
-    "status": "upcoming",
-    "draftId": null,
+    "status": "actionable",
+    "draftId": "Congratulations on 6 Years in Your Home!",
     "addedAt": "2026-08-31T15:16:41.990Z"
   },
   {
