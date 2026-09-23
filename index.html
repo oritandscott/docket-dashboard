@@ -2170,7 +2170,7 @@
   async function refreshMachineStatus(){
     let data = null;
     try {
-      const resp = await fetch('/data/machine-status.json?t=' + Date.now());
+      const resp = await fetch('/api/machine-status?t=' + Date.now());
       if (resp.ok) data = await resp.json();
     } catch (e) { /* fall through to not-configured state */ }
     const mini = data && data.mini;
