@@ -188,8 +188,8 @@
     "address": "120 South Olive, Mesa, AZ 85204",
     "purchaseDate": "2025-09-30",
     "emailVariant": "A",
-    "status": "upcoming",
-    "draftId": null,
+    "status": "actionable",
+    "draftId": "Happy Home Anniversary, Alfredo and Lizette!",
     "addedAt": "2026-09-11T14:21:16.472Z"
   },
   {
