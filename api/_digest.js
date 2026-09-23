@@ -24,6 +24,9 @@ const RECIPIENTS = ['oritandscott@gmail.com', 'scott@oasisgroupaz.com'];
 const TZ = 'America/Phoenix';
 const CALENDAR_DAYS_AHEAD = 1; // today + tomorrow
 const STALE_DRAFT_DAYS = 3;
+const WEATHER_LAT = 33.4255; // Tempe -- central to the KWRP Tempe / KWIF Gilbert / KWRP Scottsdale offices
+const WEATHER_LON = -111.9400;
+const WEATHER_USER_AGENT = 'DocketDashboard/1.0 (oritandscott@gmail.com)'; // required by api.weather.gov
 
 // ---------- small helpers ----------
 
@@ -604,6 +607,63 @@ async function loadAnniversaries(now) {
   return { upcoming };
 }
 
+// ---------- section: Weather (Phoenix, via the National Weather Service) ----------
+//
+// Free, no API key. Two calls: /points/{lat},{lon} resolves the forecast
+// office + grid cell for our fixed coordinates, then that grid's /forecast
+// returns ~14 alternating day/night periods. We pair each daytime period
+// with the night that follows it to get a high/low per calendar day.
+
+const WEATHER_ICON_RULES = [
+  [/thunder/i, '⛈️'],
+  [/snow|sleet|ice/i, '❄️'],
+  [/rain|shower|drizzle/i, '🌧️'],
+  [/fog|haze|smoke|dust/i, '🌫️'],
+  [/overcast|cloudy/i, '☁️'],
+  [/partly cloudy|partly sunny/i, '⛅'],
+  [/mostly sunny|mostly clear/i, '🌤️'],
+  [/clear|sunny/i, '☀️'],
+  [/breezy|windy/i, '💨'],
+];
+const weatherIcon = (text) => (WEATHER_ICON_RULES.find(([re]) => re.test(String(text))) || [null, '🌡️'])[1];
+
+async function loadWeather() {
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 10000);
+  try {
+    const headers = { 'User-Agent': WEATHER_USER_AGENT, Accept: 'application/geo+json' };
+    const pointRes = await fetch(`https://api.weather.gov/points/${WEATHER_LAT},${WEATHER_LON}`, { headers, signal: ctl.signal });
+    if (!pointRes.ok) throw new Error(`NWS points lookup returned ${pointRes.status}`);
+    const point = await pointRes.json();
+    const forecastUrl = point.properties && point.properties.forecast;
+    if (!forecastUrl) throw new Error('NWS points response had no forecast URL');
+
+    const forecastRes = await fetch(forecastUrl, { headers, signal: ctl.signal });
+    if (!forecastRes.ok) throw new Error(`NWS forecast returned ${forecastRes.status}`);
+    const forecast = await forecastRes.json();
+    const periods = (forecast.properties && forecast.properties.periods) || [];
+
+    // Periods alternate day/night starting with whichever is current; the
+    // cron runs 6-7am Phoenix so the first daytime period is always "Today".
+    const days = [];
+    for (let i = 0; i < periods.length && days.length < 8; i++) {
+      const period = periods[i];
+      if (!period.isDaytime) continue;
+      const night = periods[i + 1] && !periods[i + 1].isDaytime ? periods[i + 1] : null;
+      days.push({
+        high: period.temperature,
+        low: night ? night.temperature : null,
+        shortForecast: period.shortForecast,
+        windSpeed: period.windSpeed,
+      });
+    }
+    if (days.length === 0) throw new Error('NWS forecast had no daytime periods');
+    return { today: days[0], week: days.slice(1, 8) };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 // ---------- email rendering ----------
 
 const C = { navy: '#101F35', text: '#2b2b2b', muted: '#6b7280', line: '#e5e7eb', accent: '#b8862b', bg: '#f6f4ef', red: '#ee1c25', blue: '#1257e0' };
@@ -754,6 +814,39 @@ function renderCalendar(r) {
   return html;
 }
 
+function renderWeather(r, now) {
+  if (!r.ok) return h2('Weather: Phoenix') + problem('the weather', r.error);
+  const { today, week } = r;
+  const todayLabel = fmt(now, { weekday: 'short', month: 'short', day: 'numeric' });
+  const todayCard = `<div style="margin:8px 0 16px;padding:16px 18px;background:#fff;border:1px solid ${C.line};border-radius:6px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="width:64px;vertical-align:middle;font-size:44px;line-height:1;">${weatherIcon(today.shortForecast)}</td>
+      <td style="vertical-align:middle;padding-left:14px;">
+        <div style="font:700 11px Arial,sans-serif;color:${C.muted};letter-spacing:.08em;text-transform:uppercase;">Today &middot; ${esc(todayLabel)}</div>
+        <div style="margin-top:2px;"><span style="font:700 30px Georgia,serif;color:${C.navy};">${today.high}&deg;</span>${today.low != null ? `<span style="font:15px Arial,sans-serif;color:${C.muted};"> / ${today.low}&deg; low</span>` : ''}</div>
+        <div style="margin-top:2px;font:14px Arial,sans-serif;color:${C.text};">${esc(today.shortForecast)}${today.windSpeed ? ` &middot; wind ${esc(today.windSpeed)}` : ''}</div>
+      </td>
+    </tr></table>
+  </div>`;
+
+  if (week.length === 0) return h2('Weather: Phoenix') + todayCard;
+
+  const dayCell = (d, i) => {
+    const dayDate = new Date(now.getTime() + (i + 1) * 86400000);
+    const label = `${fmt(dayDate, { weekday: 'short' })} ${fmt(dayDate, { day: 'numeric' })}`;
+    return `<td align="center" style="width:${(100 / week.length).toFixed(2)}%;padding:8px 2px;background:#fff;border:1px solid ${C.line};${i > 0 ? 'border-left:none;' : ''}">
+      <div style="font:700 12px Arial,sans-serif;color:${C.navy};">${esc(label)}</div>
+      <div style="font-size:22px;margin:4px 0;">${weatherIcon(d.shortForecast)}</div>
+      <div style="font:700 13px Arial,sans-serif;color:${C.navy};">${d.high}&deg;</div>
+      <div style="font:12px Arial,sans-serif;color:${C.muted};">${d.low != null ? `${d.low}&deg;` : '&ndash;'}</div>
+    </td>`;
+  };
+
+  return h2('Weather: Phoenix') + todayCard +
+    `<div style="font:700 11px Arial,sans-serif;color:${C.muted};letter-spacing:.08em;text-transform:uppercase;margin:14px 0 8px;">Week Ahead</div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>${week.map(dayCell).join('')}</tr></table>`;
+}
+
 function renderNavigator(r) {
   if (!r.ok) return h2('Navigator App') + problem('the Navigators', r.error);
   const totalNew = r.navigators.reduce((n, x) => n + (x.ok ? x.news.length : 0), 0);
@@ -790,7 +883,7 @@ function renderAnniversaries(r) {
   return html + `<ol style="margin:6px 0 6px 22px;padding:0;">${rows}</ol>` + p(link(`${DASHBOARD_URL}/#anniversaries`, 'Open Home Anniversaries'));
 }
 
-function buildEmail({ book, yt, drafts, cal, nav, ann }, now) {
+function buildEmail({ book, yt, drafts, cal, nav, ann, weather }, now) {
   const newBook = book.ok ? book.entries.length : 0;
   const newComments = yt.ok ? yt.channels.reduce((n, c) => n + (c.ok ? c.comments.length : 0), 0) : 0;
   const newDrafts = drafts.ok ? drafts.fresh.length : 0;
@@ -806,8 +899,8 @@ function buildEmail({ book, yt, drafts, cal, nav, ann }, now) {
 
   // Book-A-Call goes first when there is anything, since it is the most time-sensitive.
   const sections = newBook > 0
-    ? [renderBookACall(book), renderCalendar(cal), renderNavigator(nav), renderYouTube(yt), renderDrafts(drafts), renderAnniversaries(ann)]
-    : [renderCalendar(cal), renderBookACall(book), renderNavigator(nav), renderYouTube(yt), renderDrafts(drafts), renderAnniversaries(ann)];
+    ? [renderBookACall(book), renderCalendar(cal), renderWeather(weather, now), renderNavigator(nav), renderYouTube(yt), renderDrafts(drafts), renderAnniversaries(ann)]
+    : [renderCalendar(cal), renderWeather(weather, now), renderBookACall(book), renderNavigator(nav), renderYouTube(yt), renderDrafts(drafts), renderAnniversaries(ann)];
 
   const html = `<!doctype html><html><body style="margin:0;padding:0;background:${C.bg};">
   <div style="max-width:640px;margin:0 auto;padding:24px 20px;">
@@ -864,15 +957,16 @@ export async function runDigest(req, res) {
   try {
     const now = new Date();
     const win = digestWindow(now);
-    const [book, yt, drafts, cal, nav, ann] = await Promise.all([
+    const [book, yt, drafts, cal, nav, ann, weather] = await Promise.all([
       safe(() => loadBookACall(win)),
       safe(() => loadYouTube(win)),
       safe(() => loadDrafts(win)),
       safe(() => loadCalendar(now)),
       safe(() => loadNavigator(win, now)),
       safe(() => loadAnniversaries(now)),
+      safe(() => loadWeather()),
     ]);
-    const email = buildEmail({ book, yt, drafts, cal, nav, ann }, now);
+    const email = buildEmail({ book, yt, drafts, cal, nav, ann, weather }, now);
     const sent = await sendViaResend(email);
     return res.status(200).json({
       ok: true,
@@ -883,6 +977,7 @@ export async function runDigest(req, res) {
         youtube: yt.ok ? 'ok' : yt.error,
         drafts: drafts.ok ? 'ok' : drafts.error,
         calendar: cal.ok ? `ok (${cal.calendarCount} calendars, ${cal.events.length} events)` : cal.error,
+        weather: weather.ok ? `ok (today ${weather.today.high}°/${weather.today.low}°, ${weather.week.length}-day outlook)` : weather.error,
         navigator: nav.ok ? `ok (${nav.navigators.filter((x) => x.ok).length}/${nav.navigators.length} pages read)` : nav.error,
         anniversaries: ann.ok ? `ok (${ann.upcoming.length} in 30 days)` : ann.error,
       },
