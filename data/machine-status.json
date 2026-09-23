@@ -1,8 +1,8 @@
 {
   "mini": {
-    "status": "not-configured",
-    "note": "Heartbeat not set up yet. See the Master Project List panel for setup steps.",
+    "status": "online",
+    "note": "Setup test from Claude",
     "runningTasks": [],
-    "lastHeartbeat": null
+    "lastHeartbeat": "2026-09-23T16:40:32.844Z"
   }
 }
