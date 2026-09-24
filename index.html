@@ -214,7 +214,7 @@
   }
 
   /* ---------- TODAY ---------- */
-  .today-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:2.2rem;}
+  .today-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem 2.2rem;}
   @media (max-width:780px){.today-grid{grid-template-columns:1fr;}}
   .subhead{
     font-family:'IBM Plex Mono',monospace;
@@ -553,13 +553,16 @@
       <h2>Today</h2>
       <div class="today-grid">
         <div>
-          <div class="subhead">Schedule</div>
-          <ul class="list" id="schedule-list"></ul>
-          <form class="inline-form" id="schedule-form">
-            <input type="time" id="schedule-time" required>
-            <input type="text" id="schedule-title" placeholder="Showing, call, closing…" required style="flex:1;min-width:140px;">
-            <button class="btn" type="submit">Add</button>
-          </form>
+          <div class="subhead" style="color:var(--stamp-blue);">KWRP Tempe</div>
+          <ul class="list" id="cal-tempe"></ul>
+        </div>
+        <div>
+          <div class="subhead" style="color:var(--stamp-red);">KWIF Gilbert</div>
+          <ul class="list" id="cal-gilbert"></ul>
+        </div>
+        <div>
+          <div class="subhead" style="color:var(--gold);">KWRP Scottsdale</div>
+          <ul class="list" id="cal-scottsdale"></ul>
         </div>
         <div>
           <div class="subhead">Top 3 tasks</div>
@@ -571,6 +574,7 @@
           </form>
         </div>
       </div>
+      <div class="panel-sub" id="cal-other-note" style="display:none;margin-top:.9rem;"></div>
     </section>
 
     <!-- NAVIGATOR APP -->
@@ -956,11 +960,8 @@
   async function refreshToday(){
     try {
       const data = await fetchToday();
-      const todayStr = todayISO();
-      state.schedule = (data.schedule || []).filter(item => item.date && item.date >= todayStr);
       state.tasks = data.tasks || [];
       save();
-      renderSchedule();
       renderTasks();
     } catch (e) {
       // Couldn't reach the shared file (offline, etc.) -- leave whatever
@@ -1001,47 +1002,59 @@
     document.getElementById('zero-day-countdown').textContent = `${weeksLeft} ${weekLabel} and ${daysLeft} ${dayLabel} to Zero Day`;
   }
 
-  // ---------- TODAY: SCHEDULE ----------
-  function renderSchedule(){
-    const list = document.getElementById('schedule-list');
+  // ---------- TODAY: CALENDAR (Tempe / Gilbert / Scottsdale) ----------
+  // Read-only mirror of the calendar section in the daily digest email --
+  // same Google Calendar data, same KW-office grouping (via
+  // api/_calendar.js on the server) -- so there's nothing to search for or
+  // curate here; it's just what's already on the calendar today.
+  function formatEventTime(iso){
+    return new Intl.DateTimeFormat('en-US', { timeZone: 'America/Phoenix', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
+  }
+
+  function renderOfficeEvents(listId, events){
+    const list = document.getElementById(listId);
     list.innerHTML = '';
-    if(state.schedule.length === 0){
-      list.innerHTML = '<li class="empty-hint">Nothing on the books yet. Add your first appointment below.</li>';
+    if(!events || events.length === 0){
+      list.innerHTML = '<li class="empty-hint">Nothing today.</li>';
       return;
     }
-    const sorted = [...state.schedule].sort((a,b) => a.time.localeCompare(b.time));
-    sorted.forEach(item => {
+    events.forEach(ev => {
       const li = document.createElement('li');
       li.className = 'row-card';
-      const dateLabel = item.date ? new Date(item.date + 'T00:00:00').toLocaleDateString(undefined, {month:'short', day:'numeric'}) : '';
+      const time = ev.allDay ? 'ALL DAY' : formatEventTime(ev.startISO);
       li.innerHTML = `
-        <span class="row-time mono">${dateLabel ? escapeHtml(dateLabel) + ' &middot; ' : ''}${formatTime(item.time)}</span>
-        <span class="row-text">${escapeHtml(item.title)}</span>
-        <button class="del-btn" data-id="${item.id}" data-type="schedule" aria-label="Remove">×</button>
+        <span class="row-time mono">${escapeHtml(time)}</span>
+        <span class="row-text">${escapeHtml(ev.title)}</span>
       `;
       list.appendChild(li);
     });
   }
 
-  function formatTime(t){
-    if(!t) return '';
-    const [h,m] = t.split(':').map(Number);
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    const h12 = h % 12 === 0 ? 12 : h % 12;
-    return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+  async function refreshTodayCalendar(){
+    ['cal-tempe','cal-gilbert','cal-scottsdale'].forEach(id => {
+      document.getElementById(id).innerHTML = '<li class="empty-hint">Checking…</li>';
+    });
+    try {
+      const resp = await fetch('/api/machine-status?job=calendar');
+      const data = await resp.json();
+      if (!resp.ok || data.ok === false) throw new Error(data.error || 'Could not load the calendar');
+      renderOfficeEvents('cal-tempe', data.tempe);
+      renderOfficeEvents('cal-gilbert', data.gilbert);
+      renderOfficeEvents('cal-scottsdale', data.scottsdale);
+      const otherNote = document.getElementById('cal-other-note');
+      if (data.other && data.other.length){
+        otherNote.style.display = 'block';
+        otherNote.textContent = `${data.other.length} more event${data.other.length === 1 ? '' : 's'} today not tied to a specific office.`;
+      } else {
+        otherNote.style.display = 'none';
+      }
+    } catch(e){
+      console.error('Could not load today\'s calendar:', e);
+      ['cal-tempe','cal-gilbert','cal-scottsdale'].forEach(id => {
+        document.getElementById(id).innerHTML = '<li class="empty-hint">Couldn\'t load the calendar.</li>';
+      });
+    }
   }
-
-  document.getElementById('schedule-form').addEventListener('submit', e => {
-    e.preventDefault();
-    const time = document.getElementById('schedule-time').value;
-    const title = document.getElementById('schedule-title').value.trim();
-    if(!time || !title) return;
-    state.schedule.push({ id: uid(), time, title, date: todayISO() });
-    save();
-    renderSchedule();
-    saveToday();
-    e.target.reset();
-  });
 
   // ---------- TODAY: TASKS ----------
   function renderTasks(){
@@ -1090,15 +1103,6 @@
       state.tasks = state.tasks.filter(t => t.id !== e.target.dataset.id);
       save();
       renderTasks();
-      saveToday();
-    }
-  });
-
-  document.getElementById('schedule-list').addEventListener('click', e => {
-    if(e.target.matches('.del-btn')){
-      state.schedule = state.schedule.filter(s => s.id !== e.target.dataset.id);
-      save();
-      renderSchedule();
       saveToday();
     }
   });
@@ -2399,7 +2403,6 @@
 
   // ---------- INIT ----------
   renderHeader();
-  renderSchedule();
   renderTasks();
   renderPipeline();
   renderTracker();
@@ -2412,6 +2415,7 @@
   refreshAnniversaries(false);
   refreshWeekenderStatus();
   refreshToday();
+  refreshTodayCalendar();
   refreshMachineStatus();
   refreshOpenHouse();
   refreshProjects();
