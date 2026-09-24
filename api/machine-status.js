@@ -26,6 +26,20 @@ export default async function handler(req, res) {
     return runDigest(req, res);
   }
 
+  // Dispatches to api/_calendar.js: today's calendar events grouped by KW
+  // office, for the dashboard's Today panel. Merged in here rather than
+  // given its own file to stay under Vercel Hobby's 12-function cap. Called
+  // by the dashboard as /api/machine-status?job=calendar.
+  if (req.query && req.query.job === 'calendar') {
+    const { loadTodayCalendar } = await import('./_calendar.js');
+    try {
+      const data = await loadTodayCalendar();
+      return res.status(200).json({ ok: true, ...data });
+    } catch (err) {
+      return res.status(200).json({ ok: false, error: err.message });
+    }
+  }
+
   try {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     if (!GITHUB_TOKEN) {
