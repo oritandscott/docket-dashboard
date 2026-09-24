@@ -1,23 +1,9 @@
 {
-  "schedule": [
-    {
-      "id": "mu6uuk9y4yjw2",
-      "time": "09:00",
-      "title": "Sphere / Open House",
-      "date": "2026-09-18",
-      "source": "automation"
-    }
-  ],
+  "schedule": [],
   "tasks": [
     {
       "id": "mth4y35g2ouly",
       "text": "Check Homebot — past-client outreach ops",
-      "done": false,
-      "source": "automation"
-    },
-    {
-      "id": "mtzx3znhb7y94",
-      "text": "Respond to 3 Aligned Showings feedback requests",
       "done": false,
       "source": "automation"
     },
