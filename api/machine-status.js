@@ -40,6 +40,22 @@ export default async function handler(req, res) {
     }
   }
 
+  // Dispatches to api/_snapshot.js: Navigator's live listing/escrow snapshot
+  // for the Linear Escrow Tracker panel, fetched server-side so
+  // DOCKET_SHARED_SECRET never reaches the browser. Merged in here rather
+  // than given its own file to stay under Vercel Hobby's 12-function cap.
+  // Called by the dashboard as /api/machine-status?job=snapshot.
+  if (req.query && req.query.job === 'snapshot') {
+    const { loadSnapshot } = await import('./_snapshot.js');
+    res.setHeader('Cache-Control', 'no-store');
+    try {
+      const data = await loadSnapshot();
+      return res.status(200).json(data);
+    } catch (err) {
+      return res.status(err.status || 500).json({ error: err.message });
+    }
+  }
+
   try {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     if (!GITHUB_TOKEN) {
