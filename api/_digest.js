@@ -500,9 +500,9 @@ function parseNavigatorPage(html, win, now) {
 async function loadNavigator(win, now) {
   // The list of navigators comes from the dashboard's own Navigator panel, so
   // anything added there is picked up automatically.
-  const pageRes = await fetch(`${DASHBOARD_URL}/`);
-  if (!pageRes.ok) throw new Error(`Dashboard page returned ${pageRes.status}`);
-  const dashHtml = await pageRes.text();
+  // Read from GitHub: the live page is behind the dashboard password.
+  const { readRepoText } = await import('./_data.js');
+  const dashHtml = await readRepoText('index.html');
   const start = dashHtml.indexOf('id="navigator-list"');
   const end = dashHtml.indexOf('</section>', start);
   if (start < 0) throw new Error("couldn't find the Navigator list on the dashboard");
@@ -580,9 +580,9 @@ function mergeAnniversaryRecords(records) {
 }
 
 async function loadAnniversaries(now) {
-  const res = await fetch(`${DASHBOARD_URL}/data/anniversaries.json?t=${Date.now()}`);
-  if (!res.ok) throw new Error(`Anniversary list returned ${res.status}`);
-  const records = mergeAnniversaryRecords(await res.json());
+  // Straight from GitHub: the site itself is behind the dashboard password.
+  const { readDataText } = await import('./_data.js');
+  const records = mergeAnniversaryRecords(JSON.parse(await readDataText('anniversaries')));
   const todayISO = phoenixDateISO(now);
   const [ty, tm, td] = todayISO.split('-').map(Number);
   const todayUTC = Date.UTC(ty, tm - 1, td);

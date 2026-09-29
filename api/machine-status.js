@@ -72,6 +72,13 @@ export default async function handler(req, res) {
     return runCommandLookup(req, res);
   }
 
+  // Dispatches to api/_data.js: the dashboard's data files, read live from
+  // GitHub so saving doesn't need a redeploy.
+  if (req.query && req.query.job === 'data') {
+    const { runData } = await import('./_data.js');
+    return runData(req, res);
+  }
+
   // Dispatches to api/_cmdnotes.js: Prospecting call notes waiting to be
   // added to KW Command by the Oasis Mini.
   if (req.query && req.query.job === 'cmd-notes') {

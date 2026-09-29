@@ -1224,7 +1224,7 @@
   // tracker, notes, etc.) as a fast local cache; saveToday() persists
   // schedule/tasks to the shared file so every device sees the same thing.
   async function fetchToday(){
-    const resp = await fetch('/data/today.json?t=' + Date.now());
+    const resp = await fetch('/api/machine-status?job=data&file=today&t=' + Date.now());
     if (!resp.ok) throw new Error('Could not load today.json');
     return resp.json();
   }
@@ -1521,7 +1521,7 @@
   let videoProdEditingId = null;
 
   async function fetchVideoLinks(){
-    const resp = await fetch('/data/video-links.json?t=' + Date.now());
+    const resp = await fetch('/api/machine-status?job=data&file=video-links&t=' + Date.now());
     if (!resp.ok) throw new Error('Could not load video-links.json');
     return resp.json();
   }
@@ -1903,13 +1903,13 @@
   }
 
   async function fetchAnniversaries(){
-    const resp = await fetch('/data/anniversaries.json?t=' + Date.now());
+    const resp = await fetch('/api/machine-status?job=data&file=anniversaries&t=' + Date.now());
     if (!resp.ok) throw new Error('Could not load anniversaries.json');
     return resp.json();
   }
 
   async function fetchTemplates(){
-    const resp = await fetch('/data/email-templates.json?t=' + Date.now());
+    const resp = await fetch('/api/machine-status?job=data&file=email-templates&t=' + Date.now());
     if (!resp.ok) throw new Error('Could not load email-templates.json');
     return resp.json();
   }
@@ -2374,7 +2374,7 @@
 
   // ---------- THURSDAY WEEKENDER ----------
   async function fetchWeekenderStatus(){
-    const resp = await fetch('/data/weekender-status.json?t=' + Date.now());
+    const resp = await fetch('/api/machine-status?job=data&file=weekender-status&t=' + Date.now());
     if (!resp.ok) throw new Error('Could not load weekender-status.json');
     return resp.json();
   }
@@ -2477,7 +2477,7 @@
 
   // ---------- OPEN HOUSE ----------
   async function fetchOpenHouse(){
-    const resp = await fetch('/data/open-house.json?t=' + Date.now());
+    const resp = await fetch('/api/machine-status?job=data&file=open-house&t=' + Date.now());
     if (!resp.ok) throw new Error('Could not load open-house.json');
     return resp.json();
   }
@@ -2528,7 +2528,7 @@
   const MACHINE_LABELS = { mini: 'Oasis Mini', macbook: 'MacBook Pro', cloud: 'Cloud / Vercel', unassigned: 'Unassigned' };
 
   async function fetchProjects(){
-    const resp = await fetch('/data/projects.json?t=' + Date.now());
+    const resp = await fetch('/api/machine-status?job=data&file=projects&t=' + Date.now());
     if (!resp.ok) throw new Error('Could not load projects.json');
     return resp.json();
   }
@@ -3155,8 +3155,8 @@
   async function refreshProspects(){
     try {
       const [pResp, aResp] = await Promise.all([
-        fetch('/data/prospects.json?t=' + Date.now()),
-        fetch('/data/anniversaries.json?t=' + Date.now()),
+        fetch('/api/machine-status?job=data&file=prospects&t=' + Date.now()),
+        fetch('/api/machine-status?job=data&file=anniversaries&t=' + Date.now()),
       ]);
       prospectsCache = pResp.ok ? await pResp.json() : [];
       prAnniversaries = aResp.ok ? await aResp.json() : [];
@@ -3712,7 +3712,7 @@
 
   async function refreshHotList(){
     try {
-      const resp = await fetch('/data/hotlist.json?t=' + Date.now());
+      const resp = await fetch('/api/machine-status?job=data&file=hotlist&t=' + Date.now());
       const data = resp.ok ? await resp.json() : [];
       hotCache = Array.isArray(data) ? data : [];
       renderHotList();
@@ -4008,7 +4008,7 @@
 
   async function refreshInbox(){
     try {
-      const resp = await fetch('/data/prospecting-inbox.json?t=' + Date.now());
+      const resp = await fetch('/api/machine-status?job=data&file=prospecting-inbox&t=' + Date.now());
       const data = resp.ok ? await resp.json() : [];
       inboxCache = Array.isArray(data) ? data : [];
       renderInbox();
