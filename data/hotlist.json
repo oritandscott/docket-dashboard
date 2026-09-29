@@ -239,19 +239,19 @@
   {
     "id": "hot-1a0edb531d05waf2",
     "name": "Bonnie Lee",
-    "phone": "",
-    "email": "",
-    "phoneFound": false,
-    "emailFound": false,
+    "phone": "(978) 766-5570",
+    "email": "bonita@leebarber.com",
     "type": "both",
     "source": "pastclient",
     "tier": "medium",
     "notes": "Past client.",
-    "commandUrl": "",
+    "phoneFound": false,
+    "emailFound": false,
+    "commandUrl": "https://console.command.kw.com/command/contacts/6952b8c4f5647d485897a3a9",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T15:07:50.000Z",
-    "updatedAt": "2026-09-29T15:07:50.000Z"
+    "updatedAt": "2026-09-29T15:31:19.609Z"
   },
   {
     "id": "hot-1a0edb531d2f3mr5",
