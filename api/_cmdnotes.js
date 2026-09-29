@@ -4,7 +4,7 @@
 // Command yet and adds them to each contact as a note, then reports back.
 //
 //   GET  ?job=cmd-notes  -> { pending: [{ id, name, phone, email,
-//                             commandUrl, newNotes }] }
+//                             commandUrl, newNotes, fullNotes }] }
 //   POST ?job=cmd-notes  { id, synced, result }  -- `synced` is the notes
 //                             text that is now in Command; result is
 //                             'added' | 'not-in-command' | 'failed: ...'
@@ -47,7 +47,7 @@ export async function runCmdNotes(req, res) {
     if (req.method === 'GET') {
       const { list } = await read();
       const pending = list.filter((h) => newNotes(h)).map((h) => ({
-        id: h.id, name: h.name, phone: h.phone || '', email: h.email || '', commandUrl: h.commandUrl || '', newNotes: newNotes(h),
+        id: h.id, name: h.name, phone: h.phone || '', email: h.email || '', commandUrl: h.commandUrl || '', newNotes: newNotes(h), fullNotes: String(h.notes || '').trim(),
       }));
       return res.status(200).json({ ok: true, pending });
     }
