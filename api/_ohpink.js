@@ -9,10 +9,9 @@
 // (Vercel Hobby's 12-function cap). Needs the service account to be able to
 // see the sheets (share their Drive folder with it as Viewer).
 
-import { googleToken } from './_google.js';
+import { googleGet, googleToken } from './_google.js';
 
 const SCOPES = 'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/spreadsheets.readonly';
-let cache = null; // { at, people: [...] }
 
 const norm = (v) => String(v || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
 const digits = (v) => String(v || '').replace(/\D/g, '').slice(-10);
@@ -28,25 +27,20 @@ function isPink(cell) {
   return false;
 }
 
-async function listSheets(token) {
-  const files = [];
-  let pageToken = '';
-  do {
-    const q = encodeURIComponent("name contains 'OPEN HOUSE ATTENDANCE' and mimeType = 'application/vnd.google-apps.spreadsheet' and trashed = false");
-    const r = await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=nextPageToken,files(id,name)&pageSize=200&includeItemsFromAllDrives=true&supportsAllDrives=true${pageToken ? `&pageToken=${pageToken}` : ''}`,
-      { headers: { Authorization: `Bearer ${token}` } });
-    if (!r.ok) throw Object.assign(new Error(`Google Drive answered ${r.status}`), { status: 502 });
-    const d = await r.json();
-    files.push(...(d.files || []));
-    pageToken = d.nextPageToken || '';
-  } while (pageToken);
-  return files;
+// Only the sign-in sheets that mention this last name (Drive full-text
+// search) -- reading every sheet on each load hit Google's rate limit.
+async function sheetsMentioning(token, lastName) {
+  const safe = String(lastName).replace(/['\\]/g, '');
+  if (safe.length < 2) return [];
+  const q = encodeURIComponent(`name contains 'OPEN HOUSE ATTENDANCE' and mimeType = 'application/vnd.google-apps.spreadsheet' and trashed = false and fullText contains '${safe}'`);
+  const r = await googleGet(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)&pageSize=20&includeItemsFromAllDrives=true&supportsAllDrives=true`, token);
+  if (!r.ok) throw Object.assign(new Error(`Google Drive answered ${r.status}`), { status: 502 });
+  return (await r.json()).files || [];
 }
 
 async function readPeople(token, file) {
   const fields = 'sheets(data(rowData(values(formattedValue,effectiveFormat(textFormat(foregroundColor,foregroundColorStyle),backgroundColor,backgroundColorStyle)))))';
-  const r = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${file.id}?ranges=${encodeURIComponent('A1:Z150')}&fields=${encodeURIComponent(fields)}`,
-    { headers: { Authorization: `Bearer ${token}` } });
+  const r = await googleGet(`https://sheets.googleapis.com/v4/spreadsheets/${file.id}?ranges=${encodeURIComponent('A1:Z150')}&fields=${encodeURIComponent(fields)}`, token);
   if (!r.ok) return [];
   const d = await r.json();
   const rows = d.sheets?.[0]?.data?.[0]?.rowData || [];
@@ -72,16 +66,12 @@ async function readPeople(token, file) {
   return out;
 }
 
-async function allPeople() {
-  if (cache && Date.now() - cache.at < 15 * 60 * 1000) return cache.people;
-  const token = await googleToken(SCOPES);
-  const files = await listSheets(token);
-  const people = [];
-  for (let i = 0; i < files.length; i += 8) {
-    const batch = await Promise.all(files.slice(i, i + 8).map((f) => readPeople(token, f).catch(() => [])));
-    batch.forEach((b) => people.push(...b));
-  }
-  cache = { at: Date.now(), people };
+const fileCache = new Map(); // file id -> { at, people }
+async function peopleIn(token, file) {
+  const hit = fileCache.get(file.id);
+  if (hit && Date.now() - hit.at < 15 * 60 * 1000) return hit.people;
+  const people = await readPeople(token, file).catch(() => []);
+  fileCache.set(file.id, { at: Date.now(), people });
   return people;
 }
 
@@ -89,9 +79,13 @@ export async function runOhPink(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const contacts = Array.isArray(req.body?.contacts) ? req.body.contacts.slice(0, 100) : [];
   try {
-    const people = await allPeople();
+    const token = await googleToken(SCOPES);
     const results = [];
     for (const c of contacts) {
+      const lastName = norm(c.name).split(' ').pop();
+      const files = lastName ? await sheetsMentioning(token, lastName) : [];
+      const people = [];
+      for (const f of files) people.push(...(await peopleIn(token, f)));
       const p = digits(c.phone), e = String(c.email || '').trim().toLowerCase();
       // Couples ("Tim & Mary K Duckworth"): any of the people named.
       const words = norm(c.name).split(' ');

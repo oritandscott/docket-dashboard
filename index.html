@@ -3561,11 +3561,15 @@
     if (btn) btn.disabled = true;
     if (opts.interactive) setMsg('Checking Command…');
     try {
+      let data;
+      if (opts.prefetched) {
+        data = { matches: opts.prefetched };
+      } else {
       const resp = await fetch('/api/machine-status?job=command-lookup', {
         method:'POST', headers:{ 'Content-Type':'application/json' },
         body: JSON.stringify({ name: h.name, phone: h.phone, email: h.email, loose: !!opts.loose }),
       });
-      const data = await resp.json().catch(() => ({}));
+      data = await resp.json().catch(() => ({}));
       if (!resp.ok) {
         if (data.code === 'not_configured' || data.code === 'not_shared') {
           hotCommandOff = true;
@@ -3576,6 +3580,7 @@
           return;
         }
         throw new Error(data.error || `HTTP ${resp.status}`);
+      }
       }
       const matches = data.matches || [];
       if (!matches.length) {
@@ -3640,10 +3645,22 @@
 
   // Always check: every contact not yet linked to Command gets looked up
   // automatically (on load and when added), one at a time.
+  // One request for everyone (Google limits how often the sheet can be read).
   async function hotAutoCheckCommand(){
-    for (const h of hotCache.filter(x => !x.commandUrl).slice(0, 30)) {
-      if (hotCommandOff) return;
-      await hotSyncCommand(h, null, {});
+    const todo = hotCache.filter(x => !x.commandUrl).slice(0, 100);
+    if (!todo.length || hotCommandOff) return;
+    let data;
+    try {
+      const resp = await fetch('/api/machine-status?job=command-lookup', {
+        method:'POST', headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ contacts: todo.map(h => ({ id: h.id, name: h.name, phone: h.phone, email: h.email })) }),
+      });
+      data = await resp.json().catch(() => ({}));
+      if (!resp.ok) { if (data.code === 'not_configured' || data.code === 'not_shared') hotCommandOff = true; return; }
+    } catch (_) { return; }
+    for (const r of data.results || []) {
+      const h = hotCache.find(x => x.id === r.id);
+      if (h) await hotSyncCommand(h, null, { prefetched: r.matches || [] });
     }
   }
 
