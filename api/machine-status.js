@@ -56,6 +56,14 @@ export default async function handler(req, res) {
     }
   }
 
+  // Dispatches to api/_apply.js: Confirm / Skip for a Claude-proposed
+  // Linear Escrow Tracker change (writes to Navigator). POST only; the
+  // change itself is read from the committed inbox file, never the request.
+  if (req.query && (req.query.job === 'apply' || req.query.job === 'skip')) {
+    const { runApply, runSkip } = await import('./_apply.js');
+    return req.query.job === 'apply' ? runApply(req, res) : runSkip(req, res);
+  }
+
   try {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     if (!GITHUB_TOKEN) {
