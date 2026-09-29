@@ -225,8 +225,15 @@
   .lt-tom{background:repeating-linear-gradient(135deg,#6B6B70 0 3px,#3A3A3E 3px 6px);}
   .lt-coe{background:var(--stamp-red);}
   .lt-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--paper);}
-  .lt-grid{display:inline-block;min-width:100%;}
-  .lt-row{display:flex;border-bottom:1px solid var(--line);}
+  .lt-grid{display:inline-block;min-width:100%;position:relative;}
+  .lt-row{display:flex;border-bottom:1px solid rgba(255,255,255,.22);}
+  .lt-row.lt-tx{min-height:58px;}
+  /* The transaction's own horizontal line, running the full width of the
+     timeline; colored day segments sit on top of it. */
+  .lt-row.lt-tx .lt-cell:not([class*="seg-"]){background-image:linear-gradient(to bottom,transparent calc(50% - 1px),rgba(236,236,236,.35) calc(50% - 1px),rgba(236,236,236,.35) calc(50% + 1px),transparent calc(50% + 1px));}
+  .lt-row.lt-tx .lt-cell.wknd:not([class*="seg-"]){background-color:rgba(255,255,255,.025);}
+  /* One outlined box down the today column, crossing every row. */
+  .lt-today-box{position:absolute;top:0;bottom:0;width:28px;border:2px solid var(--gold);border-radius:3px;pointer-events:none;z-index:1;box-shadow:0 0 0 1px rgba(0,0,0,.45),0 0 12px rgba(201,161,93,.35);}
   .lt-row:last-child{border-bottom:none;}
   .lt-name{
     position:sticky;left:0;z-index:2;flex:0 0 230px;width:230px;
@@ -244,7 +251,6 @@
     white-space:nowrap;overflow:visible;position:relative;
   }
   .lt-cell.wknd{background:rgba(255,255,255,.025);}
-  .lt-cell.today{box-shadow:inset 2px 0 0 var(--gold),inset -2px 0 0 var(--gold);}
   .lt-cell.seg-prep{background:#B8668D;}
   .lt-cell.seg-listed{background:#D9B84A;}
   .lt-cell.seg-escrow{background:#5FAE73;}
@@ -261,26 +267,42 @@
   @media (max-width:600px){.lt-name{flex-basis:140px;width:140px;}}
   .lt-foot{font-size:.72rem;color:var(--ink-soft);margin-top:.55rem;}
 
-  /* ---------- HOT LIST ---------- */
-  .hot-wrap{border:1px solid rgba(204,92,66,.45);background:rgba(204,92,66,.06);border-radius:6px;padding:1rem 1rem .9rem;}
-  .hot-title{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:1.25rem;color:#E0775D;margin-bottom:.2rem;}
+  /* ---------- HOT LIST / WATCHLISTS ---------- */
+  .hot-add{border:1px solid var(--line);border-radius:6px;padding:.9rem 1rem;margin-bottom:1.1rem;background:rgba(255,255,255,.02);}
+  .hot-wrap{border:1px solid var(--line);border-radius:6px;padding:1rem 1rem .9rem;margin-bottom:1.1rem;}
+  .hot-tier-hot{border-color:rgba(204,92,66,.5);background:rgba(204,92,66,.07);}
+  .hot-tier-medium{border-color:rgba(201,161,93,.45);background:rgba(201,161,93,.05);}
+  .hot-tier-long{border-color:rgba(111,168,217,.4);background:rgba(111,168,217,.05);}
+  .hot-title{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:1.25rem;margin-bottom:.2rem;}
+  .hot-tier-hot .hot-title{color:#E0775D;}
+  .hot-tier-medium .hot-title{color:var(--gold);}
+  .hot-tier-long .hot-title{color:var(--stamp-blue);}
   .hot-table{display:flex;flex-direction:column;gap:.45rem;}
-  .hot-row{display:grid;grid-template-columns:minmax(0,1.2fr) 118px 118px 84px minmax(0,2fr) 128px 22px;gap:.55rem;align-items:start;padding:.6rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;}
+  .hot-row{display:grid;grid-template-columns:44px minmax(0,1.2fr) 118px 118px 84px minmax(0,2fr) 128px 22px;gap:.55rem;align-items:start;padding:.6rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;transition:outline-color .15s;}
+  .hot-row.selected{outline:2px solid var(--gold);outline-offset:-1px;}
+  .hot-row.just-moved{animation:hotFlash .6s ease;}
+  @keyframes hotFlash{from{background:rgba(201,161,93,.25);}to{background:var(--paper-card);}}
   .hot-head{background:none;border:none;padding:.1rem .7rem;font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
-  .hot-name{font-weight:700;font-size:.95rem;}
+  .hot-rank{display:flex;flex-direction:column;align-items:center;gap:.15rem;}
+  .hot-num{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:1.05rem;color:var(--gold);line-height:1.1;}
+  .hot-arrow{background:none;border:1px solid var(--line);color:var(--ink-soft);border-radius:3px;width:30px;height:24px;cursor:pointer;font-size:.7rem;line-height:1;padding:0;}
+  .hot-arrow:hover:not(:disabled){color:var(--gold);border-color:var(--gold);}
+  .hot-arrow:disabled{opacity:.25;cursor:default;}
+  .hot-name{font-weight:700;font-size:.95rem;cursor:pointer;}
   .hot-sub{font-size:.75rem;color:var(--ink-soft);margin-top:.15rem;word-break:break-word;}
   .hot-row select{width:100%;font-size:.8rem;padding:.3rem .35rem;}
-  .hot-row .btn{width:100%;padding:.4rem .5rem;font-size:.78rem;text-align:center;text-decoration:none;display:inline-block;}
+  .hot-row .btn{width:100%;padding:.4rem .5rem;font-size:.78rem;text-align:center;text-decoration:none;display:inline-block;white-space:normal;line-height:1.2;}
   .hot-row .hot-call{background:#1E7B45;border-color:#1E7B45;color:#fff;}
   .hot-row .hot-call:hover{background:#249152;}
-  .hot-row .btn{white-space:normal;line-height:1.2;}
+  .hot-move{margin-top:.35rem;}
   .hot-notes textarea{width:100%;min-height:58px;font-size:.8rem;resize:vertical;}
   .hot-saved{font-size:.68rem;color:var(--ink-soft);margin-top:.15rem;min-height:.9rem;}
   .hot-cmd-link{display:block;font-size:.7rem;color:var(--ink-soft);margin-top:.25rem;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;font-family:inherit;}
   @media (max-width:1180px){
     .hot-head{display:none;}
-    .hot-row{grid-template-columns:1fr 1fr;}
-    .hot-row .hot-c-name,.hot-row .hot-notes{grid-column:1 / -1;}
+    .hot-row{grid-template-columns:44px 1fr 1fr;}
+    .hot-row .hot-rank{grid-row:span 5;}
+    .hot-row .hot-c-name,.hot-row .hot-notes{grid-column:2 / -1;}
   }
 
   /* ---------- PROSPECTING ---------- */
@@ -679,11 +701,9 @@
       <h2>Prospecting - Calls to Make</h2>
       <div class="panel-sub">One shared call list for past clients, open house guests, and anyone else worth a personal call. Saved for every device.</div>
 
-      <div class="hot-wrap">
-        <div class="hot-title">🔥 Hot List</div>
-        <div class="panel-sub" style="margin:0 0 .8rem;">The people closest to buying or selling right now. Your first calls of the day.</div>
-        <div class="hot-table" id="hot-list"><div class="empty-hint">Loading Hot List&hellip;</div></div>
-        <form class="inline-form" id="hot-form" style="margin-top:.8rem;">
+      <div class="hot-add">
+        <div class="subhead" style="margin-bottom:.5rem;">Add a contact</div>
+        <form class="inline-form" id="hot-form" style="margin-top:0;">
           <input type="text" id="hot-name" placeholder="Name" required style="flex:1.2;min-width:140px;">
           <input type="text" id="hot-phone" placeholder="Phone" inputmode="tel" style="flex:.8;min-width:110px;">
           <input type="text" id="hot-email" placeholder="Email (optional)" inputmode="email" style="flex:1;min-width:140px;">
@@ -693,9 +713,32 @@
             <option value="both">Buyer &amp; Seller</option>
           </select>
           <select id="hot-source" aria-label="Source"></select>
-          <button class="btn" type="submit">Add to Hot List</button>
+          <select id="hot-tier" aria-label="Which list">
+            <option value="hot">🔥 Hot List</option>
+            <option value="medium">Watchlist · Medium Term</option>
+            <option value="long">Watchlist · Long Term</option>
+          </select>
+          <button class="btn" type="submit">Add contact</button>
         </form>
         <div class="empty-hint" id="hot-status" style="display:none;margin-top:.6rem;"></div>
+      </div>
+
+      <div class="hot-wrap hot-tier-hot">
+        <div class="hot-title">🔥 Hot List</div>
+        <div class="panel-sub" style="margin:0 0 .8rem;">The people closest to buying or selling right now. #1 is your first call of the day.</div>
+        <div class="hot-table" id="hot-list-hot"></div>
+      </div>
+
+      <div class="hot-wrap hot-tier-medium">
+        <div class="hot-title">Watchlist · Medium Term</div>
+        <div class="panel-sub" style="margin:0 0 .8rem;">Likely to move in the next several months. Keep the relationship warm.</div>
+        <div class="hot-table" id="hot-list-medium"></div>
+      </div>
+
+      <div class="hot-wrap hot-tier-long">
+        <div class="hot-title">Watchlist · Long Term</div>
+        <div class="panel-sub" style="margin:0 0 .8rem;">A year or more out. Stay in touch so we're the first call when the time comes.</div>
+        <div class="hot-table" id="hot-list-long"></div>
       </div>
 
       <div class="subhead" style="margin-top:1.8rem;color:var(--gold);">Call list</div>
@@ -2698,7 +2741,7 @@
       const s = spans[r];
       const names = l.clientNames || '(no client name)';
       const editor = `${LT_NAV_BASE}/admin/${encodeURIComponent(l.id)}`;
-      html += `<div class="lt-row"><div class="lt-name">
+      html += `<div class="lt-row lt-tx"><div class="lt-name">
         <a href="${editor}" target="_blank" rel="noopener" title="Open in Navigator editor">${escapeHtml(names)}</a>
         <div class="lt-addr" title="${ltAttr(l.address || '')}">${escapeHtml(l.address || '')}</div>
         <div class="lt-sum" style="color:${LT_PHASE_COLOR[l.phase] || 'var(--ink-soft)'};">${escapeHtml(ltSummary(l, today))}</div>
@@ -2735,8 +2778,12 @@
       html += '</div>';
     });
 
-    html += '</div>';
+    html += '<div class="lt-today-box" id="lt-today-box"></div></div>';
     scroller.innerHTML = html;
+
+    // Position the today box after layout (the name column is narrower on phones).
+    const nameColW = scroller.querySelector('.lt-name').offsetWidth;
+    document.getElementById('lt-today-box').style.left = (nameColW + todayIdx * LT_CELL_W) + 'px';
 
     // Center today in the visible (non-sticky) part of the scroller.
     const nameCol = scroller.querySelector('.lt-name');
@@ -3124,40 +3171,102 @@
     return Object.entries(map).map(([k, v]) => `<option value="${k}"${k === selected ? ' selected' : ''}>${escapeHtml(v)}</option>`).join('');
   }
 
+  const HOT_TIERS = { hot:'🔥 Hot List', medium:'Medium term', long:'Long term' };
+  const HOT_EMPTY = {
+    hot: 'No one on the Hot List yet. Add the people closest to buying or selling above.',
+    medium: 'No one on the medium-term watchlist yet.',
+    long: 'No one on the long-term watchlist yet.',
+  };
+  let hotSelectedId = null;
+  let hotFlashId = null;
+
+  function hotTierOf(h){ return h.tier || 'hot'; }
+
   function renderHotList(){
-    const wrap = document.getElementById('hot-list');
-    if (!hotCache.length) {
-      wrap.innerHTML = '<div class="empty-hint">No one on the Hot List yet. Add the people closest to buying or selling below.</div>';
-      return;
-    }
-    const head = `<div class="hot-row hot-head"><div>Name</div><div>Type</div><div>Source</div><div>Call</div><div>Call notes</div><div>Command</div><div></div></div>`;
-    wrap.innerHTML = head + hotCache.map(h => {
-      const voice = hotVoiceUrl(h.phone);
-      const called = h.lastCalledAt ? `Last call ${prShortDate(h.lastCalledAt)}${h.callCount > 1 ? ` · ${h.callCount} calls` : ''}` : '';
-      return `<div class="hot-row" data-id="${prAttr(h.id)}">
-        <div class="hot-c-name">
-          <div class="hot-name">${escapeHtml(h.name)}</div>
-          <div class="hot-sub">${escapeHtml([h.phone, h.email].filter(Boolean).join(' · ')) || '<em>No phone yet</em>'}</div>
-          ${called ? `<div class="hot-sub">${escapeHtml(called)}</div>` : ''}
-        </div>
-        <div><select data-hot="type" aria-label="Type">${hotOptions(HOT_TYPES, h.type)}</select></div>
-        <div><select data-hot="source" aria-label="Source">${hotOptions(HOT_SOURCES, h.source)}</select></div>
-        <div>${voice
-          ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="_blank" rel="noopener">📞 Call</a>`
-          : `<button class="btn btn-ghost" type="button" data-hot="phone">Add phone</button>`}</div>
-        <div class="hot-notes">
-          <textarea data-hot="notes" placeholder="Notes from the call…">${escapeHtml(h.notes || '')}</textarea>
-          <div class="hot-saved" data-hot-saved></div>
-        </div>
-        <div>${h.commandUrl
-          ? `<a class="btn btn-ghost" href="${prAttr(h.commandUrl)}" target="_blank" rel="noopener">Open in Command</a>
-             <button class="hot-cmd-link" type="button" data-hot="cmdlink">Change link</button>`
-          : `<button class="btn btn-ghost" type="button" data-hot="cmdadd">+ Add to Command</button>
-             <button class="hot-cmd-link" type="button" data-hot="cmdlink">Already in Command? Paste link</button>`}</div>
-        <div><button class="del-btn" type="button" data-hot="remove" aria-label="Remove from Hot List">×</button></div>
-      </div>`;
-    }).join('');
+    Object.keys(HOT_TIERS).forEach(tier => {
+      const wrap = document.getElementById('hot-list-' + tier);
+      const rows = hotCache.filter(h => hotTierOf(h) === tier);
+      if (!rows.length) {
+        wrap.innerHTML = `<div class="empty-hint">${HOT_EMPTY[tier]}</div>`;
+        return;
+      }
+      const head = `<div class="hot-row hot-head"><div>#</div><div>Name</div><div>Type</div><div>Source · List</div><div>Call</div><div>Call notes</div><div>Command</div><div></div></div>`;
+      wrap.innerHTML = head + rows.map((h, i) => {
+        const voice = hotVoiceUrl(h.phone);
+        const called = h.lastCalledAt ? `Last call ${prShortDate(h.lastCalledAt)}${h.callCount > 1 ? ` · ${h.callCount} calls` : ''}` : '';
+        const cls = ['hot-row'];
+        if (h.id === hotSelectedId) cls.push('selected');
+        if (h.id === hotFlashId) cls.push('just-moved');
+        return `<div class="${cls.join(' ')}" data-id="${prAttr(h.id)}">
+          <div class="hot-rank">
+            <button class="hot-arrow" type="button" data-hot="up" aria-label="Move up"${i === 0 ? ' disabled' : ''}>▲</button>
+            <div class="hot-num">${i + 1}</div>
+            <button class="hot-arrow" type="button" data-hot="down" aria-label="Move down"${i === rows.length - 1 ? ' disabled' : ''}>▼</button>
+          </div>
+          <div class="hot-c-name">
+            <div class="hot-name" data-hot="select" title="Tap to select, then use the arrows to reorder">${escapeHtml(h.name)}</div>
+            <div class="hot-sub">${escapeHtml([h.phone, h.email].filter(Boolean).join(' · ')) || '<em>No phone yet</em>'}</div>
+            ${called ? `<div class="hot-sub">${escapeHtml(called)}</div>` : ''}
+          </div>
+          <div><select data-hot="type" aria-label="Type">${hotOptions(HOT_TYPES, h.type)}</select></div>
+          <div>
+            <select data-hot="source" aria-label="Source">${hotOptions(HOT_SOURCES, h.source)}</select>
+            <select class="hot-move" data-hot="tier" aria-label="Move to list">${hotOptions(HOT_TIERS, tier)}</select>
+          </div>
+          <div>${voice
+            ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="_blank" rel="noopener">📞 Call</a>`
+            : `<button class="btn btn-ghost" type="button" data-hot="phone">Add phone</button>`}</div>
+          <div class="hot-notes">
+            <textarea data-hot="notes" placeholder="Notes from the call…">${escapeHtml(h.notes || '')}</textarea>
+            <div class="hot-saved" data-hot-saved></div>
+          </div>
+          <div>${h.commandUrl
+            ? `<a class="btn btn-ghost" href="${prAttr(h.commandUrl)}" target="_blank" rel="noopener">Open in Command</a>
+               <button class="hot-cmd-link" type="button" data-hot="cmdlink">Change link</button>`
+            : `<button class="btn btn-ghost" type="button" data-hot="cmdadd">+ Add to Command</button>
+               <button class="hot-cmd-link" type="button" data-hot="cmdlink">Already in Command? Paste link</button>`}</div>
+          <div><button class="del-btn" type="button" data-hot="remove" aria-label="Remove">×</button></div>
+        </div>`;
+      }).join('');
+    });
+    hotFlashId = null;
   }
+
+  // Reordering saves once tapping stops, so several quick taps become one
+  // save (each save is a commit + redeploy).
+  const hotReorderTimers = {};
+  function hotMove(id, dir){
+    const h = hotCache.find(x => x.id === id);
+    if (!h) return;
+    const tier = hotTierOf(h);
+    const tierItems = hotCache.filter(x => hotTierOf(x) === tier);
+    const i = tierItems.indexOf(h);
+    const j = i + dir;
+    if (j < 0 || j >= tierItems.length) return;
+    [tierItems[i], tierItems[j]] = [tierItems[j], tierItems[i]];
+    hotCache = hotCache.filter(x => hotTierOf(x) !== tier).concat(tierItems);
+    hotSelectedId = id;
+    hotFlashId = id;
+    renderHotList();
+    const moved = document.querySelector(`.hot-row[data-id="${CSS.escape(id)}"]`);
+    if (moved) moved.scrollIntoView({ block:'nearest', behavior:'smooth' });
+    clearTimeout(hotReorderTimers[tier]);
+    hotReorderTimers[tier] = setTimeout(async () => {
+      try {
+        await hotSave({ reorder: { tier, ids: hotCache.filter(x => hotTierOf(x) === tier).map(x => x.id) } });
+      } catch (err) {
+        alert(`Couldn't save the new order: ${err.message}`);
+      }
+    }, 1200);
+  }
+
+  // Arrow keys move the selected contact too (desktop convenience).
+  document.addEventListener('keydown', e => {
+    if (!hotSelectedId || !['ArrowUp', 'ArrowDown'].includes(e.key)) return;
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement && document.activeElement.tagName)) return;
+    e.preventDefault();
+    hotMove(hotSelectedId, e.key === 'ArrowUp' ? -1 : 1);
+  });
 
   async function refreshHotList(){
     try {
@@ -3166,8 +3275,8 @@
       hotCache = Array.isArray(data) ? data : [];
       renderHotList();
     } catch (e) {
-      document.getElementById('hot-list').innerHTML =
-        `<div class="empty-hint">Couldn't load the Hot List: ${escapeHtml(e.message)}</div>`;
+      document.getElementById('hot-list-hot').innerHTML =
+        `<div class="empty-hint">Couldn't load your prospecting lists: ${escapeHtml(e.message)}</div>`;
     }
   }
 
@@ -3204,7 +3313,9 @@
         email: document.getElementById('hot-email').value,
         type: document.getElementById('hot-type').value,
         source: document.getElementById('hot-source').value,
+        tier: document.getElementById('hot-tier').value,
       });
+      hotFlashId = data.record.id;
       hotUpsertLocal(data.record);
       e.target.reset();
       status.style.display = 'none';
@@ -3216,7 +3327,7 @@
     }
   });
 
-  const hotList = document.getElementById('hot-list');
+  const hotList = document.getElementById('prospecting');
 
   hotList.addEventListener('focusout', e => {
     if (e.target.matches('textarea[data-hot="notes"]')) hotSaveNotes(e.target);
@@ -3227,7 +3338,17 @@
     if (!sel) return;
     const id = sel.closest('.hot-row').dataset.id;
     try {
-      hotUpsertLocal((await hotSave({ id, [sel.dataset.hot]: sel.value })).record);
+      const rec = (await hotSave({ id, [sel.dataset.hot]: sel.value })).record;
+      if (sel.dataset.hot === 'tier') {
+        // Server put them at the bottom of the new list; mirror that.
+        hotCache = hotCache.filter(x => x.id !== id).concat(rec);
+        hotSelectedId = hotFlashId = id;
+        renderHotList();
+        const moved = document.querySelector(`.hot-row[data-id="${CSS.escape(id)}"]`);
+        if (moved) moved.scrollIntoView({ block:'center', behavior:'smooth' });
+        return;
+      }
+      hotUpsertLocal(rec);
     } catch (err) {
       alert(`Couldn't save: ${err.message}`);
       renderHotList();
@@ -3242,7 +3363,13 @@
     if (!h) return;
     const act = el.dataset.hot;
     try {
-      if (act === 'call') {
+      if (act === 'up' || act === 'down') {
+        hotMove(h.id, act === 'up' ? -1 : 1);
+      } else if (act === 'select') {
+        hotSelectedId = hotSelectedId === h.id ? null : h.id;
+        document.querySelectorAll('.hot-row.selected').forEach(r => r.classList.remove('selected'));
+        if (hotSelectedId) row.classList.add('selected');
+      } else if (act === 'call') {
         // Let the link open Google Voice in a new tab; meanwhile start a
         // dated line in the notes box so notes can be typed during the call.
         const ta = row.querySelector('textarea[data-hot="notes"]');
@@ -3269,7 +3396,7 @@
         if (url === null) return;
         hotUpsertLocal((await hotSave({ id: h.id, commandUrl: url.trim() })).record);
       } else if (act === 'remove') {
-        if (!confirm(`Take ${h.name} off the Hot List?`)) return;
+        if (!confirm(`Remove ${h.name} from your prospecting lists?`)) return;
         await hotSave({ id: h.id }, 'DELETE');
         hotCache = hotCache.filter(x => x.id !== h.id);
         renderHotList();
