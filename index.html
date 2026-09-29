@@ -3579,8 +3579,8 @@
       }
       const matches = data.matches || [];
       if (!matches.length) {
-        setMsg('Not in Command yet');
-        if (opts.interactive && confirm(`${h.name} isn't in Command yet.\n\nOpen Command to add them? Their details will be copied so you can paste them in.`)) hotHandOff(h);
+        setMsg('Not in the Command export');
+        if (opts.interactive && confirm(`${h.name} isn't in the Command contacts export (it only has contacts up to the last API Nation export, so they may have been added since).\n\nOpen Command to add them? Their details will be copied so you can paste them in.`)) hotHandOff(h);
         return;
       }
       let m = matches[0];
