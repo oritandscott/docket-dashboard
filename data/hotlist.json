@@ -94,17 +94,19 @@
   {
     "id": "hot-mumrym2bjzpap",
     "name": "David Elsaesser",
-    "phone": "",
-    "email": "",
+    "phone": "(716) 218-8842",
+    "email": "drelsaesser@gmail.com",
     "type": "buyer",
     "source": "openhouse",
     "tier": "hot",
     "notes": "",
-    "commandUrl": "",
+    "phoneFound": false,
+    "emailFound": false,
+    "commandUrl": "https://console.command.kw.com/command/contacts/69d960ca66b91851dfa057d9",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T14:31:40.595Z",
-    "updatedAt": "2026-09-29T14:31:40.595Z"
+    "updatedAt": "2026-09-29T17:14:48.330Z"
   },
   {
     "id": "hot-1a0ed5b95e2noujg",
