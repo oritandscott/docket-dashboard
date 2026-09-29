@@ -16,7 +16,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-09-29T13:21:18.967Z",
-    "updatedAt": "2026-09-29T13:36:18.000Z",
+    "updatedAt": "2026-09-29T13:49:20.235Z",
     "reply": "Ready for your OK, one tap each, top to bottom. Jeff Tucker's contract date is set to Fri Sep 25 (\"accepted an offer on Friday\"); COE Oct 19 with 0 due diligence days. If the closing moves up, just send another command like \"Tucker COE moved to Oct 12\". Nothing changes in Navigator until you tap Confirm. The Google Sheet tracker isn't connected yet, so it still needs these by hand.",
     "proposals": [
       {
@@ -24,7 +24,10 @@
         "label": "Bartko: mark appraisal WAIVED (checks 'Appraisal was Waived' and marks the other appraisal steps N/A)",
         "op": "waive_appraisal",
         "match": "Bartko",
-        "status": "pending"
+        "status": "applied",
+        "result": "15428 S 15th Avenue Phoenix, AZ 85045: appraisal waived",
+        "navId": "cmttckk8f000004l20kae6l0f",
+        "decidedAt": "2026-09-29T13:49:20.235Z"
       },
       {
         "pid": "p-tucker-create",
