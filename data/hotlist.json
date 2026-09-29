@@ -32,7 +32,7 @@
   {
     "id": "hot-1a0ed5b95d9kdx2x",
     "name": "James Arendell",
-    "phone": "(509) 771-1986\u202c",
+    "phone": "(509) 771-1986‬",
     "email": "",
     "type": "buyer",
     "source": "referral",
@@ -113,11 +113,13 @@
     "source": "openhouse",
     "tier": "hot",
     "notes": "OH 9/19 7802 E Monte Vista. Lives in Tempe; kids at Pueblo school, wants them able to walk. Scottsdale Parks & Rec planner.",
+    "phoneFound": true,
+    "emailFound": false,
     "commandUrl": "",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T13:29:57.000Z"
+    "updatedAt": "2026-09-29T15:31:06.825Z"
   },
   {
     "id": "hot-1a0ed5b95e56dus6",
