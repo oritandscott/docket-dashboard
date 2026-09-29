@@ -14,9 +14,9 @@
     "text": "There is no appraisal for Bartko-- he got an appraisal waiver.   Also now we need to add a new line for Jeff Tucker, Seller of 4824 E. La Puente Phoenix - check command Opportunities for details if you need to.  He accepted an offer on Friday from Offerpad, and there is no Due Diligence period - Offerpad has already inspected and there is no appraisal.   Closing is on Oct 19 but they may move it up a week or more.  Create a new Navigator for this one too.",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-09-29T13:21:18.967Z",
-    "updatedAt": "2026-09-29T13:49:33.916Z",
+    "updatedAt": "2026-09-29T13:49:39.003Z",
     "reply": "Ready for your OK, one tap each, top to bottom. Jeff Tucker's contract date is set to Fri Sep 25 (\"accepted an offer on Friday\"); COE Oct 19 with 0 due diligence days. If the closing moves up, just send another command like \"Tucker COE moved to Oct 12\". Nothing changes in Navigator until you tap Confirm. The Google Sheet tracker isn't connected yet, so it still needs these by hand.",
     "proposals": [
       {
@@ -61,7 +61,10 @@
         "label": "Tucker: mark appraisal WAIVED (no appraisal) -- confirm after creating the Navigator",
         "op": "waive_appraisal",
         "match": "Tucker",
-        "status": "pending"
+        "status": "applied",
+        "result": "4824 E. La Puente, Phoenix: appraisal waived",
+        "navId": "cmumqg8ky000004l3r08sk65f",
+        "decidedAt": "2026-09-29T13:49:39.003Z"
       }
     ]
   }
