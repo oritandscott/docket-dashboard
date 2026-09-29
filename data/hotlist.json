@@ -173,17 +173,17 @@
     "name": "Jim Chalifoux",
     "phone": "(602) 690-8652",
     "email": "dmdllc@cox.net",
-    "phoneFound": false,
-    "emailFound": false,
     "type": "both",
     "source": "pastclient",
     "tier": "medium",
     "notes": "Past client (1075 W Mulberry Dr, Chandler). Contact info from Command.",
-    "commandUrl": "",
+    "phoneFound": false,
+    "emailFound": false,
+    "commandUrl": "https://console.command.kw.com/command/contacts/0000000000000000064854ea",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T15:07:50.000Z",
-    "updatedAt": "2026-09-29T15:07:50.000Z"
+    "updatedAt": "2026-09-29T15:31:14.513Z"
   },
   {
     "id": "hot-1a0edb531c99h5r4",
