@@ -589,15 +589,15 @@
     <div class="side-date mono" id="side-date"></div>
     <ul class="nav">
       <li><a href="#today">Today <span class="num">01</span></a></li>
-      <li><a href="#escrow-tracker">Linear Escrow Tracker <span class="num">02</span></a></li>
-      <li><a href="#navigator">Navigator App <span class="num">03</span></a></li>
-      <li><a href="#video-production-mtp">Video Production - Moving to Phoenix <span class="num">04</span></a></li>
-      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">05</span></a></li>
-      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">06</span></a></li>
-      <li><a href="#anniversaries">Home Anniversaries <span class="num">07</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
-      <li><a href="#weekender">Thursday Weekender <span class="num">08</span></a></li>
-      <li><a href="#blogdrafts">Ghostwriter <span class="num">09</span></a></li>
-      <li><a href="#prospecting">Prospecting <span class="num">10</span><span class="nav-badge" id="prospecting-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#prospecting">Prospecting <span class="num">02</span><span class="nav-badge" id="prospecting-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#escrow-tracker">Linear Escrow Tracker <span class="num">03</span></a></li>
+      <li><a href="#navigator">Navigator App <span class="num">04</span></a></li>
+      <li><a href="#video-production-mtp">Video Production - Moving to Phoenix <span class="num">05</span></a></li>
+      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">06</span></a></li>
+      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">07</span></a></li>
+      <li><a href="#anniversaries">Home Anniversaries <span class="num">08</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#weekender">Thursday Weekender <span class="num">09</span></a></li>
+      <li><a href="#blogdrafts">Ghostwriter <span class="num">10</span></a></li>
       <li><a href="#pipeline">Pipeline <span class="num">11</span></a></li>
       <li><a href="#masterlist">Master Project List <span class="num">12</span><span class="nav-badge" id="masterlist-nav-badge" style="display:none;"></span></a></li>
       <li hidden><a href="#tracker">Tracker <span class="num">13</span></a></li>
@@ -651,9 +651,51 @@
       <div class="panel-sub" id="cal-other-note" style="display:none;margin-top:.9rem;"></div>
     </section>
 
+    <!-- PROSPECTING -->
+    <section class="panel" id="prospecting">
+      <div class="tab-label">02 · Prospecting</div>
+      <h2>Prospecting - Calls to Make</h2>
+      <div class="panel-sub">One shared call list for past clients, open house guests, and anyone else worth a personal call. Saved for every device.</div>
+
+      <div class="pr-filters" id="pr-filters"></div>
+      <div id="pr-list"><div class="empty-hint">Loading call list&hellip;</div></div>
+
+      <form class="inline-form" id="pr-form" style="margin-top:1rem;">
+        <input type="text" id="pr-name" placeholder="Name" required style="flex:1.2;min-width:140px;">
+        <input type="text" id="pr-phone" placeholder="Phone" inputmode="tel" style="flex:.8;min-width:110px;">
+        <input type="text" id="pr-email" placeholder="Email" inputmode="email" style="flex:1;min-width:140px;">
+        <select id="pr-source">
+          <option value="manual">Manual</option>
+          <option value="openhouse">Open house</option>
+          <option value="pastclient">Past client</option>
+        </select>
+        <input type="text" id="pr-reason" placeholder="Why call? (e.g. asked about Gilbert schools)" style="flex:2;min-width:200px;">
+        <button class="btn" type="submit">Add to call list</button>
+      </form>
+      <div class="empty-hint" id="pr-status" style="display:none;margin-top:.6rem;"></div>
+
+      <div class="pr-block">
+        <div class="subhead" style="color:var(--gold);">Suggested past-client calls</div>
+        <div class="panel-sub" style="margin:-.4rem 0 .7rem;">Past clients with a home anniversary in the last week or the next 30 days. A quick call is a great way to stay in touch.</div>
+        <div id="pr-suggest"></div>
+      </div>
+
+      <details class="history-details" id="pr-paste-details">
+        <summary class="history-summary">Paste open house sign-ins</summary>
+        <div style="margin-top:.8rem;">
+          <div class="panel-sub" style="margin:0 0 .6rem;">Copy rows from the OPEN HOUSE ATTENDANCE sheet (or type one per line): name, phone, email in any order, separated by commas or tabs. Anyone already on the list is skipped.</div>
+          <input type="text" id="pr-oh-label" placeholder="Open house (address / date)" style="width:100%;margin-bottom:.5rem;">
+          <textarea id="pr-paste" rows="5" placeholder="Jane Smith, 480-555-0101, jane@example.com" style="width:100%;"></textarea>
+          <div class="inline-form">
+            <button class="btn" type="button" id="pr-paste-btn">Add sign-ins</button>
+          </div>
+        </div>
+      </details>
+    </section>
+
     <!-- LINEAR ESCROW TRACKER (live from Navigator) -->
     <section class="panel" id="escrow-tracker">
-      <div class="tab-label">02 · Linear Escrow Tracker</div>
+      <div class="tab-label">03 · Linear Escrow Tracker</div>
       <h2>OASIS 2026 LINEAR ESCROW TRACKER</h2>
       <div class="panel-sub">Every active listing, escrow and buyer search, live from Navigator on each page load. Scroll sideways for past and upcoming days.</div>
       <div class="lt-legend" aria-hidden="true">
@@ -672,7 +714,7 @@
 
     <!-- NAVIGATOR APP -->
     <section class="panel" id="navigator">
-      <div class="tab-label">03 · Navigator App</div>
+      <div class="tab-label">04 · Navigator App</div>
       <h2>Navigator App - Active Sellers and Buyers</h2>
       <div class="panel-sub">Quick links into the Oasis Team Navigator app.</div>
       <a class="btn" href="https://nav.oasisgroupaz.com/admin" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:1.2rem;">Go to Main Editor (All Listings &amp; Buyers) &rarr;</a>
@@ -712,7 +754,7 @@
 
     <!-- VIDEO PRODUCTION: MOVING TO PHOENIX CHANNEL -->
     <section class="panel" id="video-production-mtp">
-      <div class="tab-label">04 · Video Production</div>
+      <div class="tab-label">05 · Video Production</div>
       <h2>Video Production - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">One-click links for producing Moving to Phoenix content -- Drive folders, the channel itself, and anything else worth having a click away.</div>
@@ -738,7 +780,7 @@
 
     <!-- YOUTUBE COMMENTS: CHANNEL 2 -->
     <section class="panel" id="comments-channel2">
-      <div class="tab-label">05 · YouTube Comments</div>
+      <div class="tab-label">06 · YouTube Comments</div>
       <h2>YouTube Comments - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">Recent comments from the Moving to Phoenix channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -753,7 +795,7 @@
 
     <!-- YOUTUBE COMMENTS: CHANNEL 1 -->
     <section class="panel" id="comments-channel1">
-      <div class="tab-label">06 · YouTube Comments</div>
+      <div class="tab-label">07 · YouTube Comments</div>
       <h2>YouTube Comments - Oasis Arizona Living Channel</h2>
       <img class="channel-banner" src="assets/banner-oasis-arizona-living.jpg" alt="Oasis Arizona Living channel banner">
       <div class="panel-sub">Recent comments from the Oasis Arizona Living channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -768,7 +810,7 @@
 
     <!-- HOME ANNIVERSARIES -->
     <section class="panel" id="anniversaries">
-      <div class="tab-label">07 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
+      <div class="tab-label">08 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
       <h2>Home Anniversaries</h2>
       <img class="channel-banner" src="assets/banner-command-header.png" alt="KW Command header">
       <div class="panel-sub">Clients with an upcoming Home Anniversary. 8&ndash;30 days out, pick a template or dismiss. At 7 days, the draft is created automatically from whatever template is selected -- nothing sends until you do.</div>
@@ -796,7 +838,7 @@
 
     <!-- THURSDAY WEEKENDER -->
     <section class="panel" id="weekender">
-      <div class="tab-label">08 · Thursday Weekender</div>
+      <div class="tab-label">09 · Thursday Weekender</div>
       <h2>Thursday Weekender</h2>
       <div class="panel-sub">The WEEKENDER Mailchimp draft builds itself every Thursday at 1:05pm from Angela Kiernan's event email. This tracks that run. <strong>Currently broken</strong> — the build that used to run on the MacBook Pro was abandoned; see the Master Project List for the fix in progress.</div>
       <div class="weekender-grid">
@@ -836,7 +878,7 @@
 
     <!-- BLOG DRAFTS -->
     <section class="panel" id="blogdrafts">
-      <div class="tab-label">09 · Ghostwriter</div>
+      <div class="tab-label">10 · Ghostwriter</div>
       <h2>Ghostwriter</h2>
       <img class="channel-banner" src="assets/banner-ghostwriter-oasis-blog.jpg" alt="The Oasis Blog">
       <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
@@ -847,48 +889,6 @@
       </form>
       <div id="request-topic-status" style="font-size:.82rem;margin-top:.5rem;"></div>
       <div id="drafts-list" style="margin-top:1rem;"></div>
-    </section>
-
-    <!-- PROSPECTING -->
-    <section class="panel" id="prospecting">
-      <div class="tab-label">10 · Prospecting</div>
-      <h2>Prospecting - Calls to Make</h2>
-      <div class="panel-sub">One shared call list for past clients, open house guests, and anyone else worth a personal call. Saved for every device.</div>
-
-      <div class="pr-filters" id="pr-filters"></div>
-      <div id="pr-list"><div class="empty-hint">Loading call list&hellip;</div></div>
-
-      <form class="inline-form" id="pr-form" style="margin-top:1rem;">
-        <input type="text" id="pr-name" placeholder="Name" required style="flex:1.2;min-width:140px;">
-        <input type="text" id="pr-phone" placeholder="Phone" inputmode="tel" style="flex:.8;min-width:110px;">
-        <input type="text" id="pr-email" placeholder="Email" inputmode="email" style="flex:1;min-width:140px;">
-        <select id="pr-source">
-          <option value="manual">Manual</option>
-          <option value="openhouse">Open house</option>
-          <option value="pastclient">Past client</option>
-        </select>
-        <input type="text" id="pr-reason" placeholder="Why call? (e.g. asked about Gilbert schools)" style="flex:2;min-width:200px;">
-        <button class="btn" type="submit">Add to call list</button>
-      </form>
-      <div class="empty-hint" id="pr-status" style="display:none;margin-top:.6rem;"></div>
-
-      <div class="pr-block">
-        <div class="subhead" style="color:var(--gold);">Suggested past-client calls</div>
-        <div class="panel-sub" style="margin:-.4rem 0 .7rem;">Past clients with a home anniversary in the last week or the next 30 days. A quick call is a great way to stay in touch.</div>
-        <div id="pr-suggest"></div>
-      </div>
-
-      <details class="history-details" id="pr-paste-details">
-        <summary class="history-summary">Paste open house sign-ins</summary>
-        <div style="margin-top:.8rem;">
-          <div class="panel-sub" style="margin:0 0 .6rem;">Copy rows from the OPEN HOUSE ATTENDANCE sheet (or type one per line): name, phone, email in any order, separated by commas or tabs. Anyone already on the list is skipped.</div>
-          <input type="text" id="pr-oh-label" placeholder="Open house (address / date)" style="width:100%;margin-bottom:.5rem;">
-          <textarea id="pr-paste" rows="5" placeholder="Jane Smith, 480-555-0101, jane@example.com" style="width:100%;"></textarea>
-          <div class="inline-form">
-            <button class="btn" type="button" id="pr-paste-btn">Add sign-ins</button>
-          </div>
-        </div>
-      </details>
     </section>
 
     <!-- PIPELINE -->
