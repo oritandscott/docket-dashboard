@@ -270,26 +270,27 @@
   .hot-tier-medium .hot-title{color:var(--gold);}
   .hot-tier-long .hot-title{color:var(--stamp-blue);}
   .hot-table{display:flex;flex-direction:column;gap:.45rem;}
-  .hot-row{display:grid;grid-template-columns:44px minmax(0,1.2fr) 118px 118px 84px minmax(0,2fr) 128px 22px;gap:.55rem;align-items:start;padding:.6rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;transition:outline-color .15s;}
+  .hot-row{display:grid;grid-template-columns:44px minmax(0,1.2fr) 118px 118px 84px minmax(0,2fr) 128px 22px;gap:.55rem;align-items:start;padding:.45rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;transition:outline-color .15s;}
   .hot-row.selected{outline:2px solid var(--gold);outline-offset:-1px;}
   .hot-row.just-moved{animation:hotFlash .6s ease;}
   @keyframes hotFlash{from{background:rgba(201,161,93,.25);}to{background:var(--paper-card);}}
   .hot-head{background:none;border:none;padding:.1rem .7rem;font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
   .hot-rank{display:flex;flex-direction:column;align-items:center;gap:.15rem;}
-  .hot-num{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:1.05rem;color:var(--gold);line-height:1.1;}
-  .hot-arrow{background:none;border:1px solid var(--line);color:var(--ink-soft);border-radius:3px;width:30px;height:24px;cursor:pointer;font-size:.7rem;line-height:1;padding:0;}
+  .hot-num{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:.95rem;color:var(--gold);line-height:1;}
+  .hot-arrow{background:none;border:1px solid var(--line);color:var(--ink-soft);border-radius:3px;width:28px;height:19px;cursor:pointer;font-size:.7rem;line-height:1;padding:0;}
   .hot-arrow:hover:not(:disabled){color:var(--gold);border-color:var(--gold);}
   .hot-arrow:disabled{opacity:.25;cursor:default;}
   .hot-name{font-weight:700;font-size:.95rem;cursor:pointer;}
   .hot-sub{font-size:.75rem;color:var(--ink-soft);margin-top:.15rem;word-break:break-word;}
   .hot-row select{width:100%;font-size:.8rem;padding:.3rem .35rem;}
-  .hot-row .btn{width:100%;padding:.4rem .5rem;font-size:.78rem;text-align:center;text-decoration:none;display:inline-block;white-space:normal;line-height:1.2;}
+  .hot-row .btn{width:100%;padding:.35rem .45rem;font-size:.76rem;text-align:center;text-decoration:none;display:inline-block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
   .hot-row .hot-call{background:#1E7B45;border-color:#1E7B45;color:#fff;}
   .hot-row .hot-call:hover{background:#249152;}
   .hot-move{margin-top:.35rem;}
-  .hot-notes textarea{width:100%;min-height:58px;font-size:.8rem;resize:vertical;}
-  .hot-saved{font-size:.68rem;color:var(--ink-soft);margin-top:.15rem;min-height:.9rem;}
-  .hot-cmd-link{display:block;font-size:.7rem;color:var(--ink-soft);margin-top:.25rem;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;font-family:inherit;}
+  .hot-notes textarea{width:100%;min-height:44px;height:44px;font-size:.8rem;resize:vertical;}
+  .hot-saved{font-size:.66rem;color:var(--ink-soft);margin-top:.1rem;}
+  .hot-saved:empty{display:none;}
+  .hot-cmd-link{display:block;font-size:.68rem;color:var(--ink-soft);margin-top:.15rem;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;font-family:inherit;}
   @media (max-width:1180px){
     .hot-head{display:none;}
     .hot-row{grid-template-columns:44px 1fr 1fr;}
@@ -305,8 +306,11 @@
   .inbox-note.done{opacity:.55;}
   .inbox-old-btn{font-size:.78rem;margin-top:.3rem;padding:.2rem 0;}
   .hot-edit input{width:100%;font-size:.8rem;padding:.3rem .4rem;margin-bottom:.3rem;}
-  .hot-edit-link{background:none;border:none;color:var(--ink-soft);font-size:.7rem;text-decoration:underline;cursor:pointer;padding:0;margin-top:.2rem;font-family:inherit;}
-  .hot-sync-msg{font-size:.68rem;color:var(--ink-soft);margin-top:.25rem;}
+  .hot-edit-link{background:none;border:none;color:var(--ink-soft);font-size:.8rem;cursor:pointer;padding:0 .15rem;font-family:inherit;vertical-align:1px;}
+  .hot-edit-link:hover{color:var(--gold);}
+  .hot-one{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:.05rem;}
+  .hot-sync-msg{font-size:.66rem;color:var(--ink-soft);margin-top:.15rem;line-height:1.25;}
+  .hot-sync-msg:empty{display:none;}
   .inbox-note .inbox-text{flex:1;white-space:pre-wrap;}
   .inbox-note .pr-meta{margin-top:.2rem;}
   .inbox-reply{margin-top:.4rem;padding:.4rem .55rem;border-left:2px solid var(--gold);background:rgba(201,161,93,.06);font-size:.8rem;white-space:pre-wrap;}
@@ -3384,10 +3388,10 @@
               <button class="btn" type="button" data-hot="edit-save" style="width:auto;">Save</button>
               <button class="btn btn-ghost" type="button" data-hot="edit-cancel" style="width:auto;">Cancel</button>
             </div>` : `
-            <div class="hot-name" data-hot="select" title="Tap to select, then use the arrows to reorder">${escapeHtml(h.name)}</div>
-            <div class="hot-sub">${escapeHtml([h.phone, h.email].filter(Boolean).join(' · ')) || '<em>No phone yet</em>'}</div>
-            ${called ? `<div class="hot-sub">${escapeHtml(called)}</div>` : ''}
-            <button class="hot-edit-link" type="button" data-hot="edit">✎ Edit</button>`}
+            <div class="hot-name"><span data-hot="select" title="Tap to select, then use the arrows to reorder">${escapeHtml(h.name)}</span> <button class="hot-edit-link" type="button" data-hot="edit" title="Edit name / phone / email">✎</button></div>
+            <div class="hot-sub hot-one" title="${prAttr([h.phone, h.email].filter(Boolean).join(' · '))}">${escapeHtml(h.phone || '') || '<em>No phone yet</em>'}</div>
+            ${h.email ? `<div class="hot-sub hot-one" title="${prAttr(h.email)}">${escapeHtml(h.email)}</div>` : ''}
+            ${called ? `<div class="hot-sub hot-one">${escapeHtml(called)}</div>` : ''}`}
           </div>
           <div><select data-hot="type" aria-label="Type">${hotOptions(HOT_TYPES, h.type)}</select></div>
           <div>
@@ -3403,9 +3407,9 @@
           </div>
           <div>${h.commandUrl
             ? `<a class="btn btn-ghost" href="${prAttr(h.commandUrl)}" target="_blank" rel="noopener">Open in Command</a>
-               <button class="hot-cmd-link" type="button" data-hot="find">Wrong person? Find again</button>`
-            : `<button class="btn btn-ghost" type="button" data-hot="find">Already in Command? Find them</button>
-               <button class="hot-cmd-link" type="button" data-hot="cmdadd">Not in Command -- add them</button>`}
+               <button class="hot-cmd-link" type="button" data-hot="find">Re-find</button>`
+            : `<button class="btn btn-ghost" type="button" data-hot="find">Find in Command</button>
+               <button class="hot-cmd-link" type="button" data-hot="cmdadd">+ Add to Command</button>`}
             <div class="hot-sync-msg" data-sync-msg>${escapeHtml(hotSyncMsg[h.id] || '')}</div></div>
           <div><button class="del-btn" type="button" data-hot="remove" aria-label="Remove">×</button></div>
         </div>`;
@@ -3490,7 +3494,7 @@
       let m = matches[0];
       const obvious = matches.length === 1 && (m.strong || m.score >= 60);
       if (!obvious) {
-        if (!opts.interactive) { setMsg(`Possible Command match${matches.length > 1 ? 'es' : ''} -- tap "Find them" to pick`); return; }
+        if (!opts.interactive) { setMsg(`${matches.length > 1 ? matches.length + ' possible matches' : 'Possible match'} -- tap Find`); return; }
         const pick = prompt(`Which Command contact is ${h.name}? Type the number (or Cancel):\n\n` +
           matches.map((x, i) => `${i + 1}. ${x.name} · ${hotFmtPhone(x.phone) || 'no phone'} · ${x.email || 'no email'}`).join('\n'), '1');
         if (!pick) { setMsg(''); return; }
