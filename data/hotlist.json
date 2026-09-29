@@ -90,21 +90,6 @@
     "updatedAt": "2026-09-29T13:29:57.000Z"
   },
   {
-    "id": "hot-1a0ed5b95e2noujg",
-    "name": "Eileen Baden",
-    "phone": "(908) 797-9727",
-    "email": "eileenbaden@gmail.com",
-    "type": "buyer",
-    "source": "openhouse",
-    "tier": "hot",
-    "notes": "OH 9/19 7802 E Monte Vista. Lives in Tempe; kids at Pueblo school, wants them able to walk. Scottsdale Parks & Rec planner.",
-    "commandUrl": "",
-    "callCount": 0,
-    "lastCalledAt": null,
-    "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T13:29:57.000Z"
-  },
-  {
     "id": "hot-mumrym2bjzpap",
     "name": "David Elsaesser",
     "phone": "",
@@ -118,6 +103,21 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T14:31:40.595Z",
     "updatedAt": "2026-09-29T14:31:40.595Z"
+  },
+  {
+    "id": "hot-1a0ed5b95e2noujg",
+    "name": "Eileen Baden",
+    "phone": "(908) 797-9727",
+    "email": "eileenbaden@gmail.com",
+    "type": "buyer",
+    "source": "openhouse",
+    "tier": "hot",
+    "notes": "OH 9/19 7802 E Monte Vista. Lives in Tempe; kids at Pueblo school, wants them able to walk. Scottsdale Parks & Rec planner.",
+    "commandUrl": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T13:29:57.000Z",
+    "updatedAt": "2026-09-29T13:29:57.000Z"
   },
   {
     "id": "hot-1a0ed5b95e56dus6",
