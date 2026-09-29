@@ -270,7 +270,7 @@
   .hot-tier-medium .hot-title{color:var(--gold);}
   .hot-tier-long .hot-title{color:var(--stamp-blue);}
   .hot-table{display:flex;flex-direction:column;gap:.45rem;}
-  .hot-row{display:grid;grid-template-columns:44px minmax(0,1.2fr) 118px 118px 84px minmax(0,2fr) 128px 22px;gap:.55rem;align-items:start;padding:.45rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;transition:outline-color .15s;}
+  .hot-row{display:grid;grid-template-columns:40px minmax(0,1.2fr) 100px 206px 72px minmax(0,2fr) 172px 18px;gap:.5rem;align-items:start;padding:.45rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;transition:outline-color .15s;}
   .hot-row.selected{outline:2px solid var(--gold);outline-offset:-1px;}
   .hot-row.just-moved{animation:hotFlash .6s ease;}
   @keyframes hotFlash{from{background:rgba(201,161,93,.25);}to{background:var(--paper-card);}}
@@ -280,14 +280,23 @@
   .hot-arrow{background:none;border:1px solid var(--line);color:var(--ink-soft);border-radius:3px;width:28px;height:19px;cursor:pointer;font-size:.7rem;line-height:1;padding:0;}
   .hot-arrow:hover:not(:disabled){color:var(--gold);border-color:var(--gold);}
   .hot-arrow:disabled{opacity:.25;cursor:default;}
-  .hot-name{font-weight:700;font-size:.95rem;cursor:pointer;}
-  .hot-sub{font-size:.75rem;color:var(--ink-soft);margin-top:.15rem;word-break:break-word;}
-  .hot-row select{width:100%;font-size:.8rem;padding:.3rem .35rem;}
-  .hot-row .btn{width:100%;padding:.35rem .45rem;font-size:.76rem;text-align:center;text-decoration:none;display:inline-block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
+  .hot-name{font-weight:700;font-size:.88rem;cursor:pointer;}
+  .hot-sub{font-size:.7rem;color:var(--ink-soft);margin-top:.15rem;word-break:break-word;}
+  /* Bright pink = a phone/email we looked up ourselves, not one they gave us
+     (marked pink in the OPEN HOUSE ATTENDANCE sheet). */
+  .hot-sub.hot-found{color:#FF2FA8;font-weight:600;}
+  .hot-found-tag{display:flex;align-items:center;gap:.3rem;font-size:.68rem;color:#FF2FA8;margin:-.15rem 0 .35rem;}
+  .hot-found-tag input{width:auto;margin:0;}
+  .hot-pair{display:flex;gap:.3rem;}
+  .hot-cmd{display:flex;gap:.35rem;align-items:center;}
+  .hot-cmd .btn{flex:1;}
+  .hot-cmd .hot-cmd-link{margin:0;white-space:nowrap;}
+  .hot-row select{width:100%;font-size:.72rem;padding:.25rem .3rem;}
+  .hot-row .btn{width:100%;padding:.3rem .4rem;font-size:.72rem;text-align:center;text-decoration:none;display:inline-block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
   .hot-row .hot-call{background:#1E7B45;border-color:#1E7B45;color:#fff;}
   .hot-row .hot-call:hover{background:#249152;}
-  .hot-move{margin-top:.35rem;}
-  .hot-notes textarea{width:100%;min-height:44px;height:44px;font-size:.8rem;resize:vertical;}
+  .hot-move{margin-top:0;}
+  .hot-notes textarea{width:100%;min-height:40px;height:40px;font-size:.74rem;resize:vertical;}
   .hot-saved{font-size:.66rem;color:var(--ink-soft);margin-top:.1rem;}
   .hot-saved:empty{display:none;}
   .hot-cmd-link{display:block;font-size:.68rem;color:var(--ink-soft);margin-top:.15rem;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;font-family:inherit;}
@@ -3384,17 +3393,19 @@
             <div class="hot-edit">
               <input type="text" data-edit="name" value="${prAttr(h.name)}" placeholder="Name">
               <input type="text" data-edit="phone" value="${prAttr(h.phone || '')}" placeholder="Phone" inputmode="tel">
+              <label class="hot-found-tag"><input type="checkbox" data-edit-found="phone"${h.phoneFound ? ' checked' : ''}> We found this number (pink)</label>
               <input type="text" data-edit="email" value="${prAttr(h.email || '')}" placeholder="Email" inputmode="email">
+              <label class="hot-found-tag"><input type="checkbox" data-edit-found="email"${h.emailFound ? ' checked' : ''}> We found this email (pink)</label>
               <button class="btn" type="button" data-hot="edit-save" style="width:auto;">Save</button>
               <button class="btn btn-ghost" type="button" data-hot="edit-cancel" style="width:auto;">Cancel</button>
             </div>` : `
             <div class="hot-name"><span data-hot="select" title="Tap to select, then use the arrows to reorder">${escapeHtml(h.name)}</span> <button class="hot-edit-link" type="button" data-hot="edit" title="Edit name / phone / email">✎</button></div>
-            <div class="hot-sub hot-one" title="${prAttr([h.phone, h.email].filter(Boolean).join(' · '))}">${escapeHtml(h.phone || '') || '<em>No phone yet</em>'}</div>
-            ${h.email ? `<div class="hot-sub hot-one" title="${prAttr(h.email)}">${escapeHtml(h.email)}</div>` : ''}
+            <div class="hot-sub hot-one${h.phone && h.phoneFound ? ' hot-found' : ''}" title="${prAttr(h.phone ? h.phone + (h.phoneFound ? ' -- we found this number; they didn\'t give it to us' : '') : '')}">${escapeHtml(h.phone || '') || '<em>No phone yet</em>'}</div>
+            ${h.email ? `<div class="hot-sub hot-one${h.emailFound ? ' hot-found' : ''}" title="${prAttr(h.email + (h.emailFound ? ' -- we found this email; they didn\'t give it to us' : ''))}">${escapeHtml(h.email)}</div>` : ''}
             ${called ? `<div class="hot-sub hot-one">${escapeHtml(called)}</div>` : ''}`}
           </div>
           <div><select data-hot="type" aria-label="Type">${hotOptions(HOT_TYPES, h.type)}</select></div>
-          <div>
+          <div class="hot-pair">
             <select data-hot="source" aria-label="Source">${hotOptions(HOT_SOURCES, h.source)}</select>
             <select class="hot-move" data-hot="tier" aria-label="Move to list">${hotOptions(HOT_TIERS, tier)}</select>
           </div>
@@ -3405,11 +3416,11 @@
             <textarea data-hot="notes" placeholder="Notes from the call…">${escapeHtml(h.notes || '')}</textarea>
             <div class="hot-saved" data-hot-saved></div>
           </div>
-          <div>${h.commandUrl
+          <div><div class="hot-cmd">${h.commandUrl
             ? `<a class="btn btn-ghost" href="${prAttr(h.commandUrl)}" target="_blank" rel="noopener">Open in Command</a>
-               <button class="hot-cmd-link" type="button" data-hot="find">Re-find</button>`
+               <button class="hot-cmd-link" type="button" data-hot="find" title="Wrong person? Search Command again">Re-find</button>`
             : `<button class="btn btn-ghost" type="button" data-hot="find">Find in Command</button>
-               <button class="hot-cmd-link" type="button" data-hot="cmdadd">+ Add to Command</button>`}
+               <button class="hot-cmd-link" type="button" data-hot="cmdadd" title="Not in Command yet -- open Command with their details copied">+ Add</button>`}</div>
             <div class="hot-sync-msg" data-sync-msg>${escapeHtml(hotSyncMsg[h.id] || '')}</div></div>
           <div><button class="del-btn" type="button" data-hot="remove" aria-label="Remove">×</button></div>
         </div>`;
@@ -3645,7 +3656,8 @@
         const val = k => row.querySelector(`[data-edit="${k}"]`).value.trim();
         if (!val('name')) { alert('Name can\'t be blank.'); return; }
         el.disabled = true;
-        const rec = (await hotSave({ id: h.id, name: val('name'), phone: val('phone'), email: val('email') })).record;
+        const found = k => !!row.querySelector(`[data-edit-found="${k}"]`).checked;
+        const rec = (await hotSave({ id: h.id, name: val('name'), phone: val('phone'), email: val('email'), phoneFound: found('phone'), emailFound: found('email') })).record;
         hotEditId = null;
         hotUpsertLocal(rec);
         lkRefreshDatalist();
