@@ -13,10 +13,14 @@
 const SNAPSHOT_URL = 'https://nav.oasisgroupaz.com/api/admin/snapshot';
 
 export async function loadSnapshot() {
+  // Its own secret, separate from DOCKET_SHARED_SECRET: in this project that
+  // one is the WordPress blog bridge's key (Ghostwriter / digest) and is a
+  // write-only Sensitive var, so it can't be copied to Navigator. Falls back
+  // to DOCKET_SHARED_SECRET until NAVIGATOR_SNAPSHOT_SECRET is set.
   // Trimmed: a trailing space/newline pasted into Vercel causes a 401.
-  const secret = (process.env.DOCKET_SHARED_SECRET || '').trim();
+  const secret = (process.env.NAVIGATOR_SNAPSHOT_SECRET || process.env.DOCKET_SHARED_SECRET || '').trim();
   if (!secret) {
-    const err = new Error('Missing required environment variable: DOCKET_SHARED_SECRET.');
+    const err = new Error('Missing required environment variable: NAVIGATOR_SNAPSHOT_SECRET.');
     err.status = 500;
     throw err;
   }
@@ -41,9 +45,9 @@ export async function loadSnapshot() {
   if (!navRes.ok) {
     // Spell out the likely fix, since this message is shown on the panel.
     const hints = {
-      401: 'the DOCKET_SHARED_SECRET values in the two Vercel projects do not match (or one was changed without redeploying)',
+      401: 'NAVIGATOR_SNAPSHOT_SECRET is not the same in the oasis-navigator and docket-dashboard Vercel projects (or one was changed without redeploying)',
       404: 'the snapshot route is not deployed on nav.oasisgroupaz.com yet',
-      500: 'DOCKET_SHARED_SECRET is not set in the oasis-navigator Vercel project (Production), or Navigator hit an error',
+      500: 'NAVIGATOR_SNAPSHOT_SECRET is not set in the oasis-navigator Vercel project (Production), or Navigator hit an error',
     };
     const detail = await navRes.text().catch(() => '');
     const err = new Error(
