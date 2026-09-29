@@ -14,6 +14,16 @@
 //    a single record (not a list), full-replace. Body: { resource:
 //    'openhouse', address?, date?, time?, notes? }.
 //
+// 3. The Prospecting panel's shared call list (data/prospects.json) --
+//    people for Scott to call: manual adds, open house sign-ins (pasted in
+//    bulk), and past clients picked from the anniversary suggestions.
+//    Body: { resource: 'prospect', id?, name, phone?, email?, source
+//    ('manual'|'openhouse'|'pastclient'), reason?, notes?, status
+//    ('to-call'|'follow-up'|'done'), sourceId?, logCall? } -- or
+//    { resource: 'prospect', bulk: [ {name, phone?, email?, ...}, ... ] } to
+//    add many at once (skips anyone already on the list by email/phone/name).
+//    DELETE { resource: 'prospect', id } removes one.
+//
 // Same storage pattern as save-anniversary.js / save-video-link.js -- this
 // app has no database, the JSON file in the repo IS the store, and a commit
 // here triggers a normal Vercel redeploy. Browser-callable, no shared secret
@@ -26,7 +36,100 @@ const BRANCH = 'main';
 const FILES = {
   project: 'data/projects.json',
   openhouse: 'data/open-house.json',
+  prospect: 'data/prospects.json',
 };
+
+const PROSPECT_SOURCES = ['manual', 'openhouse', 'pastclient'];
+const PROSPECT_STATUSES = ['to-call', 'follow-up', 'done'];
+
+function str(v, max = 500) {
+  return (v === undefined || v === null ? '' : String(v)).trim().slice(0, max);
+}
+
+function prospectKey(p) {
+  const email = str(p.email).toLowerCase();
+  if (email) return 'e:' + email;
+  const phone = str(p.phone).replace(/\D/g, '');
+  if (phone.length >= 7) return 'p:' + phone.slice(-10);
+  return 'n:' + str(p.name).toLowerCase();
+}
+
+function buildProspect(input, existing, now) {
+  const src = PROSPECT_SOURCES.includes(input.source) ? input.source : (existing ? existing.source : 'manual');
+  const status = PROSPECT_STATUSES.includes(input.status) ? input.status : (existing ? existing.status : 'to-call');
+  const pick = (k, max) => (input[k] !== undefined ? str(input[k], max) : existing ? existing[k] || '' : '');
+  const record = {
+    id: existing ? existing.id : 'pros-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    name: pick('name', 120),
+    phone: pick('phone', 40),
+    email: pick('email', 160),
+    source: src,
+    reason: pick('reason', 300),
+    notes: pick('notes', 2000),
+    sourceId: pick('sourceId', 120),
+    status,
+    callCount: existing ? existing.callCount || 0 : 0,
+    lastCalledAt: existing ? existing.lastCalledAt || null : null,
+    createdAt: existing ? existing.createdAt : now,
+    updatedAt: now,
+  };
+  if (input.logCall) {
+    record.callCount += 1;
+    record.lastCalledAt = now;
+  }
+  return record;
+}
+
+async function handleProspect(req, res, ghHeaders) {
+  const { parsed, contentsUrl, sha } = await readJsonFile(ghHeaders, FILES.prospect);
+  const current = Array.isArray(parsed) ? parsed : [];
+  const body = req.body || {};
+  const now = new Date().toISOString();
+
+  if (req.method === 'DELETE') {
+    if (!body.id) return res.status(400).json({ error: 'Missing required field: id.' });
+    const idx = current.findIndex(p => p.id === body.id);
+    if (idx === -1) return res.status(404).json({ error: 'Prospect not found.' });
+    const [removed] = current.splice(idx, 1);
+    await writeJsonFile(ghHeaders, contentsUrl, sha, current, `Remove prospect: ${removed.name}`);
+    return res.status(200).json({ ok: true });
+  }
+
+  if (Array.isArray(body.bulk)) {
+    const seen = new Set(current.map(prospectKey));
+    const added = [];
+    let skipped = 0;
+    body.bulk.slice(0, 200).forEach((item) => {
+      if (!item || !str(item.name)) { skipped++; return; }
+      const key = prospectKey(item);
+      if (seen.has(key)) { skipped++; return; }
+      seen.add(key);
+      const rec = buildProspect(item, null, now);
+      current.push(rec);
+      added.push(rec);
+    });
+    if (added.length) {
+      await writeJsonFile(ghHeaders, contentsUrl, sha, current, `Add ${added.length} prospect${added.length === 1 ? '' : 's'}`);
+    }
+    return res.status(200).json({ ok: true, added, skipped });
+  }
+
+  if (!str(body.name) && !body.id) {
+    return res.status(400).json({ error: 'Missing required field: name.' });
+  }
+  const idx = body.id ? current.findIndex(p => p.id === body.id) : -1;
+  if (body.id && idx === -1) return res.status(404).json({ error: 'Prospect not found.' });
+  const existing = idx !== -1 ? current[idx] : null;
+  if (!existing && current.some(p => prospectKey(p) === prospectKey(body))) {
+    return res.status(409).json({ error: `${str(body.name)} is already on the call list.` });
+  }
+  const record = buildProspect(body, existing, now);
+  if (!record.name) return res.status(400).json({ error: 'Name cannot be blank.' });
+  if (existing) current[idx] = record; else current.push(record);
+  const verb = !existing ? 'Add' : body.logCall ? 'Log call:' : 'Update';
+  await writeJsonFile(ghHeaders, contentsUrl, sha, current, `${verb} prospect ${record.name}`);
+  return res.status(200).json({ ok: true, record });
+}
 
 function uid() {
   return 'proj-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
@@ -75,9 +178,13 @@ export default async function handler(req, res) {
 
     const resource = (req.body || {}).resource;
     if (!FILES[resource]) {
-      return res.status(400).json({ error: "resource must be 'project' or 'openhouse'." });
+      return res.status(400).json({ error: "resource must be 'project', 'openhouse' or 'prospect'." });
     }
     const filePath = FILES[resource];
+
+    if (resource === 'prospect') {
+      return handleProspect(req, res, ghHeaders);
+    }
 
     if (resource === 'openhouse') {
       if (req.method === 'DELETE') {

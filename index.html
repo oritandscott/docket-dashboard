@@ -261,6 +261,30 @@
   @media (max-width:600px){.lt-name{flex-basis:140px;width:140px;}}
   .lt-foot{font-size:.72rem;color:var(--ink-soft);margin-top:.55rem;}
 
+  /* ---------- PROSPECTING ---------- */
+  #prospecting.panel{background:#23203A;}
+  .pr-filters{display:flex;flex-wrap:wrap;gap:.4rem;margin:-.3rem 0 .9rem;}
+  .pr-filter{background:none;border:1px solid var(--line);color:var(--ink-soft);border-radius:14px;padding:.25rem .75rem;font-size:.78rem;cursor:pointer;font-family:inherit;}
+  .pr-filter.active{border-color:var(--gold);color:var(--gold);}
+  .pr-row{display:flex;gap:.9rem;align-items:flex-start;padding:.7rem .8rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;margin-bottom:.5rem;}
+  .pr-main{flex:1;min-width:0;}
+  .pr-name{font-weight:700;font-size:.95rem;}
+  .pr-name .pill{margin-left:.45rem;vertical-align:middle;}
+  .pr-reason{font-size:.85rem;color:var(--ink);margin-top:.2rem;}
+  .pr-contact{font-size:.82rem;margin-top:.25rem;display:flex;flex-wrap:wrap;gap:.3rem 1rem;}
+  .pr-contact a{color:var(--stamp-blue);text-decoration:none;}
+  .pr-contact a:hover{text-decoration:underline;}
+  .pr-meta{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--ink-soft);margin-top:.3rem;}
+  .pr-notes{font-size:.8rem;color:var(--ink-soft);margin-top:.3rem;white-space:pre-wrap;}
+  .pr-actions{display:flex;flex-direction:column;gap:.35rem;align-items:stretch;flex-shrink:0;}
+  .pr-actions .btn{padding:.35rem .7rem;font-size:.78rem;}
+  .pr-actions select{font-size:.78rem;padding:.3rem .4rem;}
+  .pr-block{margin-top:1.6rem;border-top:1px solid var(--line);padding-top:1rem;}
+  .pr-suggest-row{display:flex;justify-content:space-between;align-items:center;gap:.8rem;padding:.55rem .7rem;border:1px dashed var(--line);border-radius:4px;margin-bottom:.45rem;font-size:.85rem;}
+  .pr-suggest-row .pr-addr{color:var(--ink-soft);font-size:.78rem;}
+  .pill-milestone{background:rgba(201,161,93,.22);color:var(--gold);}
+  @media (max-width:600px){.pr-row{flex-direction:column;}.pr-actions{flex-direction:row;flex-wrap:wrap;}}
+
   /* ---------- TODAY ---------- */
   .today-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem 2.2rem;}
   @media (max-width:780px){.today-grid{grid-template-columns:1fr;}}
@@ -565,18 +589,19 @@
     <div class="side-date mono" id="side-date"></div>
     <ul class="nav">
       <li><a href="#today">Today <span class="num">01</span></a></li>
-      <li><a href="#escrow-tracker">Linear Escrow Tracker <span class="num">02</span></a></li>
-      <li><a href="#navigator">Navigator App <span class="num">03</span></a></li>
-      <li><a href="#video-production-mtp">Video Production - Moving to Phoenix <span class="num">04</span></a></li>
-      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">05</span></a></li>
-      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">06</span></a></li>
-      <li><a href="#anniversaries">Home Anniversaries <span class="num">07</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
-      <li><a href="#weekender">Thursday Weekender <span class="num">08</span></a></li>
-      <li><a href="#blogdrafts">Ghostwriter <span class="num">09</span></a></li>
-      <li><a href="#pipeline">Pipeline <span class="num">10</span></a></li>
-      <li><a href="#masterlist">Master Project List <span class="num">11</span><span class="nav-badge" id="masterlist-nav-badge" style="display:none;"></span></a></li>
-      <li hidden><a href="#tracker">Tracker <span class="num">12</span></a></li>
-      <li hidden><a href="#notes">Notes <span class="num">13</span></a></li>
+      <li><a href="#prospecting">Prospecting <span class="num">02</span><span class="nav-badge" id="prospecting-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#escrow-tracker">Linear Escrow Tracker <span class="num">03</span></a></li>
+      <li><a href="#navigator">Navigator App <span class="num">04</span></a></li>
+      <li><a href="#video-production-mtp">Video Production - Moving to Phoenix <span class="num">05</span></a></li>
+      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">06</span></a></li>
+      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">07</span></a></li>
+      <li><a href="#anniversaries">Home Anniversaries <span class="num">08</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#weekender">Thursday Weekender <span class="num">09</span></a></li>
+      <li><a href="#blogdrafts">Ghostwriter <span class="num">10</span></a></li>
+      <li><a href="#pipeline">Pipeline <span class="num">11</span></a></li>
+      <li><a href="#masterlist">Master Project List <span class="num">12</span><span class="nav-badge" id="masterlist-nav-badge" style="display:none;"></span></a></li>
+      <li hidden><a href="#tracker">Tracker <span class="num">13</span></a></li>
+      <li hidden><a href="#notes">Notes <span class="num">14</span></a></li>
     </ul>
     <div style="display:flex;flex-direction:column;gap:1.7rem;margin-top:2.1rem;">
       <img src="assets/kw-realty-phoenix.png" alt="Keller Williams Realty Phoenix" style="width:100%;max-width:180px;height:auto;display:block;">
@@ -626,9 +651,51 @@
       <div class="panel-sub" id="cal-other-note" style="display:none;margin-top:.9rem;"></div>
     </section>
 
+    <!-- PROSPECTING -->
+    <section class="panel" id="prospecting">
+      <div class="tab-label">02 · Prospecting</div>
+      <h2>Prospecting - Calls to Make</h2>
+      <div class="panel-sub">One shared call list for past clients, open house guests, and anyone else worth a personal call. Saved for every device.</div>
+
+      <div class="pr-filters" id="pr-filters"></div>
+      <div id="pr-list"><div class="empty-hint">Loading call list&hellip;</div></div>
+
+      <form class="inline-form" id="pr-form" style="margin-top:1rem;">
+        <input type="text" id="pr-name" placeholder="Name" required style="flex:1.2;min-width:140px;">
+        <input type="text" id="pr-phone" placeholder="Phone" inputmode="tel" style="flex:.8;min-width:110px;">
+        <input type="text" id="pr-email" placeholder="Email" inputmode="email" style="flex:1;min-width:140px;">
+        <select id="pr-source">
+          <option value="manual">Manual</option>
+          <option value="openhouse">Open house</option>
+          <option value="pastclient">Past client</option>
+        </select>
+        <input type="text" id="pr-reason" placeholder="Why call? (e.g. asked about Gilbert schools)" style="flex:2;min-width:200px;">
+        <button class="btn" type="submit">Add to call list</button>
+      </form>
+      <div class="empty-hint" id="pr-status" style="display:none;margin-top:.6rem;"></div>
+
+      <div class="pr-block">
+        <div class="subhead" style="color:var(--gold);">Suggested past-client calls</div>
+        <div class="panel-sub" style="margin:-.4rem 0 .7rem;">Past clients with a home anniversary in the last week or the next 30 days. A quick call is a great way to stay in touch.</div>
+        <div id="pr-suggest"></div>
+      </div>
+
+      <details class="history-details" id="pr-paste-details">
+        <summary class="history-summary">Paste open house sign-ins</summary>
+        <div style="margin-top:.8rem;">
+          <div class="panel-sub" style="margin:0 0 .6rem;">Copy rows from the OPEN HOUSE ATTENDANCE sheet (or type one per line): name, phone, email in any order, separated by commas or tabs. Anyone already on the list is skipped.</div>
+          <input type="text" id="pr-oh-label" placeholder="Open house (address / date)" style="width:100%;margin-bottom:.5rem;">
+          <textarea id="pr-paste" rows="5" placeholder="Jane Smith, 480-555-0101, jane@example.com" style="width:100%;"></textarea>
+          <div class="inline-form">
+            <button class="btn" type="button" id="pr-paste-btn">Add sign-ins</button>
+          </div>
+        </div>
+      </details>
+    </section>
+
     <!-- LINEAR ESCROW TRACKER (live from Navigator) -->
     <section class="panel" id="escrow-tracker">
-      <div class="tab-label">02 · Linear Escrow Tracker</div>
+      <div class="tab-label">03 · Linear Escrow Tracker</div>
       <h2>OASIS 2026 LINEAR ESCROW TRACKER</h2>
       <div class="panel-sub">Every active listing, escrow and buyer search, live from Navigator on each page load. Scroll sideways for past and upcoming days.</div>
       <div class="lt-legend" aria-hidden="true">
@@ -647,7 +714,7 @@
 
     <!-- NAVIGATOR APP -->
     <section class="panel" id="navigator">
-      <div class="tab-label">03 · Navigator App</div>
+      <div class="tab-label">04 · Navigator App</div>
       <h2>Navigator App - Active Sellers and Buyers</h2>
       <div class="panel-sub">Quick links into the Oasis Team Navigator app.</div>
       <a class="btn" href="https://nav.oasisgroupaz.com/admin" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:1.2rem;">Go to Main Editor (All Listings &amp; Buyers) &rarr;</a>
@@ -687,7 +754,7 @@
 
     <!-- VIDEO PRODUCTION: MOVING TO PHOENIX CHANNEL -->
     <section class="panel" id="video-production-mtp">
-      <div class="tab-label">04 · Video Production</div>
+      <div class="tab-label">05 · Video Production</div>
       <h2>Video Production - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">One-click links for producing Moving to Phoenix content -- Drive folders, the channel itself, and anything else worth having a click away.</div>
@@ -713,7 +780,7 @@
 
     <!-- YOUTUBE COMMENTS: CHANNEL 2 -->
     <section class="panel" id="comments-channel2">
-      <div class="tab-label">05 · YouTube Comments</div>
+      <div class="tab-label">06 · YouTube Comments</div>
       <h2>YouTube Comments - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">Recent comments from the Moving to Phoenix channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -728,7 +795,7 @@
 
     <!-- YOUTUBE COMMENTS: CHANNEL 1 -->
     <section class="panel" id="comments-channel1">
-      <div class="tab-label">06 · YouTube Comments</div>
+      <div class="tab-label">07 · YouTube Comments</div>
       <h2>YouTube Comments - Oasis Arizona Living Channel</h2>
       <img class="channel-banner" src="assets/banner-oasis-arizona-living.jpg" alt="Oasis Arizona Living channel banner">
       <div class="panel-sub">Recent comments from the Oasis Arizona Living channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -743,7 +810,7 @@
 
     <!-- HOME ANNIVERSARIES -->
     <section class="panel" id="anniversaries">
-      <div class="tab-label">07 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
+      <div class="tab-label">08 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
       <h2>Home Anniversaries</h2>
       <img class="channel-banner" src="assets/banner-command-header.png" alt="KW Command header">
       <div class="panel-sub">Clients with an upcoming Home Anniversary. 8&ndash;30 days out, pick a template or dismiss. At 7 days, the draft is created automatically from whatever template is selected -- nothing sends until you do.</div>
@@ -771,7 +838,7 @@
 
     <!-- THURSDAY WEEKENDER -->
     <section class="panel" id="weekender">
-      <div class="tab-label">08 · Thursday Weekender</div>
+      <div class="tab-label">09 · Thursday Weekender</div>
       <h2>Thursday Weekender</h2>
       <div class="panel-sub">The WEEKENDER Mailchimp draft builds itself every Thursday at 1:05pm from Angela Kiernan's event email. This tracks that run. <strong>Currently broken</strong> — the build that used to run on the MacBook Pro was abandoned; see the Master Project List for the fix in progress.</div>
       <div class="weekender-grid">
@@ -811,7 +878,7 @@
 
     <!-- BLOG DRAFTS -->
     <section class="panel" id="blogdrafts">
-      <div class="tab-label">09 · Ghostwriter</div>
+      <div class="tab-label">10 · Ghostwriter</div>
       <h2>Ghostwriter</h2>
       <img class="channel-banner" src="assets/banner-ghostwriter-oasis-blog.jpg" alt="The Oasis Blog">
       <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
@@ -826,7 +893,7 @@
 
     <!-- PIPELINE -->
     <section class="panel" id="pipeline">
-      <div class="tab-label">10 · Pipeline</div>
+      <div class="tab-label">11 · Pipeline</div>
       <h2>Pipeline</h2>
       <div class="panel-sub">Every active client, at a glance. Tap the stamp to move their stage.</div>
       <div id="pipeline-list"></div>
@@ -844,7 +911,7 @@
 
     <!-- MASTER PROJECT LIST -->
     <section class="panel" id="masterlist">
-      <div class="tab-label">11 · Master Project List</div>
+      <div class="tab-label">12 · Master Project List</div>
       <h2>Master Project List</h2>
       <div class="panel-sub">Every automation running on your behalf, every idea on deck, which machine each one runs on, and where you and Claude are still waiting on each other. Add a new idea any time — this is the one list.</div>
 
@@ -913,7 +980,7 @@
 
     <!-- TRACKER (hidden for now -- not in use) -->
     <section class="panel" id="tracker" hidden>
-      <div class="tab-label">12 · Tracker</div>
+      <div class="tab-label">13 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
       <div class="tracker-wrap">
@@ -936,7 +1003,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes" hidden>
-      <div class="tab-label">13 · Notes</div>
+      <div class="tab-label">14 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
@@ -2652,6 +2719,331 @@
     }
   }
 
+  // ---------- PROSPECTING ----------
+  // Shared call list in data/prospects.json, written through
+  // /api/save-project with resource:'prospect' (merged there to stay under
+  // Vercel Hobby's 12-function cap). Three feeders: the manual add form,
+  // pasted open house sign-ins, and past-client suggestions derived from
+  // data/anniversaries.json (read-only here -- nothing in the Home
+  // Anniversaries panel changes when someone is added to the call list).
+  const PR_SOURCE_LABEL = { manual:'Manual', openhouse:'Open house', pastclient:'Past client' };
+  const PR_SOURCE_PILL = { manual:'pill-idea', openhouse:'pill-planned', pastclient:'pill-in-progress' };
+  const PR_STATUS_LABEL = { 'to-call':'To call', 'follow-up':'Follow up', done:'Done' };
+  const PR_MILESTONES = [1, 5, 10, 15, 20, 25, 30, 35, 40];
+  let prospectsCache = [];
+  let prAnniversaries = [];
+  let prFilter = 'active';
+
+  function prAttr(v){ return escapeHtml(String(v == null ? '' : v)).replace(/"/g, '&quot;'); }
+  function prShortDate(iso){
+    const d = new Date(iso);
+    return isNaN(d) ? '' : d.toLocaleDateString(undefined, { month:'short', day:'numeric' });
+  }
+
+  async function prSave(body, method){
+    const resp = await fetch('/api/save-project', {
+      method: method || 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({ resource:'prospect' }, body)),
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+    return data;
+  }
+
+  function prShowStatus(msg){
+    const el = document.getElementById('pr-status');
+    el.textContent = msg || '';
+    el.style.display = msg ? '' : 'none';
+  }
+
+  // Next (or just-passed, within 7 days) anniversary for a purchase date,
+  // computed on Phoenix calendar days.
+  function prAnniversaryInfo(purchaseDate){
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(purchaseDate || '');
+    if (!m) return null;
+    const today = ltPhoenixToday();
+    const y = today.getUTCFullYear();
+    for (const year of [y - 1, y, y + 1]) {
+      const d = new Date(Date.UTC(year, +m[2] - 1, +m[3]));
+      const diff = ltDiff(today, d);
+      if (diff >= -7 && diff <= 30) return { date: d, daysAway: diff, years: year - +m[1] };
+    }
+    return null;
+  }
+
+  // anniversaries.json can hold each partner separately *and* the couple
+  // together (e.g. "Derek", "Chelsea", "Chelsea & Derek"), all at one
+  // address -- so suggestions are one per household (address), preferring
+  // the entry with the most names, and a household drops off once anyone
+  // from it is on the call list.
+  function prHouseKey(a){
+    return String(a.address || a.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+  function prSuggestions(){
+    const onListIds = new Set(prospectsCache.map(p => p.sourceId).filter(Boolean));
+    const onListHouses = new Set(prAnniversaries.filter(a => onListIds.has(a.id)).map(prHouseKey));
+    const byHouse = new Map();
+    prAnniversaries.forEach(a => {
+      const info = prAnniversaryInfo(a.purchaseDate);
+      if (!info || info.years < 1) return;
+      const key = prHouseKey(a);
+      if (onListHouses.has(key)) return;
+      const prev = byHouse.get(key);
+      const score = (a.name || '').split(/&| and /).length * 1000 + (a.name || '').length;
+      const names = (prev ? prev.names : []).concat(a.name || []);
+      if (!prev || score > prev.score) byHouse.set(key, { a, info, score, names });
+      else prev.names = names;
+    });
+    return [...byHouse.values()].map(h => {
+      // No combined "A & B" entry for this household -- join the partners.
+      const single = !/&| and /.test(h.a.name || '');
+      const distinct = [...new Set(h.names)];
+      return single && distinct.length > 1 ? Object.assign({}, h, { a: Object.assign({}, h.a, { name: distinct.join(' & ') }) }) : h;
+    }).sort((x, y) => x.info.daysAway - y.info.daysAway);
+  }
+
+  function renderProspectFilters(){
+    const counts = { active:0, 'to-call':0, 'follow-up':0, done:0, all:prospectsCache.length };
+    prospectsCache.forEach(p => { counts[p.status] = (counts[p.status] || 0) + 1; if (p.status !== 'done') counts.active++; });
+    const opts = [['active','Open'], ['to-call','To call'], ['follow-up','Follow up'], ['done','Done'], ['all','All']];
+    document.getElementById('pr-filters').innerHTML = opts.map(([k, label]) =>
+      `<button type="button" class="pr-filter${prFilter === k ? ' active' : ''}" data-filter="${k}">${label} (${counts[k] || 0})</button>`).join('');
+    const badge = document.getElementById('prospecting-nav-badge');
+    badge.textContent = counts['to-call'];
+    badge.style.display = counts['to-call'] ? '' : 'none';
+  }
+
+  function renderProspects(){
+    renderProspectFilters();
+    const list = document.getElementById('pr-list');
+    const order = { 'to-call':0, 'follow-up':1, done:2 };
+    const rows = prospectsCache
+      .filter(p => prFilter === 'all' ? true : prFilter === 'active' ? p.status !== 'done' : p.status === prFilter)
+      .sort((a, b) => (order[a.status] - order[b.status])
+        || String(a.lastCalledAt || '').localeCompare(String(b.lastCalledAt || ''))
+        || String(a.createdAt).localeCompare(String(b.createdAt)));
+
+    if (!rows.length) {
+      list.innerHTML = `<div class="empty-hint">${prospectsCache.length ? 'Nobody in this view.' : 'No one on the call list yet. Add someone below, or pick from the past-client suggestions.'}</div>`;
+    } else {
+      list.innerHTML = rows.map(p => {
+        const tel = (p.phone || '').replace(/[^\d+]/g, '');
+        const meta = [`Added ${prShortDate(p.createdAt)}`];
+        if (p.callCount) meta.push(`Called ${p.callCount}× · last ${prShortDate(p.lastCalledAt)}`);
+        return `<div class="pr-row" data-id="${prAttr(p.id)}">
+          <div class="pr-main">
+            <div class="pr-name">${escapeHtml(p.name)}<span class="pill ${PR_SOURCE_PILL[p.source] || 'pill-idea'}">${PR_SOURCE_LABEL[p.source] || p.source}</span></div>
+            ${p.reason ? `<div class="pr-reason">${escapeHtml(p.reason)}</div>` : ''}
+            <div class="pr-contact">
+              ${p.phone ? `<a href="tel:${prAttr(tel)}">${escapeHtml(p.phone)}</a>` : ''}
+              ${p.email ? `<a href="mailto:${prAttr(p.email)}">${escapeHtml(p.email)}</a>` : ''}
+            </div>
+            ${p.notes ? `<div class="pr-notes">${escapeHtml(p.notes)}</div>` : ''}
+            <div class="pr-meta">${escapeHtml(meta.join(' · '))}</div>
+          </div>
+          <div class="pr-actions">
+            <button class="btn" type="button" data-act="call">Log call</button>
+            <select data-act="status" aria-label="Status">
+              ${Object.keys(PR_STATUS_LABEL).map(s => `<option value="${s}"${s === p.status ? ' selected' : ''}>${PR_STATUS_LABEL[s]}</option>`).join('')}
+            </select>
+            <button class="btn btn-ghost" type="button" data-act="note">Add note</button>
+            <button class="del-btn" type="button" data-act="remove" aria-label="Remove">×</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+    renderProspectSuggestions();
+  }
+
+  function renderProspectSuggestions(){
+    const wrap = document.getElementById('pr-suggest');
+    const sugg = prSuggestions();
+    if (!sugg.length) {
+      wrap.innerHTML = '<div class="empty-hint">No past-client anniversaries coming up that aren\'t already on the list.</div>';
+      return;
+    }
+    wrap.innerHTML = sugg.map(({ a, info }) => {
+      const when = info.daysAway === 0 ? 'today' : info.daysAway > 0 ? `in ${info.daysAway} day${info.daysAway === 1 ? '' : 's'}` : `${-info.daysAway} day${info.daysAway === -1 ? '' : 's'} ago`;
+      const milestone = PR_MILESTONES.includes(info.years) ? '<span class="pill pill-milestone" style="margin-left:.4rem;">Milestone</span>' : '';
+      return `<div class="pr-suggest-row">
+        <div>
+          <strong>${escapeHtml(a.name)}</strong>${milestone}
+          <div>${info.years}-year home anniversary · ${escapeHtml(prShortDate(info.date.toISOString().slice(0,10) + 'T12:00:00Z'))} (${when})</div>
+          <div class="pr-addr">${escapeHtml(a.address || '')}</div>
+        </div>
+        <button class="btn btn-ghost" type="button" data-suggest="${prAttr(a.id)}">Add to call list</button>
+      </div>`;
+    }).join('');
+  }
+
+  async function refreshProspects(){
+    try {
+      const [pResp, aResp] = await Promise.all([
+        fetch('/data/prospects.json?t=' + Date.now()),
+        fetch('/data/anniversaries.json?t=' + Date.now()),
+      ]);
+      prospectsCache = pResp.ok ? await pResp.json() : [];
+      prAnniversaries = aResp.ok ? await aResp.json() : [];
+      if (!Array.isArray(prospectsCache)) prospectsCache = [];
+      if (!Array.isArray(prAnniversaries)) prAnniversaries = [];
+      renderProspects();
+    } catch (e) {
+      document.getElementById('pr-list').innerHTML =
+        `<div class="empty-hint">Couldn't load the call list: ${escapeHtml(e.message)}</div>`;
+    }
+    // Pre-fill the sign-in paste label with this weekend's open house, if set.
+    try {
+      const oh = await fetchOpenHouse();
+      const label = document.getElementById('pr-oh-label');
+      if (oh && oh.address && !label.value) label.value = [oh.address, oh.date].filter(Boolean).join(' · ');
+    } catch (e) { /* optional */ }
+  }
+
+  // Replace one record locally after a successful save, so the list updates
+  // right away (the JSON file itself only refreshes after Vercel redeploys).
+  function prUpsertLocal(rec){
+    const i = prospectsCache.findIndex(p => p.id === rec.id);
+    if (i === -1) prospectsCache.push(rec); else prospectsCache[i] = rec;
+    renderProspects();
+  }
+
+  document.getElementById('pr-filters').addEventListener('click', e => {
+    const b = e.target.closest('[data-filter]');
+    if (!b) return;
+    prFilter = b.dataset.filter;
+    renderProspects();
+  });
+
+  document.getElementById('pr-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    try {
+      const data = await prSave({
+        name: document.getElementById('pr-name').value,
+        phone: document.getElementById('pr-phone').value,
+        email: document.getElementById('pr-email').value,
+        source: document.getElementById('pr-source').value,
+        reason: document.getElementById('pr-reason').value,
+      });
+      prUpsertLocal(data.record);
+      e.target.reset();
+      prShowStatus('');
+    } catch (err) {
+      prShowStatus(`Couldn't add: ${err.message}`);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  document.getElementById('pr-list').addEventListener('click', async e => {
+    const el = e.target.closest('[data-act]');
+    if (!el || el.tagName === 'SELECT') return;
+    const id = el.closest('.pr-row').dataset.id;
+    const p = prospectsCache.find(x => x.id === id);
+    if (!p) return;
+    try {
+      if (el.dataset.act === 'call') {
+        const note = prompt(`Logging a call with ${p.name}. Any notes? (optional)`, '');
+        if (note === null) return;
+        const stamp = new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' });
+        const notes = note.trim() ? [p.notes, `${stamp}: ${note.trim()}`].filter(Boolean).join('\n') : p.notes;
+        el.disabled = true;
+        const status = p.status === 'to-call' ? 'follow-up' : p.status;
+        prUpsertLocal((await prSave({ id, notes, status, logCall: true })).record);
+      } else if (el.dataset.act === 'note') {
+        const note = prompt(`Add a note for ${p.name}:`, '');
+        if (!note || !note.trim()) return;
+        const stamp = new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' });
+        prUpsertLocal((await prSave({ id, notes: [p.notes, `${stamp}: ${note.trim()}`].filter(Boolean).join('\n') })).record);
+      } else if (el.dataset.act === 'remove') {
+        if (!confirm(`Remove ${p.name} from the call list?`)) return;
+        await prSave({ id }, 'DELETE');
+        prospectsCache = prospectsCache.filter(x => x.id !== id);
+        renderProspects();
+      }
+    } catch (err) {
+      alert(`Couldn't save: ${err.message}`);
+      renderProspects();
+    }
+  });
+
+  document.getElementById('pr-list').addEventListener('change', async e => {
+    const sel = e.target.closest('select[data-act="status"]');
+    if (!sel) return;
+    const id = sel.closest('.pr-row').dataset.id;
+    try {
+      prUpsertLocal((await prSave({ id, status: sel.value })).record);
+    } catch (err) {
+      alert(`Couldn't save: ${err.message}`);
+      renderProspects();
+    }
+  });
+
+  document.getElementById('pr-suggest').addEventListener('click', async e => {
+    const b = e.target.closest('[data-suggest]');
+    if (!b) return;
+    const hit = prSuggestions().find(x => x.a.id === b.dataset.suggest);
+    const a = hit && hit.a;
+    const info = hit && hit.info;
+    if (!a || !info) return;
+    b.disabled = true;
+    try {
+      const data = await prSave({
+        name: a.name,
+        source: 'pastclient',
+        sourceId: a.id,
+        reason: `${info.years}-year home anniversary (${prShortDate(info.date.toISOString().slice(0,10) + 'T12:00:00Z')}) · ${a.address || ''}`.replace(/ · $/, ''),
+      });
+      prUpsertLocal(data.record);
+    } catch (err) {
+      b.disabled = false;
+      alert(`Couldn't add: ${err.message}`);
+    }
+  });
+
+  // One sign-in per line; fields split on tabs or commas. Emails are
+  // recognized by "@", phones by 7+ digits, and whatever's left is the name.
+  function prParseSignIns(text){
+    return text.split(/\r?\n/).map(line => {
+      const parts = line.split(/\t|,/).map(s => s.trim()).filter(Boolean);
+      let email = '', phone = '';
+      const rest = [];
+      parts.forEach(part => {
+        if (!email && /\S+@\S+\.\S+/.test(part)) email = part;
+        else if (!phone && (part.match(/\d/g) || []).length >= 7 && !/[a-z]{3,}/i.test(part)) phone = part;
+        else rest.push(part);
+      });
+      const name = rest.join(' ').replace(/\s+/g, ' ').trim();
+      if (!name || /^(first|name|full name|last)\b/i.test(name) && !email && !phone) return null;
+      return { name, email, phone };
+    }).filter(Boolean);
+  }
+
+  document.getElementById('pr-paste-btn').addEventListener('click', async e => {
+    const rows = prParseSignIns(document.getElementById('pr-paste').value);
+    if (!rows.length) { prShowStatus('Nothing to add -- paste at least one line with a name.'); return; }
+    const label = document.getElementById('pr-oh-label').value.trim();
+    const btn = e.target;
+    btn.disabled = true;
+    try {
+      const data = await prSave({ bulk: rows.map(r => Object.assign(r, {
+        source: 'openhouse',
+        reason: label ? `Signed in at open house: ${label}` : 'Signed in at an open house',
+      })) });
+      (data.added || []).forEach(r => prospectsCache.push(r));
+      renderProspects();
+      document.getElementById('pr-paste').value = '';
+      prShowStatus(`Added ${data.added.length} sign-in${data.added.length === 1 ? '' : 's'}` +
+        (data.skipped ? ` · skipped ${data.skipped} already on the list or missing a name` : '') + '.');
+    } catch (err) {
+      prShowStatus(`Couldn't add sign-ins: ${err.message}`);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
   // ---------- INIT ----------
   renderHeader();
   refreshLinearTracker();
@@ -2671,6 +3063,7 @@
   refreshMachineStatus();
   refreshOpenHouse();
   refreshProjects();
+  refreshProspects();
 })();
 </script>
 </body>
