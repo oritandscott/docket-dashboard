@@ -271,5 +271,22 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T15:07:50.000Z",
     "updatedAt": "2026-09-29T15:31:21.180Z"
+  },
+  {
+    "id": "hot-mumxwqpb0c2a7",
+    "name": "Dave Eary",
+    "phone": "",
+    "email": "",
+    "type": "buyer",
+    "source": "pastclient",
+    "tier": "medium",
+    "notes": "Past client -- 3738 E Kachina Dr, Phoenix (with Nina). 1-year home anniversary was Sep 19.",
+    "phoneFound": false,
+    "emailFound": false,
+    "commandUrl": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T17:18:10.991Z",
+    "updatedAt": "2026-09-29T17:18:10.991Z"
   }
 ]
