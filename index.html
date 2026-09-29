@@ -3403,10 +3403,9 @@
           </div>
           <div>${h.commandUrl
             ? `<a class="btn btn-ghost" href="${prAttr(h.commandUrl)}" target="_blank" rel="noopener">Open in Command</a>
-               <button class="hot-cmd-link" type="button" data-hot="sync">⟳ Re-sync</button>
-               <button class="hot-cmd-link" type="button" data-hot="cmdlink">Change link</button>`
-            : `<button class="btn btn-ghost" type="button" data-hot="sync">⟳ Sync with Command</button>
-               <button class="hot-cmd-link" type="button" data-hot="cmdlink">Paste Command link</button>`}
+               <button class="hot-cmd-link" type="button" data-hot="find">Wrong person? Find again</button>`
+            : `<button class="btn btn-ghost" type="button" data-hot="find">Already in Command? Find them</button>
+               <button class="hot-cmd-link" type="button" data-hot="cmdadd">Not in Command -- add them</button>`}
             <div class="hot-sync-msg" data-sync-msg>${escapeHtml(hotSyncMsg[h.id] || '')}</div></div>
           <div><button class="del-btn" type="button" data-hot="remove" aria-label="Remove">×</button></div>
         </div>`;
@@ -3455,35 +3454,44 @@
     try { navigator.clipboard.writeText(details); } catch (_) { /* optional */ }
     window.open(COMMAND_CONTACTS_URL, '_blank', 'noopener');
   }
-  async function hotSyncCommand(h, btn){
+  // opts.interactive: a button was tapped (can ask questions / open Command).
+  // Otherwise it's the automatic background check: links only an obvious
+  // single match (same phone or email, or exact full name) and quietly
+  // notes anything else on the row.
+  let hotCommandOff = false; // set when the lookup isn't connected, so auto-checks stop
+  async function hotSyncCommand(h, btn, opts){
+    opts = opts || {};
     const setMsg = m => { hotSyncMsg[h.id] = m; const r = document.querySelector(`.hot-row[data-id="${CSS.escape(h.id)}"] [data-sync-msg]`); if (r) r.textContent = m; };
-    btn.disabled = true;
-    setMsg('Checking Command…');
+    if (btn) btn.disabled = true;
+    if (opts.interactive) setMsg('Checking Command…');
     try {
       const resp = await fetch('/api/machine-status?job=command-lookup', {
         method:'POST', headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ name: h.name, phone: h.phone, email: h.email }),
+        body: JSON.stringify({ name: h.name, phone: h.phone, email: h.email, loose: !!opts.loose }),
       });
       const data = await resp.json().catch(() => ({}));
       if (!resp.ok) {
         if (data.code === 'not_configured' || data.code === 'not_shared') {
-          setMsg('Command check not connected yet');
-          alert(`Sync with Command isn't connected yet: ${data.error}\n\nUntil then, use "Paste Command link", or the Command contacts page (opening now, details copied).`);
-          hotHandOff(h);
+          hotCommandOff = true;
+          if (opts.interactive) {
+            setMsg('Command check not connected yet');
+            alert(`Checking Command isn't connected yet: ${data.error}`);
+          }
           return;
         }
         throw new Error(data.error || `HTTP ${resp.status}`);
       }
       const matches = data.matches || [];
       if (!matches.length) {
-        setMsg('Not found in Command');
-        if (confirm(`${h.name} isn't in Command yet.\n\nOpen Command to add them? Their details will be copied so you can paste them in.`)) hotHandOff(h);
+        setMsg('Not in Command yet');
+        if (opts.interactive && confirm(`${h.name} isn't in Command yet.\n\nOpen Command to add them? Their details will be copied so you can paste them in.`)) hotHandOff(h);
         return;
       }
       let m = matches[0];
-      const clear = matches.length === 1 || (m.strong && !matches[1].strong);
-      if (!clear) {
-        const pick = prompt(`More than one Command contact could be ${h.name}. Type the number of the right one:\n\n` +
+      const obvious = matches.length === 1 && (m.strong || m.score >= 60);
+      if (!obvious) {
+        if (!opts.interactive) { setMsg(`Possible Command match${matches.length > 1 ? 'es' : ''} -- tap "Find them" to pick`); return; }
+        const pick = prompt(`Which Command contact is ${h.name}? Type the number (or Cancel):\n\n` +
           matches.map((x, i) => `${i + 1}. ${x.name} · ${hotFmtPhone(x.phone) || 'no phone'} · ${x.email || 'no email'}`).join('\n'), '1');
         if (!pick) { setMsg(''); return; }
         m = matches[Number(pick) - 1];
@@ -3499,9 +3507,18 @@
         (diffPhone ? ` · Command has a different phone: ${hotFmtPhone(m.phone)}` : '');
       hotUpsertLocal(rec);
     } catch (err) {
-      setMsg(`Couldn't check Command: ${err.message}`);
+      if (opts.interactive) setMsg(`Couldn't check Command: ${err.message}`);
     } finally {
-      btn.disabled = false;
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  // Always check: every contact not yet linked to Command gets looked up
+  // automatically (on load and when added), one at a time.
+  async function hotAutoCheckCommand(){
+    for (const h of hotCache.filter(x => !x.commandUrl).slice(0, 30)) {
+      if (hotCommandOff) return;
+      await hotSyncCommand(h, null, {});
     }
   }
 
@@ -3521,6 +3538,7 @@
       hotCache = Array.isArray(data) ? data : [];
       renderHotList();
       lkRefreshDatalist();
+      hotAutoCheckCommand();
     } catch (e) {
       document.getElementById('hot-list-hot').innerHTML =
         `<div class="empty-hint">Couldn't load your prospecting lists: ${escapeHtml(e.message)}</div>`;
@@ -3564,6 +3582,7 @@
       });
       hotFlashId = data.record.id;
       hotUpsertLocal(data.record);
+      if (!hotCommandOff) hotSyncCommand(data.record, null, {});
       e.target.reset();
       status.style.display = 'none';
     } catch (err) {
@@ -3626,8 +3645,8 @@
         hotEditId = null;
         hotUpsertLocal(rec);
         lkRefreshDatalist();
-      } else if (act === 'sync') {
-        await hotSyncCommand(h, el);
+      } else if (act === 'sync' || act === 'find') {
+        await hotSyncCommand(h, el, { loose: act === 'find', interactive: true });
       } else if (act === 'up' || act === 'down') {
         hotMove(h.id, act === 'up' ? -1 : 1);
       } else if (act === 'select') {
@@ -3653,10 +3672,8 @@
         if (!phone || !phone.trim()) return;
         hotUpsertLocal((await hotSave({ id: h.id, phone })).record);
       } else if (act === 'cmdadd') {
-        const details = [h.name, h.phone, h.email, `${HOT_TYPES[h.type]} · Source: ${HOT_SOURCES[h.source]}`].filter(Boolean).join('\n');
-        try { await navigator.clipboard.writeText(details); } catch (_) { /* clipboard optional */ }
-        window.open(COMMAND_CONTACTS_URL, '_blank', 'noopener');
-        alert(`Command is opening in a new tab. ${h.name}'s details are copied to your clipboard, ready to paste into a new contact.\n\nOnce the contact is saved, come back and click "Already in Command? Paste link" to connect it here.`);
+        hotHandOff(h);
+        alert(`Command is opening in a new tab with ${h.name}'s details copied -- paste them into a new contact. The dashboard will find and link them automatically after that (tap "Already in Command? Find them" to check right away).`);
       } else if (act === 'cmdlink') {
         const url = prompt(`Paste ${h.name}'s Command contact link:`, h.commandUrl || '');
         if (url === null) return;

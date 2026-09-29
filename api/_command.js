@@ -40,7 +40,10 @@ async function contacts() {
 
 export async function runCommandLookup(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-  const { name, phone, email } = req.body || {};
+  const { name, phone, email, loose } = req.body || {};
+  // loose: the "Already in Command? Find them" button -- also list same-last-name
+  // contacts so the right one can be picked by hand.
+  const minScore = loose ? 10 : 50;
   try {
     const all = await contacts();
     const p = digits(phone);
@@ -59,12 +62,12 @@ export async function runCommandLookup(req, res) {
       else if (last && cn.split(' ').pop() === last && nameWords.some((w) => cn.split(' ')[0] === w)) score += 50;
       else if (last && cn.split(' ').pop() === last) score += 10;
       return { ct, score };
-    }).filter((x) => x.score >= 50).sort((a, b) => b.score - a.score).slice(0, 5);
+    }).filter((x) => x.score >= minScore).sort((a, b) => b.score - a.score).slice(0, 5);
 
     return res.status(200).json({
       ok: true,
       matches: scored.map(({ ct, score }) => ({
-        id: ct.id, name: ct.name, phone: ct.phone, email: ct.email, url: CONTACT_URL(ct.id), strong: score >= 100,
+        id: ct.id, name: ct.name, phone: ct.phone, email: ct.email, url: CONTACT_URL(ct.id), strong: score >= 100, score,
       })),
     });
   } catch (err) {
