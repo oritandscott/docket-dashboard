@@ -4,17 +4,56 @@
     "text": "I need to be able to send a screenshot into this section too if I need to.  Anyway the hot list for now should include James Arendell - a lead/referral given to us by Dan Miller and Olivia O'Chel, also Amy Mason from open house, Rob Gerlings who called us from remembering us from an open house in The Pointe last year, Carmen Solo from Open House (from now on I'll just write OH for open house and you can find their info either in command or in the google sheets for open house) also Eileen Baden from OH, John Ma and Christina Ma from OH, Bruce Masalcas from OH, Tim and Mary K Duckworth OH, and Waitlist Medium Term should have Shannon Blum OH and long term should have Parker Hampton",
     "topic": "prospecting",
     "dictated": false,
-    "status": "new",
+    "status": "needs-you",
     "createdAt": "2026-09-29T13:26:10.695Z",
-    "updatedAt": "2026-09-29T13:26:10.695Z"
+    "updatedAt": "2026-09-29T13:36:18.000Z",
+    "reply": "Added 10 people with phone + email from your OPEN HOUSE ATTENDANCE sheets: Hot List -- James Arendell, Amy Mason, Rob Gerlings, Carmen Solo, Eileen Baden, John & Christina Ma, Bruce Masalcas, Tim & Mary K Duckworth; Medium -- Shannon Blum; Long -- Parker Hampton. Still need from you: phone/email for James Arendell and Rob Gerlings (not in any sign-in sheet I can search -- use Add phone), and please double-check Buyer vs Seller (I guessed). Screenshot upload in this box is on the build list."
   },
   {
     "id": "note-mumpg4mv9nf3k",
     "text": "There is no appraisal for Bartko-- he got an appraisal waiver.   Also now we need to add a new line for Jeff Tucker, Seller of 4824 E. La Puente Phoenix - check command Opportunities for details if you need to.  He accepted an offer on Friday from Offerpad, and there is no Due Diligence period - Offerpad has already inspected and there is no appraisal.   Closing is on Oct 19 but they may move it up a week or more.  Create a new Navigator for this one too.",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-09-29T13:21:18.967Z",
-    "updatedAt": "2026-09-29T13:21:18.967Z"
+    "updatedAt": "2026-09-29T13:36:18.000Z",
+    "reply": "Ready for your OK, one tap each, top to bottom. Jeff Tucker's contract date is set to Fri Sep 25 (\"accepted an offer on Friday\"); COE Oct 19 with 0 due diligence days. If the closing moves up, just send another command like \"Tucker COE moved to Oct 12\". Nothing changes in Navigator until you tap Confirm. The Google Sheet tracker isn't connected yet, so it still needs these by hand.",
+    "proposals": [
+      {
+        "pid": "p-bartko-apprs",
+        "label": "Bartko: mark appraisal WAIVED (checks 'Appraisal was Waived' and marks the other appraisal steps N/A)",
+        "op": "waive_appraisal",
+        "match": "Bartko",
+        "status": "pending"
+      },
+      {
+        "pid": "p-tucker-create",
+        "label": "Create new Navigator: Jeff Tucker, SELLER, 4824 E. La Puente, Phoenix -- contract Sep 25, COE Oct 19, due diligence 0 days (buyer: Offerpad)",
+        "op": "create_transaction",
+        "args": {
+          "dealType": "SELLER",
+          "address": "4824 E. La Puente, Phoenix",
+          "clientName": "Jeff Tucker",
+          "contractDate": "2026-09-25",
+          "closingDate": "2026-10-19",
+          "dueDiligenceDays": 0
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-tucker-insp",
+        "label": "Tucker: mark inspection WAIVED (Offerpad already inspected) -- confirm after the step above",
+        "op": "waive_inspection",
+        "match": "Tucker",
+        "status": "pending"
+      },
+      {
+        "pid": "p-tucker-apprs",
+        "label": "Tucker: mark appraisal WAIVED (no appraisal) -- confirm after creating the Navigator",
+        "op": "waive_appraisal",
+        "match": "Tucker",
+        "status": "pending"
+      }
+    ]
   }
 ]
