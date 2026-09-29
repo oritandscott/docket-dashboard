@@ -221,18 +221,18 @@
     "id": "hot-1a0edb531cea4qgn",
     "name": "Elaine Moreen",
     "phone": "",
-    "email": "",
-    "phoneFound": false,
-    "emailFound": false,
+    "email": "epmoreen@gmail.com",
     "type": "both",
     "source": "pastclient",
     "tier": "medium",
     "notes": "Past client.",
+    "phoneFound": false,
+    "emailFound": false,
     "commandUrl": "",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T15:07:50.000Z",
-    "updatedAt": "2026-09-29T15:07:50.000Z"
+    "updatedAt": "2026-09-29T15:31:08.207Z"
   },
   {
     "id": "hot-1a0edb531d05waf2",
