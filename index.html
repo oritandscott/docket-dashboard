@@ -345,7 +345,7 @@
   .pr-filters{display:flex;flex-wrap:wrap;gap:.4rem;margin:-.3rem 0 .9rem;}
   .pr-filter{background:none;border:1px solid var(--line);color:var(--ink-soft);border-radius:14px;padding:.25rem .75rem;font-size:.78rem;cursor:pointer;font-family:inherit;}
   .pr-filter.active{border-color:var(--gold);color:var(--gold);}
-  .pr-row{display:flex;gap:.9rem;align-items:flex-start;padding:.7rem .8rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;margin-bottom:.5rem;}
+  .pr-row{display:flex;gap:.9rem;align-items:flex-start;padding:.45rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;margin-bottom:.5rem;}
   .pr-main{flex:1;min-width:0;}
   .pr-name{font-weight:700;font-size:.95rem;}
   .pr-name .pill{margin-left:.45rem;vertical-align:middle;}
@@ -355,9 +355,9 @@
   .pr-contact a:hover{text-decoration:underline;}
   .pr-meta{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--ink-soft);margin-top:.3rem;}
   .pr-notes{font-size:.8rem;color:var(--ink-soft);margin-top:.3rem;white-space:pre-wrap;}
-  .pr-actions{display:flex;flex-direction:column;gap:.35rem;align-items:stretch;flex-shrink:0;}
-  .pr-actions .btn{padding:.35rem .7rem;font-size:.78rem;}
-  .pr-actions select{font-size:.78rem;padding:.3rem .4rem;}
+  .pr-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.35rem;align-items:center;flex-shrink:0;max-width:430px;}
+  .pr-actions .btn{padding:.3rem .55rem;font-size:.72rem;white-space:nowrap;}
+  .pr-actions select{font-size:.72rem;padding:.25rem .3rem;width:auto;}
   .pr-block{margin-top:1.6rem;border-top:1px solid var(--line);padding-top:1rem;}
   .pr-suggest-row{display:flex;justify-content:space-between;align-items:center;gap:.8rem;padding:.55rem .7rem;border:1px dashed var(--line);border-radius:4px;margin-bottom:.45rem;font-size:.85rem;}
   .pr-suggest-row .pr-addr{color:var(--ink-soft);font-size:.78rem;}
@@ -3094,7 +3094,7 @@
             <div class="pr-name"><span class="pr-name-text" data-act="select" title="Tap to select, then use the arrows to reorder">${escapeHtml(p.name)}</span><span class="pill ${PR_SOURCE_PILL[p.source] || 'pill-idea'}">${PR_SOURCE_LABEL[p.source] || p.source}</span></div>
             ${p.reason ? `<div class="pr-reason">${escapeHtml(p.reason)}</div>` : ''}
             <div class="pr-contact">
-              ${p.phone ? `<a href="tel:${prAttr(tel)}">${escapeHtml(p.phone)}</a>` : ''}
+              ${p.phone ? `<a href="tel:${prAttr(tel)}">${escapeHtml(hotFmtPhone(p.phone))}</a>` : ''}
               ${p.email ? `<a href="mailto:${prAttr(p.email)}">${escapeHtml(p.email)}</a>` : ''}
             </div>
             ${p.notes ? `<div class="pr-notes">${escapeHtml(p.notes)}</div>` : ''}
@@ -3102,7 +3102,7 @@
           </div>
           <div class="pr-actions">
             ${voice ? `<a class="btn hot-call" data-act="voice" href="${prAttr(voice)}" target="_blank" rel="noopener">📞 Call</a>`
-              : `<button class="btn btn-ghost" type="button" data-act="addphone">📞 Add phone</button>`}
+              : `<button class="btn btn-ghost" type="button" data-act="addphone" title="Add a phone number">📞 Add</button>`}
             <button class="btn" type="button" data-act="call">Log call</button>
             <select data-act="status" aria-label="Status">
               ${Object.keys(PR_STATUS_LABEL).map(s => `<option value="${s}"${s === p.status ? ' selected' : ''}>${PR_STATUS_LABEL[s]}</option>`).join('')}
@@ -3349,7 +3349,7 @@
   // either opens the contact's saved Command link, or -- for someone not in
   // Command yet -- copies their details and opens Command so the contact can
   // be created there by hand, then the new contact's link is pasted back.
-  const HOT_TYPES = { buyer:'Buyer', seller:'Seller', both:'Buyer & Seller' };
+  const HOT_TYPES = { buyer:'Buyer', seller:'Seller', both:'Buy & Sell' };
   const HOT_SOURCES = { referral:'Referral', pastclient:'Past client', youtube:'YouTube', online:'Found us online', openhouse:'Open house', sphere:'Sphere / friend', other:'Other' };
   const COMMAND_CONTACTS_URL = 'https://console.command.kw.com/contacts';
   let hotCache = [];
@@ -3424,7 +3424,7 @@
               <button class="btn btn-ghost" type="button" data-hot="edit-cancel" style="width:auto;">Cancel</button>
             </div>` : `
             <div class="hot-name"><span data-hot="select" title="Tap to select, then use the arrows to reorder">${escapeHtml(h.name)}</span> <button class="hot-edit-link" type="button" data-hot="edit" title="Edit name / phone / email">✎</button></div>
-            <div class="hot-sub hot-one${h.phone && h.phoneFound ? ' hot-found' : ''}" title="${prAttr(h.phone ? h.phone + (h.phoneFound ? ' -- we found this number; they didn\'t give it to us' : '') : '')}">${escapeHtml(h.phone || '') || '<em>No phone yet</em>'}</div>
+            <div class="hot-sub hot-one${h.phone && h.phoneFound ? ' hot-found' : ''}" title="${prAttr(h.phone ? h.phone + (h.phoneFound ? ' -- we found this number; they didn\'t give it to us' : '') : '')}">${escapeHtml(hotFmtPhone(h.phone)) || '<em>No phone yet</em>'}</div>
             ${h.email ? `<div class="hot-sub hot-one${h.emailFound ? ' hot-found' : ''}" title="${prAttr(h.email + (h.emailFound ? ' -- we found this email; they didn\'t give it to us' : ''))}">${escapeHtml(h.email)}</div>` : ''}
             ${called ? `<div class="hot-sub hot-one">${escapeHtml(called)}</div>` : ''}`}
           </div>
@@ -3435,7 +3435,7 @@
           </div>
           <div>${voice
             ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="_blank" rel="noopener">📞 Call</a>`
-            : `<button class="btn btn-ghost" type="button" data-hot="phone">Add phone</button>`}</div>
+            : `<button class="btn btn-ghost" type="button" data-hot="phone" title="Add a phone number">📞 Add</button>`}</div>
           <div class="hot-notes">
             <textarea data-hot="notes" placeholder="Notes from the call…">${escapeHtml(h.notes || '')}</textarea>
             <div class="hot-saved" data-hot-saved></div>

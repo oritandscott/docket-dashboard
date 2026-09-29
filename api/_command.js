@@ -14,7 +14,9 @@ const SHEET_ID = '1oZ03wqwq7HL9frTt0CgKT_9yMxHBL9YDyXdmkpkVw5g';
 const RANGE = 'Sheet1!A1:AP5000';
 // Best-known Command contact page format; Orit & Scott can correct a link
 // with "Change link" on the dashboard if Command's URL differs.
-const CONTACT_URL = (id) => `https://console.command.kw.com/command/contacts/${encodeURIComponent(id)}`;
+// Without a contact ID (some exports leave it out) fall back to Command's
+// contacts page.
+const CONTACT_URL = (id) => (id ? `https://console.command.kw.com/command/contacts/${encodeURIComponent(id)}` : 'https://console.command.kw.com/contacts');
 
 let cache = null; // { at, contacts }
 
@@ -24,16 +26,28 @@ const norm = (v) => String(v || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').re
 async function contacts() {
   if (cache && Date.now() - cache.at < 5 * 60 * 1000) return cache.contacts;
   const rows = await readSheetValues(SHEET_ID, RANGE);
-  const head = (rows[0] || []).map((h) => String(h).trim());
-  const col = (name) => head.indexOf(name);
-  const c = { first: col('First Name'), last: col('Last Name'), email: col('Primary Email'), phone: col('Primary Phone'), id: col('ID'), spouse: col('Spouse Full Name'), partner: col('Partner Full Name') };
+  // Header names differ between the API Nation export and a CSV exported
+  // straight from Command (which the Oasis Mini refreshes on a schedule),
+  // so accept either spelling.
+  const head = (rows[0] || []).map((h) => String(h).trim().toLowerCase());
+  const col = (...names) => { for (const n of names) { const i = head.indexOf(n); if (i !== -1) return i; } return -1; };
+  const c = {
+    first: col('first name', 'firstname', 'first'),
+    last: col('last name', 'lastname', 'last'),
+    email: col('primary email', 'email', 'email address', 'personal email'),
+    phone: col('primary phone', 'phone', 'mobile phone', 'cell phone', 'phone number'),
+    id: col('id', 'contact id', 'originid'),
+    spouse: col('spouse full name', 'spouse'),
+    partner: col('partner full name', 'partner'),
+  };
+  const at = (r, i) => (i >= 0 ? r[i] || '' : '');
   const list = rows.slice(1).map((r) => ({
-    id: r[c.id] || '',
-    name: `${r[c.first] || ''} ${r[c.last] || ''}`.trim(),
-    email: r[c.email] || '',
-    phone: r[c.phone] || '',
-    also: [r[c.spouse], r[c.partner]].filter(Boolean).join(' '),
-  })).filter((x) => x.id && x.name);
+    id: at(r, c.id),
+    name: `${at(r, c.first)} ${at(r, c.last)}`.trim(),
+    email: at(r, c.email),
+    phone: at(r, c.phone),
+    also: [at(r, c.spouse), at(r, c.partner)].filter(Boolean).join(' '),
+  })).filter((x) => x.name);
   cache = { at: Date.now(), contacts: list };
   return list;
 }
