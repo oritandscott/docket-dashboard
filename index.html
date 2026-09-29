@@ -275,7 +275,14 @@
   .hot-row.just-moved{animation:hotFlash .6s ease;}
   @keyframes hotFlash{from{background:rgba(201,161,93,.25);}to{background:var(--paper-card);}}
   .hot-head{background:none;border:none;padding:.1rem .7rem;font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
-  .hot-rank{display:flex;flex-direction:column;align-items:center;gap:.15rem;}
+  .hot-rank{display:flex;align-items:center;gap:.35rem;padding-top:.1rem;}
+  /* Drag handle: grab and move a contact up or down its list. touch-action
+     none so dragging on a phone moves the row instead of scrolling. */
+  .drag-handle{cursor:grab;color:var(--ink-soft);font-size:1rem;line-height:1;padding:.1rem .15rem;border-radius:3px;touch-action:none;user-select:none;}
+  .drag-handle:hover{color:var(--gold);background:rgba(201,161,93,.12);}
+  .dragging{opacity:.85;outline:2px dashed var(--gold);outline-offset:-2px;position:relative;z-index:2;}
+  .dragging .drag-handle{cursor:grabbing;color:var(--gold);}
+  body.drag-active{cursor:grabbing;user-select:none;}
   .hot-num{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:.95rem;color:var(--gold);line-height:1;}
   .hot-arrow{background:none;border:1px solid var(--line);color:var(--ink-soft);border-radius:3px;width:28px;height:19px;cursor:pointer;font-size:.7rem;line-height:1;padding:0;}
   .hot-arrow:hover:not(:disabled){color:var(--gold);border-color:var(--gold);}
@@ -326,7 +333,7 @@
   .inbox-prop{display:flex;gap:.4rem;align-items:center;margin-top:.4rem;padding:.4rem .55rem;border:1px solid var(--line);border-radius:4px;font-size:.8rem;white-space:normal;}
   .lookup-card{border:1px dashed var(--line);border-radius:4px;padding:.6rem .7rem;font-size:.84rem;}
   .lookup-card .btn{padding:.3rem .6rem;font-size:.78rem;margin:.35rem .35rem 0 0;}
-  .pr-rank{display:flex;flex-direction:column;align-items:center;gap:.15rem;flex:0 0 36px;}
+  .pr-rank{display:flex;align-items:center;gap:.35rem;flex:0 0 44px;padding-top:.1rem;}
   .pr-actions .hot-call{background:#1E7B45;border-color:#1E7B45;color:#fff;text-align:center;text-decoration:none;}
   .pr-actions .hot-call:hover{background:#249152;}
   .pr-row.selected{outline:2px solid var(--gold);outline-offset:-1px;}
@@ -2954,12 +2961,31 @@
     prFlashId = null;
     const moved = document.querySelector(`.pr-row[data-id="${CSS.escape(id)}"]`);
     if (moved) moved.scrollIntoView({ block:'nearest', behavior:'smooth' });
+    prSaveOrder();
+  }
+
+  function prSaveOrder(){
     clearTimeout(prReorderTimer);
     prReorderTimer = setTimeout(async () => {
       try { await prSave({ reorder: { ids: prospectsCache.map(p => p.id) } }); }
       catch (err) { alert(`Couldn't save the new order: ${err.message}`); }
     }, 1200);
   }
+
+  // Dragging in the call list reorders only the rows showing under the
+  // current filter; hidden rows keep their places in the saved order.
+  function prApplyDrop(ids, movedId){
+    const vis = prVisible();
+    const slots = vis.map(p => prospectsCache.indexOf(p)).sort((a, b) => a - b);
+    const byId = new Map(vis.map(p => [p.id, p]));
+    ids.map(id => byId.get(id)).filter(Boolean).forEach((p, k) => { prospectsCache[slots[k]] = p; });
+    prSelectedId = null;
+    prFlashId = movedId;
+    renderProspects();
+    prFlashId = null;
+    prSaveOrder();
+  }
+  enableDragSort(document.getElementById('pr-list'), '.pr-row[data-id]', prApplyDrop);
 
   function prAttr(v){ return escapeHtml(String(v == null ? '' : v)).replace(/"/g, '&quot;'); }
   function prShortDate(iso){
@@ -3061,9 +3087,8 @@
         if (p.callCount) meta.push(`Called ${p.callCount}× · last ${prShortDate(p.lastCalledAt)}`);
         return `<div class="${rowCls.join(' ')}" data-id="${prAttr(p.id)}">
           <div class="pr-rank">
-            <button class="hot-arrow" type="button" data-act="up" aria-label="Move up"${i === 0 ? ' disabled' : ''}>▲</button>
-            <div class="hot-num">${i + 1}</div>
-            <button class="hot-arrow" type="button" data-act="down" aria-label="Move down"${i === rows.length - 1 ? ' disabled' : ''}>▼</button>
+            <span class="drag-handle" data-drag title="Drag to reorder" aria-label="Drag to reorder">☰</span>
+            <span class="hot-num">${i + 1}</span>
           </div>
           <div class="pr-main">
             <div class="pr-name"><span class="pr-name-text" data-act="select" title="Tap to select, then use the arrows to reorder">${escapeHtml(p.name)}</span><span class="pill ${PR_SOURCE_PILL[p.source] || 'pill-idea'}">${PR_SOURCE_LABEL[p.source] || p.source}</span></div>
@@ -3385,9 +3410,8 @@
         if (h.id === hotFlashId) cls.push('just-moved');
         return `<div class="${cls.join(' ')}" data-id="${prAttr(h.id)}">
           <div class="hot-rank">
-            <button class="hot-arrow" type="button" data-hot="up" aria-label="Move up"${i === 0 ? ' disabled' : ''}>▲</button>
-            <div class="hot-num">${i + 1}</div>
-            <button class="hot-arrow" type="button" data-hot="down" aria-label="Move down"${i === rows.length - 1 ? ' disabled' : ''}>▼</button>
+            <span class="drag-handle" data-drag title="Drag to reorder" aria-label="Drag to reorder">☰</span>
+            <span class="hot-num">${i + 1}</span>
           </div>
           <div class="hot-c-name">${h.id === hotEditId ? `
             <div class="hot-edit">
@@ -3429,9 +3453,73 @@
     hotFlashId = null;
   }
 
-  // Reordering saves once tapping stops, so several quick taps become one
-  // save (each save is a commit + redeploy).
+  // Drag-to-reorder for any list: grab a row's ☰ handle and move it up or
+  // down (mouse or finger). Numbers update live while dragging; onDrop gets
+  // the new order of row ids once it's let go.
+  function enableDragSort(container, rowSel, onDrop){
+    container.addEventListener('pointerdown', e => {
+      const handle = e.target.closest('[data-drag]');
+      if (!handle || (e.pointerType === 'mouse' && e.button !== 0)) return;
+      const row = handle.closest(rowSel);
+      if (!row) return;
+      e.preventDefault();
+      const list = row.parentElement;
+      const rows = () => [...list.children].filter(el => el.matches(rowSel));
+      const startOrder = rows().map(r => r.dataset.id).join(',');
+      row.classList.add('dragging');
+      document.body.classList.add('drag-active');
+      // Listen on window, not the handle: moving the row in the page drops
+      // pointer capture, so the release would otherwise never arrive.
+      const renumber = () => rows().forEach((r, i) => { const n = r.querySelector('.hot-num'); if (n) n.textContent = i + 1; });
+      const move = ev => {
+        const others = rows().filter(r => r !== row);
+        const before = others.find(r => { const b = r.getBoundingClientRect(); return ev.clientY < b.top + b.height / 2; });
+        if (before) { if (row.nextElementSibling !== before) list.insertBefore(row, before); }
+        else if (others.length && list.lastElementChild !== row) others[others.length - 1].after(row);
+        renumber();
+        if (ev.clientY < 70) window.scrollBy(0, -14);
+        else if (ev.clientY > window.innerHeight - 70) window.scrollBy(0, 14);
+      };
+      const end = () => {
+        window.removeEventListener('pointermove', move);
+        window.removeEventListener('pointerup', end);
+        window.removeEventListener('pointercancel', end);
+        row.classList.remove('dragging');
+        document.body.classList.remove('drag-active');
+        const ids = rows().map(r => r.dataset.id);
+        if (ids.join(',') !== startOrder) onDrop(ids, row.dataset.id);
+      };
+      window.addEventListener('pointermove', move);
+      window.addEventListener('pointerup', end);
+      window.addEventListener('pointercancel', end);
+    });
+  }
+
+  // Reordering saves shortly after the last move, so several quick moves
+  // become one save (each save is a commit + redeploy).
   const hotReorderTimers = {};
+  function hotSaveOrder(tier){
+    clearTimeout(hotReorderTimers[tier]);
+    hotReorderTimers[tier] = setTimeout(async () => {
+      try {
+        await hotSave({ reorder: { tier, ids: hotCache.filter(x => hotTierOf(x) === tier).map(x => x.id) } });
+      } catch (err) {
+        alert(`Couldn't save the new order: ${err.message}`);
+      }
+    }, 1200);
+  }
+  Object.keys(HOT_TIERS).forEach(tier => {
+    enableDragSort(document.getElementById('hot-list-' + tier), '.hot-row[data-id]', (ids, movedId) => {
+      const byId = new Map(hotCache.map(x => [x.id, x]));
+      const ordered = ids.map(id => byId.get(id)).filter(Boolean);
+      hotCache = hotCache.filter(x => hotTierOf(x) !== tier).concat(ordered);
+      hotSelectedId = null;
+      hotFlashId = movedId;
+      renderHotList();
+      hotSaveOrder(tier);
+    });
+  });
+
   function hotMove(id, dir){
     const h = hotCache.find(x => x.id === id);
     if (!h) return;
@@ -3447,14 +3535,7 @@
     renderHotList();
     const moved = document.querySelector(`.hot-row[data-id="${CSS.escape(id)}"]`);
     if (moved) moved.scrollIntoView({ block:'nearest', behavior:'smooth' });
-    clearTimeout(hotReorderTimers[tier]);
-    hotReorderTimers[tier] = setTimeout(async () => {
-      try {
-        await hotSave({ reorder: { tier, ids: hotCache.filter(x => hotTierOf(x) === tier).map(x => x.id) } });
-      } catch (err) {
-        alert(`Couldn't save the new order: ${err.message}`);
-      }
-    }, 1200);
+    hotSaveOrder(tier);
   }
 
   // "Sync with Command": look the contact up in the Command contacts sheet
