@@ -10,14 +10,24 @@
   },
   {
     "id": "note-sheet-tucker",
-    "text": "(From Claude) Copy Jeff Tucker's new escrow line onto the old Google Sheet Linear Tracker.",
+    "text": "(From Claude) Jeff Tucker / La Puente is a private sale to Offerpad (never listed; referral fee). Simplify his Navigator, then copy his line to the old Google Sheet.",
     "topic": "tracker",
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-09-29T17:22:39.000Z",
     "updatedAt": "2026-09-29T17:22:39.000Z",
-    "reply": "The old Google Sheet can now be updated from here. Tap Confirm to add Jeff Tucker's La Puente line (contract Sep 25 through COE Oct 19). From now on, every Confirmed Navigator change also updates that line on the sheet automatically.",
+    "reply": "Two taps, top to bottom, AFTER tomorrow's publish. 1) Marks La Puente as a private sale to Offerpad: the listing, MLS, due-diligence, appraisal and lender steps become N/A in his Navigator (contract Sep 25, COE Oct 19 stay). 2) Adds his line to the old Google Sheet. From now on every Confirmed change also updates the old sheet automatically.",
     "proposals": [
+      {
+        "pid": "p-tucker-private",
+        "label": "Tucker (La Puente): private sale to Offerpad -- mark listing, MLS, due diligence, appraisal and lender steps N/A",
+        "op": "private_sale",
+        "match": "Tucker La Puente",
+        "args": {
+          "buyerName": "Offerpad"
+        },
+        "status": "pending"
+      },
       {
         "pid": "p-tucker-sheet",
         "label": "Old Google Sheet: add Jeff Tucker's line -- 4824 E. La Puente (contract Sep 25, COE Oct 19)",
@@ -35,7 +45,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",

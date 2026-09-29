@@ -22,7 +22,7 @@ const REPO = 'oritandscott/docket-dashboard';
 const FILE_PATH = 'data/prospecting-inbox.json';
 const BRANCH = 'main';
 const APPLY_URL = 'https://nav.oasisgroupaz.com/api/admin/apply-change';
-const OPS = ['create_transaction', 'set_escrow_dates', 'set_status', 'waive_appraisal', 'waive_inspection', 'copy_to_sheet'];
+const OPS = ['create_transaction', 'set_escrow_dates', 'set_status', 'waive_appraisal', 'waive_inspection', 'private_sale', 'copy_to_sheet'];
 
 // After a Navigator change, copy that record's line onto the old Google
 // Sheet tracker. Never fails the Confirm -- the outcome is just noted.
