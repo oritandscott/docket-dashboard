@@ -288,5 +288,22 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T17:18:10.991Z",
     "updatedAt": "2026-09-29T17:18:10.991Z"
+  },
+  {
+    "id": "hot-mumxwt8ub11q1",
+    "name": "Ramsey Bronyah",
+    "phone": "",
+    "email": "",
+    "type": "buyer",
+    "source": "pastclient",
+    "tier": "medium",
+    "notes": "Past client (Christine & Ramsey Bronyah -- bought 1001 E Renee Dr; sold 3031 E Pershing Ave).",
+    "phoneFound": false,
+    "emailFound": false,
+    "commandUrl": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T17:18:14.286Z",
+    "updatedAt": "2026-09-29T17:18:14.286Z"
   }
 ]
