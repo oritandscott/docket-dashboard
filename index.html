@@ -361,6 +361,7 @@
   .pr-block{margin-top:1.6rem;border-top:1px solid var(--line);padding-top:1rem;}
   .pr-suggest-row{display:flex;justify-content:space-between;align-items:center;gap:.8rem;padding:.55rem .7rem;border:1px dashed var(--line);border-radius:4px;margin-bottom:.45rem;font-size:.85rem;}
   .pr-suggest-row .pr-addr{color:var(--ink-soft);font-size:.78rem;}
+  .pr-suggest-btns{display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
   .pill-milestone{background:rgba(201,161,93,.22);color:var(--gold);}
   @media (max-width:600px){.pr-row{flex-direction:column;}.pr-actions{flex-direction:row;flex-wrap:wrap;}}
 
@@ -2944,7 +2945,7 @@
   let prReorderTimer = null;
 
   function prVisible(){
-    return prospectsCache.filter(p => prFilter === 'all' ? true : prFilter === 'active' ? p.status !== 'done' : p.status === prFilter);
+    return prospectsCache.filter(p => p.status !== 'dismissed' && (prFilter === 'all' ? true : prFilter === 'active' ? p.status !== 'done' : p.status === prFilter));
   }
 
   // Swap with the neighbouring *visible* row, then save the whole order
@@ -3034,7 +3035,11 @@
     return String(a.address || a.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
   }
   function prSuggestions(){
-    const onListIds = new Set(prospectsCache.map(p => p.sourceId).filter(Boolean));
+    // Dismissed suggestions stay away for this year's anniversary only.
+    const yearAgo = Date.now() - 300 * 86400000;
+    const onListIds = new Set(prospectsCache
+      .filter(p => p.status !== 'dismissed' || Date.parse(p.updatedAt || 0) > yearAgo)
+      .map(p => p.sourceId).filter(Boolean));
     const onListHouses = new Set(prAnniversaries.filter(a => onListIds.has(a.id)).map(prHouseKey));
     const byHouse = new Map();
     prAnniversaries.forEach(a => {
@@ -3057,8 +3062,9 @@
   }
 
   function renderProspectFilters(){
-    const counts = { active:0, 'to-call':0, 'follow-up':0, done:0, all:prospectsCache.length };
-    prospectsCache.forEach(p => { counts[p.status] = (counts[p.status] || 0) + 1; if (p.status !== 'done') counts.active++; });
+    const shown = prospectsCache.filter(p => p.status !== 'dismissed');
+    const counts = { active:0, 'to-call':0, 'follow-up':0, done:0, all:shown.length };
+    shown.forEach(p => { counts[p.status] = (counts[p.status] || 0) + 1; if (p.status !== 'done') counts.active++; });
     const opts = [['active','Open'], ['to-call','To call'], ['follow-up','Follow up'], ['done','Done'], ['all','All']];
     document.getElementById('pr-filters').innerHTML = opts.map(([k, label]) =>
       `<button type="button" class="pr-filter${prFilter === k ? ' active' : ''}" data-filter="${k}">${label} (${counts[k] || 0})</button>`).join('');
@@ -3138,7 +3144,10 @@
           <div>${info.years}-year home anniversary · ${escapeHtml(prShortDate(info.date.toISOString().slice(0,10) + 'T12:00:00Z'))} (${when})</div>
           <div class="pr-addr">${escapeHtml(a.address || '')}</div>
         </div>
-        <button class="btn btn-ghost" type="button" data-suggest="${prAttr(a.id)}">Add to call list</button>
+        <div class="pr-suggest-btns">
+          <button class="btn btn-ghost" type="button" data-suggest="${prAttr(a.id)}">Add to call list</button>
+          <button class="hot-cmd-link" type="button" data-dismiss="${prAttr(a.id)}" title="Don't suggest this household again this year">Dismiss</button>
+        </div>
       </div>`;
     }).join('');
   }
@@ -3280,6 +3289,21 @@
   });
 
   document.getElementById('pr-suggest').addEventListener('click', async e => {
+    const d = e.target.closest('[data-dismiss]');
+    if (d) {
+      const hit = prSuggestions().find(x => x.a.id === d.dataset.dismiss);
+      if (!hit) return;
+      d.disabled = true;
+      try {
+        const data = await prSave({ name: hit.a.name, source: 'pastclient', sourceId: hit.a.id, status: 'dismissed',
+          reason: `Dismissed suggestion (${hit.info.years}-year anniversary)` });
+        prUpsertLocal(data.record);
+      } catch (err) {
+        d.disabled = false;
+        alert(`Couldn't dismiss: ${err.message}`);
+      }
+      return;
+    }
     const b = e.target.closest('[data-suggest]');
     if (!b) return;
     const hit = prSuggestions().find(x => x.a.id === b.dataset.suggest);
@@ -3438,7 +3462,7 @@
             : `<button class="btn btn-ghost" type="button" data-hot="phone" title="Add a phone number">📞 Add</button>`}</div>
           <div class="hot-notes">
             <textarea data-hot="notes" placeholder="Notes from the call…">${escapeHtml(h.notes || '')}</textarea>
-            <div class="hot-saved" data-hot-saved></div>
+            <div class="hot-saved" data-hot-saved>${hotCmdNotesStatus(h)}</div>
           </div>
           <div><div class="hot-cmd">${h.commandUrl
             ? `<a class="btn btn-ghost" href="${prAttr(h.commandUrl)}" target="_blank" rel="noopener">Open in Command</a>
@@ -3541,6 +3565,19 @@
   // "Sync with Command": look the contact up in the Command contacts sheet
   // (api/_command.js). Found -> link the Command contact and fill in any
   // blank phone/email. Not found -> offer to add them in Command.
+  // Call notes -> Command: the Oasis Mini copies new notes into the
+  // Command contact a few times a day (api/_cmdnotes.js).
+  function hotCmdNotesStatus(h){
+    const synced = h.cmdNotesSynced;
+    if (synced === undefined) return '';
+    const now = String(h.notes || '').trim();
+    if (now && now !== String(synced).trim()) {
+      const why = h.cmdNotesResult && h.cmdNotesResult !== 'added' ? ` (last try: ${escapeHtml(h.cmdNotesResult)})` : '';
+      return `<span title="The Oasis Mini adds new call notes to Command a few times a day">⏳ Going to Command${why}</span>`;
+    }
+    return h.cmdNotesAt && h.cmdNotesResult === 'added' ? '<span>✓ In Command</span>' : '';
+  }
+
   function hotFmtPhone(p){
     const d = String(p || '').replace(/\D/g, '').slice(-10);
     return d.length === 10 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : String(p || '');
@@ -3701,8 +3738,9 @@
     saved.textContent = 'Saving…';
     try {
       // Don't re-render: that would wipe out anything typed while saving.
-      hotUpsertLocal((await hotSave({ id: h.id, notes: textarea.value })).record, false);
-      saved.textContent = 'Saved ✓';
+      const rec = (await hotSave({ id: h.id, notes: textarea.value })).record;
+      hotUpsertLocal(rec, false);
+      saved.innerHTML = 'Saved ✓ ' + hotCmdNotesStatus(rec);
     } catch (err) {
       saved.textContent = `Not saved: ${err.message}`;
     }

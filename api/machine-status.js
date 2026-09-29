@@ -72,6 +72,13 @@ export default async function handler(req, res) {
     return runCommandLookup(req, res);
   }
 
+  // Dispatches to api/_cmdnotes.js: Prospecting call notes waiting to be
+  // added to KW Command by the Oasis Mini.
+  if (req.query && req.query.job === 'cmd-notes') {
+    const { runCmdNotes } = await import('./_cmdnotes.js');
+    return runCmdNotes(req, res);
+  }
+
   if (req.query && (req.query.job === 'apply' || req.query.job === 'skip')) {
     const { runApply, runSkip } = await import('./_apply.js');
     return req.query.job === 'apply' ? runApply(req, res) : runSkip(req, res);

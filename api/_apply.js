@@ -16,12 +16,26 @@
 // 12-function cap).
 
 import { loadSnapshot, navSecret } from './_snapshot.js';
+import { writeTrackerLine } from './_ltsheet.js';
 
 const REPO = 'oritandscott/docket-dashboard';
 const FILE_PATH = 'data/prospecting-inbox.json';
 const BRANCH = 'main';
 const APPLY_URL = 'https://nav.oasisgroupaz.com/api/admin/apply-change';
-const OPS = ['create_transaction', 'set_escrow_dates', 'set_status', 'waive_appraisal', 'waive_inspection'];
+const OPS = ['create_transaction', 'set_escrow_dates', 'set_status', 'waive_appraisal', 'waive_inspection', 'copy_to_sheet'];
+
+// After a Navigator change, copy that record's line onto the old Google
+// Sheet tracker. Never fails the Confirm -- the outcome is just noted.
+async function syncSheet(navId) {
+  try {
+    const snap = await loadSnapshot();
+    const rec = (snap.listings || []).find((l) => l.id === navId);
+    if (!rec) return 'Old sheet: record not in the live snapshot, not copied.';
+    return 'Old sheet: ' + (await writeTrackerLine(rec));
+  } catch (e) {
+    return 'Old sheet not updated: ' + String(e.message || e);
+  }
+}
 
 function gh() {
   const token = process.env.GITHUB_TOKEN;
@@ -86,14 +100,22 @@ export async function runApply(req, res) {
         const target = await resolveTarget(prop.match);
         payload.id = target.id;
       }
-      const r = await fetch(APPLY_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-docket-shared-secret': navSecret() },
-        body: JSON.stringify(payload),
-      });
-      const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.error || `Navigator answered ${r.status}`);
-      result = { status: 'applied', result: data.summary || 'Applied', navId: data.id };
+      if (prop.op === 'copy_to_sheet') {
+        // Old Google Sheet only -- no Navigator write.
+        const sheet = await writeTrackerLine((await loadSnapshot()).listings.find((l) => l.id === payload.id));
+        result = { status: 'applied', result: sheet, navId: payload.id };
+      } else {
+        const r = await fetch(APPLY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-docket-shared-secret': navSecret() },
+          body: JSON.stringify(payload),
+        });
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(data.error || `Navigator answered ${r.status}`);
+        const navId = data.id || payload.id;
+        const sheet = navId ? await syncSheet(navId) : '';
+        result = { status: 'applied', result: [data.summary || 'Applied', sheet].filter(Boolean).join(' '), navId };
+      }
     } catch (e) {
       result = { status: 'failed', result: String(e.message || e) };
     }
