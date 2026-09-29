@@ -1,5 +1,24 @@
 [
   {
+    "id": "note-sheet-tucker",
+    "text": "(From Claude) Copy Jeff Tucker's new escrow line onto the old Google Sheet Linear Tracker.",
+    "topic": "tracker",
+    "dictated": false,
+    "status": "proposed",
+    "createdAt": "2026-09-29T17:22:39.000Z",
+    "updatedAt": "2026-09-29T17:22:39.000Z",
+    "reply": "The old Google Sheet can now be updated from here. Tap Confirm to add Jeff Tucker's La Puente line (contract Sep 25 through COE Oct 19). From now on, every Confirmed Navigator change also updates that line on the sheet automatically.",
+    "proposals": [
+      {
+        "pid": "p-tucker-sheet",
+        "label": "Old Google Sheet: add Jeff Tucker's line -- 4824 E. La Puente (contract Sep 25, COE Oct 19)",
+        "op": "copy_to_sheet",
+        "match": "Tucker La Puente",
+        "status": "pending"
+      }
+    ]
+  },
+  {
     "id": "note-mumspssyllr7y",
     "text": "Add clients Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to med term watch list",
     "topic": "prospecting",

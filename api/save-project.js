@@ -154,6 +154,12 @@ async function handleHotlist(req, res, ghHeaders) {
     phoneFound: typeof body.phoneFound === 'boolean' ? body.phoneFound : existing ? !!existing.phoneFound : false,
     emailFound: typeof body.emailFound === 'boolean' ? body.emailFound : existing ? !!existing.emailFound : false,
     commandUrl,
+    // Call notes already copied into the Command contact by the Oasis Mini
+    // (api/_cmdnotes.js). Records from before this existed start with their
+    // current notes counted as copied, so only new notes go to Command.
+    cmdNotesSynced: existing ? (existing.cmdNotesSynced !== undefined ? existing.cmdNotesSynced : existing.notes || '') : '',
+    cmdNotesAt: existing ? existing.cmdNotesAt || null : null,
+    cmdNotesResult: existing ? existing.cmdNotesResult || '' : '',
     callCount: (existing ? existing.callCount || 0 : 0) + (body.logCall ? 1 : 0),
     lastCalledAt: body.logCall ? now : existing ? existing.lastCalledAt || null : null,
     createdAt: existing ? existing.createdAt : now,
@@ -174,7 +180,9 @@ async function handleHotlist(req, res, ghHeaders) {
 }
 
 const PROSPECT_SOURCES = ['manual', 'openhouse', 'pastclient'];
-const PROSPECT_STATUSES = ['to-call', 'follow-up', 'done'];
+// 'dismissed' = a past-client suggestion Orit & Scott chose not to call this
+// year; hidden from the call list, and keeps the suggestion from coming back.
+const PROSPECT_STATUSES = ['to-call', 'follow-up', 'done', 'dismissed'];
 
 function str(v, max = 500) {
   return (v === undefined || v === null ? '' : String(v)).trim().slice(0, max);
@@ -190,7 +198,7 @@ function prospectKey(p) {
 
 function buildProspect(input, existing, now) {
   const src = PROSPECT_SOURCES.includes(input.source) ? input.source : (existing ? existing.source : 'manual');
-  const status = PROSPECT_STATUSES.includes(input.status) ? input.status : (existing ? existing.status : 'to-call');
+  const status = PROSPECT_STATUSES.includes(input.status) ? input.status : (existing && existing.status !== 'dismissed' ? existing.status : 'to-call');
   const pick = (k, max) => (input[k] !== undefined ? str(input[k], max) : existing ? existing[k] || '' : '');
   const record = {
     id: existing ? existing.id : 'pros-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
@@ -260,8 +268,10 @@ async function handleProspect(req, res, ghHeaders) {
   if (!str(body.name) && !body.id) {
     return res.status(400).json({ error: 'Missing required field: name.' });
   }
-  const idx = body.id ? current.findIndex(p => p.id === body.id) : -1;
+  let idx = body.id ? current.findIndex(p => p.id === body.id) : -1;
   if (body.id && idx === -1) return res.status(404).json({ error: 'Prospect not found.' });
+  // A suggestion dismissed in an earlier year can be added (or dismissed) again.
+  if (idx === -1) idx = current.findIndex(p => p.status === 'dismissed' && prospectKey(p) === prospectKey(body));
   const existing = idx !== -1 ? current[idx] : null;
   if (!existing && current.some(p => prospectKey(p) === prospectKey(body))) {
     return res.status(409).json({ error: `${str(body.name)} is already on the call list.` });
