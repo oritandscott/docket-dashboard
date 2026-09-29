@@ -1,5 +1,13 @@
 {
-  "schedule": [],
+  "schedule": [
+    {
+      "id": "mumksumcis01o",
+      "time": "09:00",
+      "title": "Tuesday Video Focus Day (YouTube shoot)",
+      "date": "2026-09-29",
+      "source": "automation"
+    }
+  ],
   "tasks": [
     {
       "id": "mth4y35g2ouly",
