@@ -305,6 +305,23 @@
     .hot-row .hot-c-name,.hot-row .hot-notes{grid-column:2 / -1;}
   }
 
+  .inbox-box{border:1px solid rgba(201,161,93,.4);border-radius:6px;padding:.9rem 1rem;margin-bottom:1.1rem;background:rgba(201,161,93,.05);}
+  .inbox-mic-status{font-size:.78rem;color:var(--ink-soft);}
+  #inbox-mic.recording{border-color:var(--stamp-red);color:var(--stamp-red);animation:micPulse 1.2s ease-in-out infinite;}
+  @keyframes micPulse{50%{box-shadow:0 0 0 4px rgba(204,92,66,.25);}}
+  .inbox-note{display:flex;gap:.6rem;align-items:flex-start;padding:.5rem .6rem;border:1px solid var(--line);border-radius:4px;margin-bottom:.35rem;font-size:.84rem;background:var(--paper-card);}
+  .inbox-note.done{opacity:.55;}
+  .inbox-note .inbox-text{flex:1;white-space:pre-wrap;}
+  .inbox-note .pr-meta{margin-top:.2rem;}
+  .lookup-card{border:1px dashed var(--line);border-radius:4px;padding:.6rem .7rem;font-size:.84rem;}
+  .lookup-card .btn{padding:.3rem .6rem;font-size:.78rem;margin:.35rem .35rem 0 0;}
+  .pr-rank{display:flex;flex-direction:column;align-items:center;gap:.15rem;flex:0 0 36px;}
+  .pr-actions .hot-call{background:#1E7B45;border-color:#1E7B45;color:#fff;text-align:center;text-decoration:none;}
+  .pr-actions .hot-call:hover{background:#249152;}
+  .pr-row.selected{outline:2px solid var(--gold);outline-offset:-1px;}
+  .pr-row.just-moved{animation:hotFlash .6s ease;}
+  .pr-name .pr-name-text{cursor:pointer;}
+
   /* ---------- PROSPECTING ---------- */
   #prospecting.panel{background:#23203A;}
   .pr-filters{display:flex;flex-wrap:wrap;gap:.4rem;margin:-.3rem 0 .9rem;}
@@ -701,10 +718,24 @@
       <h2>Prospecting - Calls to Make</h2>
       <div class="panel-sub">One shared call list for past clients, open house guests, and anyone else worth a personal call. Saved for every device.</div>
 
+      <div class="inbox-box">
+        <div class="subhead" style="margin-bottom:.4rem;color:var(--gold);">Notes for Claude · who should be on these lists</div>
+        <div class="panel-sub" style="margin:0 0 .6rem;">Type or dictate anything: "Add the Garcias from Sunday's open house to medium term", "Move Dan to #1". Claude reads these and acts on them when you work together in a Claude session.</div>
+        <textarea id="inbox-text" rows="3" placeholder="Write a note, or tap 🎤 and talk…" style="width:100%;"></textarea>
+        <div class="inline-form" style="align-items:center;">
+          <button class="btn btn-ghost" type="button" id="inbox-mic">🎤 Dictate</button>
+          <button class="btn" type="button" id="inbox-save">Save note</button>
+          <span class="inbox-mic-status" id="inbox-mic-status"></span>
+        </div>
+        <div id="inbox-list" style="margin-top:.7rem;"></div>
+      </div>
+
       <div class="hot-add">
         <div class="subhead" style="margin-bottom:.5rem;">Add a contact</div>
         <form class="inline-form" id="hot-form" style="margin-top:0;">
-          <input type="text" id="hot-name" placeholder="Name" required style="flex:1.2;min-width:140px;">
+          <input type="text" id="hot-name" placeholder="Name" required list="hot-known-names" autocomplete="off" style="flex:1.2;min-width:140px;">
+          <datalist id="hot-known-names"></datalist>
+          <button class="btn btn-ghost" type="button" id="hot-lookup" title="Fill in what the dashboard already knows about this name">🔍 Look up</button>
           <input type="text" id="hot-phone" placeholder="Phone" inputmode="tel" style="flex:.8;min-width:110px;">
           <input type="text" id="hot-email" placeholder="Email (optional)" inputmode="email" style="flex:1;min-width:140px;">
           <select id="hot-type" aria-label="Type">
@@ -721,6 +752,7 @@
           <button class="btn" type="submit">Add contact</button>
         </form>
         <div class="empty-hint" id="hot-status" style="display:none;margin-top:.6rem;"></div>
+        <div id="hot-lookup-result" style="margin-top:.6rem;"></div>
       </div>
 
       <div class="hot-wrap hot-tier-hot">
@@ -2822,6 +2854,34 @@
   let prospectsCache = [];
   let prAnniversaries = [];
   let prFilter = 'active';
+  let prSelectedId = null;
+  let prFlashId = null;
+  let prReorderTimer = null;
+
+  function prVisible(){
+    return prospectsCache.filter(p => prFilter === 'all' ? true : prFilter === 'active' ? p.status !== 'done' : p.status === prFilter);
+  }
+
+  // Swap with the neighbouring *visible* row, then save the whole order
+  // once tapping stops.
+  function prMove(id, dir){
+    const vis = prVisible();
+    const i = vis.findIndex(p => p.id === id);
+    const j = i + dir;
+    if (i === -1 || j < 0 || j >= vis.length) return;
+    const a = prospectsCache.indexOf(vis[i]), b = prospectsCache.indexOf(vis[j]);
+    [prospectsCache[a], prospectsCache[b]] = [prospectsCache[b], prospectsCache[a]];
+    prSelectedId = prFlashId = id;
+    renderProspects();
+    prFlashId = null;
+    const moved = document.querySelector(`.pr-row[data-id="${CSS.escape(id)}"]`);
+    if (moved) moved.scrollIntoView({ block:'nearest', behavior:'smooth' });
+    clearTimeout(prReorderTimer);
+    prReorderTimer = setTimeout(async () => {
+      try { await prSave({ reorder: { ids: prospectsCache.map(p => p.id) } }); }
+      catch (err) { alert(`Couldn't save the new order: ${err.message}`); }
+    }, 1200);
+  }
 
   function prAttr(v){ return escapeHtml(String(v == null ? '' : v)).replace(/"/g, '&quot;'); }
   function prShortDate(iso){
@@ -2906,23 +2966,29 @@
   function renderProspects(){
     renderProspectFilters();
     const list = document.getElementById('pr-list');
-    const order = { 'to-call':0, 'follow-up':1, done:2 };
-    const rows = prospectsCache
-      .filter(p => prFilter === 'all' ? true : prFilter === 'active' ? p.status !== 'done' : p.status === prFilter)
-      .sort((a, b) => (order[a.status] - order[b.status])
-        || String(a.lastCalledAt || '').localeCompare(String(b.lastCalledAt || ''))
-        || String(a.createdAt).localeCompare(String(b.createdAt)));
+    // Priority order is the saved order of the list itself (set with the
+    // arrows); filters just hide rows, and numbers count the visible rows.
+    const rows = prVisible();
 
     if (!rows.length) {
       list.innerHTML = `<div class="empty-hint">${prospectsCache.length ? 'Nobody in this view.' : 'No one on the call list yet. Add someone below, or pick from the past-client suggestions.'}</div>`;
     } else {
-      list.innerHTML = rows.map(p => {
+      list.innerHTML = rows.map((p, i) => {
         const tel = (p.phone || '').replace(/[^\d+]/g, '');
+        const voice = hotVoiceUrl(p.phone);
+        const rowCls = ['pr-row'];
+        if (p.id === prSelectedId) rowCls.push('selected');
+        if (p.id === prFlashId) rowCls.push('just-moved');
         const meta = [`Added ${prShortDate(p.createdAt)}`];
         if (p.callCount) meta.push(`Called ${p.callCount}× · last ${prShortDate(p.lastCalledAt)}`);
-        return `<div class="pr-row" data-id="${prAttr(p.id)}">
+        return `<div class="${rowCls.join(' ')}" data-id="${prAttr(p.id)}">
+          <div class="pr-rank">
+            <button class="hot-arrow" type="button" data-act="up" aria-label="Move up"${i === 0 ? ' disabled' : ''}>▲</button>
+            <div class="hot-num">${i + 1}</div>
+            <button class="hot-arrow" type="button" data-act="down" aria-label="Move down"${i === rows.length - 1 ? ' disabled' : ''}>▼</button>
+          </div>
           <div class="pr-main">
-            <div class="pr-name">${escapeHtml(p.name)}<span class="pill ${PR_SOURCE_PILL[p.source] || 'pill-idea'}">${PR_SOURCE_LABEL[p.source] || p.source}</span></div>
+            <div class="pr-name"><span class="pr-name-text" data-act="select" title="Tap to select, then use the arrows to reorder">${escapeHtml(p.name)}</span><span class="pill ${PR_SOURCE_PILL[p.source] || 'pill-idea'}">${PR_SOURCE_LABEL[p.source] || p.source}</span></div>
             ${p.reason ? `<div class="pr-reason">${escapeHtml(p.reason)}</div>` : ''}
             <div class="pr-contact">
               ${p.phone ? `<a href="tel:${prAttr(tel)}">${escapeHtml(p.phone)}</a>` : ''}
@@ -2932,11 +2998,19 @@
             <div class="pr-meta">${escapeHtml(meta.join(' · '))}</div>
           </div>
           <div class="pr-actions">
+            ${voice ? `<a class="btn hot-call" data-act="voice" href="${prAttr(voice)}" target="_blank" rel="noopener">📞 Call</a>`
+              : `<button class="btn btn-ghost" type="button" data-act="addphone">📞 Add phone</button>`}
             <button class="btn" type="button" data-act="call">Log call</button>
             <select data-act="status" aria-label="Status">
               ${Object.keys(PR_STATUS_LABEL).map(s => `<option value="${s}"${s === p.status ? ' selected' : ''}>${PR_STATUS_LABEL[s]}</option>`).join('')}
             </select>
             <button class="btn btn-ghost" type="button" data-act="note">Add note</button>
+            <select data-act="promote" aria-label="Move to a prospecting list">
+              <option value="">Move to list…</option>
+              <option value="hot">🔥 Hot List</option>
+              <option value="medium">Medium term</option>
+              <option value="long">Long term</option>
+            </select>
             <button class="del-btn" type="button" data-act="remove" aria-label="Remove">×</button>
           </div>
         </div>`;
@@ -2977,6 +3051,7 @@
       if (!Array.isArray(prospectsCache)) prospectsCache = [];
       if (!Array.isArray(prAnniversaries)) prAnniversaries = [];
       renderProspects();
+      lkRefreshDatalist();
     } catch (e) {
       document.getElementById('pr-list').innerHTML =
         `<div class="empty-hint">Couldn't load the call list: ${escapeHtml(e.message)}</div>`;
@@ -3032,6 +3107,20 @@
     const id = el.closest('.pr-row').dataset.id;
     const p = prospectsCache.find(x => x.id === id);
     if (!p) return;
+    if (el.dataset.act === 'up' || el.dataset.act === 'down') { prMove(id, el.dataset.act === 'up' ? -1 : 1); return; }
+    if (el.dataset.act === 'select') {
+      prSelectedId = prSelectedId === id ? null : id;
+      hotSelectedId = null;
+      document.querySelectorAll('.pr-row.selected, .hot-row.selected').forEach(r => r.classList.remove('selected'));
+      if (prSelectedId) el.closest('.pr-row').classList.add('selected');
+      return;
+    }
+    if (el.dataset.act === 'voice') {
+      // Google Voice opens in a new tab; count it as a call.
+      prSave({ id, logCall: true, status: p.status === 'to-call' ? 'follow-up' : p.status })
+        .then(d => prUpsertLocal(d.record)).catch(() => {});
+      return;
+    }
     try {
       if (el.dataset.act === 'call') {
         const note = prompt(`Logging a call with ${p.name}. Any notes? (optional)`, '');
@@ -3041,6 +3130,10 @@
         el.disabled = true;
         const status = p.status === 'to-call' ? 'follow-up' : p.status;
         prUpsertLocal((await prSave({ id, notes, status, logCall: true })).record);
+      } else if (el.dataset.act === 'addphone') {
+        const phone = prompt(`Phone number for ${p.name}:`, '');
+        if (!phone || !phone.trim()) return;
+        prUpsertLocal((await prSave({ id, phone: phone.trim() })).record);
       } else if (el.dataset.act === 'note') {
         const note = prompt(`Add a note for ${p.name}:`, '');
         if (!note || !note.trim()) return;
@@ -3059,6 +3152,19 @@
   });
 
   document.getElementById('pr-list').addEventListener('change', async e => {
+    const promote = e.target.closest('select[data-act="promote"]');
+    if (promote && promote.value) {
+      const id = promote.closest('.pr-row').dataset.id;
+      const p = prospectsCache.find(x => x.id === id);
+      promote.disabled = true;
+      try {
+        await prPromote(p, promote.value);
+      } catch (err) {
+        alert(`Couldn't move: ${err.message}`);
+        renderProspects();
+      }
+      return;
+    }
     const sel = e.target.closest('select[data-act="status"]');
     if (!sel) return;
     const id = sel.closest('.pr-row').dataset.id;
@@ -3262,10 +3368,11 @@
 
   // Arrow keys move the selected contact too (desktop convenience).
   document.addEventListener('keydown', e => {
-    if (!hotSelectedId || !['ArrowUp', 'ArrowDown'].includes(e.key)) return;
+    if ((!hotSelectedId && !prSelectedId) || !['ArrowUp', 'ArrowDown'].includes(e.key)) return;
     if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement && document.activeElement.tagName)) return;
     e.preventDefault();
-    hotMove(hotSelectedId, e.key === 'ArrowUp' ? -1 : 1);
+    if (hotSelectedId) hotMove(hotSelectedId, e.key === 'ArrowUp' ? -1 : 1);
+    else prMove(prSelectedId, e.key === 'ArrowUp' ? -1 : 1);
   });
 
   async function refreshHotList(){
@@ -3274,6 +3381,7 @@
       const data = resp.ok ? await resp.json() : [];
       hotCache = Array.isArray(data) ? data : [];
       renderHotList();
+      lkRefreshDatalist();
     } catch (e) {
       document.getElementById('hot-list-hot').innerHTML =
         `<div class="empty-hint">Couldn't load your prospecting lists: ${escapeHtml(e.message)}</div>`;
@@ -3367,7 +3475,8 @@
         hotMove(h.id, act === 'up' ? -1 : 1);
       } else if (act === 'select') {
         hotSelectedId = hotSelectedId === h.id ? null : h.id;
-        document.querySelectorAll('.hot-row.selected').forEach(r => r.classList.remove('selected'));
+        prSelectedId = null;
+        document.querySelectorAll('.hot-row.selected, .pr-row.selected').forEach(r => r.classList.remove('selected'));
         if (hotSelectedId) row.classList.add('selected');
       } else if (act === 'call') {
         // Let the link open Google Voice in a new tab; meanwhile start a
@@ -3406,8 +3515,218 @@
     }
   });
 
+  // Call list -> Hot List / watchlists: create the list entry, then take
+  // them off the call list (their reason and notes come along).
+  const PR_TO_HOT_SOURCE = { manual:'other', openhouse:'openhouse', pastclient:'pastclient' };
+  async function prPromote(p, tier){
+    const notes = [p.reason, p.notes].filter(Boolean).join('\n');
+    let rec;
+    try {
+      rec = (await hotSave({ name: p.name, phone: p.phone, email: p.email, source: PR_TO_HOT_SOURCE[p.source] || 'other', tier, notes })).record;
+    } catch (err) {
+      if (!/already on one of your prospecting lists/.test(err.message)) throw err;
+    }
+    await prSave({ id: p.id }, 'DELETE');
+    prospectsCache = prospectsCache.filter(x => x.id !== p.id);
+    renderProspects();
+    if (rec) {
+      hotCache.push(rec);
+      hotSelectedId = hotFlashId = rec.id;
+      renderHotList();
+      const moved = document.querySelector(`.hot-row[data-id="${CSS.escape(rec.id)}"]`);
+      if (moved) moved.scrollIntoView({ block:'center', behavior:'smooth' });
+    }
+  }
+
+  // ---------- PROSPECTING: NAME LOOKUP ----------
+  // Searches what the dashboard already knows -- the three lists, the call
+  // list, and past clients (anniversaries) -- and fills the add form. KW
+  // Command itself can't be searched from here (no API access), so a miss
+  // offers a one-tap hand-off to Command with the name copied.
+  function lkNorm(v){ return String(v || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim(); }
+  function lkCandidates(){
+    const out = [];
+    hotCache.forEach(h => out.push({ name:h.name, phone:h.phone, email:h.email, type:h.type, source:h.source, commandUrl:h.commandUrl, where:`already on ${HOT_TIERS[hotTierOf(h)]}`, onList:true }));
+    prospectsCache.forEach(p => out.push({ name:p.name, phone:p.phone, email:p.email, source:PR_TO_HOT_SOURCE[p.source], where:'on the call list', note:p.reason }));
+    prAnniversaries.forEach(a => out.push({ name:a.name, source:'pastclient', where:'past client', note:[a.address, a.purchaseDate ? `bought ${a.purchaseDate}` : ''].filter(Boolean).join(' · ') }));
+    return out;
+  }
+  function lkFind(q){
+    const nq = lkNorm(q);
+    if (!nq) return [];
+    const words = nq.split(' ');
+    return lkCandidates().filter(c => {
+      const nn = lkNorm(c.name);
+      return words.every(w => nn.includes(w));
+    }).slice(0, 6);
+  }
+  function lkRefreshDatalist(){
+    const names = [...new Set(lkCandidates().map(c => c.name).filter(Boolean))].sort();
+    document.getElementById('hot-known-names').innerHTML = names.map(n => `<option value="${prAttr(n)}">`).join('');
+  }
+  function lkFill(c){
+    document.getElementById('hot-name').value = c.name || '';
+    if (c.phone) document.getElementById('hot-phone').value = c.phone;
+    if (c.email) document.getElementById('hot-email').value = c.email;
+    if (c.type) document.getElementById('hot-type').value = c.type;
+    if (c.source) document.getElementById('hot-source').value = c.source;
+  }
+  document.getElementById('hot-lookup').addEventListener('click', async () => {
+    const q = document.getElementById('hot-name').value.trim();
+    const out = document.getElementById('hot-lookup-result');
+    if (!q) { out.innerHTML = '<div class="lookup-card">Type a name first.</div>'; return; }
+    const hits = lkFind(q);
+    if (hits.length === 1 && !hits[0].onList) {
+      lkFill(hits[0]);
+      out.innerHTML = `<div class="lookup-card">✓ Found <strong>${escapeHtml(hits[0].name)}</strong> (${escapeHtml(hits[0].where)}${hits[0].note ? ' · ' + escapeHtml(hits[0].note) : ''}). Details filled in — check them, pick a list, and tap Add contact.</div>`;
+      return;
+    }
+    if (hits.length) {
+      out.innerHTML = `<div class="lookup-card">Found ${hits.length} match${hits.length === 1 ? '' : 'es'}:` +
+        hits.map((c, i) => `<div style="margin-top:.35rem;"><strong>${escapeHtml(c.name)}</strong> <span class="pr-meta">${escapeHtml(c.where)}${c.note ? ' · ' + escapeHtml(c.note) : ''}</span>
+          ${c.onList ? '' : `<button class="btn btn-ghost" type="button" data-lk="${i}">Use this</button>`}</div>`).join('') + '</div>';
+      out.querySelectorAll('[data-lk]').forEach(b => b.addEventListener('click', () => {
+        lkFill(hits[+b.dataset.lk]);
+        out.innerHTML = `<div class="lookup-card">✓ Filled in ${escapeHtml(hits[+b.dataset.lk].name)} — pick a list and tap Add contact.</div>`;
+      }));
+      return;
+    }
+    out.innerHTML = `<div class="lookup-card">No record of <strong>${escapeHtml(q)}</strong> on the dashboard yet.
+      <div><button class="btn btn-ghost" type="button" id="lk-command">Search Command for ${escapeHtml(q)} ↗</button></div>
+      <div class="pr-meta" style="margin-top:.35rem;">Opens Command with the name copied, so you can paste it into Command's search. Or just add their phone here and tap Add contact.</div></div>`;
+    document.getElementById('lk-command').addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(q); } catch (_) { /* optional */ }
+      window.open(COMMAND_CONTACTS_URL, '_blank', 'noopener');
+    });
+  });
+
+  // ---------- PROSPECTING: NOTES FOR CLAUDE (with dictation) ----------
+  let inboxCache = [];
+  let inboxDictated = false;
+
+  function renderInbox(){
+    const wrap = document.getElementById('inbox-list');
+    const open = inboxCache.filter(n => n.status !== 'done');
+    const done = inboxCache.filter(n => n.status === 'done').slice(0, 5);
+    const row = n => `<div class="inbox-note${n.status === 'done' ? ' done' : ''}" data-id="${prAttr(n.id)}">
+      <div class="inbox-text">${escapeHtml(n.text)}<div class="pr-meta">${n.dictated ? '🎤 ' : ''}${escapeHtml(new Date(n.createdAt).toLocaleString(undefined, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }))} · ${n.status === 'done' ? 'Done' : 'Waiting for Claude'}</div></div>
+      <button class="btn btn-ghost" type="button" data-inbox="${n.status === 'done' ? 'new' : 'done'}" style="padding:.25rem .55rem;font-size:.74rem;">${n.status === 'done' ? 'Reopen' : 'Mark done'}</button>
+      <button class="del-btn" type="button" data-inbox="remove" aria-label="Delete note">×</button>
+    </div>`;
+    wrap.innerHTML = open.map(row).join('') + (done.length ? `<div class="pr-meta" style="margin:.5rem 0 .3rem;">Recently done</div>` + done.map(row).join('') : '');
+  }
+
+  async function refreshInbox(){
+    try {
+      const resp = await fetch('/data/prospecting-inbox.json?t=' + Date.now());
+      const data = resp.ok ? await resp.json() : [];
+      inboxCache = Array.isArray(data) ? data : [];
+      renderInbox();
+    } catch (e) { /* the box still works for new notes */ }
+  }
+
+  async function inboxSave(body, method){
+    const resp = await fetch('/api/save-project', {
+      method: method || 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({ resource:'inbox' }, body)),
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+    return data;
+  }
+
+  document.getElementById('inbox-save').addEventListener('click', async e => {
+    const ta = document.getElementById('inbox-text');
+    const status = document.getElementById('inbox-mic-status');
+    if (!ta.value.trim()) { status.textContent = 'Nothing to save yet.'; return; }
+    if (inboxRecognizer) inboxRecognizer.stop();
+    e.target.disabled = true;
+    try {
+      const d = await inboxSave({ text: ta.value, dictated: inboxDictated });
+      inboxCache.unshift(d.record);
+      renderInbox();
+      ta.value = '';
+      inboxDictated = false;
+      status.textContent = 'Saved ✓';
+    } catch (err) {
+      status.textContent = `Not saved: ${err.message}`;
+    } finally {
+      e.target.disabled = false;
+    }
+  });
+
+  document.getElementById('inbox-list').addEventListener('click', async e => {
+    const b = e.target.closest('[data-inbox]');
+    if (!b) return;
+    const id = b.closest('.inbox-note').dataset.id;
+    try {
+      if (b.dataset.inbox === 'remove') {
+        if (!confirm('Delete this note?')) return;
+        await inboxSave({ id }, 'DELETE');
+        inboxCache = inboxCache.filter(n => n.id !== id);
+      } else {
+        const d = await inboxSave({ id, status: b.dataset.inbox });
+        inboxCache = inboxCache.map(n => n.id === id ? d.record : n);
+      }
+      renderInbox();
+    } catch (err) {
+      alert(`Couldn't save: ${err.message}`);
+    }
+  });
+
+  // Dictation uses the browser's built-in speech recognition (Chrome, Edge,
+  // Safari). Words land in the box as you speak, so you can fix anything
+  // before saving. Nothing is recorded or stored except the final text.
+  const InboxSR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let inboxRecognizer = null;
+  (function setupDictation(){
+    const mic = document.getElementById('inbox-mic');
+    const status = document.getElementById('inbox-mic-status');
+    const ta = document.getElementById('inbox-text');
+    if (!InboxSR) {
+      mic.addEventListener('click', () => {
+        status.textContent = "This browser can't take dictation. Use Chrome or Safari, or the microphone key on your phone's keyboard.";
+      });
+      return;
+    }
+    mic.addEventListener('click', () => {
+      if (inboxRecognizer) { inboxRecognizer.stop(); return; }
+      const rec = new InboxSR();
+      rec.lang = 'en-US';
+      rec.continuous = true;
+      rec.interimResults = true;
+      const base = ta.value ? ta.value.replace(/\s*$/, ' ') : '';
+      let finalText = '';
+      rec.onresult = ev => {
+        let interim = '';
+        for (let i = ev.resultIndex; i < ev.results.length; i++) {
+          const t = ev.results[i][0].transcript;
+          if (ev.results[i].isFinal) finalText += t; else interim += t;
+        }
+        ta.value = base + finalText + interim;
+        inboxDictated = true;
+      };
+      rec.onerror = ev => {
+        status.textContent = ev.error === 'not-allowed' ? 'Microphone permission was blocked -- allow it in the browser to dictate.' : `Dictation stopped (${ev.error}).`;
+      };
+      rec.onend = () => {
+        inboxRecognizer = null;
+        mic.classList.remove('recording');
+        mic.textContent = '🎤 Dictate';
+        if (status.textContent === 'Listening… tap Stop when done.') status.textContent = 'Check the text, then Save note.';
+      };
+      rec.start();
+      inboxRecognizer = rec;
+      mic.classList.add('recording');
+      mic.textContent = '■ Stop';
+      status.textContent = 'Listening… tap Stop when done.';
+    });
+  })();
+
   // ---------- INIT ----------
   renderHeader();
+  refreshInbox();
   refreshHotList();
   refreshLinearTracker();
   renderTasks();
