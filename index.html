@@ -261,6 +261,28 @@
   @media (max-width:600px){.lt-name{flex-basis:140px;width:140px;}}
   .lt-foot{font-size:.72rem;color:var(--ink-soft);margin-top:.55rem;}
 
+  /* ---------- HOT LIST ---------- */
+  .hot-wrap{border:1px solid rgba(204,92,66,.45);background:rgba(204,92,66,.06);border-radius:6px;padding:1rem 1rem .9rem;}
+  .hot-title{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:1.25rem;color:#E0775D;margin-bottom:.2rem;}
+  .hot-table{display:flex;flex-direction:column;gap:.45rem;}
+  .hot-row{display:grid;grid-template-columns:minmax(0,1.2fr) 118px 118px 84px minmax(0,2fr) 128px 22px;gap:.55rem;align-items:start;padding:.6rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;}
+  .hot-head{background:none;border:none;padding:.1rem .7rem;font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .hot-name{font-weight:700;font-size:.95rem;}
+  .hot-sub{font-size:.75rem;color:var(--ink-soft);margin-top:.15rem;word-break:break-word;}
+  .hot-row select{width:100%;font-size:.8rem;padding:.3rem .35rem;}
+  .hot-row .btn{width:100%;padding:.4rem .5rem;font-size:.78rem;text-align:center;text-decoration:none;display:inline-block;}
+  .hot-row .hot-call{background:#1E7B45;border-color:#1E7B45;color:#fff;}
+  .hot-row .hot-call:hover{background:#249152;}
+  .hot-row .btn{white-space:normal;line-height:1.2;}
+  .hot-notes textarea{width:100%;min-height:58px;font-size:.8rem;resize:vertical;}
+  .hot-saved{font-size:.68rem;color:var(--ink-soft);margin-top:.15rem;min-height:.9rem;}
+  .hot-cmd-link{display:block;font-size:.7rem;color:var(--ink-soft);margin-top:.25rem;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;font-family:inherit;}
+  @media (max-width:1180px){
+    .hot-head{display:none;}
+    .hot-row{grid-template-columns:1fr 1fr;}
+    .hot-row .hot-c-name,.hot-row .hot-notes{grid-column:1 / -1;}
+  }
+
   /* ---------- PROSPECTING ---------- */
   #prospecting.panel{background:#23203A;}
   .pr-filters{display:flex;flex-wrap:wrap;gap:.4rem;margin:-.3rem 0 .9rem;}
@@ -657,6 +679,26 @@
       <h2>Prospecting - Calls to Make</h2>
       <div class="panel-sub">One shared call list for past clients, open house guests, and anyone else worth a personal call. Saved for every device.</div>
 
+      <div class="hot-wrap">
+        <div class="hot-title">🔥 Hot List</div>
+        <div class="panel-sub" style="margin:0 0 .8rem;">The people closest to buying or selling right now. Your first calls of the day.</div>
+        <div class="hot-table" id="hot-list"><div class="empty-hint">Loading Hot List&hellip;</div></div>
+        <form class="inline-form" id="hot-form" style="margin-top:.8rem;">
+          <input type="text" id="hot-name" placeholder="Name" required style="flex:1.2;min-width:140px;">
+          <input type="text" id="hot-phone" placeholder="Phone" inputmode="tel" style="flex:.8;min-width:110px;">
+          <input type="text" id="hot-email" placeholder="Email (optional)" inputmode="email" style="flex:1;min-width:140px;">
+          <select id="hot-type" aria-label="Type">
+            <option value="buyer">Buyer</option>
+            <option value="seller">Seller</option>
+            <option value="both">Buyer &amp; Seller</option>
+          </select>
+          <select id="hot-source" aria-label="Source"></select>
+          <button class="btn" type="submit">Add to Hot List</button>
+        </form>
+        <div class="empty-hint" id="hot-status" style="display:none;margin-top:.6rem;"></div>
+      </div>
+
+      <div class="subhead" style="margin-top:1.8rem;color:var(--gold);">Call list</div>
       <div class="pr-filters" id="pr-filters"></div>
       <div id="pr-list"><div class="empty-hint">Loading call list&hellip;</div></div>
 
@@ -3044,8 +3086,202 @@
     }
   });
 
+  // ---------- PROSPECTING: HOT LIST ----------
+  // data/hotlist.json via /api/save-project resource:'hotlist'. Columns:
+  // Name | Buyer/Seller | Source | Call (Google Voice) | Call notes | Command.
+  // KW Command has no API this dashboard can use, so the Command button
+  // either opens the contact's saved Command link, or -- for someone not in
+  // Command yet -- copies their details and opens Command so the contact can
+  // be created there by hand, then the new contact's link is pasted back.
+  const HOT_TYPES = { buyer:'Buyer', seller:'Seller', both:'Buyer & Seller' };
+  const HOT_SOURCES = { referral:'Referral', pastclient:'Past client', youtube:'YouTube', online:'Found us online', openhouse:'Open house', sphere:'Sphere / friend', other:'Other' };
+  const COMMAND_CONTACTS_URL = 'https://console.command.kw.com/contacts';
+  let hotCache = [];
+
+  document.getElementById('hot-source').innerHTML =
+    Object.entries(HOT_SOURCES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+
+  async function hotSave(body, method){
+    const resp = await fetch('/api/save-project', {
+      method: method || 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({ resource:'hotlist' }, body)),
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+    return data;
+  }
+
+  // Google Voice web "new call" link for a US number.
+  function hotVoiceUrl(phone){
+    let d = String(phone || '').replace(/\D/g, '');
+    if (d.length === 10) d = '1' + d;
+    if (d.length < 11) return '';
+    return `https://voice.google.com/u/0/calls?a=nc,%2B${d}`;
+  }
+
+  function hotOptions(map, selected){
+    return Object.entries(map).map(([k, v]) => `<option value="${k}"${k === selected ? ' selected' : ''}>${escapeHtml(v)}</option>`).join('');
+  }
+
+  function renderHotList(){
+    const wrap = document.getElementById('hot-list');
+    if (!hotCache.length) {
+      wrap.innerHTML = '<div class="empty-hint">No one on the Hot List yet. Add the people closest to buying or selling below.</div>';
+      return;
+    }
+    const head = `<div class="hot-row hot-head"><div>Name</div><div>Type</div><div>Source</div><div>Call</div><div>Call notes</div><div>Command</div><div></div></div>`;
+    wrap.innerHTML = head + hotCache.map(h => {
+      const voice = hotVoiceUrl(h.phone);
+      const called = h.lastCalledAt ? `Last call ${prShortDate(h.lastCalledAt)}${h.callCount > 1 ? ` · ${h.callCount} calls` : ''}` : '';
+      return `<div class="hot-row" data-id="${prAttr(h.id)}">
+        <div class="hot-c-name">
+          <div class="hot-name">${escapeHtml(h.name)}</div>
+          <div class="hot-sub">${escapeHtml([h.phone, h.email].filter(Boolean).join(' · ')) || '<em>No phone yet</em>'}</div>
+          ${called ? `<div class="hot-sub">${escapeHtml(called)}</div>` : ''}
+        </div>
+        <div><select data-hot="type" aria-label="Type">${hotOptions(HOT_TYPES, h.type)}</select></div>
+        <div><select data-hot="source" aria-label="Source">${hotOptions(HOT_SOURCES, h.source)}</select></div>
+        <div>${voice
+          ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="_blank" rel="noopener">📞 Call</a>`
+          : `<button class="btn btn-ghost" type="button" data-hot="phone">Add phone</button>`}</div>
+        <div class="hot-notes">
+          <textarea data-hot="notes" placeholder="Notes from the call…">${escapeHtml(h.notes || '')}</textarea>
+          <div class="hot-saved" data-hot-saved></div>
+        </div>
+        <div>${h.commandUrl
+          ? `<a class="btn btn-ghost" href="${prAttr(h.commandUrl)}" target="_blank" rel="noopener">Open in Command</a>
+             <button class="hot-cmd-link" type="button" data-hot="cmdlink">Change link</button>`
+          : `<button class="btn btn-ghost" type="button" data-hot="cmdadd">+ Add to Command</button>
+             <button class="hot-cmd-link" type="button" data-hot="cmdlink">Already in Command? Paste link</button>`}</div>
+        <div><button class="del-btn" type="button" data-hot="remove" aria-label="Remove from Hot List">×</button></div>
+      </div>`;
+    }).join('');
+  }
+
+  async function refreshHotList(){
+    try {
+      const resp = await fetch('/data/hotlist.json?t=' + Date.now());
+      const data = resp.ok ? await resp.json() : [];
+      hotCache = Array.isArray(data) ? data : [];
+      renderHotList();
+    } catch (e) {
+      document.getElementById('hot-list').innerHTML =
+        `<div class="empty-hint">Couldn't load the Hot List: ${escapeHtml(e.message)}</div>`;
+    }
+  }
+
+  function hotUpsertLocal(rec, rerender){
+    const i = hotCache.findIndex(h => h.id === rec.id);
+    if (i === -1) hotCache.push(rec); else hotCache[i] = rec;
+    if (rerender !== false) renderHotList();
+  }
+
+  async function hotSaveNotes(textarea){
+    const row = textarea.closest('.hot-row');
+    const h = hotCache.find(x => x.id === row.dataset.id);
+    if (!h || textarea.value === (h.notes || '')) return;
+    const saved = row.querySelector('[data-hot-saved]');
+    saved.textContent = 'Saving…';
+    try {
+      // Don't re-render: that would wipe out anything typed while saving.
+      hotUpsertLocal((await hotSave({ id: h.id, notes: textarea.value })).record, false);
+      saved.textContent = 'Saved ✓';
+    } catch (err) {
+      saved.textContent = `Not saved: ${err.message}`;
+    }
+  }
+
+  document.getElementById('hot-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const status = document.getElementById('hot-status');
+    btn.disabled = true;
+    try {
+      const data = await hotSave({
+        name: document.getElementById('hot-name').value,
+        phone: document.getElementById('hot-phone').value,
+        email: document.getElementById('hot-email').value,
+        type: document.getElementById('hot-type').value,
+        source: document.getElementById('hot-source').value,
+      });
+      hotUpsertLocal(data.record);
+      e.target.reset();
+      status.style.display = 'none';
+    } catch (err) {
+      status.textContent = `Couldn't add: ${err.message}`;
+      status.style.display = '';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  const hotList = document.getElementById('hot-list');
+
+  hotList.addEventListener('focusout', e => {
+    if (e.target.matches('textarea[data-hot="notes"]')) hotSaveNotes(e.target);
+  });
+
+  hotList.addEventListener('change', async e => {
+    const sel = e.target.closest('select[data-hot]');
+    if (!sel) return;
+    const id = sel.closest('.hot-row').dataset.id;
+    try {
+      hotUpsertLocal((await hotSave({ id, [sel.dataset.hot]: sel.value })).record);
+    } catch (err) {
+      alert(`Couldn't save: ${err.message}`);
+      renderHotList();
+    }
+  });
+
+  hotList.addEventListener('click', async e => {
+    const el = e.target.closest('[data-hot]');
+    if (!el || el.tagName === 'SELECT' || el.tagName === 'TEXTAREA') return;
+    const row = el.closest('.hot-row');
+    const h = hotCache.find(x => x.id === row.dataset.id);
+    if (!h) return;
+    const act = el.dataset.hot;
+    try {
+      if (act === 'call') {
+        // Let the link open Google Voice in a new tab; meanwhile start a
+        // dated line in the notes box so notes can be typed during the call.
+        const ta = row.querySelector('textarea[data-hot="notes"]');
+        const stamp = new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' }) + ': ';
+        ta.value = stamp + '\n' + (ta.value ? '\n' + ta.value : '');
+        ta.focus();
+        ta.setSelectionRange(stamp.length, stamp.length);
+        hotSave({ id: h.id, logCall: true }).then(d => {
+          // Keep whatever is being typed; only update call-count fields.
+          h.callCount = d.record.callCount;
+          h.lastCalledAt = d.record.lastCalledAt;
+        }).catch(() => {});
+      } else if (act === 'phone') {
+        const phone = prompt(`Phone number for ${h.name}:`, '');
+        if (!phone || !phone.trim()) return;
+        hotUpsertLocal((await hotSave({ id: h.id, phone })).record);
+      } else if (act === 'cmdadd') {
+        const details = [h.name, h.phone, h.email, `${HOT_TYPES[h.type]} · Source: ${HOT_SOURCES[h.source]}`].filter(Boolean).join('\n');
+        try { await navigator.clipboard.writeText(details); } catch (_) { /* clipboard optional */ }
+        window.open(COMMAND_CONTACTS_URL, '_blank', 'noopener');
+        alert(`Command is opening in a new tab. ${h.name}'s details are copied to your clipboard, ready to paste into a new contact.\n\nOnce the contact is saved, come back and click "Already in Command? Paste link" to connect it here.`);
+      } else if (act === 'cmdlink') {
+        const url = prompt(`Paste ${h.name}'s Command contact link:`, h.commandUrl || '');
+        if (url === null) return;
+        hotUpsertLocal((await hotSave({ id: h.id, commandUrl: url.trim() })).record);
+      } else if (act === 'remove') {
+        if (!confirm(`Take ${h.name} off the Hot List?`)) return;
+        await hotSave({ id: h.id }, 'DELETE');
+        hotCache = hotCache.filter(x => x.id !== h.id);
+        renderHotList();
+      }
+    } catch (err) {
+      alert(`Couldn't save: ${err.message}`);
+    }
+  });
+
   // ---------- INIT ----------
   renderHeader();
+  refreshHotList();
   refreshLinearTracker();
   renderTasks();
   renderPipeline();
