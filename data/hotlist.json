@@ -207,22 +207,22 @@
   {
     "id": "hot-1a0edb531cb0635v",
     "name": "Scott Goodballet",
-    "phone": "",
-    "email": "",
+    "phone": "(602) 818-4071",
+    "email": "scottg@ggspecialty.com",
     "type": "both",
     "source": "pastclient",
     "tier": "medium",
     "notes": "Past clients.",
     "phoneFound": false,
     "emailFound": false,
-    "commandUrl": "",
+    "commandUrl": "https://console.command.kw.com/command/contacts/63ec1e793df58e2a6aea71a7",
     "cmdNotesSynced": "Past clients.",
     "cmdNotesAt": null,
     "cmdNotesResult": "",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T15:07:50.000Z",
-    "updatedAt": "2026-09-29T18:37:14.076Z"
+    "updatedAt": "2026-09-29T18:37:34.559Z"
   },
   {
     "id": "hot-1a0edb531cea4qgn",
