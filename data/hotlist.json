@@ -222,7 +222,7 @@
   {
     "id": "hot-1a0edb531cea4qgn",
     "name": "Elaine Moreen",
-    "phone": "",
+    "phone": "(208) 664-2538",
     "email": "epmoreen@gmail.com",
     "type": "both",
     "source": "pastclient",
@@ -230,11 +230,11 @@
     "notes": "Past client.",
     "phoneFound": false,
     "emailFound": false,
-    "commandUrl": "",
+    "commandUrl": "https://console.command.kw.com/command/contacts/692dfaa47716a405777e3e42",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T15:07:50.000Z",
-    "updatedAt": "2026-09-29T15:31:08.207Z"
+    "updatedAt": "2026-09-29T15:31:17.878Z"
   },
   {
     "id": "hot-1a0edb531d05waf2",
