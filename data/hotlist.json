@@ -75,21 +75,6 @@
     "updatedAt": "2026-09-29T14:05:01.329Z"
   },
   {
-    "id": "hot-1a0ed5b95e0y0ocq",
-    "name": "Carmen Solo",
-    "phone": "630-217-1490",
-    "email": "csoloc2@yahoo.com",
-    "type": "both",
-    "source": "openhouse",
-    "tier": "hot",
-    "notes": "OH 9/19 7802 E Monte Vista. Has a house in N. Scottsdale, wants to relocate more central. Indicated an agent (name not given).",
-    "commandUrl": "",
-    "callCount": 0,
-    "lastCalledAt": null,
-    "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T13:29:57.000Z"
-  },
-  {
     "id": "hot-mumrym2bjzpap",
     "name": "David Elsaesser",
     "phone": "",
@@ -103,6 +88,21 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T14:31:40.595Z",
     "updatedAt": "2026-09-29T14:31:40.595Z"
+  },
+  {
+    "id": "hot-1a0ed5b95e0y0ocq",
+    "name": "Carmen Solo",
+    "phone": "630-217-1490",
+    "email": "csoloc2@yahoo.com",
+    "type": "both",
+    "source": "openhouse",
+    "tier": "hot",
+    "notes": "OH 9/19 7802 E Monte Vista. Has a house in N. Scottsdale, wants to relocate more central. Indicated an agent (name not given).",
+    "commandUrl": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T13:29:57.000Z",
+    "updatedAt": "2026-09-29T13:29:57.000Z"
   },
   {
     "id": "hot-1a0ed5b95e2noujg",
