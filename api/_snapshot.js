@@ -24,6 +24,13 @@ export async function loadSnapshot() {
     err.status = 500;
     throw err;
   }
+  // A value pasted with extra text (e.g. the Terminal prompt after the code)
+  // can't be sent as a header. Say so without ever echoing the value.
+  if (/[\s\u0000-\u001f\u007f-\uffff]/.test(secret)) {
+    const err = new Error('NAVIGATOR_SNAPSHOT_SECRET in the docket-dashboard Vercel project contains spaces or extra text -- paste only the random code itself, then redeploy.');
+    err.status = 500;
+    throw err;
+  }
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 10000);
@@ -35,7 +42,9 @@ export async function loadSnapshot() {
       cache: 'no-store',
     });
   } catch (e) {
-    const err = new Error(e.name === 'AbortError' ? 'Navigator did not respond within 10s' : `Could not reach Navigator: ${e.message}`);
+    // Never let the secret leak into an error shown on the page.
+    const msg = String(e.message || '').split(secret).join('[hidden]');
+    const err = new Error(e.name === 'AbortError' ? 'Navigator did not respond within 10s' : `Could not reach Navigator: ${msg}`);
     err.status = 502;
     throw err;
   } finally {
@@ -53,7 +62,7 @@ export async function loadSnapshot() {
     const err = new Error(
       `Navigator answered ${navRes.status}` +
       (hints[navRes.status] ? ` -- ${hints[navRes.status]}` : '') +
-      (detail ? ` (${detail.slice(0, 160)})` : '')
+      (detail ? ` (${detail.slice(0, 160).split(secret).join('[hidden]')})` : '')
     );
     err.status = 502;
     throw err;
