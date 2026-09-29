@@ -1,5 +1,35 @@
 [
   {
+    "id": "hot-1a0ed5b95ebim9tc",
+    "name": "Shannon Blum",
+    "phone": "612-296-5736",
+    "email": "skblum@outlook.com",
+    "type": "buyer",
+    "source": "openhouse",
+    "tier": "medium",
+    "notes": "OH 9/12 4007 E Agave. From Minneapolis; friend Sandy Salvo lives in MPR. Marked long-term timeframe on sign-in.",
+    "commandUrl": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T13:29:57.000Z",
+    "updatedAt": "2026-09-29T13:29:57.000Z"
+  },
+  {
+    "id": "hot-1a0ed5b95ed1cz7r",
+    "name": "Parker Hampton",
+    "phone": "513 635 2417",
+    "email": "hamptonp18@gmail.com",
+    "type": "buyer",
+    "source": "openhouse",
+    "tier": "long",
+    "notes": "OH 2/14 4716 E Caldwell (The Pointe). SkyWest pilot; likes The Pointe. Wrote agent Risa Medrano but said not committed.",
+    "commandUrl": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T13:29:57.000Z",
+    "updatedAt": "2026-09-29T13:29:57.000Z"
+  },
+  {
     "id": "hot-1a0ed5b95d9kdx2x",
     "name": "James Arendell",
     "phone": "(509) 771-1986‬",
@@ -105,51 +135,6 @@
     "updatedAt": "2026-09-29T13:29:57.000Z"
   },
   {
-    "id": "hot-1a0ed5b95e9nsep2",
-    "name": "Tim & Mary K Duckworth",
-    "phone": "610-810-7933",
-    "email": "mkduck06@gmail.com",
-    "type": "buyer",
-    "source": "openhouse",
-    "tier": "hot",
-    "notes": "OH 3/21 8840 S 51st St (The Pointe). No agent. From Nazareth, PA -- looking for a winter home; Tim grew up in the Phoenix area. Tim: tim.duckworth@rochester.rr.com.",
-    "commandUrl": "",
-    "callCount": 0,
-    "lastCalledAt": null,
-    "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T13:29:57.000Z"
-  },
-  {
-    "id": "hot-1a0ed5b95ebim9tc",
-    "name": "Shannon Blum",
-    "phone": "612-296-5736",
-    "email": "skblum@outlook.com",
-    "type": "buyer",
-    "source": "openhouse",
-    "tier": "medium",
-    "notes": "OH 9/12 4007 E Agave. From Minneapolis; friend Sandy Salvo lives in MPR. Marked long-term timeframe on sign-in.",
-    "commandUrl": "",
-    "callCount": 0,
-    "lastCalledAt": null,
-    "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T13:29:57.000Z"
-  },
-  {
-    "id": "hot-1a0ed5b95ed1cz7r",
-    "name": "Parker Hampton",
-    "phone": "513 635 2417",
-    "email": "hamptonp18@gmail.com",
-    "type": "buyer",
-    "source": "openhouse",
-    "tier": "long",
-    "notes": "OH 2/14 4716 E Caldwell (The Pointe). SkyWest pilot; likes The Pointe. Wrote agent Risa Medrano but said not committed.",
-    "commandUrl": "",
-    "callCount": 0,
-    "lastCalledAt": null,
-    "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T13:29:57.000Z"
-  },
-  {
     "id": "hot-mumrym2bjzpap",
     "name": "David Elsaesser",
     "phone": "",
@@ -163,5 +148,20 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T14:31:40.595Z",
     "updatedAt": "2026-09-29T14:31:40.595Z"
+  },
+  {
+    "id": "hot-1a0ed5b95e9nsep2",
+    "name": "Tim & Mary K Duckworth",
+    "phone": "610-810-7933",
+    "email": "mkduck06@gmail.com",
+    "type": "buyer",
+    "source": "openhouse",
+    "tier": "hot",
+    "notes": "OH 3/21 8840 S 51st St (The Pointe). No agent. From Nazareth, PA -- looking for a winter home; Tim grew up in the Phoenix area. Tim: tim.duckworth@rochester.rr.com.",
+    "commandUrl": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T13:29:57.000Z",
+    "updatedAt": "2026-09-29T13:29:57.000Z"
   }
 ]
