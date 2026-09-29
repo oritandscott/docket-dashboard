@@ -213,59 +213,51 @@
     margin:-.9rem 0 1.3rem;
   }
 
-  /* ---------- LINEAR ESCROW TRACKER ---------- */
+  /* ---------- LINEAR ESCROW TRACKER (Google-Sheet look) ---------- */
   #escrow-tracker.panel{background:#1C2320;}
-  .lt-legend{display:flex;flex-wrap:wrap;gap:.45rem 1.1rem;font-size:.74rem;color:var(--ink-soft);margin:-.4rem 0 .9rem;}
+  .lt-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem;margin:-.3rem 0 .8rem;}
+  .lt-toolbar .btn{padding:.35rem .7rem;font-size:.8rem;}
+  .lt-legend{display:flex;flex-wrap:wrap;gap:.35rem 1rem;font-size:.72rem;color:var(--ink-soft);margin-left:.6rem;}
   .lt-legend span{display:inline-flex;align-items:center;gap:.35rem;}
-  .lt-swatch{display:inline-block;width:14px;height:10px;border-radius:2px;}
-  .lt-prep{background:#B8668D;}
-  .lt-listed{background:#D9B84A;}
-  .lt-escrow{background:#5FAE73;}
-  .lt-search{background:#6FA8D9;}
-  .lt-tom{background:repeating-linear-gradient(135deg,#6B6B70 0 3px,#3A3A3E 3px 6px);}
-  .lt-coe{background:var(--stamp-red);}
-  .lt-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--paper);}
-  .lt-grid{display:inline-block;min-width:100%;position:relative;}
-  .lt-row{display:flex;border-bottom:1px solid rgba(255,255,255,.22);}
-  .lt-row.lt-tx{min-height:58px;}
-  /* The transaction's own horizontal line, running the full width of the
-     timeline; colored day segments sit on top of it. */
-  .lt-row.lt-tx .lt-cell:not([class*="seg-"]){background-image:linear-gradient(to bottom,transparent calc(50% - 1px),rgba(236,236,236,.35) calc(50% - 1px),rgba(236,236,236,.35) calc(50% + 1px),transparent calc(50% + 1px));}
-  .lt-row.lt-tx .lt-cell.wknd:not([class*="seg-"]){background-color:rgba(255,255,255,.025);}
-  /* One outlined box down the today column, crossing every row. */
-  .lt-today-box{position:absolute;top:0;bottom:0;width:28px;border:2px solid var(--gold);border-radius:3px;pointer-events:none;z-index:1;box-shadow:0 0 0 1px rgba(0,0,0,.45),0 0 12px rgba(201,161,93,.35);}
-  .lt-row:last-child{border-bottom:none;}
-  .lt-name{
-    position:sticky;left:0;z-index:2;flex:0 0 230px;width:230px;
-    background:var(--paper-card);border-right:1px solid var(--line);
-    padding:.45rem .6rem;font-size:.78rem;line-height:1.3;overflow:hidden;
-  }
-  .lt-name a{color:var(--ink);font-weight:700;text-decoration:none;}
-  .lt-name a:hover{color:var(--gold);}
-  .lt-name .lt-addr{color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .lt-name .lt-sum{font-family:'IBM Plex Mono',monospace;font-size:.68rem;margin-top:.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .lt-cell{
-    flex:0 0 28px;width:28px;display:flex;align-items:center;justify-content:center;
-    font-family:'IBM Plex Mono',monospace;font-size:.62rem;font-weight:600;
-    color:rgba(0,0,0,.78);border-right:1px solid rgba(255,255,255,.04);
-    white-space:nowrap;overflow:visible;position:relative;
-  }
-  .lt-cell.wknd{background:rgba(255,255,255,.025);}
-  .lt-cell.seg-prep{background:#B8668D;}
-  .lt-cell.seg-listed{background:#D9B84A;}
-  .lt-cell.seg-escrow{background:#5FAE73;}
-  .lt-cell.seg-escrow.future{background:rgba(95,174,115,.28);color:rgba(236,236,236,.75);}
-  .lt-cell.seg-search{background:#6FA8D9;}
-  .lt-cell.seg-tom{background:repeating-linear-gradient(135deg,#6B6B70 0 3px,#3A3A3E 3px 6px);color:#ECECEC;}
-  .lt-cell.mk-coe{background:var(--stamp-red);color:#fff;font-size:.56rem;}
-  .lt-cell.mk-next{outline:2px solid var(--gold);outline-offset:-2px;color:#ECECEC;background:#2F4A37;font-size:.54rem;}
-  .lt-head .lt-name,.lt-head .lt-cell{background:var(--blueprint);color:var(--ink-soft);}
-  .lt-head .lt-cell{flex-direction:column;line-height:1.1;padding:.25rem 0;font-weight:500;}
-  .lt-head .lt-cell.today{color:var(--gold);font-weight:700;}
-  .lt-month .lt-cell{justify-content:flex-start;color:var(--gold);font-size:.66rem;letter-spacing:.08em;padding:.3rem 0 .1rem .2rem;}
-  .lt-month .lt-cell.has-label{z-index:1;}
-  @media (max-width:600px){.lt-name{flex-basis:140px;width:140px;}}
+  .lt-swatch{display:inline-block;width:14px;height:10px;border-radius:2px;border:1px solid rgba(0,0,0,.3);}
+  .lt-scroll{overflow-x:auto;overflow-y:hidden;border:1px solid #BDBDBD;border-radius:4px;background:#fff;cursor:grab;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
+  .lt-scroll.dragging{cursor:grabbing;user-select:none;}
+  .lt-sheet{display:inline-block;position:relative;min-width:100%;background:#fff;color:#000;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;}
+  .lt-r{display:flex;}
+  .lt-c{flex:0 0 34px;width:34px;height:38px;border-right:1px solid #D9D9D9;border-bottom:1px solid #D9D9D9;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;white-space:nowrap;position:relative;}
+  .lt-r.sp .lt-c,.lt-r.sp .lt-id{height:12px;}
+  .lt-id{position:sticky;left:0;z-index:3;flex:0 0 124px;width:124px;height:38px;background:#fff;border-right:2px solid #7F7F7F;border-bottom:1px solid #D9D9D9;padding:0 .45rem;display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
+  .lt-id a{color:#000;font-weight:700;font-size:12px;letter-spacing:.02em;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .lt-id a:hover{color:#C2185B;}
+  .lt-id small{font-size:9.5px;color:#666;white-space:nowrap;font-weight:600;letter-spacing:.03em;}
+  /* header */
+  .lt-r.mo .lt-c{height:36px;justify-content:flex-start;font-size:14px;overflow:visible;}
+  .lt-r.mo .lt-c.lbl{z-index:1;padding-left:6px;}
+  .lt-r.dn .lt-c{font-size:17px;height:34px;}
+  .lt-r.wd .lt-c{font-size:15px;height:32px;border-bottom:1px solid #BDBDBD;}
+  .lt-c.m-even{background:#EDEDED;}
+  .lt-c.m-odd{background:#FFF2CC;}
+  .lt-r.wd .lt-c.m-even.mon{background:#BDBDBD;}
+  .lt-r.wd .lt-c.m-odd.mon{background:#F6C04E;}
+  .lt-id.hd{background:#fff;font-size:10px;color:#666;font-weight:700;letter-spacing:.08em;justify-content:flex-end;padding-bottom:.35rem;}
+  /* day cells */
+  .lt-c.gray{background:#D9D9D9;}
+  .lt-c.dd{background:#FFF59D;}
+  .lt-c.esc{background:#A9D18E;}
+  .lt-c.tom{background:#FFFF00;}
+  .lt-c.future{opacity:.55;}
+  .lt-c.ev{background:#fff;font-size:9px;line-height:1.05;text-align:center;white-space:normal;flex-direction:column;letter-spacing:-.01em;}
+  .lt-c.ev.todo{color:#777;outline:1.5px dashed #999;outline-offset:-3px;}
+  .lt-c.oh{background:#8E2BFF;color:#fff;}
+  .lt-c.coe{background:#FF0000;color:#fff;font-size:13px;}
+  .lt-c.lbl-name{justify-content:flex-start;z-index:1;overflow:visible;}
+  .lt-c.lbl-name span{color:#E6189B;font-size:15px;font-weight:700;padding-left:6px;pointer-events:none;}
+  .lt-c.tomtxt{font-size:15px;overflow:visible;}
+  /* the today box: two black lines from the day numbers down through every row */
+  .lt-today{position:absolute;top:36px;bottom:0;width:35px;border-left:2px solid #000;border-right:2px solid #000;pointer-events:none;z-index:2;}
   .lt-foot{font-size:.72rem;color:var(--ink-soft);margin-top:.55rem;}
+  .lt-cmd{margin-top:1.3rem;border-top:1px solid var(--line);padding-top:1rem;}
+  @media (max-width:600px){.lt-id{flex-basis:92px;width:92px;}.lt-legend{margin-left:0;}}
 
   /* ---------- HOT LIST / WATCHLISTS ---------- */
   .hot-add{border:1px solid var(--line);border-radius:6px;padding:.9rem 1rem;margin-bottom:1.1rem;background:rgba(255,255,255,.02);}
@@ -304,6 +296,23 @@
     .hot-row .hot-rank{grid-row:span 5;}
     .hot-row .hot-c-name,.hot-row .hot-notes{grid-column:2 / -1;}
   }
+
+  .inbox-box{border:1px solid rgba(201,161,93,.4);border-radius:6px;padding:.9rem 1rem;margin-bottom:1.1rem;background:rgba(201,161,93,.05);}
+  .inbox-mic-status{font-size:.78rem;color:var(--ink-soft);}
+  #inbox-mic.recording{border-color:var(--stamp-red);color:var(--stamp-red);animation:micPulse 1.2s ease-in-out infinite;}
+  @keyframes micPulse{50%{box-shadow:0 0 0 4px rgba(204,92,66,.25);}}
+  .inbox-note{display:flex;gap:.6rem;align-items:flex-start;padding:.5rem .6rem;border:1px solid var(--line);border-radius:4px;margin-bottom:.35rem;font-size:.84rem;background:var(--paper-card);}
+  .inbox-note.done{opacity:.55;}
+  .inbox-note .inbox-text{flex:1;white-space:pre-wrap;}
+  .inbox-note .pr-meta{margin-top:.2rem;}
+  .lookup-card{border:1px dashed var(--line);border-radius:4px;padding:.6rem .7rem;font-size:.84rem;}
+  .lookup-card .btn{padding:.3rem .6rem;font-size:.78rem;margin:.35rem .35rem 0 0;}
+  .pr-rank{display:flex;flex-direction:column;align-items:center;gap:.15rem;flex:0 0 36px;}
+  .pr-actions .hot-call{background:#1E7B45;border-color:#1E7B45;color:#fff;text-align:center;text-decoration:none;}
+  .pr-actions .hot-call:hover{background:#249152;}
+  .pr-row.selected{outline:2px solid var(--gold);outline-offset:-1px;}
+  .pr-row.just-moved{animation:hotFlash .6s ease;}
+  .pr-name .pr-name-text{cursor:pointer;}
 
   /* ---------- PROSPECTING ---------- */
   #prospecting.panel{background:#23203A;}
@@ -701,10 +710,24 @@
       <h2>Prospecting - Calls to Make</h2>
       <div class="panel-sub">One shared call list for past clients, open house guests, and anyone else worth a personal call. Saved for every device.</div>
 
+      <div class="inbox-box">
+        <div class="subhead" style="margin-bottom:.4rem;color:var(--gold);">Notes for Claude · who should be on these lists</div>
+        <div class="panel-sub" style="margin:0 0 .6rem;">Type or dictate anything: "Add the Garcias from Sunday's open house to medium term", "Move Dan to #1". Claude reads these and acts on them when you work together in a Claude session.</div>
+        <textarea id="inbox-text" rows="3" placeholder="Write a note, or tap 🎤 and talk…" style="width:100%;"></textarea>
+        <div class="inline-form" style="align-items:center;">
+          <button class="btn btn-ghost" type="button" id="inbox-mic">🎤 Dictate</button>
+          <button class="btn" type="button" id="inbox-save">Save note</button>
+          <span class="inbox-mic-status" id="inbox-mic-status"></span>
+        </div>
+        <div id="inbox-list" style="margin-top:.7rem;"></div>
+      </div>
+
       <div class="hot-add">
         <div class="subhead" style="margin-bottom:.5rem;">Add a contact</div>
         <form class="inline-form" id="hot-form" style="margin-top:0;">
-          <input type="text" id="hot-name" placeholder="Name" required style="flex:1.2;min-width:140px;">
+          <input type="text" id="hot-name" placeholder="Name" required list="hot-known-names" autocomplete="off" style="flex:1.2;min-width:140px;">
+          <datalist id="hot-known-names"></datalist>
+          <button class="btn btn-ghost" type="button" id="hot-lookup" title="Fill in what the dashboard already knows about this name">🔍 Look up</button>
           <input type="text" id="hot-phone" placeholder="Phone" inputmode="tel" style="flex:.8;min-width:110px;">
           <input type="text" id="hot-email" placeholder="Email (optional)" inputmode="email" style="flex:1;min-width:140px;">
           <select id="hot-type" aria-label="Type">
@@ -721,6 +744,7 @@
           <button class="btn" type="submit">Add contact</button>
         </form>
         <div class="empty-hint" id="hot-status" style="display:none;margin-top:.6rem;"></div>
+        <div id="hot-lookup-result" style="margin-top:.6rem;"></div>
       </div>
 
       <div class="hot-wrap hot-tier-hot">
@@ -782,19 +806,36 @@
     <section class="panel" id="escrow-tracker">
       <div class="tab-label">03 · Linear Escrow Tracker</div>
       <h2>OASIS 2026 LINEAR ESCROW TRACKER</h2>
-      <div class="panel-sub">Every active listing, escrow and buyer search, live from Navigator on each page load. Scroll sideways for past and upcoming days.</div>
-      <div class="lt-legend" aria-hidden="true">
-        <span><i class="lt-swatch lt-prep"></i>Pre-listing prep</span>
-        <span><i class="lt-swatch lt-listed"></i>Listed (days on market)</span>
-        <span><i class="lt-swatch lt-escrow"></i>Escrow (days in escrow)</span>
-        <span><i class="lt-swatch lt-search"></i>Buyer search</span>
-        <span><i class="lt-swatch lt-tom"></i>TOM · Temporarily off market</span>
-        <span><i class="lt-swatch lt-coe"></i>COE · Close of escrow</span>
+      <div class="panel-sub">Every active listing, TOM listing and buyer under contract, live from Navigator. Drag, swipe or use the arrows to look back and ahead.</div>
+      <div class="lt-toolbar">
+        <button class="btn btn-ghost" type="button" data-lt-jump="-14">◀ 2 weeks</button>
+        <button class="btn btn-ghost" type="button" data-lt-jump="0">Today</button>
+        <button class="btn btn-ghost" type="button" data-lt-jump="14">2 weeks ▶</button>
+        <div class="lt-legend" aria-hidden="true">
+          <span><i class="lt-swatch" style="background:#D9D9D9;"></i>Listing / seller escrow days</span>
+          <span><i class="lt-swatch" style="background:#FFF59D;"></i>Buyer due diligence</span>
+          <span><i class="lt-swatch" style="background:#A9D18E;"></i>Buyer escrow</span>
+          <span><i class="lt-swatch" style="background:#FFFF00;"></i>TOM</span>
+          <span><i class="lt-swatch" style="background:#8E2BFF;"></i>Open house</span>
+          <span><i class="lt-swatch" style="background:#FF0000;"></i>COE</span>
+        </div>
       </div>
       <div class="lt-scroll" id="lt-scroll">
-        <div class="empty-hint">Loading from Navigator&hellip;</div>
+        <div class="empty-hint" style="margin:.6rem;">Loading from Navigator&hellip;</div>
       </div>
       <div class="lt-foot" id="lt-foot"></div>
+
+      <div class="lt-cmd">
+        <div class="subhead" style="margin-bottom:.4rem;color:var(--gold);">Tracker commands</div>
+        <div class="panel-sub" style="margin:0 0 .6rem;">Tell Claude what changed: "Rahimzadeh COE moved to Oct 5", "Barnes price drop to $615k today", "New escrow: the Smiths, buyer, 123 Main St Mesa, COE Nov 14". Claude updates Navigator and the Google Sheet together so they always agree.</div>
+        <textarea id="ltcmd-text" rows="2" placeholder="Type a command, or tap 🎤 and say it…" style="width:100%;"></textarea>
+        <div class="inline-form" style="align-items:center;">
+          <button class="btn btn-ghost" type="button" id="ltcmd-mic">🎤 Dictate</button>
+          <button class="btn" type="button" id="ltcmd-send">Send command</button>
+          <span class="inbox-mic-status" id="ltcmd-status"></span>
+        </div>
+        <div id="ltcmd-list" style="margin-top:.7rem;"></div>
+      </div>
     </section>
 
     <!-- NAVIGATOR APP -->
@@ -2622,14 +2663,18 @@
   }
 
   // ---------- LINEAR ESCROW TRACKER ----------
-  // Read-only view of Navigator's GET /api/admin/snapshot, proxied through
-  // /api/machine-status?job=snapshot so the shared secret stays server-side.
-  // Navigator computes every phase/day count itself (same logic as the
-  // client-facing views); this only lays those numbers out on a day grid in
-  // the Google Sheet's visual language. Nothing here writes anywhere.
+  // Read-only view of Navigator's GET /api/admin/snapshot (proxied through
+  // /api/machine-status?job=snapshot so the shared secret stays
+  // server-side), drawn to look like the OASIS 2026 LINEAR ESCROW TRACKER
+  // Google Sheet: month bands, day + weekday header, a gray/yellow/green day
+  // count per transaction with event cells (OPEN HAUS, PRICE DROP, INSP,
+  // BNSR, APRS, COE), the client's name in pink after the bar, and two black
+  // lines boxing today's column through every row. Shows listings on the
+  // market, TOM listings, and buyers under contract only.
   const LT_NAV_BASE = 'https://nav.oasisgroupaz.com';
   const LT_MS_DAY = 86400000;
-  const LT_CELL_W = 28;
+  const LT_CELL_W = 34;
+  const LT_WD = ['SU', 'M', 'T', 'W', 'TH', 'F', 'SA'];
 
   // Calendar dates are handled as UTC-midnight Dates so day math matches
   // Navigator's (lib/tasks.ts daysBetween/parseDateOnly) exactly.
@@ -2639,162 +2684,205 @@
   }
   function ltAddDays(d, n){ return new Date(d.getTime() + n * LT_MS_DAY); }
   function ltDiff(a, b){ return Math.round((b.getTime() - a.getTime()) / LT_MS_DAY); }
+  function ltDay(str){ return str ? new Date(`${String(str).slice(0, 10)}T00:00:00Z`) : null; }
+  function ltKey(d){ return d.toISOString().slice(0, 10); }
   // escapeHtml() leaves quotes alone; these values also go into attributes.
   function ltAttr(v){ return escapeHtml(String(v)).replace(/"/g, '&quot;'); }
   function ltFmt(d, opts){ return d.toLocaleDateString('en-US', Object.assign({ timeZone:'UTC' }, opts)); }
 
-  // Short cell code for Navigator's next-milestone task title.
-  function ltMilestoneCode(title){
-    const t = String(title || '');
-    if (/apprais/i.test(t)) return 'APPR';
-    if (/inspect/i.test(t)) return 'INSP';
-    if (/binsr|due diligence/i.test(t)) return 'DD';
-    if (/walk/i.test(t)) return 'WT';
-    if (/loan|financ/i.test(t)) return 'LOAN';
-    return (t.split(/\s+/)[0] || '•').slice(0, 4).toUpperCase();
+  // Short ID for the left edge: the family name ("Jess & Kavon Rahimzadeh"
+  // -> RAHIMZADEH; two different last names -> both).
+  function ltShortId(l){
+    const names = String(l.clientNames || '').split(/\s*(?:&|\band\b|,)\s*/i).filter(Boolean);
+    // A first name on its own ("Jess" in "Jess & Kavon Rahimzadeh") shares
+    // the family's last name, so only multi-word names supply last names.
+    const full = names.filter(n => n.trim().split(/\s+/).length > 1);
+    const lasts = [...new Set((full.length ? full : names).map(n => n.trim().split(/\s+/).pop()).filter(Boolean))];
+    const id = (lasts.length ? lasts.slice(-2).join(' / ') : String(l.address || '').split(',')[0]).toUpperCase();
+    return id || 'CLIENT';
   }
 
-  const LT_PHASE_ORDER = { escrow:0, listed:1, prep:2, search:3, off_market:4 };
-  const LT_PHASE_LABEL = { escrow:'Escrow', listed:'Listed', prep:'Pre-listing prep', search:'Buyer search', off_market:'Temporarily off market' };
-  const LT_PHASE_COLOR = { escrow:'var(--stamp-green)', listed:'#D9B84A', prep:'#D48AAE', search:'var(--stamp-blue)', off_market:'var(--ink-soft)' };
+  // Which records belong on the tracker, and in what order.
+  function ltInclude(l){
+    if (l.phase === 'escrow') return true;                       // seller or buyer under contract
+    if (l.dealType === 'BUYER') return false;                     // buyers only once under contract
+    return l.phase === 'listed' || l.phase === 'off_market';      // on the market, or TOM
+  }
+  const LT_ORDER = { escrow:0, listed:1, off_market:2 };
 
-  // Turns one snapshot listing into { start, end, segClass, markers } on the
-  // calendar, from Navigator's own numbers (start = today - dayCount,
-  // COE = today + daysToClose).
-  function ltSpan(l, today){
-    const hasDay = typeof l.dayCount === 'number';
-    const start = hasDay ? ltAddDays(today, -l.dayCount) : null;
-    if (l.phase === 'escrow') {
-      const coe = typeof l.daysToClose === 'number' ? ltAddDays(today, l.daysToClose) : today;
-      const next = l.nextMilestone && l.nextMilestone.due ? new Date(`${l.nextMilestone.due}T00:00:00Z`) : null;
-      return { start: start || today, end: coe, seg:'seg-escrow', coe, next };
+  // One row's cells: { key -> {cls, text, title} } plus where the name
+  // label goes.
+  function ltRowModel(l, today, first, last){
+    const cells = new Map();
+    const d = l.dates || {};
+    const events = Array.isArray(l.events) ? l.events : [];
+    const put = (date, cell) => { if (date >= first && date <= last) cells.set(ltKey(date), cell); };
+    const coe = ltDay(d.closing) || (l.phase === 'escrow' && typeof l.daysToClose === 'number' ? ltAddDays(today, l.daysToClose) : null);
+    const contract = ltDay(d.contract) || (l.phase === 'escrow' && typeof l.dayCount === 'number' ? ltAddDays(today, -l.dayCount) : null);
+    let end;
+
+    if (l.phase === 'off_market') {
+      end = ltAddDays(today, 14);
+      for (let x = first, i = 0; x <= end; x = ltAddDays(x, 1), i++) {
+        put(x, { cls:'tom' + (i % 14 === 4 ? ' tomtxt' : ''), text: i % 14 === 4 ? 'TOM' : '', title:'Temporarily off market' });
+      }
+    } else {
+      // Listing days (sellers): from the active / coming-soon date, counting
+      // days on market, up to contract (or today).
+      if (l.dealType !== 'BUYER') {
+        const listStart = ltDay(d.active) || ltDay(d.comingSoon) ||
+          (l.phase === 'listed' && typeof l.dayCount === 'number' ? ltAddDays(today, -l.dayCount) : null);
+        const listEnd = contract ? ltAddDays(contract, -1) : today;
+        if (listStart) {
+          for (let x = listStart; x <= listEnd; x = ltAddDays(x, 1)) {
+            put(x, { cls:'gray', text:String(ltDiff(listStart, x)), title:`Day ${ltDiff(listStart, x)} on market` });
+          }
+          end = listEnd;
+        }
+      }
+      // Escrow days: seller rows stay gray like the sheet; buyer rows are
+      // yellow through due diligence, then green.
+      if (contract && coe) {
+        const ddEnd = ltDay(d.ddEnd);
+        for (let x = contract; x < coe; x = ltAddDays(x, 1)) {
+          const n = ltDiff(contract, x);
+          const cls = l.dealType === 'BUYER' ? (ddEnd && x <= ddEnd ? 'dd' : 'esc') : 'gray';
+          put(x, { cls: cls + (x > today ? ' future' : ''), text:String(n), title:`Escrow day ${n}` });
+        }
+        put(coe, { cls:'coe', text:'COE', title:'Close of escrow' });
+        end = coe;
+      }
+      // Event cells replace the day number, like the sheet's typed codes.
+      events.forEach(ev => {
+        const x = ltDay(ev.date);
+        if (!x || (coe && x.getTime() === coe.getTime())) return;
+        const code = String(ev.code || '');
+        const cls = code === 'OPEN HAUS' ? 'ev oh' : 'ev' + (ev.done ? '' : ' todo');
+        put(x, { cls, text: escapeHtml(code).replace(' ', '<br>'), title: `${code}${ev.done ? '' : ' (scheduled)'}`, html:true });
+        if (!end || x > end) end = x;
+      });
     }
-    if (l.phase === 'off_market') return { start: null, end: today, seg:'seg-tom' };
-    const seg = l.phase === 'listed' ? 'seg-listed' : l.phase === 'prep' ? 'seg-prep' : 'seg-search';
-    return { start: start || today, end: today, seg };
+    if (!end) end = today;
+    return { cells, labelAt: ltAddDays(end, 1) };
   }
 
-  function ltSummary(l, today){
-    const parts = [LT_PHASE_LABEL[l.phase] || l.phase];
-    if (typeof l.dayCount === 'number') parts.push(`Day ${l.dayCount}`);
-    if (l.phase === 'escrow' && typeof l.daysToClose === 'number') {
-      parts.push(`COE ${ltFmt(ltAddDays(today, l.daysToClose), { month:'short', day:'numeric' })}`);
-    }
-    return parts.join(' · ');
-  }
+  let ltTodayIdx = 0;
 
   function renderLinearTracker(data){
     const scroller = document.getElementById('lt-scroll');
     const foot = document.getElementById('lt-foot');
-    const listings = (data && Array.isArray(data.listings) ? data.listings : [])
-      .slice()
-      .sort((a, b) => (LT_PHASE_ORDER[a.phase] ?? 9) - (LT_PHASE_ORDER[b.phase] ?? 9)
-        || ((a.daysToClose ?? 1e6) - (b.daysToClose ?? 1e6))
-        || ((b.dayCount ?? 0) - (a.dayCount ?? 0)));
+    const all = data && Array.isArray(data.listings) ? data.listings : [];
+    const today = ltPhoenixToday();
+    const listings = all.filter(ltInclude).sort((a, b) =>
+      (LT_ORDER[a.phase] - LT_ORDER[b.phase]) || ((a.daysToClose ?? 1e6) - (b.daysToClose ?? 1e6)) || ((b.dayCount ?? 0) - (a.dayCount ?? 0)));
+
+    // Wide window so there's plenty to scroll back and ahead through.
+    const first = ltAddDays(today, -150);
+    let last = ltAddDays(today, 120);
+    listings.forEach(l => {
+      const c = ltDay(l.dates && l.dates.closing);
+      if (c && c > ltAddDays(last, -14)) last = ltAddDays(c, 21);
+    });
+    const days = [];
+    for (let x = first; x <= last; x = ltAddDays(x, 1)) days.push(x);
+    ltTodayIdx = ltDiff(first, today);
+    // Alternating month bands, matching the sheet (September gray, October yellow).
+    const mcls = d => (d.getUTCMonth() % 2 === 0 ? 'm-even' : 'm-odd');
+
+    let h = '<div class="lt-sheet">';
+    // Month band
+    h += '<div class="lt-r mo"><div class="lt-id hd"></div>';
+    days.forEach((d, i) => {
+      // Month name at the start and middle of each month, so one is always in view.
+      const lbl = i === 0 || d.getUTCDate() === 1 || d.getUTCDate() === 16;
+      h += `<div class="lt-c ${mcls(d)}${lbl ? ' lbl' : ''}">${lbl ? `${d.getUTCFullYear()} ${ltFmt(d, { month:'long' }).toUpperCase()}` : ''}</div>`;
+    });
+    h += '</div>';
+    // Day numbers + weekdays
+    h += '<div class="lt-r dn"><div class="lt-id hd"></div>';
+    days.forEach(d => { h += `<div class="lt-c ${mcls(d)}">${d.getUTCDate()}</div>`; });
+    h += '</div><div class="lt-r wd"><div class="lt-id hd">ACTIVE</div>';
+    days.forEach(d => { h += `<div class="lt-c ${mcls(d)}${d.getUTCDay() === 1 ? ' mon' : ''}">${LT_WD[d.getUTCDay()]}</div>`; });
+    h += '</div>';
+
+    const blankRow = () => '<div class="lt-r sp"><div class="lt-id"></div>' + days.map(() => '<div class="lt-c"></div>').join('') + '</div>';
 
     if (!listings.length) {
-      scroller.innerHTML = '<div class="empty-hint" style="margin:.6rem;">No active listings, escrows or buyer searches in Navigator right now.</div>';
-      foot.textContent = '';
-      return;
+      h += blankRow();
     }
-
-    const today = ltPhoenixToday();
-    const spans = listings.map(l => ltSpan(l, today));
-
-    // Window: at least 3 weeks either side of today, widened to fit every
-    // bar's start and COE (capped so one very old record can't make the
-    // grid enormous).
-    let first = ltAddDays(today, -21), last = ltAddDays(today, 21);
-    spans.forEach(s => {
-      if (s.start && s.start < first) first = s.start;
-      if (s.end > last) last = s.end;
-    });
-    const floor = ltAddDays(today, -120), ceil = ltAddDays(today, 120);
-    if (first < floor) first = floor;
-    if (last > ceil) last = ceil;
-    first = ltAddDays(first, -2);
-    last = ltAddDays(last, 3);
-    const nDays = ltDiff(first, last) + 1;
-    const days = Array.from({ length: nDays }, (_, i) => ltAddDays(first, i));
-    const todayIdx = ltDiff(first, today);
-
-    const dayClass = (d, i) => `lt-cell${d.getUTCDay() === 0 || d.getUTCDay() === 6 ? ' wknd' : ''}${i === todayIdx ? ' today' : ''}`;
-
-    let html = '<div class="lt-grid">';
-
-    // Month row
-    html += '<div class="lt-row lt-head lt-month"><div class="lt-name"></div>';
-    days.forEach((d, i) => {
-      const label = (i === 0 || d.getUTCDate() === 1) ? ltFmt(d, { month:'short', year:'numeric' }).toUpperCase() : '';
-      html += `<div class="lt-cell${label ? ' has-label' : ''}">${label}</div>`;
-    });
-    html += '</div>';
-
-    // Day-number row
-    html += '<div class="lt-row lt-head"><div class="lt-name mono" style="font-size:.66rem;letter-spacing:.08em;">CLIENT · PROPERTY</div>';
-    days.forEach((d, i) => {
-      html += `<div class="${dayClass(d, i)}"><span>${ltFmt(d, { weekday:'narrow' })}</span><span>${d.getUTCDate()}</span></div>`;
-    });
-    html += '</div>';
-
-    listings.forEach((l, r) => {
-      const s = spans[r];
-      const names = l.clientNames || '(no client name)';
-      const editor = `${LT_NAV_BASE}/admin/${encodeURIComponent(l.id)}`;
-      html += `<div class="lt-row lt-tx"><div class="lt-name">
-        <a href="${editor}" target="_blank" rel="noopener" title="Open in Navigator editor">${escapeHtml(names)}</a>
-        <div class="lt-addr" title="${ltAttr(l.address || '')}">${escapeHtml(l.address || '')}</div>
-        <div class="lt-sum" style="color:${LT_PHASE_COLOR[l.phase] || 'var(--ink-soft)'};">${escapeHtml(ltSummary(l, today))}</div>
-      </div>`;
-      days.forEach((d, i) => {
-        let cls = dayClass(d, i);
-        let text = '';
-        let tip = ltFmt(d, { weekday:'short', month:'short', day:'numeric' });
-        const inBar = (s.start ? d >= s.start : true) && d <= s.end;
-        if (inBar) {
-          cls += ' ' + s.seg;
-          if (s.seg === 'seg-tom') {
-            if (i === todayIdx) text = 'TOM';
-            tip += ' · Temporarily off market';
-          } else {
-            const n = ltDiff(s.start, d);
-            text = String(n);
-            if (d > today) cls += ' future';
-            tip += ` · Day ${n}`;
-          }
-          if (s.next && d.getTime() === s.next.getTime() && !(s.coe && d.getTime() === s.coe.getTime())) {
-            cls += ' mk-next';
-            text = ltMilestoneCode(l.nextMilestone.title);
-            tip += ` · Next: ${l.nextMilestone.title}`;
-          }
-          if (s.coe && d.getTime() === s.coe.getTime()) {
-            cls += ' mk-coe';
-            text = 'COE';
-            tip += ' · Close of escrow';
-          }
+    listings.forEach(l => {
+      const m = ltRowModel(l, today, first, last);
+      const labelKey = ltKey(m.labelAt);
+      const who = `${String(l.clientNames || '').toUpperCase()} - ${String(l.address || '').toUpperCase()}`;
+      const kind = l.phase === 'off_market' ? 'TOM' : l.phase === 'escrow' ? (l.dealType === 'BUYER' ? 'BUYER · ESCROW' : 'SELLER · ESCROW') : 'LISTED';
+      h += blankRow();
+      h += `<div class="lt-r"><div class="lt-id" title="${ltAttr(who)}">
+          <a href="${LT_NAV_BASE}/admin/${encodeURIComponent(l.id)}" target="_blank" rel="noopener">${escapeHtml(ltShortId(l))}</a>
+          <small>${kind}</small></div>`;
+      days.forEach(d => {
+        const k = ltKey(d);
+        const c = m.cells.get(k);
+        if (c) {
+          h += `<div class="lt-c ${c.cls}" title="${ltAttr(ltFmt(d, { month:'short', day:'numeric' }) + ' · ' + c.title)}">${c.html ? c.text : escapeHtml(c.text)}</div>`;
+        } else if (k === labelKey) {
+          h += `<div class="lt-c lbl-name"><span>${escapeHtml(who)}</span></div>`;
+        } else {
+          h += '<div class="lt-c"></div>';
         }
-        html += `<div class="${cls}" title="${ltAttr(tip)}">${text}</div>`;
       });
-      html += '</div>';
+      h += '</div>';
     });
+    h += blankRow();
+    h += '<div class="lt-today" id="lt-today"></div></div>';
+    scroller.innerHTML = h;
 
-    html += '<div class="lt-today-box" id="lt-today-box"></div></div>';
-    scroller.innerHTML = html;
-
-    // Position the today box after layout (the name column is narrower on phones).
-    const nameColW = scroller.querySelector('.lt-name').offsetWidth;
-    document.getElementById('lt-today-box').style.left = (nameColW + todayIdx * LT_CELL_W) + 'px';
-
-    // Center today in the visible (non-sticky) part of the scroller.
-    const nameCol = scroller.querySelector('.lt-name');
-    const visible = scroller.clientWidth - (nameCol ? nameCol.offsetWidth : 0);
-    scroller.scrollLeft = Math.max(0, todayIdx * LT_CELL_W + LT_CELL_W / 2 - visible / 2);
+    const idW = scroller.querySelector('.lt-id').offsetWidth;
+    document.getElementById('lt-today').style.left = (idW + ltTodayIdx * LT_CELL_W - 1) + 'px';
+    ltScrollToDay(0, false);
 
     const gen = data.generatedAt ? new Date(data.generatedAt) : null;
-    foot.textContent = `${listings.length} record${listings.length === 1 ? '' : 's'} from Navigator` +
-      (gen && !isNaN(gen) ? ` · as of ${gen.toLocaleTimeString([], { hour:'numeric', minute:'2-digit' })}` : '') +
-      ' · Gold-outlined cell = next milestone (hover for details)';
+    const hidden = all.length - listings.length;
+    foot.textContent = `${listings.length} active on the tracker` +
+      (hidden ? ` · ${hidden} not shown (buyers still searching / listings in prep)` : '') +
+      (gen && !isNaN(gen) ? ` · live from Navigator as of ${gen.toLocaleTimeString([], { hour:'numeric', minute:'2-digit' })}` : '') +
+      ' · dashed cells are scheduled, not done yet';
   }
+
+  // Scroll so that (today + offsetDays) sits about a third of the way in.
+  let ltViewOffset = 0;
+  function ltScrollToDay(offsetDays, smooth){
+    const scroller = document.getElementById('lt-scroll');
+    const idCol = scroller.querySelector('.lt-id');
+    if (!idCol) return;
+    const visible = scroller.clientWidth - idCol.offsetWidth;
+    const target = (ltTodayIdx + offsetDays) * LT_CELL_W - visible / 3;
+    scroller.scrollTo({ left: Math.max(0, target), behavior: smooth ? 'smooth' : 'auto' });
+  }
+
+  document.querySelectorAll('[data-lt-jump]').forEach(b => b.addEventListener('click', () => {
+    const n = +b.dataset.ltJump;
+    const scroller = document.getElementById('lt-scroll');
+    if (n === 0) { ltViewOffset = 0; ltScrollToDay(0, true); return; }
+    scroller.scrollBy({ left: n * LT_CELL_W, behavior:'smooth' });
+  }));
+
+  // Click-and-drag to scroll on a computer (touch devices swipe natively).
+  (function(){
+    const sc = document.getElementById('lt-scroll');
+    let startX = 0, startLeft = 0, down = false, moved = false;
+    sc.addEventListener('pointerdown', e => {
+      if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('a')) return;
+      down = true; moved = false; startX = e.clientX; startLeft = sc.scrollLeft;
+    });
+    window.addEventListener('pointermove', e => {
+      if (!down) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 3) { moved = true; sc.classList.add('dragging'); }
+      sc.scrollLeft = startLeft - dx;
+    });
+    window.addEventListener('pointerup', () => { down = false; sc.classList.remove('dragging'); });
+    sc.addEventListener('click', e => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+  })();
 
   async function refreshLinearTracker(){
     const scroller = document.getElementById('lt-scroll');
@@ -2804,7 +2892,7 @@
       if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
       renderLinearTracker(data);
     } catch (e) {
-      scroller.innerHTML = `<div class="empty-hint" style="margin:.6rem;">Couldn't load the tracker from Navigator: ${escapeHtml(e.message)}</div>`;
+      scroller.innerHTML = `<div class="empty-hint" style="margin:.6rem;color:#333;">Couldn't load the tracker from Navigator: ${escapeHtml(e.message)}</div>`;
     }
   }
 
@@ -2822,6 +2910,34 @@
   let prospectsCache = [];
   let prAnniversaries = [];
   let prFilter = 'active';
+  let prSelectedId = null;
+  let prFlashId = null;
+  let prReorderTimer = null;
+
+  function prVisible(){
+    return prospectsCache.filter(p => prFilter === 'all' ? true : prFilter === 'active' ? p.status !== 'done' : p.status === prFilter);
+  }
+
+  // Swap with the neighbouring *visible* row, then save the whole order
+  // once tapping stops.
+  function prMove(id, dir){
+    const vis = prVisible();
+    const i = vis.findIndex(p => p.id === id);
+    const j = i + dir;
+    if (i === -1 || j < 0 || j >= vis.length) return;
+    const a = prospectsCache.indexOf(vis[i]), b = prospectsCache.indexOf(vis[j]);
+    [prospectsCache[a], prospectsCache[b]] = [prospectsCache[b], prospectsCache[a]];
+    prSelectedId = prFlashId = id;
+    renderProspects();
+    prFlashId = null;
+    const moved = document.querySelector(`.pr-row[data-id="${CSS.escape(id)}"]`);
+    if (moved) moved.scrollIntoView({ block:'nearest', behavior:'smooth' });
+    clearTimeout(prReorderTimer);
+    prReorderTimer = setTimeout(async () => {
+      try { await prSave({ reorder: { ids: prospectsCache.map(p => p.id) } }); }
+      catch (err) { alert(`Couldn't save the new order: ${err.message}`); }
+    }, 1200);
+  }
 
   function prAttr(v){ return escapeHtml(String(v == null ? '' : v)).replace(/"/g, '&quot;'); }
   function prShortDate(iso){
@@ -2906,23 +3022,29 @@
   function renderProspects(){
     renderProspectFilters();
     const list = document.getElementById('pr-list');
-    const order = { 'to-call':0, 'follow-up':1, done:2 };
-    const rows = prospectsCache
-      .filter(p => prFilter === 'all' ? true : prFilter === 'active' ? p.status !== 'done' : p.status === prFilter)
-      .sort((a, b) => (order[a.status] - order[b.status])
-        || String(a.lastCalledAt || '').localeCompare(String(b.lastCalledAt || ''))
-        || String(a.createdAt).localeCompare(String(b.createdAt)));
+    // Priority order is the saved order of the list itself (set with the
+    // arrows); filters just hide rows, and numbers count the visible rows.
+    const rows = prVisible();
 
     if (!rows.length) {
       list.innerHTML = `<div class="empty-hint">${prospectsCache.length ? 'Nobody in this view.' : 'No one on the call list yet. Add someone below, or pick from the past-client suggestions.'}</div>`;
     } else {
-      list.innerHTML = rows.map(p => {
+      list.innerHTML = rows.map((p, i) => {
         const tel = (p.phone || '').replace(/[^\d+]/g, '');
+        const voice = hotVoiceUrl(p.phone);
+        const rowCls = ['pr-row'];
+        if (p.id === prSelectedId) rowCls.push('selected');
+        if (p.id === prFlashId) rowCls.push('just-moved');
         const meta = [`Added ${prShortDate(p.createdAt)}`];
         if (p.callCount) meta.push(`Called ${p.callCount}× · last ${prShortDate(p.lastCalledAt)}`);
-        return `<div class="pr-row" data-id="${prAttr(p.id)}">
+        return `<div class="${rowCls.join(' ')}" data-id="${prAttr(p.id)}">
+          <div class="pr-rank">
+            <button class="hot-arrow" type="button" data-act="up" aria-label="Move up"${i === 0 ? ' disabled' : ''}>▲</button>
+            <div class="hot-num">${i + 1}</div>
+            <button class="hot-arrow" type="button" data-act="down" aria-label="Move down"${i === rows.length - 1 ? ' disabled' : ''}>▼</button>
+          </div>
           <div class="pr-main">
-            <div class="pr-name">${escapeHtml(p.name)}<span class="pill ${PR_SOURCE_PILL[p.source] || 'pill-idea'}">${PR_SOURCE_LABEL[p.source] || p.source}</span></div>
+            <div class="pr-name"><span class="pr-name-text" data-act="select" title="Tap to select, then use the arrows to reorder">${escapeHtml(p.name)}</span><span class="pill ${PR_SOURCE_PILL[p.source] || 'pill-idea'}">${PR_SOURCE_LABEL[p.source] || p.source}</span></div>
             ${p.reason ? `<div class="pr-reason">${escapeHtml(p.reason)}</div>` : ''}
             <div class="pr-contact">
               ${p.phone ? `<a href="tel:${prAttr(tel)}">${escapeHtml(p.phone)}</a>` : ''}
@@ -2932,11 +3054,19 @@
             <div class="pr-meta">${escapeHtml(meta.join(' · '))}</div>
           </div>
           <div class="pr-actions">
+            ${voice ? `<a class="btn hot-call" data-act="voice" href="${prAttr(voice)}" target="_blank" rel="noopener">📞 Call</a>`
+              : `<button class="btn btn-ghost" type="button" data-act="addphone">📞 Add phone</button>`}
             <button class="btn" type="button" data-act="call">Log call</button>
             <select data-act="status" aria-label="Status">
               ${Object.keys(PR_STATUS_LABEL).map(s => `<option value="${s}"${s === p.status ? ' selected' : ''}>${PR_STATUS_LABEL[s]}</option>`).join('')}
             </select>
             <button class="btn btn-ghost" type="button" data-act="note">Add note</button>
+            <select data-act="promote" aria-label="Move to a prospecting list">
+              <option value="">Move to list…</option>
+              <option value="hot">🔥 Hot List</option>
+              <option value="medium">Medium term</option>
+              <option value="long">Long term</option>
+            </select>
             <button class="del-btn" type="button" data-act="remove" aria-label="Remove">×</button>
           </div>
         </div>`;
@@ -2977,6 +3107,7 @@
       if (!Array.isArray(prospectsCache)) prospectsCache = [];
       if (!Array.isArray(prAnniversaries)) prAnniversaries = [];
       renderProspects();
+      lkRefreshDatalist();
     } catch (e) {
       document.getElementById('pr-list').innerHTML =
         `<div class="empty-hint">Couldn't load the call list: ${escapeHtml(e.message)}</div>`;
@@ -3032,6 +3163,20 @@
     const id = el.closest('.pr-row').dataset.id;
     const p = prospectsCache.find(x => x.id === id);
     if (!p) return;
+    if (el.dataset.act === 'up' || el.dataset.act === 'down') { prMove(id, el.dataset.act === 'up' ? -1 : 1); return; }
+    if (el.dataset.act === 'select') {
+      prSelectedId = prSelectedId === id ? null : id;
+      hotSelectedId = null;
+      document.querySelectorAll('.pr-row.selected, .hot-row.selected').forEach(r => r.classList.remove('selected'));
+      if (prSelectedId) el.closest('.pr-row').classList.add('selected');
+      return;
+    }
+    if (el.dataset.act === 'voice') {
+      // Google Voice opens in a new tab; count it as a call.
+      prSave({ id, logCall: true, status: p.status === 'to-call' ? 'follow-up' : p.status })
+        .then(d => prUpsertLocal(d.record)).catch(() => {});
+      return;
+    }
     try {
       if (el.dataset.act === 'call') {
         const note = prompt(`Logging a call with ${p.name}. Any notes? (optional)`, '');
@@ -3041,6 +3186,10 @@
         el.disabled = true;
         const status = p.status === 'to-call' ? 'follow-up' : p.status;
         prUpsertLocal((await prSave({ id, notes, status, logCall: true })).record);
+      } else if (el.dataset.act === 'addphone') {
+        const phone = prompt(`Phone number for ${p.name}:`, '');
+        if (!phone || !phone.trim()) return;
+        prUpsertLocal((await prSave({ id, phone: phone.trim() })).record);
       } else if (el.dataset.act === 'note') {
         const note = prompt(`Add a note for ${p.name}:`, '');
         if (!note || !note.trim()) return;
@@ -3059,6 +3208,19 @@
   });
 
   document.getElementById('pr-list').addEventListener('change', async e => {
+    const promote = e.target.closest('select[data-act="promote"]');
+    if (promote && promote.value) {
+      const id = promote.closest('.pr-row').dataset.id;
+      const p = prospectsCache.find(x => x.id === id);
+      promote.disabled = true;
+      try {
+        await prPromote(p, promote.value);
+      } catch (err) {
+        alert(`Couldn't move: ${err.message}`);
+        renderProspects();
+      }
+      return;
+    }
     const sel = e.target.closest('select[data-act="status"]');
     if (!sel) return;
     const id = sel.closest('.pr-row').dataset.id;
@@ -3262,10 +3424,11 @@
 
   // Arrow keys move the selected contact too (desktop convenience).
   document.addEventListener('keydown', e => {
-    if (!hotSelectedId || !['ArrowUp', 'ArrowDown'].includes(e.key)) return;
+    if ((!hotSelectedId && !prSelectedId) || !['ArrowUp', 'ArrowDown'].includes(e.key)) return;
     if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement && document.activeElement.tagName)) return;
     e.preventDefault();
-    hotMove(hotSelectedId, e.key === 'ArrowUp' ? -1 : 1);
+    if (hotSelectedId) hotMove(hotSelectedId, e.key === 'ArrowUp' ? -1 : 1);
+    else prMove(prSelectedId, e.key === 'ArrowUp' ? -1 : 1);
   });
 
   async function refreshHotList(){
@@ -3274,6 +3437,7 @@
       const data = resp.ok ? await resp.json() : [];
       hotCache = Array.isArray(data) ? data : [];
       renderHotList();
+      lkRefreshDatalist();
     } catch (e) {
       document.getElementById('hot-list-hot').innerHTML =
         `<div class="empty-hint">Couldn't load your prospecting lists: ${escapeHtml(e.message)}</div>`;
@@ -3367,7 +3531,8 @@
         hotMove(h.id, act === 'up' ? -1 : 1);
       } else if (act === 'select') {
         hotSelectedId = hotSelectedId === h.id ? null : h.id;
-        document.querySelectorAll('.hot-row.selected').forEach(r => r.classList.remove('selected'));
+        prSelectedId = null;
+        document.querySelectorAll('.hot-row.selected, .pr-row.selected').forEach(r => r.classList.remove('selected'));
         if (hotSelectedId) row.classList.add('selected');
       } else if (act === 'call') {
         // Let the link open Google Voice in a new tab; meanwhile start a
@@ -3406,8 +3571,256 @@
     }
   });
 
+  // Call list -> Hot List / watchlists: create the list entry, then take
+  // them off the call list (their reason and notes come along).
+  const PR_TO_HOT_SOURCE = { manual:'other', openhouse:'openhouse', pastclient:'pastclient' };
+  async function prPromote(p, tier){
+    const notes = [p.reason, p.notes].filter(Boolean).join('\n');
+    let rec;
+    try {
+      rec = (await hotSave({ name: p.name, phone: p.phone, email: p.email, source: PR_TO_HOT_SOURCE[p.source] || 'other', tier, notes })).record;
+    } catch (err) {
+      if (!/already on one of your prospecting lists/.test(err.message)) throw err;
+    }
+    await prSave({ id: p.id }, 'DELETE');
+    prospectsCache = prospectsCache.filter(x => x.id !== p.id);
+    renderProspects();
+    if (rec) {
+      hotCache.push(rec);
+      hotSelectedId = hotFlashId = rec.id;
+      renderHotList();
+      const moved = document.querySelector(`.hot-row[data-id="${CSS.escape(rec.id)}"]`);
+      if (moved) moved.scrollIntoView({ block:'center', behavior:'smooth' });
+    }
+  }
+
+  // ---------- PROSPECTING: NAME LOOKUP ----------
+  // Searches what the dashboard already knows -- the three lists, the call
+  // list, and past clients (anniversaries) -- and fills the add form. KW
+  // Command itself can't be searched from here (no API access), so a miss
+  // offers a one-tap hand-off to Command with the name copied.
+  function lkNorm(v){ return String(v || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim(); }
+  function lkCandidates(){
+    const out = [];
+    hotCache.forEach(h => out.push({ name:h.name, phone:h.phone, email:h.email, type:h.type, source:h.source, commandUrl:h.commandUrl, where:`already on ${HOT_TIERS[hotTierOf(h)]}`, onList:true }));
+    prospectsCache.forEach(p => out.push({ name:p.name, phone:p.phone, email:p.email, source:PR_TO_HOT_SOURCE[p.source], where:'on the call list', note:p.reason }));
+    prAnniversaries.forEach(a => out.push({ name:a.name, source:'pastclient', where:'past client', note:[a.address, a.purchaseDate ? `bought ${a.purchaseDate}` : ''].filter(Boolean).join(' · ') }));
+    return out;
+  }
+  function lkFind(q){
+    const nq = lkNorm(q);
+    if (!nq) return [];
+    const words = nq.split(' ');
+    return lkCandidates().filter(c => {
+      const nn = lkNorm(c.name);
+      return words.every(w => nn.includes(w));
+    }).slice(0, 6);
+  }
+  function lkRefreshDatalist(){
+    const names = [...new Set(lkCandidates().map(c => c.name).filter(Boolean))].sort();
+    document.getElementById('hot-known-names').innerHTML = names.map(n => `<option value="${prAttr(n)}">`).join('');
+  }
+  function lkFill(c){
+    document.getElementById('hot-name').value = c.name || '';
+    if (c.phone) document.getElementById('hot-phone').value = c.phone;
+    if (c.email) document.getElementById('hot-email').value = c.email;
+    if (c.type) document.getElementById('hot-type').value = c.type;
+    if (c.source) document.getElementById('hot-source').value = c.source;
+  }
+  document.getElementById('hot-lookup').addEventListener('click', async () => {
+    const q = document.getElementById('hot-name').value.trim();
+    const out = document.getElementById('hot-lookup-result');
+    if (!q) { out.innerHTML = '<div class="lookup-card">Type a name first.</div>'; return; }
+    const hits = lkFind(q);
+    if (hits.length === 1 && !hits[0].onList) {
+      lkFill(hits[0]);
+      out.innerHTML = `<div class="lookup-card">✓ Found <strong>${escapeHtml(hits[0].name)}</strong> (${escapeHtml(hits[0].where)}${hits[0].note ? ' · ' + escapeHtml(hits[0].note) : ''}). Details filled in — check them, pick a list, and tap Add contact.</div>`;
+      return;
+    }
+    if (hits.length) {
+      out.innerHTML = `<div class="lookup-card">Found ${hits.length} match${hits.length === 1 ? '' : 'es'}:` +
+        hits.map((c, i) => `<div style="margin-top:.35rem;"><strong>${escapeHtml(c.name)}</strong> <span class="pr-meta">${escapeHtml(c.where)}${c.note ? ' · ' + escapeHtml(c.note) : ''}</span>
+          ${c.onList ? '' : `<button class="btn btn-ghost" type="button" data-lk="${i}">Use this</button>`}</div>`).join('') + '</div>';
+      out.querySelectorAll('[data-lk]').forEach(b => b.addEventListener('click', () => {
+        lkFill(hits[+b.dataset.lk]);
+        out.innerHTML = `<div class="lookup-card">✓ Filled in ${escapeHtml(hits[+b.dataset.lk].name)} — pick a list and tap Add contact.</div>`;
+      }));
+      return;
+    }
+    out.innerHTML = `<div class="lookup-card">No record of <strong>${escapeHtml(q)}</strong> on the dashboard yet.
+      <div><button class="btn btn-ghost" type="button" id="lk-command">Search Command for ${escapeHtml(q)} ↗</button></div>
+      <div class="pr-meta" style="margin-top:.35rem;">Opens Command with the name copied, so you can paste it into Command's search. Or just add their phone here and tap Add contact.</div></div>`;
+    document.getElementById('lk-command').addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(q); } catch (_) { /* optional */ }
+      window.open(COMMAND_CONTACTS_URL, '_blank', 'noopener');
+    });
+  });
+
+  // ---------- PROSPECTING: NOTES FOR CLAUDE (with dictation) ----------
+  let inboxCache = [];
+
+  function inboxRow(n){
+    return `<div class="inbox-note${n.status === 'done' ? ' done' : ''}" data-id="${prAttr(n.id)}">
+      <div class="inbox-text">${escapeHtml(n.text)}<div class="pr-meta">${n.dictated ? '🎤 ' : ''}${escapeHtml(new Date(n.createdAt).toLocaleString(undefined, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }))} · ${n.status === 'done' ? 'Done' : 'Waiting for Claude'}</div></div>
+      <button class="btn btn-ghost" type="button" data-inbox="${n.status === 'done' ? 'new' : 'done'}" style="padding:.25rem .55rem;font-size:.74rem;">${n.status === 'done' ? 'Reopen' : 'Mark done'}</button>
+      <button class="del-btn" type="button" data-inbox="remove" aria-label="Delete">×</button>
+    </div>`;
+  }
+
+  function renderInbox(){
+    const wrap = document.getElementById('inbox-list');
+    const notes = inboxCache.filter(n => n.topic !== 'tracker');
+    const open = notes.filter(n => n.status !== 'done');
+    const done = notes.filter(n => n.status === 'done').slice(0, 5);
+    wrap.innerHTML = open.map(inboxRow).join('') + (done.length ? `<div class="pr-meta" style="margin:.5rem 0 .3rem;">Recently done</div>` + done.map(inboxRow).join('') : '');
+    if (typeof renderTrackerCmds === 'function') renderTrackerCmds();
+  }
+
+  async function refreshInbox(){
+    try {
+      const resp = await fetch('/data/prospecting-inbox.json?t=' + Date.now());
+      const data = resp.ok ? await resp.json() : [];
+      inboxCache = Array.isArray(data) ? data : [];
+      renderInbox();
+    } catch (e) { /* the box still works for new notes */ }
+  }
+
+  async function inboxSave(body, method){
+    const resp = await fetch('/api/save-project', {
+      method: method || 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({ resource:'inbox' }, body)),
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+    return data;
+  }
+
+  document.getElementById('inbox-save').addEventListener('click', async e => {
+    const ta = document.getElementById('inbox-text');
+    const status = document.getElementById('inbox-mic-status');
+    if (!ta.value.trim()) { status.textContent = 'Nothing to save yet.'; return; }
+    inboxDictation.stop();
+    e.target.disabled = true;
+    try {
+      const d = await inboxSave({ text: ta.value, dictated: inboxDictation.dictated });
+      inboxCache.unshift(d.record);
+      renderInbox();
+      ta.value = '';
+      inboxDictation.dictated = false;
+      status.textContent = 'Saved ✓';
+    } catch (err) {
+      status.textContent = `Not saved: ${err.message}`;
+    } finally {
+      e.target.disabled = false;
+    }
+  });
+
+  const onInboxClick = async e => {
+    const b = e.target.closest('[data-inbox]');
+    if (!b) return;
+    const id = b.closest('.inbox-note').dataset.id;
+    try {
+      if (b.dataset.inbox === 'remove') {
+        if (!confirm('Delete this note?')) return;
+        await inboxSave({ id }, 'DELETE');
+        inboxCache = inboxCache.filter(n => n.id !== id);
+      } else {
+        const d = await inboxSave({ id, status: b.dataset.inbox });
+        inboxCache = inboxCache.map(n => n.id === id ? d.record : n);
+      }
+      renderInbox();
+    } catch (err) {
+      alert(`Couldn't save: ${err.message}`);
+    }
+  };
+  document.getElementById('inbox-list').addEventListener('click', onInboxClick);
+  document.getElementById('ltcmd-list').addEventListener('click', onInboxClick);
+
+  // Dictation uses the browser's built-in speech recognition (Chrome, Edge,
+  // Safari). Words land in the box as you speak, so you can fix anything
+  // before saving. Nothing is recorded or stored except the final text.
+  const InboxSR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  function setupDictation(micId, taId, statusId){
+    const mic = document.getElementById(micId);
+    const status = document.getElementById(statusId);
+    const ta = document.getElementById(taId);
+    const ctl = { rec: null, dictated: false, stop(){ if (this.rec) this.rec.stop(); } };
+    if (!InboxSR) {
+      mic.addEventListener('click', () => {
+        status.textContent = "This browser can't take dictation. Use Chrome or Safari, or the microphone key on your phone's keyboard.";
+      });
+      return ctl;
+    }
+    mic.addEventListener('click', () => {
+      if (ctl.rec) { ctl.rec.stop(); return; }
+      const rec = new InboxSR();
+      rec.lang = 'en-US';
+      rec.continuous = true;
+      rec.interimResults = true;
+      const base = ta.value ? ta.value.replace(/\s*$/, ' ') : '';
+      let finalText = '';
+      rec.onresult = ev => {
+        let interim = '';
+        for (let i = ev.resultIndex; i < ev.results.length; i++) {
+          const t = ev.results[i][0].transcript;
+          if (ev.results[i].isFinal) finalText += t; else interim += t;
+        }
+        ta.value = base + finalText + interim;
+        ctl.dictated = true;
+      };
+      rec.onerror = ev => {
+        status.textContent = ev.error === 'not-allowed' ? 'Microphone permission was blocked -- allow it in the browser to dictate.' : `Dictation stopped (${ev.error}).`;
+      };
+      rec.onend = () => {
+        ctl.rec = null;
+        mic.classList.remove('recording');
+        mic.textContent = '🎤 Dictate';
+        if (status.textContent === 'Listening… tap Stop when done.') status.textContent = 'Check the text, then save.';
+      };
+      rec.start();
+      ctl.rec = rec;
+      mic.classList.add('recording');
+      mic.textContent = '■ Stop';
+      status.textContent = 'Listening… tap Stop when done.';
+    });
+    return ctl;
+  }
+  const inboxDictation = setupDictation('inbox-mic', 'inbox-text', 'inbox-mic-status');
+  const ltcmdDictation = setupDictation('ltcmd-mic', 'ltcmd-text', 'ltcmd-status');
+
+  // Tracker commands: same inbox file, topic 'tracker'.
+  function renderTrackerCmds(){
+    const wrap = document.getElementById('ltcmd-list');
+    const cmds = inboxCache.filter(n => n.topic === 'tracker');
+    const open = cmds.filter(n => n.status !== 'done');
+    const done = cmds.filter(n => n.status === 'done').slice(0, 5);
+    wrap.innerHTML = open.map(inboxRow).join('') + (done.length ? `<div class="pr-meta" style="margin:.5rem 0 .3rem;">Recently done</div>` + done.map(inboxRow).join('') : '');
+  }
+
+  document.getElementById('ltcmd-send').addEventListener('click', async e => {
+    const ta = document.getElementById('ltcmd-text');
+    const status = document.getElementById('ltcmd-status');
+    if (!ta.value.trim()) { status.textContent = 'Type or dictate a command first.'; return; }
+    ltcmdDictation.stop();
+    e.target.disabled = true;
+    try {
+      const d = await inboxSave({ text: ta.value, dictated: ltcmdDictation.dictated, topic:'tracker' });
+      inboxCache.unshift(d.record);
+      renderInbox();
+      ta.value = '';
+      ltcmdDictation.dictated = false;
+      status.textContent = 'Sent ✓ -- waiting for Claude';
+    } catch (err) {
+      status.textContent = `Not sent: ${err.message}`;
+    } finally {
+      e.target.disabled = false;
+    }
+  });
+
   // ---------- INIT ----------
   renderHeader();
+  refreshInbox();
   refreshHotList();
   refreshLinearTracker();
   renderTasks();

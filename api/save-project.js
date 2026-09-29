@@ -35,6 +35,14 @@
 //    { resource: 'hotlist', reorder: { tier, ids: [...] } }.
 //    DELETE { resource: 'hotlist', id } removes one.
 //
+// 5. The "Notes for Claude" inbox, shared by the Prospecting notes box and
+//    the Linear Escrow Tracker's command box (topic: 'tracker'). Originally
+//    the Prospecting panel's "Notes for Claude" inbox
+//    (data/prospecting-inbox.json) -- typed or dictated notes about who
+//    should be added to the lists, for Claude to read and act on in a
+//    session. Body: { resource: 'inbox', text } adds one; { resource:
+//    'inbox', id, status ('new'|'done') } updates one; DELETE { id } removes.
+//
 // Same storage pattern as save-anniversary.js / save-video-link.js -- this
 // app has no database, the JSON file in the repo IS the store, and a commit
 // here triggers a normal Vercel redeploy. Browser-callable, no shared secret
@@ -49,7 +57,44 @@ const FILES = {
   openhouse: 'data/open-house.json',
   prospect: 'data/prospects.json',
   hotlist: 'data/hotlist.json',
+  inbox: 'data/prospecting-inbox.json',
 };
+
+async function handleInbox(req, res, ghHeaders) {
+  const { parsed, contentsUrl, sha } = await readJsonFile(ghHeaders, FILES.inbox);
+  const current = Array.isArray(parsed) ? parsed : [];
+  const body = req.body || {};
+  const now = new Date().toISOString();
+  if (req.method === 'DELETE' || body.id) {
+    const idx = current.findIndex(n => n.id === body.id);
+    if (idx === -1) return res.status(404).json({ error: 'Note not found.' });
+    if (req.method === 'DELETE') {
+      current.splice(idx, 1);
+      await writeJsonFile(ghHeaders, contentsUrl, sha, current, 'Prospecting inbox: remove note');
+      return res.status(200).json({ ok: true });
+    }
+    if (!['new', 'done'].includes(body.status)) return res.status(400).json({ error: "status must be 'new' or 'done'." });
+    current[idx] = Object.assign({}, current[idx], { status: body.status, updatedAt: now });
+    await writeJsonFile(ghHeaders, contentsUrl, sha, current, `Prospecting inbox: mark ${body.status}`);
+    return res.status(200).json({ ok: true, record: current[idx] });
+  }
+  const text = str(body.text, 8000);
+  if (!text) return res.status(400).json({ error: 'The note is empty.' });
+  const record = {
+    id: 'note-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    text,
+    // 'tracker' = a Linear Escrow Tracker command (update Navigator + the
+    // Google Sheet); anything else is a Prospecting note.
+    topic: body.topic === 'tracker' ? 'tracker' : 'prospecting',
+    dictated: !!body.dictated,
+    status: 'new',
+    createdAt: now,
+    updatedAt: now,
+  };
+  current.unshift(record);
+  await writeJsonFile(ghHeaders, contentsUrl, sha, current, record.topic === 'tracker' ? 'Tracker command: new' : 'Prospecting inbox: new note');
+  return res.status(200).json({ ok: true, record });
+}
 
 const HOT_TYPES = ['buyer', 'seller', 'both'];
 const HOT_TIERS = ['hot', 'medium', 'long'];
@@ -180,6 +225,15 @@ async function handleProspect(req, res, ghHeaders) {
     return res.status(200).json({ ok: true });
   }
 
+  if (body.reorder && Array.isArray(body.reorder.ids)) {
+    const ids = body.reorder.ids;
+    const byId = new Map(current.map(p => [p.id, p]));
+    const ordered = ids.map(id => byId.get(id)).filter(Boolean);
+    current.forEach(p => { if (!ids.includes(p.id)) ordered.push(p); });
+    await writeJsonFile(ghHeaders, contentsUrl, sha, ordered, 'Call list: reorder');
+    return res.status(200).json({ ok: true });
+  }
+
   if (Array.isArray(body.bulk)) {
     const seen = new Set(current.map(prospectKey));
     const added = [];
@@ -263,7 +317,7 @@ export default async function handler(req, res) {
 
     const resource = (req.body || {}).resource;
     if (!FILES[resource]) {
-      return res.status(400).json({ error: "resource must be 'project', 'openhouse', 'prospect' or 'hotlist'." });
+      return res.status(400).json({ error: "resource must be 'project', 'openhouse', 'prospect', 'hotlist' or 'inbox'." });
     }
     const filePath = FILES[resource];
 
@@ -272,6 +326,9 @@ export default async function handler(req, res) {
     }
     if (resource === 'hotlist') {
       return handleHotlist(req, res, ghHeaders);
+    }
+    if (resource === 'inbox') {
+      return handleInbox(req, res, ghHeaders);
     }
 
     if (resource === 'openhouse') {
