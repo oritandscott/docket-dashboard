@@ -188,19 +188,19 @@
   {
     "id": "hot-1a0edb531c99h5r4",
     "name": "Elizabeth Schieferdecker",
-    "phone": "",
-    "email": "",
-    "phoneFound": false,
-    "emailFound": false,
+    "phone": "(253) 307-4427",
+    "email": "schiefeliz@yahoo.com",
     "type": "both",
     "source": "pastclient",
     "tier": "medium",
     "notes": "Past client.",
-    "commandUrl": "",
+    "phoneFound": false,
+    "emailFound": false,
+    "commandUrl": "https://console.command.kw.com/command/contacts/673b669187b6ffaa30d0d1f0",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T15:07:50.000Z",
-    "updatedAt": "2026-09-29T15:07:50.000Z"
+    "updatedAt": "2026-09-29T15:31:16.038Z"
   },
   {
     "id": "hot-1a0edb531cb0635v",
