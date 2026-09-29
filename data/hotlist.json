@@ -105,21 +105,6 @@
     "updatedAt": "2026-09-29T13:29:57.000Z"
   },
   {
-    "id": "hot-1a0ed5b95e56dus6",
-    "name": "John & Christina Ma",
-    "phone": "408-306-3675",
-    "email": "majohn112@yahoo.com",
-    "type": "buyer",
-    "source": "openhouse",
-    "tier": "hot",
-    "notes": "OH 8/29 4007 E Agave. No agent; family from California, first look at Phoenix. Asked about buying rentals near TSMC. Christina: (408) 883-0008, christinama1018@gmail.com.",
-    "commandUrl": "",
-    "callCount": 0,
-    "lastCalledAt": null,
-    "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T13:29:57.000Z"
-  },
-  {
     "id": "hot-mumrym2bjzpap",
     "name": "David Elsaesser",
     "phone": "",
@@ -133,6 +118,21 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T14:31:40.595Z",
     "updatedAt": "2026-09-29T14:31:40.595Z"
+  },
+  {
+    "id": "hot-1a0ed5b95e56dus6",
+    "name": "John & Christina Ma",
+    "phone": "408-306-3675",
+    "email": "majohn112@yahoo.com",
+    "type": "buyer",
+    "source": "openhouse",
+    "tier": "hot",
+    "notes": "OH 8/29 4007 E Agave. No agent; family from California, first look at Phoenix. Asked about buying rentals near TSMC. Christina: (408) 883-0008, christinama1018@gmail.com.",
+    "commandUrl": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T13:29:57.000Z",
+    "updatedAt": "2026-09-29T13:29:57.000Z"
   },
   {
     "id": "hot-1a0ed5b95e72djfn",
