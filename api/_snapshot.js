@@ -12,12 +12,12 @@
 
 const SNAPSHOT_URL = 'https://nav.oasisgroupaz.com/api/admin/snapshot';
 
-export async function loadSnapshot() {
-  // Its own secret, separate from DOCKET_SHARED_SECRET: in this project that
-  // one is the WordPress blog bridge's key (Ghostwriter / digest) and is a
-  // write-only Sensitive var, so it can't be copied to Navigator. Falls back
-  // to DOCKET_SHARED_SECRET until NAVIGATOR_SNAPSHOT_SECRET is set.
-  // Trimmed: a trailing space/newline pasted into Vercel causes a 401.
+// Its own secret, separate from DOCKET_SHARED_SECRET: in this project that
+// one is the WordPress blog bridge's key (Ghostwriter / digest) and is a
+// write-only Sensitive var, so it can't be copied to Navigator. Falls back
+// to DOCKET_SHARED_SECRET until NAVIGATOR_SNAPSHOT_SECRET is set.
+// Trimmed: a trailing space/newline pasted into Vercel causes a 401.
+export function navSecret() {
   const secret = (process.env.NAVIGATOR_SNAPSHOT_SECRET || process.env.DOCKET_SHARED_SECRET || '').trim();
   if (!secret) {
     const err = new Error('Missing required environment variable: NAVIGATOR_SNAPSHOT_SECRET.');
@@ -31,6 +31,11 @@ export async function loadSnapshot() {
     err.status = 500;
     throw err;
   }
+  return secret;
+}
+
+export async function loadSnapshot() {
+  const secret = navSecret();
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 10000);

@@ -305,6 +305,8 @@
   .inbox-note.done{opacity:.55;}
   .inbox-note .inbox-text{flex:1;white-space:pre-wrap;}
   .inbox-note .pr-meta{margin-top:.2rem;}
+  .inbox-reply{margin-top:.4rem;padding:.4rem .55rem;border-left:2px solid var(--gold);background:rgba(201,161,93,.06);font-size:.8rem;white-space:pre-wrap;}
+  .inbox-prop{display:flex;gap:.4rem;align-items:center;margin-top:.4rem;padding:.4rem .55rem;border:1px solid var(--line);border-radius:4px;font-size:.8rem;white-space:normal;}
   .lookup-card{border:1px dashed var(--line);border-radius:4px;padding:.6rem .7rem;font-size:.84rem;}
   .lookup-card .btn{padding:.3rem .6rem;font-size:.78rem;margin:.35rem .35rem 0 0;}
   .pr-rank{display:flex;flex-direction:column;align-items:center;gap:.15rem;flex:0 0 36px;}
@@ -3659,9 +3661,26 @@
   // ---------- PROSPECTING: NOTES FOR CLAUDE (with dictation) ----------
   let inboxCache = [];
 
+  const INBOX_STATUS = { new:'Waiting for Claude', proposed:'Needs your OK', 'needs-you':'Claude needs more info', done:'Done' };
   function inboxRow(n){
+    const props = Array.isArray(n.proposals) ? n.proposals : [];
+    const propHtml = props.map(pr => {
+      const st = pr.status || 'pending';
+      const badge = st === 'applied' ? '<span class="pill pill-running">Applied ✓</span>'
+        : st === 'failed' ? '<span class="pill pill-blocked">Didn\'t apply</span>'
+        : st === 'skipped' ? '<span class="pill pill-idea">Skipped</span>' : '';
+      const btns = (st === 'pending' || st === 'failed')
+        ? `<button class="btn" type="button" data-prop="apply" data-pid="${prAttr(pr.pid)}" style="padding:.25rem .6rem;font-size:.74rem;">${st === 'failed' ? 'Try again' : 'Confirm'}</button>
+           <button class="btn btn-ghost" type="button" data-prop="skip" data-pid="${prAttr(pr.pid)}" style="padding:.25rem .6rem;font-size:.74rem;">Skip</button>` : '';
+      return `<div class="inbox-prop"><div style="flex:1;">${escapeHtml(pr.label || pr.op)} ${badge}
+        ${pr.result && st !== 'pending' ? `<div class="pr-meta">${escapeHtml(pr.result)}</div>` : ''}</div>${btns}</div>`;
+    }).join('');
     return `<div class="inbox-note${n.status === 'done' ? ' done' : ''}" data-id="${prAttr(n.id)}">
-      <div class="inbox-text">${escapeHtml(n.text)}<div class="pr-meta">${n.dictated ? '🎤 ' : ''}${escapeHtml(new Date(n.createdAt).toLocaleString(undefined, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }))} · ${n.status === 'done' ? 'Done' : 'Waiting for Claude'}</div></div>
+      <div class="inbox-text">${escapeHtml(n.text)}
+        <div class="pr-meta">${n.dictated ? '🎤 ' : ''}${escapeHtml(new Date(n.createdAt).toLocaleString(undefined, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }))} · ${escapeHtml(INBOX_STATUS[n.status] || n.status)}</div>
+        ${n.reply ? `<div class="inbox-reply"><strong>Claude:</strong> ${escapeHtml(n.reply)}</div>` : ''}
+        ${propHtml}
+      </div>
       <button class="btn btn-ghost" type="button" data-inbox="${n.status === 'done' ? 'new' : 'done'}" style="padding:.25rem .55rem;font-size:.74rem;">${n.status === 'done' ? 'Reopen' : 'Mark done'}</button>
       <button class="del-btn" type="button" data-inbox="remove" aria-label="Delete">×</button>
     </div>`;
@@ -3717,6 +3736,31 @@
   });
 
   const onInboxClick = async e => {
+    const pb = e.target.closest('[data-prop]');
+    if (pb) {
+      const noteId = pb.closest('.inbox-note').dataset.id;
+      const note = inboxCache.find(n => n.id === noteId);
+      const pr = note && (note.proposals || []).find(p => p.pid === pb.dataset.pid);
+      if (!pr) return;
+      if (pb.dataset.prop === 'apply' && !confirm(`Apply this change to Navigator?\n\n${pr.label || pr.op}`)) return;
+      pb.disabled = true;
+      pb.textContent = pb.dataset.prop === 'apply' ? 'Applying…' : 'Skipping…';
+      try {
+        const resp = await fetch(`/api/machine-status?job=${pb.dataset.prop}`, {
+          method:'POST', headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({ noteId, pid: pr.pid }),
+        });
+        const data = await resp.json().catch(() => ({}));
+        if (data.note) inboxCache = inboxCache.map(n => n.id === noteId ? data.note : n);
+        else if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+        renderInbox();
+        if (pb.dataset.prop === 'apply' && resp.ok) refreshLinearTracker();
+      } catch (err) {
+        alert(`Couldn't ${pb.dataset.prop}: ${err.message}`);
+        renderInbox();
+      }
+      return;
+    }
     const b = e.target.closest('[data-inbox]');
     if (!b) return;
     const id = b.closest('.inbox-note').dataset.id;
