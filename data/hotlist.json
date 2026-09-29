@@ -256,18 +256,18 @@
   {
     "id": "hot-1a0edb531d2f3mr5",
     "name": "Lee Newcomb",
-    "phone": "",
-    "email": "",
-    "phoneFound": false,
-    "emailFound": false,
+    "phone": "(480) 584-9183",
+    "email": "leon_newcomb@yahoo.com",
     "type": "both",
     "source": "pastclient",
     "tier": "medium",
     "notes": "Past client.",
-    "commandUrl": "",
+    "phoneFound": false,
+    "emailFound": false,
+    "commandUrl": "https://console.command.kw.com/command/contacts/665b5b7a8c1f3bcef184cb2d",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T15:07:50.000Z",
-    "updatedAt": "2026-09-29T15:07:50.000Z"
+    "updatedAt": "2026-09-29T15:31:21.180Z"
   }
 ]
