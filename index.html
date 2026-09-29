@@ -3609,6 +3609,35 @@
     }
   }
 
+  // Pink rule, automatic: ask the server (api/_ohpink.js) which of these
+  // contacts' phones/emails are typed in pink in the OPEN HOUSE ATTENDANCE
+  // sheets (= we found it, they didn't give it to us), and match the
+  // dashboard to the sheet. Also fills a blank phone/email from the sheet.
+  // Quietly does nothing until the Google service account is connected.
+  async function hotPinkCheck(){
+    const contacts = hotCache.map(h => ({ id: h.id, name: h.name, phone: h.phone, email: h.email }));
+    if (!contacts.length) return;
+    let data;
+    try {
+      const resp = await fetch('/api/machine-status?job=oh-pink', {
+        method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ contacts }),
+      });
+      data = await resp.json().catch(() => ({}));
+      if (!resp.ok) return;
+    } catch (_) { return; }
+    for (const r of data.results || []) {
+      const h = hotCache.find(x => x.id === r.id);
+      if (!h) continue;
+      const upd = {};
+      if (!h.phone && r.phone) { upd.phone = r.phone; upd.phoneFound = !!r.phonePink; }
+      else if (r.phone && h.phone && h.phone.replace(/\D/g, '').slice(-10) === r.phone.replace(/\D/g, '').slice(-10) && !!h.phoneFound !== !!r.phonePink) upd.phoneFound = !!r.phonePink;
+      if (!h.email && r.email) { upd.email = r.email; upd.emailFound = !!r.emailPink; }
+      else if (r.email && h.email && h.email.toLowerCase() === r.email.toLowerCase() && !!h.emailFound !== !!r.emailPink) upd.emailFound = !!r.emailPink;
+      if (!Object.keys(upd).length) continue;
+      try { hotUpsertLocal((await hotSave(Object.assign({ id: h.id }, upd))).record); } catch (_) { /* try again next load */ }
+    }
+  }
+
   // Always check: every contact not yet linked to Command gets looked up
   // automatically (on load and when added), one at a time.
   async function hotAutoCheckCommand(){
@@ -3634,7 +3663,7 @@
       hotCache = Array.isArray(data) ? data : [];
       renderHotList();
       lkRefreshDatalist();
-      hotAutoCheckCommand();
+      hotPinkCheck().then(hotAutoCheckCommand);
     } catch (e) {
       document.getElementById('hot-list-hot').innerHTML =
         `<div class="empty-hint">Couldn't load your prospecting lists: ${escapeHtml(e.message)}</div>`;
