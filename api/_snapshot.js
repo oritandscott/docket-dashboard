@@ -13,7 +13,8 @@
 const SNAPSHOT_URL = 'https://nav.oasisgroupaz.com/api/admin/snapshot';
 
 export async function loadSnapshot() {
-  const secret = process.env.DOCKET_SHARED_SECRET;
+  // Trimmed: a trailing space/newline pasted into Vercel causes a 401.
+  const secret = (process.env.DOCKET_SHARED_SECRET || '').trim();
   if (!secret) {
     const err = new Error('Missing required environment variable: DOCKET_SHARED_SECRET.');
     err.status = 500;

@@ -35,7 +35,9 @@
 //    { resource: 'hotlist', reorder: { tier, ids: [...] } }.
 //    DELETE { resource: 'hotlist', id } removes one.
 //
-// 5. The Prospecting panel's "Notes for Claude" inbox
+// 5. The "Notes for Claude" inbox, shared by the Prospecting notes box and
+//    the Linear Escrow Tracker's command box (topic: 'tracker'). Originally
+//    the Prospecting panel's "Notes for Claude" inbox
 //    (data/prospecting-inbox.json) -- typed or dictated notes about who
 //    should be added to the lists, for Claude to read and act on in a
 //    session. Body: { resource: 'inbox', text } adds one; { resource:
@@ -81,13 +83,16 @@ async function handleInbox(req, res, ghHeaders) {
   const record = {
     id: 'note-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
     text,
+    // 'tracker' = a Linear Escrow Tracker command (update Navigator + the
+    // Google Sheet); anything else is a Prospecting note.
+    topic: body.topic === 'tracker' ? 'tracker' : 'prospecting',
     dictated: !!body.dictated,
     status: 'new',
     createdAt: now,
     updatedAt: now,
   };
   current.unshift(record);
-  await writeJsonFile(ghHeaders, contentsUrl, sha, current, 'Prospecting inbox: new note');
+  await writeJsonFile(ghHeaders, contentsUrl, sha, current, record.topic === 'tracker' ? 'Tracker command: new' : 'Prospecting inbox: new note');
   return res.status(200).json({ ok: true, record });
 }
 
