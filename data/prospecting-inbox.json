@@ -16,7 +16,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-09-29T13:21:18.967Z",
-    "updatedAt": "2026-09-29T13:49:23.773Z",
+    "updatedAt": "2026-09-29T13:49:33.916Z",
     "reply": "Ready for your OK, one tap each, top to bottom. Jeff Tucker's contract date is set to Fri Sep 25 (\"accepted an offer on Friday\"); COE Oct 19 with 0 due diligence days. If the closing moves up, just send another command like \"Tucker COE moved to Oct 12\". Nothing changes in Navigator until you tap Confirm. The Google Sheet tracker isn't connected yet, so it still needs these by hand.",
     "proposals": [
       {
@@ -51,7 +51,10 @@
         "label": "Tucker: mark inspection WAIVED (Offerpad already inspected) -- confirm after the step above",
         "op": "waive_inspection",
         "match": "Tucker",
-        "status": "pending"
+        "status": "applied",
+        "result": "4824 E. La Puente, Phoenix: inspection waived",
+        "navId": "cmumqg8ky000004l3r08sk65f",
+        "decidedAt": "2026-09-29T13:49:33.916Z"
       },
       {
         "pid": "p-tucker-apprs",
