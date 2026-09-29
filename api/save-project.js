@@ -149,6 +149,10 @@ async function handleHotlist(req, res, ghHeaders) {
     source: HOT_SOURCES.includes(body.source) ? body.source : existing ? existing.source : 'other',
     tier: HOT_TIERS.includes(body.tier) ? body.tier : existing ? existing.tier || 'hot' : 'hot',
     notes: pick('notes', 8000),
+    // true = a phone/email Orit & Scott looked up themselves rather than one
+    // the person gave them (pink on the sign-in sheet); shown in bright pink.
+    phoneFound: typeof body.phoneFound === 'boolean' ? body.phoneFound : existing ? !!existing.phoneFound : false,
+    emailFound: typeof body.emailFound === 'boolean' ? body.emailFound : existing ? !!existing.emailFound : false,
     commandUrl,
     callCount: (existing ? existing.callCount || 0 : 0) + (body.logCall ? 1 : 0),
     lastCalledAt: body.logCall ? now : existing ? existing.lastCalledAt || null : null,
