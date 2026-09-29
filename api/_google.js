@@ -49,12 +49,22 @@ export async function googleToken(scope) {
   return cached.token;
 }
 
+// GET with a few patient retries when Google says "slow down" (429) --
+// Sheets allows ~60 reads/minute per service account.
+export async function googleGet(url, token) {
+  let r;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    r = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    if (r.status !== 429 && r.status < 500) return r;
+    await new Promise((ok) => setTimeout(ok, 1000 * 2 ** attempt));
+  }
+  return r;
+}
+
 // All values of one sheet tab, as an array of row arrays.
 export async function readSheetValues(spreadsheetId, range) {
-  const token = await googleToken('https://www.googleapis.com/auth/spreadsheets.readonly');
-  const r = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const token = await googleToken('https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/spreadsheets.readonly');
+  const r = await googleGet(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}`, token);
   if (r.status === 403 || r.status === 404) {
     const sa = serviceAccount();
     throw Object.assign(new Error(`The sheet isn't shared with the service account yet -- share it with ${sa ? sa.client_email : 'the service account'} (Viewer).`), { status: 503, code: 'not_shared' });

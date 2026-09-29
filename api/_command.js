@@ -52,38 +52,45 @@ async function contacts() {
   return list;
 }
 
+function matchesFor(all, { name, phone, email }, minScore) {
+  const p = digits(phone);
+  const e = String(email || '').trim().toLowerCase();
+  const nameWords = norm(name).split(' ').filter((w) => w.length > 1 && w !== 'and');
+  // Couples ("Tim & Mary K Duckworth") -- also try each person on their own.
+  const people = String(name || '').split(/\s*(?:&|\band\b)\s*/i).map(norm).filter(Boolean);
+  const last = nameWords[nameWords.length - 1];
+  return all.map((ct) => {
+    let score = 0;
+    if (p.length === 10 && digits(ct.phone) === p) score += 100;
+    if (e && ct.email.toLowerCase() === e) score += 100;
+    const cn = norm(ct.name);
+    if (cn && people.some((pp) => pp === cn || (pp.split(' ').length > 1 && cn === pp))) score += 60;
+    else if (last && cn.split(' ').pop() === last && nameWords.some((w) => cn.split(' ')[0] === w)) score += 50;
+    else if (last && cn.split(' ').pop() === last) score += 10;
+    return { ct, score };
+  }).filter((x) => x.score >= minScore).sort((a, b) => b.score - a.score).slice(0, 5)
+    .map(({ ct, score }) => ({ id: ct.id, name: ct.name, phone: ct.phone, email: ct.email, url: CONTACT_URL(ct.id), strong: score >= 100, score }));
+}
+
+// Single contact {name, phone, email, loose} -> {matches}; or a batch
+// {contacts:[{id, name, phone, email}]} -> {results:[{id, matches}]}, so the
+// dashboard's automatic check reads the sheet once for everyone (Google
+// rate-limits sheet reads).
 export async function runCommandLookup(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-  const { name, phone, email, loose } = req.body || {};
+  const body = req.body || {};
   // loose: the "Find in Command" button -- also list same-last-name
   // contacts so the right one can be picked by hand.
-  const minScore = loose ? 10 : 50;
+  const minScore = body.loose ? 10 : 50;
   try {
     const all = await contacts();
-    const p = digits(phone);
-    const e = String(email || '').trim().toLowerCase();
-    const nameWords = norm(name).split(' ').filter((w) => w.length > 1 && w !== 'and');
-    // Couples ("Tim & Mary K Duckworth") -- also try each person on their own.
-    const people = String(name || '').split(/\s*(?:&|\band\b)\s*/i).map(norm).filter(Boolean);
-    const last = nameWords[nameWords.length - 1];
-
-    const scored = all.map((ct) => {
-      let score = 0;
-      if (p.length === 10 && digits(ct.phone) === p) score += 100;
-      if (e && ct.email.toLowerCase() === e) score += 100;
-      const cn = norm(ct.name);
-      if (cn && people.some((pp) => pp === cn || (pp.split(' ').length > 1 && cn === pp))) score += 60;
-      else if (last && cn.split(' ').pop() === last && nameWords.some((w) => cn.split(' ')[0] === w)) score += 50;
-      else if (last && cn.split(' ').pop() === last) score += 10;
-      return { ct, score };
-    }).filter((x) => x.score >= minScore).sort((a, b) => b.score - a.score).slice(0, 5);
-
-    return res.status(200).json({
-      ok: true,
-      matches: scored.map(({ ct, score }) => ({
-        id: ct.id, name: ct.name, phone: ct.phone, email: ct.email, url: CONTACT_URL(ct.id), strong: score >= 100, score,
-      })),
-    });
+    if (Array.isArray(body.contacts)) {
+      return res.status(200).json({
+        ok: true,
+        results: body.contacts.slice(0, 200).map((c) => ({ id: c.id, matches: matchesFor(all, c, minScore) })),
+      });
+    }
+    return res.status(200).json({ ok: true, matches: matchesFor(all, body, minScore) });
   } catch (err) {
     return res.status(err.status || 500).json({ error: err.message, code: err.code || null });
   }
