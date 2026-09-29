@@ -9,8 +9,9 @@
 //                             text that is now in Command; result is
 //                             'added' | 'not-in-command' | 'failed: ...'
 //
-// Both need the x-docket-secret header (MINI_HEARTBEAT_SECRET), the same
-// one the Mini's heartbeat uses. Dispatched from api/machine-status.js.
+// Callers: the Mini with the x-docket-secret header (MINI_HEARTBEAT_SECRET),
+// or the Mini's Chrome on /mini-notes.html, signed in to the dashboard.
+// Dispatched from api/machine-status.js.
 
 const REPO = 'oritandscott/docket-dashboard';
 const FILE_PATH = 'data/hotlist.json';
@@ -32,8 +33,13 @@ export function newNotes(h) {
 }
 
 export async function runCmdNotes(req, res) {
+  // Either the Mini's secret header, or a signed-in dashboard browser (the
+  // /mini-notes.html page) -- middleware.js has already checked the login
+  // cookie for any request that doesn't carry the header.
+  const sent = req.headers['x-docket-secret'];
   const secret = process.env.MINI_HEARTBEAT_SECRET;
-  if (!secret || req.headers['x-docket-secret'] !== secret) return res.status(401).json({ error: 'Unauthorized' });
+  if (sent !== undefined && (!secret || sent !== secret)) return res.status(401).json({ error: 'Unauthorized' });
+  if (sent === undefined && !process.env.DASHBOARD_PASSWORD) return res.status(401).json({ error: 'Set DASHBOARD_PASSWORD to use this page' });
   try {
     const headers = gh();
     const url = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;

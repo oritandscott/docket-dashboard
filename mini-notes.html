@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Call Notes to Command</title>
+<style>
+  :root{ --paper:#0B0B0C; --card:#19191B; --ink:#ECECEC; --soft:#9A9A9E; --gold:#C9A15D; --green:#5FAE73; --red:#CC5C42; --line:rgba(255,255,255,.12); }
+  body{ margin:0; background:var(--paper); color:var(--ink); font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; padding:16px; }
+  h1{ font-size:1.15rem; margin:0 0 .3rem; color:var(--gold); }
+  p.hint{ color:var(--soft); margin:0 0 1rem; font-size:.85rem; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:6px; padding:12px; margin-bottom:12px; max-width:760px; }
+  .name{ font-weight:600; font-size:1rem; }
+  .meta{ color:var(--soft); font-size:.82rem; margin:.15rem 0 .5rem; }
+  .note{ white-space:pre-wrap; background:#0f0f10; border:1px solid var(--line); border-radius:4px; padding:8px; font-size:.88rem; }
+  .btns{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  button,a.btn{ font:inherit; font-size:.85rem; padding:6px 12px; border-radius:4px; border:1px solid var(--line); background:#232326; color:var(--ink); cursor:pointer; text-decoration:none; }
+  button.ok{ border-color:var(--green); color:var(--green); }
+  .status{ font-size:.85rem; margin-top:6px; }
+  .done{ opacity:.55; }
+</style>
+</head>
+<body>
+<h1>Call notes waiting to go into Command</h1>
+<p class="hint">For each person: add the note below to their Command contact, then press <b>Added to Command</b>. Press <b>Not in Command</b> if there's no clearly matching contact.</p>
+<div id="list">Loading…</div>
+<script>
+const API = '/api/machine-status?job=cmd-notes';
+const esc = (s) => String(s || '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+let pending = [];
+async function load(){
+  const list = document.getElementById('list');
+  try {
+    const r = await fetch(API, { cache:'no-store' });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || r.status);
+    pending = d.pending || [];
+    if (!pending.length) { list.innerHTML = '<div class="card" id="empty">No new call notes.</div>'; return; }
+    list.innerHTML = pending.map((p, i) => `<div class="card" data-i="${i}">
+      <div class="name">${esc(p.name)}</div>
+      <div class="meta">${esc([p.phone, p.email].filter(Boolean).join(' · ') || 'no phone/email')}${p.commandUrl ? ` · <a href="${esc(p.commandUrl)}" target="_blank" rel="noopener" style="color:var(--gold)">Open in Command</a>` : ''}</div>
+      <div class="note">Call notes (Docket): ${esc(p.newNotes)}</div>
+      <div class="btns">
+        <button class="ok" data-r="added">Added to Command</button>
+        <button data-r="not-in-command">Not in Command</button>
+      </div>
+      <div class="status"></div>
+    </div>`).join('');
+  } catch (e) { list.textContent = "Couldn't load: " + e.message; }
+}
+document.getElementById('list').addEventListener('click', async (e) => {
+  const b = e.target.closest('button[data-r]');
+  if (!b) return;
+  const card = b.closest('.card');
+  const p = pending[+card.dataset.i];
+  card.querySelectorAll('button').forEach((x) => { x.disabled = true; });
+  const st = card.querySelector('.status');
+  try {
+    const r = await fetch(API, { method:'POST', headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ id:p.id, synced: b.dataset.r === 'added' ? p.fullNotes : '', result:b.dataset.r }) });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(d.error || r.status);
+    st.textContent = b.dataset.r === 'added' ? '✓ Saved as added to Command' : 'Saved as not in Command';
+    card.classList.add('done');
+  } catch (err) {
+    st.textContent = 'Not saved: ' + err.message;
+    card.querySelectorAll('button').forEach((x) => { x.disabled = false; });
+  }
+});
+load();
+</script>
+</body>
+</html>
