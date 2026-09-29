@@ -38,7 +38,18 @@ export async function loadSnapshot() {
   }
 
   if (!navRes.ok) {
-    const err = new Error(`Navigator snapshot returned ${navRes.status}`);
+    // Spell out the likely fix, since this message is shown on the panel.
+    const hints = {
+      401: 'the DOCKET_SHARED_SECRET values in the two Vercel projects do not match (or one was changed without redeploying)',
+      404: 'the snapshot route is not deployed on nav.oasisgroupaz.com yet',
+      500: 'DOCKET_SHARED_SECRET is not set in the oasis-navigator Vercel project (Production), or Navigator hit an error',
+    };
+    const detail = await navRes.text().catch(() => '');
+    const err = new Error(
+      `Navigator answered ${navRes.status}` +
+      (hints[navRes.status] ? ` -- ${hints[navRes.status]}` : '') +
+      (detail ? ` (${detail.slice(0, 160)})` : '')
+    );
     err.status = 502;
     throw err;
   }

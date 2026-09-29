@@ -24,6 +24,17 @@
 //    add many at once (skips anyone already on the list by email/phone/name).
 //    DELETE { resource: 'prospect', id } removes one.
 //
+// 4. The Prospecting panel's Hot List (data/hotlist.json) -- the handful of
+//    people closest to buying or selling right now. Body: { resource:
+//    'hotlist', id?, name, phone?, email?, type ('buyer'|'seller'|'both'),
+//    source (see HOT_SOURCES), tier ('hot'|'medium'|'long'), notes?,
+//    commandUrl?, logCall? }. Three lists share this file, told apart by
+//    tier: the Hot List, Watchlist Medium Term and Watchlist Long Term.
+//    Priority order within a list is the order of the array; changing a
+//    contact's tier moves them to the bottom of the new list. Reorder with
+//    { resource: 'hotlist', reorder: { tier, ids: [...] } }.
+//    DELETE { resource: 'hotlist', id } removes one.
+//
 // Same storage pattern as save-anniversary.js / save-video-link.js -- this
 // app has no database, the JSON file in the repo IS the store, and a commit
 // here triggers a normal Vercel redeploy. Browser-callable, no shared secret
@@ -37,7 +48,81 @@ const FILES = {
   project: 'data/projects.json',
   openhouse: 'data/open-house.json',
   prospect: 'data/prospects.json',
+  hotlist: 'data/hotlist.json',
 };
+
+const HOT_TYPES = ['buyer', 'seller', 'both'];
+const HOT_TIERS = ['hot', 'medium', 'long'];
+const HOT_SOURCES = ['referral', 'pastclient', 'youtube', 'online', 'openhouse', 'sphere', 'other'];
+
+async function handleHotlist(req, res, ghHeaders) {
+  const { parsed, contentsUrl, sha } = await readJsonFile(ghHeaders, FILES.hotlist);
+  const current = Array.isArray(parsed) ? parsed : [];
+  const body = req.body || {};
+  const now = new Date().toISOString();
+
+  if (req.method === 'DELETE') {
+    if (!body.id) return res.status(400).json({ error: 'Missing required field: id.' });
+    const idx = current.findIndex(p => p.id === body.id);
+    if (idx === -1) return res.status(404).json({ error: 'Not on the Hot List.' });
+    const [removed] = current.splice(idx, 1);
+    await writeJsonFile(ghHeaders, contentsUrl, sha, current, `Hot List: remove ${removed.name}`);
+    return res.status(200).json({ ok: true });
+  }
+
+  if (body.reorder) {
+    const tier = body.reorder.tier;
+    const ids = Array.isArray(body.reorder.ids) ? body.reorder.ids : null;
+    if (!HOT_TIERS.includes(tier) || !ids) return res.status(400).json({ error: 'reorder needs a tier and an ids array.' });
+    const inTier = current.filter(p => (p.tier || 'hot') === tier);
+    const byId = new Map(inTier.map(p => [p.id, p]));
+    const ordered = ids.map(id => byId.get(id)).filter(Boolean);
+    inTier.forEach(p => { if (!ids.includes(p.id)) ordered.push(p); });
+    const rest = current.filter(p => (p.tier || 'hot') !== tier);
+    const updated = rest.concat(ordered);
+    await writeJsonFile(ghHeaders, contentsUrl, sha, updated, `Prospecting: reorder ${tier} list`);
+    return res.status(200).json({ ok: true, records: updated });
+  }
+
+  const idx = body.id ? current.findIndex(p => p.id === body.id) : -1;
+  if (body.id && idx === -1) return res.status(404).json({ error: 'Not on the Hot List.' });
+  const existing = idx !== -1 ? current[idx] : null;
+  if (!existing && current.some(p => prospectKey(p) === prospectKey(body))) {
+    return res.status(409).json({ error: `${str(body.name)} is already on one of your prospecting lists.` });
+  }
+  const pick = (k, max) => (body[k] !== undefined ? str(body[k], max) : existing ? existing[k] || '' : '');
+  const commandUrl = pick('commandUrl', 500);
+  if (commandUrl && !/^https:\/\//i.test(commandUrl)) {
+    return res.status(400).json({ error: 'The Command link must start with https://' });
+  }
+  const record = {
+    id: existing ? existing.id : 'hot-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    name: pick('name', 120),
+    phone: pick('phone', 40),
+    email: pick('email', 160),
+    type: HOT_TYPES.includes(body.type) ? body.type : existing ? existing.type : 'buyer',
+    source: HOT_SOURCES.includes(body.source) ? body.source : existing ? existing.source : 'other',
+    tier: HOT_TIERS.includes(body.tier) ? body.tier : existing ? existing.tier || 'hot' : 'hot',
+    notes: pick('notes', 8000),
+    commandUrl,
+    callCount: (existing ? existing.callCount || 0 : 0) + (body.logCall ? 1 : 0),
+    lastCalledAt: body.logCall ? now : existing ? existing.lastCalledAt || null : null,
+    createdAt: existing ? existing.createdAt : now,
+    updatedAt: now,
+  };
+  if (!record.name) return res.status(400).json({ error: 'Name cannot be blank.' });
+  if (existing && (existing.tier || 'hot') !== record.tier) {
+    // Moved to another list: goes to the bottom of that list.
+    current.splice(idx, 1);
+    current.push(record);
+  } else if (existing) {
+    current[idx] = record;
+  } else {
+    current.push(record);
+  }
+  await writeJsonFile(ghHeaders, contentsUrl, sha, current, `Prospecting: ${existing ? 'update' : 'add'} ${record.name} (${record.tier})`);
+  return res.status(200).json({ ok: true, record });
+}
 
 const PROSPECT_SOURCES = ['manual', 'openhouse', 'pastclient'];
 const PROSPECT_STATUSES = ['to-call', 'follow-up', 'done'];
@@ -178,12 +263,15 @@ export default async function handler(req, res) {
 
     const resource = (req.body || {}).resource;
     if (!FILES[resource]) {
-      return res.status(400).json({ error: "resource must be 'project', 'openhouse' or 'prospect'." });
+      return res.status(400).json({ error: "resource must be 'project', 'openhouse', 'prospect' or 'hotlist'." });
     }
     const filePath = FILES[resource];
 
     if (resource === 'prospect') {
       return handleProspect(req, res, ghHeaders);
+    }
+    if (resource === 'hotlist') {
+      return handleHotlist(req, res, ghHeaders);
     }
 
     if (resource === 'openhouse') {
