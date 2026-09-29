@@ -213,6 +213,54 @@
     margin:-.9rem 0 1.3rem;
   }
 
+  /* ---------- LINEAR ESCROW TRACKER ---------- */
+  #escrow-tracker.panel{background:#1C2320;}
+  .lt-legend{display:flex;flex-wrap:wrap;gap:.45rem 1.1rem;font-size:.74rem;color:var(--ink-soft);margin:-.4rem 0 .9rem;}
+  .lt-legend span{display:inline-flex;align-items:center;gap:.35rem;}
+  .lt-swatch{display:inline-block;width:14px;height:10px;border-radius:2px;}
+  .lt-prep{background:#B8668D;}
+  .lt-listed{background:#D9B84A;}
+  .lt-escrow{background:#5FAE73;}
+  .lt-search{background:#6FA8D9;}
+  .lt-tom{background:repeating-linear-gradient(135deg,#6B6B70 0 3px,#3A3A3E 3px 6px);}
+  .lt-coe{background:var(--stamp-red);}
+  .lt-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--paper);}
+  .lt-grid{display:inline-block;min-width:100%;}
+  .lt-row{display:flex;border-bottom:1px solid var(--line);}
+  .lt-row:last-child{border-bottom:none;}
+  .lt-name{
+    position:sticky;left:0;z-index:2;flex:0 0 230px;width:230px;
+    background:var(--paper-card);border-right:1px solid var(--line);
+    padding:.45rem .6rem;font-size:.78rem;line-height:1.3;overflow:hidden;
+  }
+  .lt-name a{color:var(--ink);font-weight:700;text-decoration:none;}
+  .lt-name a:hover{color:var(--gold);}
+  .lt-name .lt-addr{color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .lt-name .lt-sum{font-family:'IBM Plex Mono',monospace;font-size:.68rem;margin-top:.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .lt-cell{
+    flex:0 0 28px;width:28px;display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:.62rem;font-weight:600;
+    color:rgba(0,0,0,.78);border-right:1px solid rgba(255,255,255,.04);
+    white-space:nowrap;overflow:visible;position:relative;
+  }
+  .lt-cell.wknd{background:rgba(255,255,255,.025);}
+  .lt-cell.today{box-shadow:inset 2px 0 0 var(--gold),inset -2px 0 0 var(--gold);}
+  .lt-cell.seg-prep{background:#B8668D;}
+  .lt-cell.seg-listed{background:#D9B84A;}
+  .lt-cell.seg-escrow{background:#5FAE73;}
+  .lt-cell.seg-escrow.future{background:rgba(95,174,115,.28);color:rgba(236,236,236,.75);}
+  .lt-cell.seg-search{background:#6FA8D9;}
+  .lt-cell.seg-tom{background:repeating-linear-gradient(135deg,#6B6B70 0 3px,#3A3A3E 3px 6px);color:#ECECEC;}
+  .lt-cell.mk-coe{background:var(--stamp-red);color:#fff;font-size:.56rem;}
+  .lt-cell.mk-next{outline:2px solid var(--gold);outline-offset:-2px;color:#ECECEC;background:#2F4A37;font-size:.54rem;}
+  .lt-head .lt-name,.lt-head .lt-cell{background:var(--blueprint);color:var(--ink-soft);}
+  .lt-head .lt-cell{flex-direction:column;line-height:1.1;padding:.25rem 0;font-weight:500;}
+  .lt-head .lt-cell.today{color:var(--gold);font-weight:700;}
+  .lt-month .lt-cell{justify-content:flex-start;color:var(--gold);font-size:.66rem;letter-spacing:.08em;padding:.3rem 0 .1rem .2rem;}
+  .lt-month .lt-cell.has-label{z-index:1;}
+  @media (max-width:600px){.lt-name{flex-basis:140px;width:140px;}}
+  .lt-foot{font-size:.72rem;color:var(--ink-soft);margin-top:.55rem;}
+
   /* ---------- TODAY ---------- */
   .today-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem 2.2rem;}
   @media (max-width:780px){.today-grid{grid-template-columns:1fr;}}
@@ -517,17 +565,18 @@
     <div class="side-date mono" id="side-date"></div>
     <ul class="nav">
       <li><a href="#today">Today <span class="num">01</span></a></li>
-      <li><a href="#navigator">Navigator App <span class="num">02</span></a></li>
-      <li><a href="#video-production-mtp">Video Production - Moving to Phoenix <span class="num">03</span></a></li>
-      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">04</span></a></li>
-      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">05</span></a></li>
-      <li><a href="#anniversaries">Home Anniversaries <span class="num">06</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
-      <li><a href="#weekender">Thursday Weekender <span class="num">07</span></a></li>
-      <li><a href="#blogdrafts">Ghostwriter <span class="num">08</span></a></li>
-      <li><a href="#pipeline">Pipeline <span class="num">09</span></a></li>
-      <li><a href="#masterlist">Master Project List <span class="num">10</span><span class="nav-badge" id="masterlist-nav-badge" style="display:none;"></span></a></li>
-      <li hidden><a href="#tracker">Tracker <span class="num">11</span></a></li>
-      <li hidden><a href="#notes">Notes <span class="num">12</span></a></li>
+      <li><a href="#escrow-tracker">Linear Escrow Tracker <span class="num">02</span></a></li>
+      <li><a href="#navigator">Navigator App <span class="num">03</span></a></li>
+      <li><a href="#video-production-mtp">Video Production - Moving to Phoenix <span class="num">04</span></a></li>
+      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">05</span></a></li>
+      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">06</span></a></li>
+      <li><a href="#anniversaries">Home Anniversaries <span class="num">07</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#weekender">Thursday Weekender <span class="num">08</span></a></li>
+      <li><a href="#blogdrafts">Ghostwriter <span class="num">09</span></a></li>
+      <li><a href="#pipeline">Pipeline <span class="num">10</span></a></li>
+      <li><a href="#masterlist">Master Project List <span class="num">11</span><span class="nav-badge" id="masterlist-nav-badge" style="display:none;"></span></a></li>
+      <li hidden><a href="#tracker">Tracker <span class="num">12</span></a></li>
+      <li hidden><a href="#notes">Notes <span class="num">13</span></a></li>
     </ul>
     <div style="display:flex;flex-direction:column;gap:1.7rem;margin-top:2.1rem;">
       <img src="assets/kw-realty-phoenix.png" alt="Keller Williams Realty Phoenix" style="width:100%;max-width:180px;height:auto;display:block;">
@@ -577,9 +626,28 @@
       <div class="panel-sub" id="cal-other-note" style="display:none;margin-top:.9rem;"></div>
     </section>
 
+    <!-- LINEAR ESCROW TRACKER (live from Navigator) -->
+    <section class="panel" id="escrow-tracker">
+      <div class="tab-label">02 · Linear Escrow Tracker</div>
+      <h2>OASIS 2026 LINEAR ESCROW TRACKER</h2>
+      <div class="panel-sub">Every active listing, escrow and buyer search, live from Navigator on each page load. Scroll sideways for past and upcoming days.</div>
+      <div class="lt-legend" aria-hidden="true">
+        <span><i class="lt-swatch lt-prep"></i>Pre-listing prep</span>
+        <span><i class="lt-swatch lt-listed"></i>Listed (days on market)</span>
+        <span><i class="lt-swatch lt-escrow"></i>Escrow (days in escrow)</span>
+        <span><i class="lt-swatch lt-search"></i>Buyer search</span>
+        <span><i class="lt-swatch lt-tom"></i>TOM · Temporarily off market</span>
+        <span><i class="lt-swatch lt-coe"></i>COE · Close of escrow</span>
+      </div>
+      <div class="lt-scroll" id="lt-scroll">
+        <div class="empty-hint">Loading from Navigator&hellip;</div>
+      </div>
+      <div class="lt-foot" id="lt-foot"></div>
+    </section>
+
     <!-- NAVIGATOR APP -->
     <section class="panel" id="navigator">
-      <div class="tab-label">02 · Navigator App</div>
+      <div class="tab-label">03 · Navigator App</div>
       <h2>Navigator App - Active Sellers and Buyers</h2>
       <div class="panel-sub">Quick links into the Oasis Team Navigator app.</div>
       <a class="btn" href="https://nav.oasisgroupaz.com/admin" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:1.2rem;">Go to Main Editor (All Listings &amp; Buyers) &rarr;</a>
@@ -619,7 +687,7 @@
 
     <!-- VIDEO PRODUCTION: MOVING TO PHOENIX CHANNEL -->
     <section class="panel" id="video-production-mtp">
-      <div class="tab-label">03 · Video Production</div>
+      <div class="tab-label">04 · Video Production</div>
       <h2>Video Production - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">One-click links for producing Moving to Phoenix content -- Drive folders, the channel itself, and anything else worth having a click away.</div>
@@ -645,7 +713,7 @@
 
     <!-- YOUTUBE COMMENTS: CHANNEL 2 -->
     <section class="panel" id="comments-channel2">
-      <div class="tab-label">04 · YouTube Comments</div>
+      <div class="tab-label">05 · YouTube Comments</div>
       <h2>YouTube Comments - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">Recent comments from the Moving to Phoenix channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -660,7 +728,7 @@
 
     <!-- YOUTUBE COMMENTS: CHANNEL 1 -->
     <section class="panel" id="comments-channel1">
-      <div class="tab-label">05 · YouTube Comments</div>
+      <div class="tab-label">06 · YouTube Comments</div>
       <h2>YouTube Comments - Oasis Arizona Living Channel</h2>
       <img class="channel-banner" src="assets/banner-oasis-arizona-living.jpg" alt="Oasis Arizona Living channel banner">
       <div class="panel-sub">Recent comments from the Oasis Arizona Living channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -675,7 +743,7 @@
 
     <!-- HOME ANNIVERSARIES -->
     <section class="panel" id="anniversaries">
-      <div class="tab-label">06 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
+      <div class="tab-label">07 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
       <h2>Home Anniversaries</h2>
       <img class="channel-banner" src="assets/banner-command-header.png" alt="KW Command header">
       <div class="panel-sub">Clients with an upcoming Home Anniversary. 8&ndash;30 days out, pick a template or dismiss. At 7 days, the draft is created automatically from whatever template is selected -- nothing sends until you do.</div>
@@ -703,7 +771,7 @@
 
     <!-- THURSDAY WEEKENDER -->
     <section class="panel" id="weekender">
-      <div class="tab-label">07 · Thursday Weekender</div>
+      <div class="tab-label">08 · Thursday Weekender</div>
       <h2>Thursday Weekender</h2>
       <div class="panel-sub">The WEEKENDER Mailchimp draft builds itself every Thursday at 1:05pm from Angela Kiernan's event email. This tracks that run. <strong>Currently broken</strong> — the build that used to run on the MacBook Pro was abandoned; see the Master Project List for the fix in progress.</div>
       <div class="weekender-grid">
@@ -743,7 +811,7 @@
 
     <!-- BLOG DRAFTS -->
     <section class="panel" id="blogdrafts">
-      <div class="tab-label">08 · Ghostwriter</div>
+      <div class="tab-label">09 · Ghostwriter</div>
       <h2>Ghostwriter</h2>
       <img class="channel-banner" src="assets/banner-ghostwriter-oasis-blog.jpg" alt="The Oasis Blog">
       <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
@@ -758,7 +826,7 @@
 
     <!-- PIPELINE -->
     <section class="panel" id="pipeline">
-      <div class="tab-label">09 · Pipeline</div>
+      <div class="tab-label">10 · Pipeline</div>
       <h2>Pipeline</h2>
       <div class="panel-sub">Every active client, at a glance. Tap the stamp to move their stage.</div>
       <div id="pipeline-list"></div>
@@ -776,7 +844,7 @@
 
     <!-- MASTER PROJECT LIST -->
     <section class="panel" id="masterlist">
-      <div class="tab-label">10 · Master Project List</div>
+      <div class="tab-label">11 · Master Project List</div>
       <h2>Master Project List</h2>
       <div class="panel-sub">Every automation running on your behalf, every idea on deck, which machine each one runs on, and where you and Claude are still waiting on each other. Add a new idea any time — this is the one list.</div>
 
@@ -845,7 +913,7 @@
 
     <!-- TRACKER (hidden for now -- not in use) -->
     <section class="panel" id="tracker" hidden>
-      <div class="tab-label">11 · Tracker</div>
+      <div class="tab-label">12 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
       <div class="tracker-wrap">
@@ -868,7 +936,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes" hidden>
-      <div class="tab-label">12 · Notes</div>
+      <div class="tab-label">13 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
@@ -2401,8 +2469,192 @@
     }
   }
 
+  // ---------- LINEAR ESCROW TRACKER ----------
+  // Read-only view of Navigator's GET /api/admin/snapshot, proxied through
+  // /api/machine-status?job=snapshot so the shared secret stays server-side.
+  // Navigator computes every phase/day count itself (same logic as the
+  // client-facing views); this only lays those numbers out on a day grid in
+  // the Google Sheet's visual language. Nothing here writes anywhere.
+  const LT_NAV_BASE = 'https://nav.oasisgroupaz.com';
+  const LT_MS_DAY = 86400000;
+  const LT_CELL_W = 28;
+
+  // Calendar dates are handled as UTC-midnight Dates so day math matches
+  // Navigator's (lib/tasks.ts daysBetween/parseDateOnly) exactly.
+  function ltPhoenixToday(){
+    const s = new Intl.DateTimeFormat('en-CA', { timeZone:'America/Phoenix', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date());
+    return new Date(`${s}T00:00:00Z`);
+  }
+  function ltAddDays(d, n){ return new Date(d.getTime() + n * LT_MS_DAY); }
+  function ltDiff(a, b){ return Math.round((b.getTime() - a.getTime()) / LT_MS_DAY); }
+  // escapeHtml() leaves quotes alone; these values also go into attributes.
+  function ltAttr(v){ return escapeHtml(String(v)).replace(/"/g, '&quot;'); }
+  function ltFmt(d, opts){ return d.toLocaleDateString('en-US', Object.assign({ timeZone:'UTC' }, opts)); }
+
+  // Short cell code for Navigator's next-milestone task title.
+  function ltMilestoneCode(title){
+    const t = String(title || '');
+    if (/apprais/i.test(t)) return 'APPR';
+    if (/inspect/i.test(t)) return 'INSP';
+    if (/binsr|due diligence/i.test(t)) return 'DD';
+    if (/walk/i.test(t)) return 'WT';
+    if (/loan|financ/i.test(t)) return 'LOAN';
+    return (t.split(/\s+/)[0] || '•').slice(0, 4).toUpperCase();
+  }
+
+  const LT_PHASE_ORDER = { escrow:0, listed:1, prep:2, search:3, off_market:4 };
+  const LT_PHASE_LABEL = { escrow:'Escrow', listed:'Listed', prep:'Pre-listing prep', search:'Buyer search', off_market:'Temporarily off market' };
+  const LT_PHASE_COLOR = { escrow:'var(--stamp-green)', listed:'#D9B84A', prep:'#D48AAE', search:'var(--stamp-blue)', off_market:'var(--ink-soft)' };
+
+  // Turns one snapshot listing into { start, end, segClass, markers } on the
+  // calendar, from Navigator's own numbers (start = today - dayCount,
+  // COE = today + daysToClose).
+  function ltSpan(l, today){
+    const hasDay = typeof l.dayCount === 'number';
+    const start = hasDay ? ltAddDays(today, -l.dayCount) : null;
+    if (l.phase === 'escrow') {
+      const coe = typeof l.daysToClose === 'number' ? ltAddDays(today, l.daysToClose) : today;
+      const next = l.nextMilestone && l.nextMilestone.due ? new Date(`${l.nextMilestone.due}T00:00:00Z`) : null;
+      return { start: start || today, end: coe, seg:'seg-escrow', coe, next };
+    }
+    if (l.phase === 'off_market') return { start: null, end: today, seg:'seg-tom' };
+    const seg = l.phase === 'listed' ? 'seg-listed' : l.phase === 'prep' ? 'seg-prep' : 'seg-search';
+    return { start: start || today, end: today, seg };
+  }
+
+  function ltSummary(l, today){
+    const parts = [LT_PHASE_LABEL[l.phase] || l.phase];
+    if (typeof l.dayCount === 'number') parts.push(`Day ${l.dayCount}`);
+    if (l.phase === 'escrow' && typeof l.daysToClose === 'number') {
+      parts.push(`COE ${ltFmt(ltAddDays(today, l.daysToClose), { month:'short', day:'numeric' })}`);
+    }
+    return parts.join(' · ');
+  }
+
+  function renderLinearTracker(data){
+    const scroller = document.getElementById('lt-scroll');
+    const foot = document.getElementById('lt-foot');
+    const listings = (data && Array.isArray(data.listings) ? data.listings : [])
+      .slice()
+      .sort((a, b) => (LT_PHASE_ORDER[a.phase] ?? 9) - (LT_PHASE_ORDER[b.phase] ?? 9)
+        || ((a.daysToClose ?? 1e6) - (b.daysToClose ?? 1e6))
+        || ((b.dayCount ?? 0) - (a.dayCount ?? 0)));
+
+    if (!listings.length) {
+      scroller.innerHTML = '<div class="empty-hint" style="margin:.6rem;">No active listings, escrows or buyer searches in Navigator right now.</div>';
+      foot.textContent = '';
+      return;
+    }
+
+    const today = ltPhoenixToday();
+    const spans = listings.map(l => ltSpan(l, today));
+
+    // Window: at least 3 weeks either side of today, widened to fit every
+    // bar's start and COE (capped so one very old record can't make the
+    // grid enormous).
+    let first = ltAddDays(today, -21), last = ltAddDays(today, 21);
+    spans.forEach(s => {
+      if (s.start && s.start < first) first = s.start;
+      if (s.end > last) last = s.end;
+    });
+    const floor = ltAddDays(today, -120), ceil = ltAddDays(today, 120);
+    if (first < floor) first = floor;
+    if (last > ceil) last = ceil;
+    first = ltAddDays(first, -2);
+    last = ltAddDays(last, 3);
+    const nDays = ltDiff(first, last) + 1;
+    const days = Array.from({ length: nDays }, (_, i) => ltAddDays(first, i));
+    const todayIdx = ltDiff(first, today);
+
+    const dayClass = (d, i) => `lt-cell${d.getUTCDay() === 0 || d.getUTCDay() === 6 ? ' wknd' : ''}${i === todayIdx ? ' today' : ''}`;
+
+    let html = '<div class="lt-grid">';
+
+    // Month row
+    html += '<div class="lt-row lt-head lt-month"><div class="lt-name"></div>';
+    days.forEach((d, i) => {
+      const label = (i === 0 || d.getUTCDate() === 1) ? ltFmt(d, { month:'short', year:'numeric' }).toUpperCase() : '';
+      html += `<div class="lt-cell${label ? ' has-label' : ''}">${label}</div>`;
+    });
+    html += '</div>';
+
+    // Day-number row
+    html += '<div class="lt-row lt-head"><div class="lt-name mono" style="font-size:.66rem;letter-spacing:.08em;">CLIENT · PROPERTY</div>';
+    days.forEach((d, i) => {
+      html += `<div class="${dayClass(d, i)}"><span>${ltFmt(d, { weekday:'narrow' })}</span><span>${d.getUTCDate()}</span></div>`;
+    });
+    html += '</div>';
+
+    listings.forEach((l, r) => {
+      const s = spans[r];
+      const names = l.clientNames || '(no client name)';
+      const editor = `${LT_NAV_BASE}/admin/${encodeURIComponent(l.id)}`;
+      html += `<div class="lt-row"><div class="lt-name">
+        <a href="${editor}" target="_blank" rel="noopener" title="Open in Navigator editor">${escapeHtml(names)}</a>
+        <div class="lt-addr" title="${ltAttr(l.address || '')}">${escapeHtml(l.address || '')}</div>
+        <div class="lt-sum" style="color:${LT_PHASE_COLOR[l.phase] || 'var(--ink-soft)'};">${escapeHtml(ltSummary(l, today))}</div>
+      </div>`;
+      days.forEach((d, i) => {
+        let cls = dayClass(d, i);
+        let text = '';
+        let tip = ltFmt(d, { weekday:'short', month:'short', day:'numeric' });
+        const inBar = (s.start ? d >= s.start : true) && d <= s.end;
+        if (inBar) {
+          cls += ' ' + s.seg;
+          if (s.seg === 'seg-tom') {
+            if (i === todayIdx) text = 'TOM';
+            tip += ' · Temporarily off market';
+          } else {
+            const n = ltDiff(s.start, d);
+            text = String(n);
+            if (d > today) cls += ' future';
+            tip += ` · Day ${n}`;
+          }
+          if (s.next && d.getTime() === s.next.getTime() && !(s.coe && d.getTime() === s.coe.getTime())) {
+            cls += ' mk-next';
+            text = ltMilestoneCode(l.nextMilestone.title);
+            tip += ` · Next: ${l.nextMilestone.title}`;
+          }
+          if (s.coe && d.getTime() === s.coe.getTime()) {
+            cls += ' mk-coe';
+            text = 'COE';
+            tip += ' · Close of escrow';
+          }
+        }
+        html += `<div class="${cls}" title="${ltAttr(tip)}">${text}</div>`;
+      });
+      html += '</div>';
+    });
+
+    html += '</div>';
+    scroller.innerHTML = html;
+
+    // Center today in the visible (non-sticky) part of the scroller.
+    const nameCol = scroller.querySelector('.lt-name');
+    const visible = scroller.clientWidth - (nameCol ? nameCol.offsetWidth : 0);
+    scroller.scrollLeft = Math.max(0, todayIdx * LT_CELL_W + LT_CELL_W / 2 - visible / 2);
+
+    const gen = data.generatedAt ? new Date(data.generatedAt) : null;
+    foot.textContent = `${listings.length} record${listings.length === 1 ? '' : 's'} from Navigator` +
+      (gen && !isNaN(gen) ? ` · as of ${gen.toLocaleTimeString([], { hour:'numeric', minute:'2-digit' })}` : '') +
+      ' · Gold-outlined cell = next milestone (hover for details)';
+  }
+
+  async function refreshLinearTracker(){
+    const scroller = document.getElementById('lt-scroll');
+    try {
+      const resp = await fetch('/api/machine-status?job=snapshot', { cache:'no-store' });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+      renderLinearTracker(data);
+    } catch (e) {
+      scroller.innerHTML = `<div class="empty-hint" style="margin:.6rem;">Couldn't load the tracker from Navigator: ${escapeHtml(e.message)}</div>`;
+    }
+  }
+
   // ---------- INIT ----------
   renderHeader();
+  refreshLinearTracker();
   renderTasks();
   renderPipeline();
   renderTracker();
