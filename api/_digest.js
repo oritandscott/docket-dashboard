@@ -498,17 +498,32 @@ function parseNavigatorPage(html, win, now) {
 }
 
 async function loadNavigator(win, now) {
-  // The list of navigators comes from the dashboard's own Navigator panel, so
-  // anything added there is picked up automatically.
-  // Read from GitHub: the live page is behind the dashboard password.
+  // Every active seller & buyer from Navigator's live snapshot (the same
+  // list the dashboard's Navigator App panel shows). Client links come from
+  // the snapshot; older Navigator builds don't send them, so fall back to
+  // the links typed into the dashboard's panel (read from GitHub -- the
+  // live page is behind the dashboard password).
   const { readRepoText } = await import('./_data.js');
   const dashHtml = await readRepoText('index.html');
   const start = dashHtml.indexOf('id="navigator-list"');
-  const end = dashHtml.indexOf('</section>', start);
-  if (start < 0) throw new Error("couldn't find the Navigator list on the dashboard");
-  const block = dashHtml.slice(start, end);
-  const rows = [...block.matchAll(/<span class="client-name"[^>]*>([\s\S]*?)<\/span>\s*<span[^>]*>([\s\S]*?)<\/span>[\s\S]*?href="(https:\/\/nav\.oasisgroupaz\.com\/t\/[^"]+)"/g)]
-    .map((m) => ({ label: decodeEntities(m[1]).trim(), clients: decodeEntities(m[2]).trim(), url: m[3] }));
+  const block = start < 0 ? '' : dashHtml.slice(start, dashHtml.indexOf('</section>', start));
+  const handRows = [...block.matchAll(/<span class="client-name"[^>]*>([\s\S]*?)<\/span>\s*<span[^>]*>([\s\S]*?)<\/span>[\s\S]*?href="(https:\/\/nav\.oasisgroupaz\.com\/t\/[^"]+)"[\s\S]*?href="https:\/\/nav\.oasisgroupaz\.com\/admin\/([^"]+)"/g)]
+    .map((m) => ({ label: decodeEntities(m[1]).trim(), clients: decodeEntities(m[2]).trim(), url: m[3], id: m[4] }));
+  let rows = handRows;
+  const snap = await safe(async () => {
+    const { loadSnapshot } = await import('./_snapshot.js');
+    return loadSnapshot();
+  });
+  const listings = snap && Array.isArray(snap.listings) ? snap.listings : [];
+  if (listings.length) {
+    const hand = new Map(handRows.map((r) => [r.id, r.url]));
+    rows = listings.map((l) => {
+      const buyer = l.dealType === 'BUYER';
+      const label = buyer ? (l.phase === 'escrow' ? `Buyer - ${l.address}` : 'Buyer - Home Search') : `Listing - ${l.address}`;
+      const url = l.clientPath ? `https://nav.oasisgroupaz.com${l.clientPath}` : hand.get(l.id);
+      return url ? { label, clients: l.clientNames || '', url } : null;
+    }).filter(Boolean);
+  }
 
   const navigators = await Promise.all(
     rows.map(async (row) => {

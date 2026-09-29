@@ -872,7 +872,7 @@
     <section class="panel" id="navigator">
       <div class="tab-label">04 · Navigator App</div>
       <h2>Navigator App - Active Sellers and Buyers</h2>
-      <div class="panel-sub">Quick links into the Oasis Team Navigator app.</div>
+      <div class="panel-sub">Quick links into the Oasis Team Navigator app -- every active seller and buyer, straight from Navigator.</div>
       <a class="btn" href="https://nav.oasisgroupaz.com/admin" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:1.2rem;">Go to Main Editor (All Listings &amp; Buyers) &rarr;</a>
       <div id="navigator-list" style="display:flex;flex-direction:column;gap:.55rem;">
         <div class="row-card" style="justify-content:space-between;">
@@ -2921,9 +2921,55 @@
       const data = await resp.json().catch(() => ({}));
       if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
       renderLinearTracker(data);
+      renderNavigatorList(data);
     } catch (e) {
       scroller.innerHTML = `<div class="empty-hint" style="margin:.6rem;color:#333;">Couldn't load the tracker from Navigator: ${escapeHtml(e.message)}</div>`;
     }
+  }
+
+  // ---------- NAVIGATOR APP: every active seller & buyer ----------
+  // Built from the same live Navigator snapshot as the tracker, so new
+  // Navigators show up by themselves. Client View links come from the
+  // snapshot's clientPath; until Navigator sends those, fall back to the
+  // links that were typed into this panel by hand.
+  const NAV_BASE = 'https://nav.oasisgroupaz.com';
+  const navHandLinks = (() => {
+    const m = new Map();
+    document.querySelectorAll('#navigator-list .row-card').forEach(row => {
+      const ed = row.querySelector('a[href*="/admin/"]');
+      const cv = row.querySelector('a[href*="/t/"]');
+      if (ed && cv) m.set(ed.getAttribute('href').split('/admin/')[1], cv.getAttribute('href'));
+    });
+    return m;
+  })();
+  const NAV_PHASE = { escrow:'Under contract', listed:'Listed', prep:'Prep', off_market:'Temporarily off market', search:'Home search' };
+  const NAV_ORDER = { escrow:0, listed:1, off_market:2, prep:3, search:4 };
+
+  function renderNavigatorList(data){
+    const list = document.getElementById('navigator-list');
+    const all = data && Array.isArray(data.listings) ? data.listings.slice() : [];
+    if (!all.length) return;
+    all.sort((a, b) => (a.dealType === b.dealType ? 0 : a.dealType === 'BUYER' ? 1 : -1)
+      || (NAV_ORDER[a.phase] ?? 9) - (NAV_ORDER[b.phase] ?? 9)
+      || String(a.address).localeCompare(String(b.address)));
+    list.innerHTML = all.map(l => {
+      const buyer = l.dealType === 'BUYER';
+      const title = buyer
+        ? (l.phase === 'escrow' ? `Buyer - ${l.address}` : 'Buyer - Home Search')
+        : `${l.phase === 'escrow' && !(l.dates && (l.dates.active || l.dates.comingSoon)) ? 'Seller' : 'Listing'} - ${l.address}`;
+      const client = l.clientPath ? NAV_BASE + l.clientPath : navHandLinks.get(l.id);
+      return `<div class="row-card" style="justify-content:space-between;">
+        <div>
+          <span class="client-name" style="color:var(--stamp-${buyer ? 'blue' : 'red'});font-weight:800;">${escapeHtml(title)}</span>
+          <span style="font-size:.95rem;font-weight:400;margin-left:2.5rem;">${escapeHtml(l.clientNames || '')}</span>
+          <span style="font-size:.78rem;color:var(--ink-soft);margin-left:.8rem;">${escapeHtml(NAV_PHASE[l.phase] || '')}</span>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-shrink:0;">
+          ${client ? `<a class="btn btn-ghost" href="${escapeHtml(client)}" target="_blank" rel="noopener">Client View</a>` : ''}
+          <a class="btn btn-ghost" href="${NAV_BASE}/admin/${encodeURIComponent(l.id)}" target="_blank" rel="noopener">Editor</a>
+        </div>
+      </div>`;
+    }).join('');
   }
 
   // ---------- PROSPECTING ----------
