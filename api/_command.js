@@ -41,7 +41,7 @@ async function contacts() {
 export async function runCommandLookup(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const { name, phone, email, loose } = req.body || {};
-  // loose: the "Already in Command? Find them" button -- also list same-last-name
+  // loose: the "Find in Command" button -- also list same-last-name
   // contacts so the right one can be picked by hand.
   const minScore = loose ? 10 : 50;
   try {
