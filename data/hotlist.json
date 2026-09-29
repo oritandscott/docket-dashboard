@@ -120,21 +120,6 @@
     "updatedAt": "2026-09-29T13:29:57.000Z"
   },
   {
-    "id": "hot-1a0ed5b95e72djfn",
-    "name": "Bruce Masalcas",
-    "phone": "661 964 9282",
-    "email": "bmasalcas@yahoo.com",
-    "type": "seller",
-    "source": "openhouse",
-    "tier": "hot",
-    "notes": "OH 9/5 8119 E Palm Ln. Neighbor at 8019 Palm Ln, Scottsdale. Buyer/seller not confirmed.",
-    "commandUrl": "",
-    "callCount": 0,
-    "lastCalledAt": null,
-    "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T13:29:57.000Z"
-  },
-  {
     "id": "hot-mumrym2bjzpap",
     "name": "David Elsaesser",
     "phone": "",
@@ -148,6 +133,21 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T14:31:40.595Z",
     "updatedAt": "2026-09-29T14:31:40.595Z"
+  },
+  {
+    "id": "hot-1a0ed5b95e72djfn",
+    "name": "Bruce Masalcas",
+    "phone": "661 964 9282",
+    "email": "bmasalcas@yahoo.com",
+    "type": "seller",
+    "source": "openhouse",
+    "tier": "hot",
+    "notes": "OH 9/5 8119 E Palm Ln. Neighbor at 8019 Palm Ln, Scottsdale. Buyer/seller not confirmed.",
+    "commandUrl": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T13:29:57.000Z",
+    "updatedAt": "2026-09-29T13:29:57.000Z"
   },
   {
     "id": "hot-1a0ed5b95e9nsep2",
