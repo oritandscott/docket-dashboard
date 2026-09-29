@@ -23,11 +23,13 @@
     "source": "openhouse",
     "tier": "long",
     "notes": "OH 2/14 4716 E Caldwell (The Pointe). SkyWest pilot; likes The Pointe. Wrote agent Risa Medrano but said not committed.",
-    "commandUrl": "",
+    "phoneFound": false,
+    "emailFound": false,
+    "commandUrl": "https://console.command.kw.com/command/contacts/699e3b7f15038f78def1811e",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T13:29:57.000Z"
+    "updatedAt": "2026-09-29T15:31:11.063Z"
   },
   {
     "id": "hot-1a0ed5b95d9kdx2x",
