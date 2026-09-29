@@ -206,20 +206,23 @@
   },
   {
     "id": "hot-1a0edb531cb0635v",
-    "name": "The Goodballets",
+    "name": "Scott Goodballet",
     "phone": "",
     "email": "",
-    "phoneFound": false,
-    "emailFound": false,
     "type": "both",
     "source": "pastclient",
     "tier": "medium",
     "notes": "Past clients.",
+    "phoneFound": false,
+    "emailFound": false,
     "commandUrl": "",
+    "cmdNotesSynced": "Past clients.",
+    "cmdNotesAt": null,
+    "cmdNotesResult": "",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T15:07:50.000Z",
-    "updatedAt": "2026-09-29T15:07:50.000Z"
+    "updatedAt": "2026-09-29T18:37:14.076Z"
   },
   {
     "id": "hot-1a0edb531cea4qgn",
