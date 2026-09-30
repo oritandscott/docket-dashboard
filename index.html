@@ -319,7 +319,9 @@
   .hot-row .hot-call:hover{background:#249152;}
   .hot-move{margin-top:0;}
   .hot-notes textarea{width:100%;min-height:40px;height:40px;font-size:.74rem;resize:vertical;}
-  .hot-saved{font-size:.66rem;color:var(--ink-soft);margin-top:.1rem;}
+  .hot-notes-row{display:flex;align-items:center;gap:.5rem;margin-top:.15rem;}
+  .hot-notes-save{width:auto;padding:.2rem .5rem;font-size:.66rem;}
+  .hot-saved{font-size:.66rem;color:var(--ink-soft);}
   .hot-saved:empty{display:none;}
   .hot-cmd-link{display:block;font-size:.68rem;color:var(--ink-soft);margin-top:.15rem;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;font-family:inherit;}
   @media (max-width:1180px){
@@ -3522,8 +3524,11 @@
             ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="_blank" rel="noopener">📞 Call</a>`
             : `<button class="btn btn-ghost" type="button" data-hot="phone" title="Add a phone number">📞 Add</button>`}</div>
           <div class="hot-notes">
-            <textarea data-hot="notes" placeholder="Notes from the call…">${escapeHtml(h.notes || '')}</textarea>
-            <div class="hot-saved" data-hot-saved>${hotCmdNotesStatus(h)}</div>
+            <textarea data-hot="notes" placeholder="Notes from the call… (Enter to save, Shift+Enter for a new line)">${escapeHtml(h.notes || '')}</textarea>
+            <div class="hot-notes-row">
+              <button class="btn btn-ghost hot-notes-save" type="button" data-hot="save-notes">Save note</button>
+              <div class="hot-saved" data-hot-saved>${hotCmdNotesStatus(h)}</div>
+            </div>
           </div>
           <div><div class="hot-cmd">${h.commandUrl
             ? `<a class="btn btn-ghost" href="${prAttr(h.commandUrl)}" target="_blank" rel="noopener">Open in Command</a>
@@ -3840,6 +3845,16 @@
     if (e.target.matches('textarea[data-hot="notes"]')) hotSaveNotes(e.target);
   });
 
+  // Enter saves (matches the Save note button); Shift+Enter still inserts
+  // a newline, for anyone who wants a multi-line note.
+  hotList.addEventListener('keydown', e => {
+    if (!e.target.matches('textarea[data-hot="notes"]')) return;
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      hotSaveNotes(e.target);
+    }
+  });
+
   hotList.addEventListener('change', async e => {
     const sel = e.target.closest('select[data-hot]');
     if (!sel) return;
@@ -3870,7 +3885,9 @@
     if (!h) return;
     const act = el.dataset.hot;
     try {
-      if (act === 'edit') {
+      if (act === 'save-notes') {
+        await hotSaveNotes(row.querySelector('textarea[data-hot="notes"]'));
+      } else if (act === 'edit') {
         hotEditId = h.id;
         renderHotList();
         const first = document.querySelector(`.hot-row[data-id="${CSS.escape(h.id)}"] [data-edit="phone"]`);
