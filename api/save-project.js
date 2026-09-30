@@ -336,13 +336,13 @@ export default async function handler(req, res) {
     const filePath = FILES[resource];
 
     if (resource === 'prospect') {
-      return handleProspect(req, res, ghHeaders);
+      return await handleProspect(req, res, ghHeaders);
     }
     if (resource === 'hotlist') {
-      return handleHotlist(req, res, ghHeaders);
+      return await handleHotlist(req, res, ghHeaders);
     }
     if (resource === 'inbox') {
-      return handleInbox(req, res, ghHeaders);
+      return await handleInbox(req, res, ghHeaders);
     }
 
     if (resource === 'openhouse') {
