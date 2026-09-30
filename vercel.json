@@ -1,5 +1,5 @@
 {
-  "ignoreCommand": "[ -n \"$VERCEL_GIT_PREVIOUS_SHA\" ] && git cat-file -e \"$VERCEL_GIT_PREVIOUS_SHA\" 2>/dev/null && git diff --quiet \"$VERCEL_GIT_PREVIOUS_SHA\" HEAD -- . ':(exclude)data/'",
+  "ignoreCommand": "git fetch --unshallow --quiet 2>/dev/null || git fetch --depth=200 --quiet 2>/dev/null; [ -n \"$VERCEL_GIT_PREVIOUS_SHA\" ] && git cat-file -e \"$VERCEL_GIT_PREVIOUS_SHA\" 2>/dev/null && git diff --quiet \"$VERCEL_GIT_PREVIOUS_SHA\" HEAD -- . ':(exclude)data/'",
   "crons": [
     {
       "path": "/api/generate-post",
