@@ -323,20 +323,22 @@
   {
     "id": "hot-zkyqnvv3",
     "name": "Kelly Burleson",
-    "phone": "",
-    "email": "",
-    "phoneFound": false,
-    "emailFound": false,
+    "phone": "847-704-2412",
+    "email": "kellylovesbroncos@yahoo.com",
     "type": "buyer",
     "source": "other",
     "tier": "medium",
     "notes": "Watch list, medium term. Not found in Drive open house sheets - add details when known.",
+    "phoneFound": false,
+    "emailFound": false,
     "commandUrl": "",
     "cmdNotesSynced": "Watch list, medium term. Not found in Drive open house sheets - add details when known.",
+    "cmdNotesAt": null,
+    "cmdNotesResult": "",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-30T17:55:36.000Z",
-    "updatedAt": "2026-09-30T17:55:36.000Z"
+    "updatedAt": "2026-09-30T18:03:51.838Z"
   },
   {
     "id": "hot-05w7swcp",
