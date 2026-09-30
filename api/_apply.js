@@ -30,10 +30,10 @@ async function syncSheet(navId) {
   try {
     const snap = await loadSnapshot();
     const rec = (snap.listings || []).find((l) => l.id === navId);
-    if (!rec) return 'Old sheet: record not in the live snapshot, not copied.';
-    return 'Old sheet: ' + (await writeTrackerLine(rec));
+    if (!rec) return 'Google Sheet Linear Tracker: record not in the live snapshot, not copied.';
+    return 'Google Sheet Linear Tracker: ' + (await writeTrackerLine(rec));
   } catch (e) {
-    return 'Old sheet not updated: ' + String(e.message || e);
+    return 'Google Sheet Linear Tracker not updated: ' + String(e.message || e);
   }
 }
 
@@ -101,7 +101,7 @@ export async function runApply(req, res) {
         payload.id = target.id;
       }
       if (prop.op === 'copy_to_sheet') {
-        // Old Google Sheet only -- no Navigator write.
+        // Google Sheet Linear Tracker only -- no Navigator write.
         const sheet = await writeTrackerLine((await loadSnapshot()).listings.find((l) => l.id === payload.id));
         result = { status: 'applied', result: sheet, navId: payload.id };
       } else {

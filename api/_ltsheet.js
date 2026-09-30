@@ -1,5 +1,5 @@
 // Copies a Navigator transaction onto Orit & Scott's original Google Sheet,
-// "LINEAR ESCROW & LISTING TRACKING CALENDAR", so the old tracker keeps
+// "LINEAR ESCROW & LISTING TRACKING CALENDAR", so the Google Sheet Linear Tracker keeps
 // agreeing with Navigator and the dashboard's Linear Tracker.
 //
 // The sheet's layout (Sheet1): one column per day, starting at column A =
@@ -101,7 +101,7 @@ async function sheetsFetch(token, url, init) {
   const r = await fetch(url, { ...init, headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } });
   if (r.status === 403 || r.status === 404) {
     const sa = serviceAccount();
-    throw Object.assign(new Error(`The old Linear Tracker sheet isn't shared with ${sa ? sa.client_email : 'the service account'} as an Editor yet.`), { status: 503, code: 'not_shared' });
+    throw Object.assign(new Error(`The Google Sheet Linear Tracker isn't shared with ${sa ? sa.client_email : 'the service account'} as an Editor yet.`), { status: 503, code: 'not_shared' });
   }
   if (!r.ok) throw Object.assign(new Error(`Google Sheets answered ${r.status}`), { status: 502 });
   return r.json();
@@ -111,7 +111,7 @@ async function sheetsFetch(token, url, init) {
 export async function writeTrackerLine(l, { today = Date.now() } = {}) {
   const todayT = Math.floor(today / DAY) * DAY;
   const line = lineCells(l, todayT);
-  if (!line) return 'Nothing to copy to the old sheet yet (no dates).';
+  if (!line) return 'Nothing to copy to the Google Sheet Linear Tracker yet (no dates).';
   const label = trackerLabel(l);
   const key = addressKey(l.address);
 
@@ -126,7 +126,7 @@ export async function writeTrackerLine(l, { today = Date.now() } = {}) {
 
   // Sanity-check the layout before writing anything.
   if (at(5, 0) !== '1' || at(6, 0) !== 'M' || !/2026 LISTINGS/.test(at(3, 0))) {
-    throw Object.assign(new Error('The old sheet layout changed (column A is no longer Mon Dec 1, 2025) -- not writing.'), { status: 409 });
+    throw Object.assign(new Error('The Google Sheet Linear Tracker layout changed (column A is no longer Mon Dec 1, 2025) -- not writing.'), { status: 409 });
   }
   let blockEnd = rows.findIndex((r, i) => i > 7 && /2025 LISTINGS/.test(String(r[0] || '')));
   if (blockEnd === -1) blockEnd = 45;
@@ -135,7 +135,7 @@ export async function writeTrackerLine(l, { today = Date.now() } = {}) {
 
   const startCol = colOf(line.first) - 1; // label before the first day
   const endCol = colOf(line.last) + 1; // label after the last day
-  if (startCol < 0) throw Object.assign(new Error('This transaction starts before the old sheet does.'), { status: 409 });
+  if (startCol < 0) throw Object.assign(new Error('This transaction starts before the Google Sheet Linear Tracker does.'), { status: 409 });
 
   // Existing line for this property? Clear it first.
   let row = -1;
@@ -162,7 +162,7 @@ export async function writeTrackerLine(l, { today = Date.now() } = {}) {
       if (free) { row = r; break; }
     }
   }
-  if (row === -1) throw Object.assign(new Error('No free row in the 2026 section of the old sheet for this line.'), { status: 409 });
+  if (row === -1) throw Object.assign(new Error('No free row in the 2026 section of the Google Sheet Linear Tracker for this line.'), { status: 409 });
 
   const from = clear ? clear[0] : startCol;
   const to = clear ? clear[1] : endCol;
@@ -200,10 +200,10 @@ export async function writeTrackerLine(l, { today = Date.now() } = {}) {
     run.values.push(cell);
   }
   flush();
-  if (!requests.length) return 'The old Linear Tracker sheet already matches.';
+  if (!requests.length) return 'The Google Sheet Linear Tracker already matches.';
   await sheetsFetch(token, `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`, {
     method: 'POST',
     body: JSON.stringify({ requests }),
   });
-  return `${clear ? 'Updated' : 'Added'} the line on the old Linear Tracker sheet (row ${row + 1}, ${colName(startCol)}-${colName(endCol)}).`;
+  return `${clear ? 'Updated' : 'Added'} the line on the Google Sheet Linear Tracker (row ${row + 1}, ${colName(startCol)}-${colName(endCol)}).`;
 }
