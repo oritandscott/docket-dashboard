@@ -24,12 +24,17 @@
     "type": "buyer",
     "source": "referral",
     "tier": "hot",
-    "notes": "Referral from Dan Miller and Olivia O'Chel. No phone/email found yet -- add from Command. Buyer/seller not confirmed.  Email is gerlingsrobert@gmail.com",
+    "notes": "Referral from Dan Miller and Olivia O'Chel. Called three times now as of today Weds Sept 30 - still no answer.  Dan Miller said he'd mention it to him if he sees him.",
+    "phoneFound": false,
+    "emailFound": false,
     "commandUrl": "",
+    "cmdNotesSynced": "Referral from Dan Miller and Olivia O'Chel. No phone/email found yet -- add from Command. Buyer/seller not confirmed.  Email is gerlingsrobert@gmail.com",
+    "cmdNotesAt": null,
+    "cmdNotesResult": "",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T14:03:56.364Z"
+    "updatedAt": "2026-09-30T17:06:06.096Z"
   },
   {
     "id": "hot-1a0ed5b95dbeak83",
