@@ -323,6 +323,7 @@
   .hot-notes-save{width:auto;padding:.2rem .5rem;font-size:.66rem;}
   .hot-saved{font-size:.66rem;color:var(--ink-soft);}
   .hot-saved:empty{display:none;}
+  .hot-last-call{font-size:.66rem;color:var(--ink-soft);margin-bottom:.15rem;}
   .hot-cmd-link{display:block;font-size:.68rem;color:var(--ink-soft);margin-top:.15rem;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;font-family:inherit;}
   @media (max-width:1180px){
     .hot-head{display:none;}
@@ -3057,6 +3058,16 @@
     return isNaN(d) ? '' : d.toLocaleDateString(undefined, { month:'short', day:'numeric' });
   }
 
+  // "Sep 30, 11:02 AM" - date + time, for the Hot List's "Last Call" line
+  // above the notes box (prShortDate above is date-only, used elsewhere).
+  function prShortDateTime(iso){
+    const d = new Date(iso);
+    if (isNaN(d)) return '';
+    const date = d.toLocaleDateString(undefined, { month:'short', day:'numeric' });
+    const time = d.toLocaleTimeString(undefined, { hour:'numeric', minute:'2-digit' });
+    return `${date}, ${time}`;
+  }
+
   async function prSave(body, method){
     const resp = await fetch('/api/save-project', {
       method: method || 'POST',
@@ -3524,6 +3535,7 @@
             ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="_blank" rel="noopener">📞 Call</a>`
             : `<button class="btn btn-ghost" type="button" data-hot="phone" title="Add a phone number">📞 Add</button>`}</div>
           <div class="hot-notes">
+            ${h.lastCalledAt ? `<div class="hot-last-call">Last Call: ${escapeHtml(prShortDateTime(h.lastCalledAt))}</div>` : ''}
             <textarea data-hot="notes" placeholder="Notes from the call… (Enter to save, Shift+Enter for a new line)">${escapeHtml(h.notes || '')}</textarea>
             <div class="hot-notes-row">
               <button class="btn btn-ghost hot-notes-save" type="button" data-hot="save-notes">Save note</button>
