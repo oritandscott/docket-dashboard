@@ -1,5 +1,27 @@
 [
   {
+    "id": "note-sheet-tucker-style",
+    "text": "(From Claude) Restyle Jeff Tucker's line on the Google Sheet Linear Tracker to match the other lines, and move the today box to today.",
+    "topic": "tracker",
+    "dictated": false,
+    "status": "proposed",
+    "createdAt": "2026-09-30T13:40:46.000Z",
+    "updatedAt": "2026-09-30T13:40:46.000Z",
+    "reply": "One Confirm: rewrites Jeff Tucker's line in the sheet's own style (pink seller label, right-aligned so it's readable; day numbers size 13; COE white on red) and moves the black today box to today. From now on the today box moves by itself every morning, and new lines come out in this style.",
+    "proposals": [
+      {
+        "pid": "p-tucker-restyle",
+        "label": "Google Sheet Linear Tracker: restyle Jeff Tucker's line + move the today box to today",
+        "op": "copy_to_sheet",
+        "match": "Tucker La Puente",
+        "args": {
+          "fresh": true
+        },
+        "status": "pending"
+      }
+    ]
+  },
+  {
     "id": "note-mumyr61d971wx",
     "text": "Add Kelly Burleson and Lucas Richard to Watch List Medium term",
     "topic": "prospecting",

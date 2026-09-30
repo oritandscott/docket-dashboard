@@ -16,7 +16,7 @@
 // 12-function cap).
 
 import { loadSnapshot, navSecret } from './_snapshot.js';
-import { writeTrackerLine } from './_ltsheet.js';
+import { moveTodayBox, writeTrackerLine } from './_ltsheet.js';
 
 const REPO = 'oritandscott/docket-dashboard';
 const FILE_PATH = 'data/prospecting-inbox.json';
@@ -31,7 +31,9 @@ async function syncSheet(navId) {
     const snap = await loadSnapshot();
     const rec = (snap.listings || []).find((l) => l.id === navId);
     if (!rec) return 'Google Sheet Linear Tracker: record not in the live snapshot, not copied.';
-    return 'Google Sheet Linear Tracker: ' + (await writeTrackerLine(rec));
+    const msg = await writeTrackerLine(rec);
+    await moveTodayBox().catch(() => {});
+    return 'Google Sheet Linear Tracker: ' + msg;
   } catch (e) {
     return 'Google Sheet Linear Tracker not updated: ' + String(e.message || e);
   }
@@ -102,7 +104,9 @@ export async function runApply(req, res) {
       }
       if (prop.op === 'copy_to_sheet') {
         // Google Sheet Linear Tracker only -- no Navigator write.
-        const sheet = await writeTrackerLine((await loadSnapshot()).listings.find((l) => l.id === payload.id));
+        const rec = (await loadSnapshot()).listings.find((l) => l.id === payload.id);
+        const sheet = await writeTrackerLine(rec, { fresh: !!(prop.args && prop.args.fresh) });
+        await moveTodayBox().catch(() => {});
         result = { status: 'applied', result: sheet, navId: payload.id };
       } else {
         const r = await fetch(APPLY_URL, {

@@ -972,6 +972,11 @@ export async function runDigest(req, res) {
   try {
     const now = new Date();
     const win = digestWindow(now);
+    // Each morning: move the Google Sheet Linear Tracker's black today box.
+    await safe(async () => {
+      const { moveTodayBox } = await import('./_ltsheet.js');
+      return { note: await moveTodayBox({ today: now.getTime() }) };
+    });
     const [book, yt, drafts, cal, nav, ann, weather] = await Promise.all([
       safe(() => loadBookACall(win)),
       safe(() => loadYouTube(win)),

@@ -79,6 +79,16 @@ export default async function handler(req, res) {
     return runData(req, res);
   }
 
+  // Moves the black today box on the Google Sheet Linear Tracker (api/_ltsheet.js).
+  if (req.query && req.query.job === 'lt-today') {
+    const { moveTodayBox } = await import('./_ltsheet.js');
+    try {
+      return res.status(200).json({ ok: true, result: await moveTodayBox() });
+    } catch (err) {
+      return res.status(err.status || 500).json({ error: err.message });
+    }
+  }
+
   // Dispatches to api/_cmdnotes.js: Prospecting call notes waiting to be
   // added to KW Command by the Oasis Mini.
   if (req.query && req.query.job === 'cmd-notes') {
