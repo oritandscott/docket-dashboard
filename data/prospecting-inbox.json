@@ -1,5 +1,14 @@
 [
   {
+    "id": "note-muo64g0l6ayzl",
+    "text": "IN THE bartko tracker check what's in the google sheet and match that-- the BINSR was received and agreed upon on Saturday so Saturday's box should show the \"BNSR AGRD\" over white and then all boxes after that green.   I use the yellow for the due diligence period (up to ten days or until buyer sends BINSR), then light orange for the seller's five-day response period (or until they send it) and then Blue for the buyer's five- day response period (or until they sent it)....so from BNSR SENT on the 21st, the Bartko tracker boxes should all be light orange and then the BNSR AGRD box on Saturday and then green-- since the BINSR was sent by Seller on Saturday, their last day, and was signed same day, so no blue boxes visible.",
+    "topic": "tracker",
+    "dictated": false,
+    "status": "new",
+    "createdAt": "2026-09-30T13:55:53.493Z",
+    "updatedAt": "2026-09-30T13:55:53.493Z"
+  },
+  {
     "id": "note-sheet-tucker-style",
     "text": "(From Claude) Restyle Jeff Tucker's line on the Google Sheet Linear Tracker to match the other lines, and move the today box to today.",
     "topic": "tracker",
