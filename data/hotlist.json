@@ -215,21 +215,6 @@
     "updatedAt": "2026-09-30T17:55:36.000Z"
   },
   {
-    "id": "hot-1a0ed5b95desq2jd",
-    "name": "Rob Gerlings",
-    "phone": "4165710678",
-    "email": "",
-    "type": "buyer",
-    "source": "openhouse",
-    "tier": "hot",
-    "notes": "Called us -- remembered us from an open house in The Pointe last year. No phone/email found yet -- add from Command. Buyer/seller not confirmed.  Wife is Renata Gerlings rengerlings@msn.com",
-    "commandUrl": "",
-    "callCount": 0,
-    "lastCalledAt": null,
-    "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T14:05:01.329Z"
-  },
-  {
     "id": "hot-1a0ed5b95d9kdx2x",
     "name": "James Arendell",
     "phone": "(509) 771-1986‬",
@@ -268,6 +253,21 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T13:29:57.000Z",
     "updatedAt": "2026-09-30T21:36:08.567Z"
+  },
+  {
+    "id": "hot-1a0ed5b95desq2jd",
+    "name": "Rob Gerlings",
+    "phone": "4165710678",
+    "email": "",
+    "type": "buyer",
+    "source": "openhouse",
+    "tier": "hot",
+    "notes": "Called us -- remembered us from an open house in The Pointe last year. No phone/email found yet -- add from Command. Buyer/seller not confirmed.  Wife is Renata Gerlings rengerlings@msn.com",
+    "commandUrl": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T13:29:57.000Z",
+    "updatedAt": "2026-09-29T14:05:01.329Z"
   },
   {
     "id": "hot-1a0ed5b95e0y0ocq",
