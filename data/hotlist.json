@@ -19,7 +19,7 @@
   {
     "id": "hot-1a0ed5b95d9kdx2x",
     "name": "James Arendell",
-    "phone": "(509) 771-1986‬",
+    "phone": "(509) 771-1986\u202c",
     "email": "",
     "type": "buyer",
     "source": "referral",
@@ -319,5 +319,41 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T17:18:10.991Z",
     "updatedAt": "2026-09-29T19:29:48.057Z"
+  },
+  {
+    "id": "hot-zkyqnvv3",
+    "name": "Kelly Burleson",
+    "phone": "",
+    "email": "",
+    "phoneFound": false,
+    "emailFound": false,
+    "type": "buyer",
+    "source": "other",
+    "tier": "medium",
+    "notes": "Watch list, medium term. Not found in Drive open house sheets - add details when known.",
+    "commandUrl": "",
+    "cmdNotesSynced": "Watch list, medium term. Not found in Drive open house sheets - add details when known.",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-30T17:55:36.000Z",
+    "updatedAt": "2026-09-30T17:55:36.000Z"
+  },
+  {
+    "id": "hot-05w7swcp",
+    "name": "Lucas Richard",
+    "phone": "",
+    "email": "lrichard00@yahoo.com",
+    "phoneFound": false,
+    "emailFound": false,
+    "type": "buyer",
+    "source": "openhouse",
+    "tier": "medium",
+    "notes": "Open house 9/26/26 (7802 E Monte Vista, Scottsdale), no phone on sheet. Owns a condo nearby; engaged, wedding in Feb. Timeframe 1 year+, liked the presentation, wants to stay in touch.",
+    "commandUrl": "",
+    "cmdNotesSynced": "Open house 9/26/26 (7802 E Monte Vista, Scottsdale), no phone on sheet. Owns a condo nearby; engaged, wedding in Feb. Timeframe 1 year+, liked the presentation, wants to stay in touch.",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-30T17:55:36.000Z",
+    "updatedAt": "2026-09-30T17:55:36.000Z"
   }
 ]

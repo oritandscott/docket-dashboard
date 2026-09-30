@@ -4,9 +4,19 @@
     "text": "IN THE bartko tracker check what's in the google sheet and match that-- the BINSR was received and agreed upon on Saturday so Saturday's box should show the \"BNSR AGRD\" over white and then all boxes after that green.   I use the yellow for the due diligence period (up to ten days or until buyer sends BINSR), then light orange for the seller's five-day response period (or until they send it) and then Blue for the buyer's five- day response period (or until they sent it)....so from BNSR SENT on the 21st, the Bartko tracker boxes should all be light orange and then the BNSR AGRD box on Saturday and then green-- since the BINSR was sent by Seller on Saturday, their last day, and was signed same day, so no blue boxes visible.",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-09-30T13:55:53.493Z",
-    "updatedAt": "2026-09-30T13:55:53.493Z"
+    "updatedAt": "2026-09-30T17:55:36.000Z",
+    "reply": "I can't set individual box colors myself, and there's no allowed command for colors. I proposed re-copying the Bartko line to the Google Sheet Linear Tracker. Please check the result: BNSR SENT on the 21st through the day before Saturday should be light orange, Saturday's box 'BNSR AGRD' on white, and every box after that green, with no blue boxes. If the colors still come out wrong, the color logic in the dashboard needs a code fix - tell me and I'll handle it.",
+    "proposals": [
+      {
+        "pid": "p-bartko-recopy",
+        "label": "Re-copy Bartko's line onto the Google Sheet Linear Tracker",
+        "op": "copy_to_sheet",
+        "match": "Bartko",
+        "status": "pending"
+      }
+    ]
   },
   {
     "id": "note-sheet-tucker-style",
@@ -38,9 +48,10 @@
     "text": "Add Kelly Burleson and Lucas Richard to Watch List Medium term",
     "topic": "prospecting",
     "dictated": false,
-    "status": "new",
+    "status": "done",
     "createdAt": "2026-09-29T17:41:50.545Z",
-    "updatedAt": "2026-09-29T17:41:50.545Z"
+    "updatedAt": "2026-09-30T17:55:36.000Z",
+    "reply": "Added Kelly Burleson and Lucas Richard to the Medium list. Kelly: I couldn't find her in the Drive open house or Command sheets, so she has no phone/email yet. Lucas: from the 9/26 Monte Vista open house - email lrichard00@yahoo.com, but no phone was on the sheet."
   },
   {
     "id": "note-sheet-tucker",
@@ -85,7 +96,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
