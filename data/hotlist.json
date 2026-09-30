@@ -207,6 +207,26 @@
     "updatedAt": "2026-09-29T15:31:14.513Z"
   },
   {
+    "id": "hot-mumxwt8ub11q1",
+    "name": "Ramsey Bronyah",
+    "phone": "(812) 333-8182",
+    "email": "rbronyah@gmail.com",
+    "type": "buyer",
+    "source": "pastclient",
+    "tier": "medium",
+    "notes": "Past client (Christine & Ramsey Bronyah -- bought 1001 E Renee Dr; sold 3031 E Pershing Ave).",
+    "phoneFound": false,
+    "emailFound": false,
+    "commandUrl": "https://console.command.kw.com/command/contacts/6150f273e04aa5001a6e6a3d",
+    "cmdNotesSynced": "Past client (Christine & Ramsey Bronyah -- bought 1001 E Renee Dr; sold 3031 E Pershing Ave).",
+    "cmdNotesAt": null,
+    "cmdNotesResult": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T17:18:14.286Z",
+    "updatedAt": "2026-09-29T19:29:50.518Z"
+  },
+  {
     "id": "hot-1a0edb531c99h5r4",
     "name": "Elizabeth Schieferdecker",
     "phone": "(253) 307-4427",
@@ -294,25 +314,5 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T17:18:10.991Z",
     "updatedAt": "2026-09-29T19:29:48.057Z"
-  },
-  {
-    "id": "hot-mumxwt8ub11q1",
-    "name": "Ramsey Bronyah",
-    "phone": "(812) 333-8182",
-    "email": "rbronyah@gmail.com",
-    "type": "buyer",
-    "source": "pastclient",
-    "tier": "medium",
-    "notes": "Past client (Christine & Ramsey Bronyah -- bought 1001 E Renee Dr; sold 3031 E Pershing Ave).",
-    "phoneFound": false,
-    "emailFound": false,
-    "commandUrl": "https://console.command.kw.com/command/contacts/6150f273e04aa5001a6e6a3d",
-    "cmdNotesSynced": "Past client (Christine & Ramsey Bronyah -- bought 1001 E Renee Dr; sold 3031 E Pershing Ave).",
-    "cmdNotesAt": null,
-    "cmdNotesResult": "",
-    "callCount": 0,
-    "lastCalledAt": null,
-    "createdAt": "2026-09-29T17:18:14.286Z",
-    "updatedAt": "2026-09-29T19:29:50.518Z"
   }
 ]
