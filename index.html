@@ -3187,9 +3187,9 @@
             <div class="pr-meta">${escapeHtml(meta.join(' · '))}</div>
           </div>
           <div class="pr-actions">
-            ${voice ? `<a class="btn hot-call" data-act="voice" href="${prAttr(voice)}" target="_blank" rel="noopener">📞 Call</a>`
+            ${voice ? `<a class="btn hot-call" data-act="voice" href="${prAttr(voice)}" target="oasis-voice" rel="noopener">📞 Call</a>`
               : `<button class="btn btn-ghost" type="button" data-act="addphone" title="Add a phone number">📞 Add</button>`}
-            ${text ? `<a class="btn hot-text" href="${prAttr(text)}" target="_blank" rel="noopener">💬 Text</a>` : ''}
+            ${text ? `<a class="btn hot-text" href="${prAttr(text)}" target="oasis-voice" rel="noopener">💬 Text</a>` : ''}
             <button class="btn" type="button" data-act="call">Log call</button>
             <select data-act="status" aria-label="Status">
               ${Object.keys(PR_STATUS_LABEL).map(s => `<option value="${s}"${s === p.status ? ' selected' : ''}>${PR_STATUS_LABEL[s]}</option>`).join('')}
@@ -3481,16 +3481,18 @@
     return `https://voice.google.com/u/0/calls?a=nc,%2B${d}`;
   }
 
-  // Google Voice web "new text" link - same deep-link pattern as
-  // hotVoiceUrl (a=nc for calls), just a=nt for texts. Google Voice has
-  // no documented way to pre-fill the message body via URL, only the
-  // recipient, so this opens Voice ready to text this contact and the
-  // message itself is typed there.
+  // Google Voice web link straight to this contact's text thread (opens
+  // the existing conversation if there is one, otherwise a fresh one).
+  // itemId=t.+{number} is Voice's own URL for a thread - confirmed by
+  // copying it out of the address bar while Voice had one open, since
+  // it isn't documented anywhere (unlike the call deep link above).
+  // Voice has no way to pre-fill the message body via URL, only which
+  // thread to open, so the message itself is typed there.
   function hotTextUrl(phone){
     let d = String(phone || '').replace(/\D/g, '');
     if (d.length === 10) d = '1' + d;
     if (d.length < 11) return '';
-    return `https://voice.google.com/u/0/texts?a=nt,%2B${d}`;
+    return `https://voice.google.com/u/0/messages?itemId=t.%2B${d}`;
   }
 
   function hotOptions(map, selected){
@@ -3552,7 +3554,7 @@
             <select class="hot-move" data-hot="tier" aria-label="Move to list">${hotOptions(HOT_TIERS, tier)}</select>
           </div>
           <div class="hot-contact-actions">${voice
-            ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="_blank" rel="noopener">📞 Call</a><a class="btn hot-text" href="${prAttr(text)}" target="_blank" rel="noopener">💬 Text</a>`
+            ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="oasis-voice" rel="noopener">📞 Call</a><a class="btn hot-text" href="${prAttr(text)}" target="oasis-voice" rel="noopener">💬 Text</a>`
             : `<button class="btn btn-ghost" type="button" data-hot="phone" title="Add a phone number">📞 Add</button>`}</div>
           <div class="hot-notes">
             ${h.lastCalledAt ? `<div class="hot-last-call">Last Call: ${escapeHtml(prShortDateTime(h.lastCalledAt))}</div>` : ''}
