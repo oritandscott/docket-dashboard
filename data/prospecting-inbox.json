@@ -4,9 +4,9 @@
     "text": "(From Claude) Restyle Jeff Tucker's line on the Google Sheet Linear Tracker to match the other lines, and move the today box to today.",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-09-30T13:40:46.000Z",
-    "updatedAt": "2026-09-30T13:40:46.000Z",
+    "updatedAt": "2026-09-30T13:47:18.769Z",
     "reply": "One Confirm: rewrites Jeff Tucker's line in the sheet's own style (pink seller label, right-aligned so it's readable; day numbers size 13; COE white on red) and moves the black today box to today. From now on the today box moves by itself every morning, and new lines come out in this style.",
     "proposals": [
       {
@@ -17,7 +17,10 @@
         "args": {
           "fresh": true
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "Updated the line on the Google Sheet Linear Tracker (row 19, KL-LL).",
+        "navId": "cmumqg8ky000004l3r08sk65f",
+        "decidedAt": "2026-09-30T13:47:18.769Z"
       }
     ]
   },
@@ -73,7 +76,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
