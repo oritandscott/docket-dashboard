@@ -285,7 +285,7 @@
   .hot-tier-medium .hot-title{color:var(--gold);}
   .hot-tier-long .hot-title{color:var(--stamp-blue);}
   .hot-table{display:flex;flex-direction:column;gap:.45rem;}
-  .hot-row{display:grid;grid-template-columns:40px minmax(0,1.2fr) 100px 206px 72px minmax(0,2fr) 172px 18px;gap:.5rem;align-items:start;padding:.45rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;transition:outline-color .15s;}
+  .hot-row{display:grid;grid-template-columns:40px minmax(0,1.2fr) 100px 206px 72px minmax(0,1.3fr) 172px 18px;gap:.5rem;align-items:start;padding:.45rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;transition:outline-color .15s;}
   .hot-row.selected{outline:2px solid var(--gold);outline-offset:-1px;}
   .hot-row.just-moved{animation:hotFlash .6s ease;}
   @keyframes hotFlash{from{background:rgba(201,161,93,.25);}to{background:var(--paper-card);}}
@@ -318,10 +318,10 @@
   .hot-row .hot-call{background:#1E7B45;border-color:#1E7B45;color:#fff;}
   .hot-row .hot-call:hover{background:#249152;}
   .hot-move{margin-top:0;}
-  .hot-notes textarea{width:100%;min-height:40px;height:40px;font-size:.74rem;resize:vertical;}
-  .hot-notes-row{display:flex;align-items:center;gap:.5rem;margin-top:.15rem;}
-  .hot-notes-save{width:auto;padding:.2rem .5rem;font-size:.66rem;}
-  .hot-saved{font-size:.66rem;color:var(--ink-soft);}
+  .hot-notes-row{display:flex;align-items:flex-start;gap:.4rem;}
+  .hot-notes-row textarea{flex:1 1 auto;min-width:0;min-height:40px;height:40px;font-size:.74rem;resize:vertical;}
+  .hot-row .hot-notes-save{flex:0 0 auto;width:auto;padding:.2rem .5rem;font-size:.66rem;white-space:nowrap;}
+  .hot-saved{font-size:.66rem;color:var(--ink-soft);margin-top:.15rem;}
   .hot-saved:empty{display:none;}
   .hot-last-call{font-size:.66rem;color:var(--ink-soft);margin-bottom:.15rem;}
   .hot-cmd-link{display:block;font-size:.68rem;color:var(--ink-soft);margin-top:.15rem;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;font-family:inherit;}
@@ -3536,11 +3536,11 @@
             : `<button class="btn btn-ghost" type="button" data-hot="phone" title="Add a phone number">📞 Add</button>`}</div>
           <div class="hot-notes">
             ${h.lastCalledAt ? `<div class="hot-last-call">Last Call: ${escapeHtml(prShortDateTime(h.lastCalledAt))}</div>` : ''}
-            <textarea data-hot="notes" placeholder="Notes from the call… (Enter to save, Shift+Enter for a new line)">${escapeHtml(h.notes || '')}</textarea>
             <div class="hot-notes-row">
+              <textarea data-hot="notes" placeholder="Notes from the call… (Enter to save, Shift+Enter for a new line)">${escapeHtml(h.notes || '')}</textarea>
               <button class="btn btn-ghost hot-notes-save" type="button" data-hot="save-notes">Save note</button>
-              <div class="hot-saved" data-hot-saved>${hotCmdNotesStatus(h)}</div>
             </div>
+            <div class="hot-saved" data-hot-saved>${hotCmdNotesStatus(h)}</div>
           </div>
           <div><div class="hot-cmd">${h.commandUrl
             ? `<a class="btn btn-ghost" href="${prAttr(h.commandUrl)}" target="_blank" rel="noopener">Open in Command</a>
