@@ -13,9 +13,9 @@
     "text": "(From Claude) Jeff Tucker / La Puente is a private sale to Offerpad (never listed; referral fee). Simplify his Navigator, then copy his line to the old Google Sheet.",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-09-29T17:22:39.000Z",
-    "updatedAt": "2026-09-30T13:27:03.324Z",
+    "updatedAt": "2026-09-30T13:27:20.073Z",
     "reply": "Two Confirm buttons below, top to bottom: 1) Marks La Puente as a private sale to Offerpad -- the listing, MLS, due-diligence, appraisal and lender steps become N/A in his Navigator (contract Sep 25, COE Oct 19 stay). 2) Adds his line to the old Google Sheet.",
     "proposals": [
       {
@@ -36,7 +36,10 @@
         "label": "Old Google Sheet: add Jeff Tucker's line -- 4824 E. La Puente (contract Sep 25, COE Oct 19)",
         "op": "copy_to_sheet",
         "match": "Tucker La Puente",
-        "status": "pending"
+        "status": "applied",
+        "result": "The old Linear Tracker sheet already matches.",
+        "navId": "cmumqg8ky000004l3r08sk65f",
+        "decidedAt": "2026-09-30T13:27:20.073Z"
       }
     ]
   },
