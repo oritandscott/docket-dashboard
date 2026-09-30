@@ -3189,7 +3189,7 @@
           <div class="pr-actions">
             ${voice ? `<a class="btn hot-call" data-act="voice" href="${prAttr(voice)}" target="oasis-voice" rel="noopener">📞 Call</a>`
               : `<button class="btn btn-ghost" type="button" data-act="addphone" title="Add a phone number">📞 Add</button>`}
-            ${text ? `<a class="btn hot-text" href="${prAttr(text)}" target="oasis-voice" rel="noopener">💬 Text</a>` : ''}
+            ${text ? `<a class="btn hot-text" data-act="text" href="${prAttr(text)}" target="oasis-voice" rel="noopener">💬 Text</a>` : ''}
             <button class="btn" type="button" data-act="call">Log call</button>
             <select data-act="status" aria-label="Status">
               ${Object.keys(PR_STATUS_LABEL).map(s => `<option value="${s}"${s === p.status ? ' selected' : ''}>${PR_STATUS_LABEL[s]}</option>`).join('')}
@@ -3312,6 +3312,15 @@
       // Google Voice opens in a new tab; count it as a call.
       prSave({ id, logCall: true, status: p.status === 'to-call' ? 'follow-up' : p.status })
         .then(d => prUpsertLocal(d.record)).catch(() => {});
+      return;
+    }
+    if (el.dataset.act === 'text') {
+      // Voice's itemId=t.+{number} link only opens an EXISTING thread -
+      // copy the number so "+ Send new message" is one paste away instead
+      // of a lookup when this contact has never been texted before.
+      let d = String(p.phone || '').replace(/\D/g, '');
+      if (d.length === 10) d = '1' + d;
+      if (d.length >= 11) navigator.clipboard.writeText('+' + d).catch(() => {});
       return;
     }
     try {
@@ -3554,7 +3563,7 @@
             <select class="hot-move" data-hot="tier" aria-label="Move to list">${hotOptions(HOT_TIERS, tier)}</select>
           </div>
           <div class="hot-contact-actions">${voice
-            ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="oasis-voice" rel="noopener">📞 Call</a><a class="btn hot-text" href="${prAttr(text)}" target="oasis-voice" rel="noopener">💬 Text</a>`
+            ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="oasis-voice" rel="noopener">📞 Call</a><a class="btn hot-text" data-hot="text" href="${prAttr(text)}" target="oasis-voice" rel="noopener">💬 Text</a>`
             : `<button class="btn btn-ghost" type="button" data-hot="phone" title="Add a phone number">📞 Add</button>`}</div>
           <div class="hot-notes">
             ${h.lastCalledAt ? `<div class="hot-last-call">Last Call: ${escapeHtml(prShortDateTime(h.lastCalledAt))}</div>` : ''}
@@ -3960,6 +3969,15 @@
           h.callCount = d.record.callCount;
           h.lastCalledAt = d.record.lastCalledAt;
         }).catch(() => {});
+      } else if (act === 'text') {
+        // Voice's itemId=t.+{number} link only opens an EXISTING thread -
+        // for a contact never texted before it lands on a blank screen,
+        // since Voice has no URL param that pre-fills the recipient for a
+        // new one. Copying the number means "+ Send new message" in Voice
+        // is one paste away instead of a manual lookup.
+        let d = String(h.phone || '').replace(/\D/g, '');
+        if (d.length === 10) d = '1' + d;
+        if (d.length >= 11) navigator.clipboard.writeText('+' + d).catch(() => {});
       } else if (act === 'phone') {
         const phone = prompt(`Phone number for ${h.name}:`, '');
         if (!phone || !phone.trim()) return;
