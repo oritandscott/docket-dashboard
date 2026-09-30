@@ -98,7 +98,22 @@
     border-left:3px solid transparent;
     transition:background .15s, border-color .15s, color .15s;
   }
+  /* Each shortcut's background matches its section's own tint (see "Per-section
+     background tints" below) - sections without a tint (Navigator App, Master
+     Project List, Tracker, Notes) keep the plain default, so no rule needed here. */
+  .nav a[href="#today"]{background:#2A2A2E;}
+  .nav a[href="#prospecting"]{background:#23203A;}
+  .nav a[href="#escrow-tracker"]{background:#1C2320;}
+  .nav a[href="#video-production-mtp"]{background:#2A2A2E;}
+  .nav a[href="#comments-channel2"]{background:#10251A;}
+  .nav a[href="#comments-channel1"]{background:#10251A;}
+  .nav a[href="#anniversaries"]{background:#47270A;}
+  .nav a[href="#weekender"]{background:#132A33;}
+  .nav a[href="#blogdrafts"]{background:#101F35;}
+  .nav a[href="#pipeline"]{background:#331313;}
   .nav a:hover{background:rgba(237,233,221,.07);color:#fff;}
+  /* Whichever section is currently scrolled into view - see initSidebarScrollSpy(). */
+  .nav a.active{border-left-color:var(--gold);color:#fff;font-weight:700;box-shadow:inset 0 0 0 1px rgba(237,233,221,.18);}
   .nav a .num{
     font-family:'IBM Plex Mono',monospace;
     font-size:.7rem;
@@ -4213,6 +4228,35 @@
     }
   });
 
+  // Highlights whichever sidebar shortcut matches the section currently
+  // scrolled into view (see .nav a.active). Watches a thin horizontal band
+  // near the top of the viewport rather than "any part visible," so a tall
+  // section being merely adjacent doesn't steal the highlight.
+  function initSidebarScrollSpy() {
+    const navLinks = Array.from(document.querySelectorAll('.nav a[href^="#"]'));
+    const sectionToLink = new Map();
+    navLinks.forEach((a) => {
+      const section = document.querySelector(a.getAttribute('href'));
+      if (section) sectionToLink.set(section, a);
+    });
+    if (!sectionToLink.size) return;
+
+    const setActive = (link) => {
+      navLinks.forEach((a) => a.classList.toggle('active', a === link));
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(sectionToLink.get(entry.target));
+        });
+      },
+      { rootMargin: '-15% 0px -70% 0px', threshold: 0 }
+    );
+    sectionToLink.forEach((_link, section) => observer.observe(section));
+    setActive(navLinks[0]);
+  }
+
   // ---------- INIT ----------
   renderHeader();
   refreshInbox();
@@ -4235,6 +4279,7 @@
   refreshOpenHouse();
   refreshProjects();
   refreshProspects();
+  initSidebarScrollSpy();
 })();
 </script>
 </body>
