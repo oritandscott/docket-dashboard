@@ -1,8 +1,8 @@
 {
-  "state": "running",
-  "message": "connection test from Mac mini",
-  "campaignTitle": null,
+  "state": "done",
+  "message": "Now reporting from the Mac mini. Last build: Sept 24 Mailchimp draft (campaign c1d066d9e5), test sent to oritandscott@gmail.com, NOT sent to the list. Next run Thu Oct 1 ~1:05pm; it will use this dashboard's open house (Sunday Oct 4, 1:30-3:30, Monte Vista).",
+  "campaignTitle": "Weekly Weekender - September 24-30, 2026",
   "editUrl": null,
-  "updatedAt": "2026-09-30T19:33:35.262Z",
-  "lastSuccessAt": "2026-08-20T22:01:39.501Z"
+  "updatedAt": "2026-09-30T19:34:01.079Z",
+  "lastSuccessAt": "2026-09-30T19:34:01.079Z"
 }
