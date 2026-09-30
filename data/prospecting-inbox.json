@@ -15,7 +15,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-09-29T17:22:39.000Z",
-    "updatedAt": "2026-09-30T13:17:42.890Z",
+    "updatedAt": "2026-09-30T13:27:03.324Z",
     "reply": "Two Confirm buttons below, top to bottom: 1) Marks La Puente as a private sale to Offerpad -- the listing, MLS, due-diligence, appraisal and lender steps become N/A in his Navigator (contract Sep 25, COE Oct 19 stay). 2) Adds his line to the old Google Sheet.",
     "proposals": [
       {
@@ -26,7 +26,10 @@
         "args": {
           "buyerName": "Offerpad"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "4824 E. La Puente, Phoenix: private sale to Offerpad -- listing, MLS, due diligence, appraisal and lender steps marked N/A Old sheet: Added the line on the old Linear Tracker sheet (row 19, KL-LL).",
+        "navId": "cmumqg8ky000004l3r08sk65f",
+        "decidedAt": "2026-09-30T13:27:03.324Z"
       },
       {
         "pid": "p-tucker-sheet",
@@ -45,7 +48,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
