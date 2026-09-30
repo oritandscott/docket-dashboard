@@ -190,21 +190,6 @@
     "updatedAt": "2026-09-29T15:31:21.180Z"
   },
   {
-    "id": "hot-1a0ed5b95ebim9tc",
-    "name": "Shannon Blum",
-    "phone": "612-296-5736",
-    "email": "skblum@outlook.com",
-    "type": "buyer",
-    "source": "openhouse",
-    "tier": "medium",
-    "notes": "OH 9/12 4007 E Agave. From Minneapolis; friend Sandy Salvo lives in MPR. Marked long-term timeframe on sign-in.",
-    "commandUrl": "",
-    "callCount": 0,
-    "lastCalledAt": null,
-    "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T13:29:57.000Z"
-  },
-  {
     "id": "hot-1a0edb531c77bru5",
     "name": "Jim Chalifoux",
     "phone": "(602) 690-8652",
@@ -237,6 +222,21 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T15:07:50.000Z",
     "updatedAt": "2026-09-29T15:31:16.038Z"
+  },
+  {
+    "id": "hot-1a0ed5b95ebim9tc",
+    "name": "Shannon Blum",
+    "phone": "612-296-5736",
+    "email": "skblum@outlook.com",
+    "type": "buyer",
+    "source": "openhouse",
+    "tier": "medium",
+    "notes": "OH 9/12 4007 E Agave. From Minneapolis; friend Sandy Salvo lives in MPR. Marked long-term timeframe on sign-in.",
+    "commandUrl": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T13:29:57.000Z",
+    "updatedAt": "2026-09-29T13:29:57.000Z"
   },
   {
     "id": "hot-1a0edb531cb0635v",
