@@ -24,7 +24,7 @@
     "type": "buyer",
     "source": "referral",
     "tier": "hot",
-    "notes": "Sep 30: \n\nReferral from Dan Miller and Olivia O'Chel. Called three times now as of today Weds Sept 30 - still no answer.  Dan Miller said he'd mention it to him if he sees him.",
+    "notes": "Sep 30: Called three times now as of today Weds Sept 30 - still no answer.  Dan Miller said he'd mention it to him if he sees him.",
     "phoneFound": false,
     "emailFound": false,
     "commandUrl": "",
@@ -34,7 +34,7 @@
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-30T18:00:23.717Z"
+    "updatedAt": "2026-09-30T18:01:19.062Z"
   },
   {
     "id": "hot-1a0ed5b95dbeak83",
