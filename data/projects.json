@@ -214,5 +214,17 @@
     "waitingOn": "",
     "createdAt": "2026-09-18T12:00:00.000Z",
     "updatedAt": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "proj-muphgjk8jn5jz",
+    "title": "HTML BUILD OF KW COMMAND 'DESIGNS' EMAIL",
+    "notes": "HTML BUILD OF KW COMMAND 'DESIGNS' EMAIL: Go into KW Command and determine if you are able to build an email using HTML in the same way you've done it in Mailchimp-- so that our emails going out of KW Command can look so much nicer compared to the crappy editor that they have in there. I know I wrote something about this somewhere else here so check around for a redundant task. You'll need to explore DESIGNS in KW Command. Once a mail is built then a Smartplan would be built to trigger the send directly out of Command",
+    "kind": "idea",
+    "status": "idea",
+    "machine": "mini",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-10-01T12:00:59.911Z",
+    "updatedAt": "2026-10-01T12:00:59.911Z"
   }
 ]
