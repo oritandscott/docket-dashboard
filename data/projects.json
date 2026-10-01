@@ -1,151 +1,218 @@
 [
-{
-  "id": "proj-1a0b4e2cc84vhpv",
-  "title": "Ghostwriter — daily blog post drafts",
-  "notes": "Vercel cron -> WordPress drafts for review. Docs describe this as a DAILY cron at 14:00 UTC, but vercel.json currently has it firing every 3 days (0 14 */3 * *). Worth confirming which is actually intended.",
-  "kind": "automation", "status": "running", "machine": "cloud",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc85vzdn",
-  "title": "Weekly Database Email Draft (Market Pulse / Tip / Personal Note)",
-  "notes": "Cloud scheduled task, Mondays ~9am Phoenix. Confirmed healthy: last run 9/21 succeeded. Drafts a genuinely separate relationship email from the Thursday Weekender's Valley-events content — never sends, and Command building happens live with Orit & Scott present.",
-  "kind": "automation", "status": "running", "machine": "cloud",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T22:06:55.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc86pwo1",
-  "title": "Daily Morning Brief — The Docket",
-  "notes": "Cloud scheduled task, daily ~4am Phoenix. Server-only, doesn't need a browser or a specific computer. Confirmed firing daily (last fired 9/22); run status briefly shows PENDING right after firing, that's normal.",
-  "kind": "automation", "status": "running", "machine": "cloud",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T22:06:55.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc88e2nv",
-  "title": "Thursday Weekender — weekly Mailchimp event campaign build",
-  "notes": "Confirmed running as a Routine on the Oasis Mini — built during a long work session last Thursday (9/17-18); the Routine's own \"last edited\" date matches, so this is the real, current build, not something to redo. On Scott's MacBook Pro (checked via Settings > Scheduled tasks, 9/22 screenshot): two old predecessor entries, \"OLD Weekender Automation (Mac Mini)\" and \"OLD Weekender AutO 2 *CORRECT ONE IS A ROUTINE\", both already show status Paused — no live redundancy on the Pro, nothing further to do there for Weekender.",
-  "kind": "automation", "status": "running", "machine": "mini",
-  "redundancyNote": "Name collision, not redundancy: this is a completely different project from 'Mailchimp Weekender list-hygiene' below. Same nickname, two unrelated things — worth renaming one to avoid confusion. (Also, cosmetically: the two old Paused entries on the MacBook Pro could be deleted for tidiness, but that's optional — they're inert.)",
-  "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T23:06:58.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc892nwv",
-  "title": "Home Anniversary Outreach",
-  "notes": "Confirmed running as a Routine on the Oasis Mini. Resolved (9/22): the live duplicate on Scott's MacBook Pro, \"OLD HOME ANNIV on MACBOOK PRO - PAUSED\" (a misleadingly-named routine that was actually still Active, firing daily ~8am), has been Archived by Scott directly in the app. Confirmed via the session's own \"This session is archived\" banner — no longer running on the Pro. Mini is now the sole source for this automation.",
-  "kind": "automation", "status": "running", "machine": "mini",
-  "redundancyNote": "",
-  "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T23:20:46.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc8a9zsw",
-  "title": "Mailchimp Weekender — list hygiene & win-back",
-  "notes": "Ongoing list-cleanup project (win-back automation live, ~257 contacts flagged for archiving). Not machine-bound — done through the Mailchimp web UI / API, not a recurring script.",
-  "kind": "automation", "status": "running", "machine": "cloud",
-  "redundancyNote": "Name collision, not redundancy: shares the 'Weekender' nickname with the Thursday event-email build above, but they're unrelated projects.",
-  "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc8b0zib",
-  "title": "Fitness Booking Reminders",
-  "notes": "Deployed Vercel app that texts Orit when Pilates booking windows open at Mountainside Fitness Ahwatukee. Already cloud-hosted, no machine dependency.",
-  "kind": "automation", "status": "running", "machine": "cloud",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc8cyv7p",
-  "title": "NAP Audit (online presence correction)",
-  "notes": "One-off correction of stale brokerage listings across Zillow, LinkedIn, WeSERV, and ARMLS. Not recurring.",
-  "kind": "automation", "status": "done", "machine": "unassigned",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc8ds4hd",
-  "title": "YouTube Comments Agent",
-  "notes": "Listed in the project's own instructions as '[to be filled in]' — no documented architecture exists yet. Worth nailing down what it actually does and where it runs before it's forgotten.",
-  "kind": "automation", "status": "needs-check", "machine": "unassigned",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc8fovpy",
-  "title": "KW Command database cleanup",
-  "notes": "Likely browser-automation work against KW Command — per the machine rule, that means the Oasis Mini, not the MacBook Pro, once scoped.",
-  "kind": "idea", "status": "idea", "machine": "mini",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc900zb1",
-  "title": "Pointe South Mountain Analysis page (oasisarizonaliving.com)",
-  "notes": "Possible overlap worth checking first: a Pointe South Mountain HOA blog post already exists in draft (unlisted, framed for court-home owners), pending Ghostwriter's noindex/unlisted-publishing feature. Worth deciding whether this new page replaces, links to, or duplicates that draft before building.",
-  "kind": "idea", "status": "idea", "machine": "unassigned",
-  "redundancyNote": "Check against the existing unlisted Pointe South Mountain HOA blog draft before scoping — may overlap.",
-  "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc91uv88",
-  "title": "Holiday/occasion greeting thumbnail generator",
-  "notes": "Cute greeting-image generator for texting clients from Scott's iPhone to celebrate major and minor holidays. Needs scoping: on-demand (Scott asks Claude in the moment) vs. a recurring scheduled task that generates and delivers ahead of each date.",
-  "kind": "idea", "status": "idea", "machine": "unassigned",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc92e2v2",
-  "title": "Lead/prospect scoring & delivery (1-2x/week)",
-  "notes": "A system for surfacing good/logical/worthwhile leads or prospects for Scott to call, delivered into the dashboard 1-2 times a week. Needs scoping: what data source defines a 'good' lead (KW Command, past clients, MLS activity, etc.).",
-  "kind": "idea", "status": "idea", "machine": "unassigned",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc93qnm0",
-  "title": "\"Board of Directors\" advisory-panel concept",
-  "notes": "Modeled on something Ryan Melville does. Scott has mentioned wanting this but doesn't yet know how Ryan's version actually works — needs research/clarification on the concept itself before it can be scoped as a build.",
-  "kind": "idea", "status": "idea", "machine": "unassigned",
-  "redundancyNote": "",
-  "waitingOn": "Find out how Ryan Melville's 'Board of Directors' actually works before this can be scoped.",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc94kizg",
-  "title": "\"Needed\" panel — what's in progress & waiting on you",
-  "notes": "A place that shows everything in progress and everywhere Claude is waiting on an answer from Orit or Scott. First version built today: any Master Project List item can carry a 'waiting on' note, and those surface together in the callout at the top of this panel.",
-  "kind": "idea", "status": "in-progress", "machine": "cloud",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc95mpey",
-  "title": "Scheduler view — all scheduled tasks, status & problems",
-  "notes": "A live view of every scheduled task/routine and its status. Refreshed audit (2026-09-22): 3 tasks show up at the cloud/account level — Weekly Database Email Draft (healthy, cloud), Daily Morning Brief (healthy, cloud), and OLD Weekender Automation (Mac Mini) (disabled, stale since 9/17, superseded — see below). IMPORTANT BLIND SPOT confirmed this round: the Oasis Mini runs its own local \"Routines\" (Home Anniversary Outreach, Weekender — both confirmed 9/22) that live only in that machine's own Claude app and never show up in this cloud list at all, and aren't visible to Claude even when a session is linked to that machine — only Scott/Orit can see that list directly in the app's own Settings/Routines panel. So this cloud count always understates what's actually running on the Mini. A live version would need either a way for the dashboard's Vercel backend to read scheduled-task/Routine status directly (which it can't do today) or the Mini's Routines themselves posting a heartbeat, the way the machine-status panel already expects — for now this list is refreshed by hand from what Scott/Orit report seeing in the app.",
-  "kind": "idea", "status": "idea", "machine": "cloud",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-22T22:06:55.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc97qsyw",
-  "title": "MLS Activity Sync",
-  "notes": "Discovered via audit (9/22): a local Routine on Scott's MacBook Pro, Mondays ~10am. Checks ARMLS/Flexmls \"Activity Report\" emails and logs a short MLS Activity entry per listing in Oasis Navigator. Confirmed healthy — ran successfully yesterday (9/21), added 2 entries for the 4007 E. Agave Rd, Phoenix transaction. Good candidate to move to the Mini for the same reason as the others: local routines only run while the Pro itself is awake and online, so this silently gets skipped if Scott is traveling with it on a Monday. Unlike the browser-only automations, this one depends on an actual local checkout of the oasis-navigator codebase (it ran npm ci and generated a Prisma client mid-run) — moving it means setting up that project on the Mini too, not just recreating the routine text.",
-  "kind": "automation", "status": "running", "machine": "macbook",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-22T23:20:46.000Z", "updatedAt": "2026-09-22T23:20:46.000Z"
-},
-{
-  "id": "proj-1a0b4e2cc96m1tl",
-  "title": "Pre-List packet automation (Canva)",
-  "notes": "Automate the Canva pre-listing packet: first build out the existing Canva template with Orit & Scott's actual content, then for each new listing take just the seller name(s) and property address and generate the final packet. Canva has no reliable API for this kind of templated bulk-fill, so this is realistically browser automation — per the machine rule, that means the Oasis Mini.",
-  "kind": "idea", "status": "idea", "machine": "mini",
-  "redundancyNote": "", "waitingOn": "",
-  "createdAt": "2026-09-18T12:00:00.000Z", "updatedAt": "2026-09-18T12:00:00.000Z"
-}
+  {
+    "id": "proj-1a0b4e2cc84vhpv",
+    "title": "Ghostwriter — daily blog post drafts",
+    "notes": "Vercel cron -> WordPress drafts for review. Docs describe this as a DAILY cron at 14:00 UTC, but vercel.json currently has it firing every 3 days (0 14 */3 * *). Worth confirming which is actually intended.",
+    "kind": "automation",
+    "status": "running",
+    "machine": "cloud",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc85vzdn",
+    "title": "Weekly Database Email Draft (Market Pulse / Tip / Personal Note)",
+    "notes": "Cloud scheduled task, Mondays ~9am Phoenix. Confirmed healthy: last run 9/21 succeeded. Drafts a genuinely separate relationship email from the Thursday Weekender's Valley-events content — never sends, and Command building happens live with Orit & Scott present.",
+    "kind": "automation",
+    "status": "running",
+    "machine": "cloud",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-22T22:06:55.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc86pwo1",
+    "title": "Daily Morning Brief — The Docket",
+    "notes": "Cloud scheduled task, daily ~4am Phoenix. Server-only, doesn't need a browser or a specific computer. Confirmed firing daily (last fired 9/22); run status briefly shows PENDING right after firing, that's normal.",
+    "kind": "automation",
+    "status": "running",
+    "machine": "cloud",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-22T22:06:55.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc88e2nv",
+    "title": "Thursday Weekender — weekly Mailchimp event campaign build",
+    "notes": "Confirmed running as a Routine on the Oasis Mini — built during a long work session last Thursday (9/17-18); the Routine's own \"last edited\" date matches, so this is the real, current build, not something to redo. On Scott's MacBook Pro (checked via Settings > Scheduled tasks, 9/22 screenshot): two old predecessor entries, \"OLD Weekender Automation (Mac Mini)\" and \"OLD Weekender AutO 2 *CORRECT ONE IS A ROUTINE\", both already show status Paused — no live redundancy on the Pro, nothing further to do there for Weekender.",
+    "kind": "automation",
+    "status": "running",
+    "machine": "mini",
+    "redundancyNote": "Name collision, not redundancy: this is a completely different project from 'Mailchimp Weekender list-hygiene' below. Same nickname, two unrelated things — worth renaming one to avoid confusion. (Also, cosmetically: the two old Paused entries on the MacBook Pro could be deleted for tidiness, but that's optional — they're inert.)",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-22T23:06:58.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc892nwv",
+    "title": "Home Anniversary Outreach",
+    "notes": "Confirmed running as a Routine on the Oasis Mini. Resolved (9/22): the live duplicate on Scott's MacBook Pro, \"OLD HOME ANNIV on MACBOOK PRO - PAUSED\" (a misleadingly-named routine that was actually still Active, firing daily ~8am), has been Archived by Scott directly in the app. Confirmed via the session's own \"This session is archived\" banner — no longer running on the Pro. Mini is now the sole source for this automation.",
+    "kind": "automation",
+    "status": "running",
+    "machine": "mini",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-22T23:20:46.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc8a9zsw",
+    "title": "Mailchimp Weekender — list hygiene & win-back",
+    "notes": "Ongoing list-cleanup project (win-back automation live, ~257 contacts flagged for archiving). Not machine-bound — done through the Mailchimp web UI / API, not a recurring script.",
+    "kind": "automation",
+    "status": "running",
+    "machine": "cloud",
+    "redundancyNote": "Name collision, not redundancy: shares the 'Weekender' nickname with the Thursday event-email build above, but they're unrelated projects.",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc8b0zib",
+    "title": "Fitness Booking Reminders",
+    "notes": "Deployed Vercel app that texts Orit when Pilates booking windows open at Mountainside Fitness Ahwatukee. Already cloud-hosted, no machine dependency.",
+    "kind": "automation",
+    "status": "running",
+    "machine": "cloud",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc8cyv7p",
+    "title": "NAP Audit (online presence correction)",
+    "notes": "One-off correction of stale brokerage listings across Zillow, LinkedIn, WeSERV, and ARMLS. Not recurring.",
+    "kind": "automation",
+    "status": "done",
+    "machine": "unassigned",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc8ds4hd",
+    "title": "YouTube Comments Agent",
+    "notes": "Listed in the project's own instructions as '[to be filled in]' — no documented architecture exists yet. Worth nailing down what it actually does and where it runs before it's forgotten.",
+    "kind": "automation",
+    "status": "needs-check",
+    "machine": "unassigned",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc8fovpy",
+    "title": "HTML BUILD OF KW COMMAND 'DESIGNS' EMAIL",
+    "notes": "Go into KW Command and determine if you are able to build an email using HTML in the same way you've done it in Mailchimp-- so that our emails going out of KW Command can look so much nicer compared to the crappy editor that they have in there.",
+    "kind": "idea",
+    "status": "idea",
+    "machine": "mini",
+    "redundancyNote": "",
+    "waitingOn": "Go into KW Command and determine if you are able to build an email using HTML in the same way you've done it in Mailchimp-- so that our emails going out of KW Command can look so much nicer compared to the crappy editor that they have in there.   I know I wrote something about this somewhere else here so check around for a redundant task.   You'll need to explore DESIGNS in KW Command.   Once a mail is built then a Smartplan would be built to trigger the send directly out of Command",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-10-01T11:56:30.564Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc900zb1",
+    "title": "Pointe South Mountain Analysis page (oasisarizonaliving.com)",
+    "notes": "Possible overlap worth checking first: a Pointe South Mountain HOA blog post already exists in draft (unlisted, framed for court-home owners), pending Ghostwriter's noindex/unlisted-publishing feature. Worth deciding whether this new page replaces, links to, or duplicates that draft before building.",
+    "kind": "idea",
+    "status": "idea",
+    "machine": "unassigned",
+    "redundancyNote": "Check against the existing unlisted Pointe South Mountain HOA blog draft before scoping — may overlap.",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc91uv88",
+    "title": "Holiday/occasion greeting thumbnail generator",
+    "notes": "Cute greeting-image generator for texting clients from Scott's iPhone to celebrate major and minor holidays. Needs scoping: on-demand (Scott asks Claude in the moment) vs. a recurring scheduled task that generates and delivers ahead of each date.",
+    "kind": "idea",
+    "status": "idea",
+    "machine": "unassigned",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc92e2v2",
+    "title": "Lead/prospect scoring & delivery (1-2x/week)",
+    "notes": "A system for surfacing good/logical/worthwhile leads or prospects for Scott to call, delivered into the dashboard 1-2 times a week. Needs scoping: what data source defines a 'good' lead (KW Command, past clients, MLS activity, etc.).",
+    "kind": "idea",
+    "status": "idea",
+    "machine": "unassigned",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc93qnm0",
+    "title": "\"Board of Directors\" advisory-panel concept",
+    "notes": "Modeled on something Ryan Melville does. Scott has mentioned wanting this but doesn't yet know how Ryan's version actually works — needs research/clarification on the concept itself before it can be scoped as a build.",
+    "kind": "idea",
+    "status": "idea",
+    "machine": "unassigned",
+    "redundancyNote": "",
+    "waitingOn": "Find out how Ryan Melville's 'Board of Directors' actually works before this can be scoped.",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc94kizg",
+    "title": "\"Needed\" panel — what's in progress & waiting on you",
+    "notes": "A place that shows everything in progress and everywhere Claude is waiting on an answer from Orit or Scott. First version built today: any Master Project List item can carry a 'waiting on' note, and those surface together in the callout at the top of this panel.",
+    "kind": "idea",
+    "status": "in-progress",
+    "machine": "cloud",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc95mpey",
+    "title": "Scheduler view — all scheduled tasks, status & problems",
+    "notes": "A live view of every scheduled task/routine and its status. Refreshed audit (2026-09-22): 3 tasks show up at the cloud/account level — Weekly Database Email Draft (healthy, cloud), Daily Morning Brief (healthy, cloud), and OLD Weekender Automation (Mac Mini) (disabled, stale since 9/17, superseded — see below). IMPORTANT BLIND SPOT confirmed this round: the Oasis Mini runs its own local \"Routines\" (Home Anniversary Outreach, Weekender — both confirmed 9/22) that live only in that machine's own Claude app and never show up in this cloud list at all, and aren't visible to Claude even when a session is linked to that machine — only Scott/Orit can see that list directly in the app's own Settings/Routines panel. So this cloud count always understates what's actually running on the Mini. A live version would need either a way for the dashboard's Vercel backend to read scheduled-task/Routine status directly (which it can't do today) or the Mini's Routines themselves posting a heartbeat, the way the machine-status panel already expects — for now this list is refreshed by hand from what Scott/Orit report seeing in the app.",
+    "kind": "idea",
+    "status": "idea",
+    "machine": "cloud",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-22T22:06:55.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc97qsyw",
+    "title": "MLS Activity Sync",
+    "notes": "Discovered via audit (9/22): a local Routine on Scott's MacBook Pro, Mondays ~10am. Checks ARMLS/Flexmls \"Activity Report\" emails and logs a short MLS Activity entry per listing in Oasis Navigator. Confirmed healthy — ran successfully yesterday (9/21), added 2 entries for the 4007 E. Agave Rd, Phoenix transaction. Good candidate to move to the Mini for the same reason as the others: local routines only run while the Pro itself is awake and online, so this silently gets skipped if Scott is traveling with it on a Monday. Unlike the browser-only automations, this one depends on an actual local checkout of the oasis-navigator codebase (it ran npm ci and generated a Prisma client mid-run) — moving it means setting up that project on the Mini too, not just recreating the routine text.",
+    "kind": "automation",
+    "status": "running",
+    "machine": "macbook",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-22T23:20:46.000Z",
+    "updatedAt": "2026-09-22T23:20:46.000Z"
+  },
+  {
+    "id": "proj-1a0b4e2cc96m1tl",
+    "title": "Pre-List packet automation (Canva)",
+    "notes": "Automate the Canva pre-listing packet: first build out the existing Canva template with Orit & Scott's actual content, then for each new listing take just the seller name(s) and property address and generate the final packet. Canva has no reliable API for this kind of templated bulk-fill, so this is realistically browser automation — per the machine rule, that means the Oasis Mini.",
+    "kind": "idea",
+    "status": "idea",
+    "machine": "mini",
+    "redundancyNote": "",
+    "waitingOn": "",
+    "createdAt": "2026-09-18T12:00:00.000Z",
+    "updatedAt": "2026-09-18T12:00:00.000Z"
+  }
 ]
