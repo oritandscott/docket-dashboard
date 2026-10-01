@@ -217,7 +217,7 @@
   {
     "id": "hot-1a0ed5b95d9kdx2x",
     "name": "James Arendell",
-    "phone": "(509) 771-1986‬",
+    "phone": "(509) 771-1986\u202c",
     "email": "",
     "type": "buyer",
     "source": "referral",
@@ -362,5 +362,23 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T13:29:57.000Z",
     "updatedAt": "2026-09-29T13:29:57.000Z"
+  },
+  {
+    "id": "hot-01qwfm",
+    "name": "Lizette Salazar & Alfredo Cortes",
+    "phone": "",
+    "email": "liznjac@gmail.com",
+    "phoneFound": false,
+    "emailFound": false,
+    "type": "buyer",
+    "source": "pastclient",
+    "tier": "medium",
+    "notes": "Past buyer clients (Mesa, 1239 W 1st Pl, closed 2025). Lizette Salazar & Jose Alfredo Cortes; Jose's email JoseACortes96@gmail.com.",
+    "commandUrl": "",
+    "cmdNotesSynced": "Past buyer clients (Mesa, 1239 W 1st Pl, closed 2025). Lizette Salazar & Jose Alfredo Cortes; Jose's email JoseACortes96@gmail.com.",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-10-01T00:09:13.000Z",
+    "updatedAt": "2026-10-01T00:09:13.000Z"
   }
 ]
