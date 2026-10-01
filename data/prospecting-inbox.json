@@ -1,5 +1,14 @@
 [
   {
+    "id": "note-muq6unrxwnvsj",
+    "text": "Create a new Tracker and Navigator (and new line in the old Google Linear sheet) for Elizabeth and Michael Louton, Buyers of 12406 S POTOMAC ST, Phoenix, AZ 85044 with contract acceptance today, inspection on Monday afternoon with a 4pm Executive Summary meeting (with inspector) and closing November 18.  Purchase price 330000 and they got a $12,500 credit for a 3-2-1 buy-down.  They got a $700 home warranty.",
+    "topic": "tracker",
+    "dictated": false,
+    "status": "new",
+    "createdAt": "2026-10-01T23:51:48.957Z",
+    "updatedAt": "2026-10-01T23:51:48.957Z"
+  },
+  {
     "id": "note-muoq1p3xsvc8v",
     "text": "Add Alfredo & Lizette to the client call list",
     "topic": "prospecting",
@@ -106,7 +115,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
