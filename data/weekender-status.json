@@ -1,8 +1,8 @@
 {
-  "state": "done",
-  "message": "Ready for today. Next run Thu Oct 1 ~1:05pm on the Mac mini, using ONLY today's Angela email, with this dashboard's open house (Sunday Oct 4, 1:30-3:30, Monte Vista). Last build: Sept 24 draft (campaign c1d066d9e5), never sent to the list.",
-  "campaignTitle": "Weekly Weekender - September 24-30, 2026",
+  "state": "running",
+  "message": "Building this week's Weekender on the Mac mini...",
+  "campaignTitle": null,
   "editUrl": null,
-  "updatedAt": "2026-10-01T11:45:54.519Z",
+  "updatedAt": "2026-10-01T21:03:02.107Z",
   "lastSuccessAt": "2026-10-01T11:45:54.519Z"
 }
