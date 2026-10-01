@@ -1,8 +1,8 @@
 {
-  "state": "error",
-  "message": "Weekender build failed on the Mac mini: RuntimeError: input/angela_htmlbody.html is 157h old -- stale (last week's?). Stage today's Angela email and write a fresh week_manifest.json first.",
-  "campaignTitle": null,
+  "state": "done",
+  "message": "Ready for today. Next run Thu Oct 1 ~1:05pm on the Mac mini, using ONLY today's Angela email, with this dashboard's open house (Sunday Oct 4, 1:30-3:30, Monte Vista). Last build: Sept 24 draft (campaign c1d066d9e5), never sent to the list.",
+  "campaignTitle": "Weekly Weekender - September 24-30, 2026",
   "editUrl": null,
-  "updatedAt": "2026-10-01T11:45:47.439Z",
-  "lastSuccessAt": "2026-09-30T19:34:01.079Z"
+  "updatedAt": "2026-10-01T11:45:54.519Z",
+  "lastSuccessAt": "2026-10-01T11:45:54.519Z"
 }
