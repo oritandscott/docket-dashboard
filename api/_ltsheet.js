@@ -25,6 +25,7 @@ const rgb = (hex) => ({ red: parseInt(hex.slice(0, 2), 16) / 255, green: parseIn
 // The sheet's own colors.
 const COLOR = {
   gray: rgb('D9D9D9'), dd: rgb('FFFF00'), esc: rgb('B6D7A8'), contract: rgb('FF00FF'),
+  sr: rgb('FFE599'), br: rgb('CFE2F3'), // seller's / buyer's BINSR response periods
   coe: rgb('FF0000'), cs: rgb('EAD1DC'), oh: rgb('9900FF'), white: rgb('FFFFFF'),
   black: rgb('000000'), sellerText: rgb('FF00FF'), buyerText: rgb('0000FF'),
 };
@@ -107,11 +108,20 @@ function lineCells(l, today) {
     }
   }
   if (contract && coe) {
-    const ddEnd = dayOf(d.ddEnd);
+    // Buyers: yellow due diligence until the BINSR is delivered, light
+    // orange for the seller's response, blue for the buyer's final
+    // response, green once agreed (Orit & Scott's color scheme).
+    const b = l.binsr || {};
+    const delivered = dayOf(b.delivered && b.delivered.date) || dayOf(d.ddEnd);
+    const response = dayOf(b.response && b.response.date);
+    const agreed = dayOf(b.agreed && b.agreed.date);
+    const buyerColor = (t) => (!delivered || t <= delivered ? COLOR.dd
+      : response && t <= response ? COLOR.sr
+        : agreed && t <= agreed ? COLOR.br : COLOR.esc);
     for (let t = contract; t < coe; t += DAY) {
       const n = (t - contract) / DAY;
       let color = COLOR.gray;
-      if (l.dealType === 'BUYER') color = n === 0 ? COLOR.contract : ddEnd && t <= ddEnd ? COLOR.dd : COLOR.esc;
+      if (l.dealType === 'BUYER') color = n === 0 ? COLOR.contract : buyerColor(t);
       put(t, n, color);
     }
     put(coe, 'COE', COLOR.coe);
@@ -119,8 +129,8 @@ function lineCells(l, today) {
   (Array.isArray(l.events) ? l.events : []).forEach((ev) => {
     const t = dayOf(ev.date);
     if (!t || t === coe) return;
-    const prev = cells.get(t);
-    put(t, String(ev.code || ''), ev.code === 'OPEN HAUS' ? COLOR.oh : prev ? prev.color : null);
+    // Codes sit on white like the sheet's own (BNSR SENT, APRS OK...).
+    put(t, String(ev.code || ''), ev.code === 'OPEN HAUS' ? COLOR.oh : COLOR.white);
   });
   const ts = [...cells.keys()];
   if (!ts.length) return null;
@@ -196,8 +206,8 @@ export async function writeTrackerLine(l, { today = Date.now(), fresh = false } 
 
   const from = clear ? clear[0] : startCol;
   const to = clear ? clear[1] : endCol;
-  // Only touch cells whose content changes, in contiguous runs, so an
-  // updated line keeps the sheet's own colors and anything typed by hand
+  // Touch day numbers (for their phase colors) and cells whose content
+  // changes, in contiguous runs; keep labels and anything typed by hand
   // (e.g. "BNSR SENT" where Navigator would put a day number).
   const isNum = (x) => /^\d+$/.test(String(x).trim());
   const requests = [];
@@ -217,14 +227,19 @@ export async function writeTrackerLine(l, { today = Date.now(), fresh = false } 
     const t = BASE + c * DAY;
     let v = null;
     let color = null;
-    if (c === startCol || c === endCol) v = label;
+    if (c === startCol || c === endCol) {
+      // Keep a label already on the sheet for this property (their wording).
+      const was = at(row, c);
+      v = clear && was && norm(was).includes(key) ? was : label;
+    }
     else if (line.cells.has(t)) ({ text: v, color } = line.cells.get(t));
     const want = v === null ? '' : String(v);
     const have = at(row, c);
     // fresh: rewrite every cell (fixes a line this code wrote earlier).
     const keepHandTyped = clear && !fresh && have && !isNum(have) && have !== 'COE' && !norm(have).includes(key) && isNum(want);
     const keepLabel = clear && !fresh && want === label && have && norm(have).includes(key);
-    if (clear && !fresh && (want === have || keepHandTyped || keepLabel)) { flush(); continue; }
+    // Day numbers are always rewritten so their phase colors stay current.
+    if (clear && !fresh && ((want === have && !isNum(want)) || keepHandTyped || keepLabel)) { flush(); continue; }
     const kind = c === startCol ? 'labelStart' : c === endCol ? 'labelEnd' : kindOf(v);
     const cell = { userEnteredFormat: cellFormat(kind, kind.startsWith('label') ? null : color, l.dealType === 'BUYER') };
     if (want) cell.userEnteredValue = typeof v === 'number' ? { numberValue: v } : { stringValue: want };

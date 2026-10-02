@@ -69,14 +69,39 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-09-30T13:55:53.493Z",
-    "updatedAt": "2026-09-30T17:55:36.000Z",
-    "reply": "I can't set individual box colors myself, and there's no allowed command for colors. I proposed re-copying the Bartko line to the Google Sheet Linear Tracker. Please check the result: BNSR SENT on the 21st through the day before Saturday should be light orange, Saturday's box 'BNSR AGRD' on white, and every box after that green, with no blue boxes. If the colors still come out wrong, the color logic in the dashboard needs a code fix - tell me and I'll handle it.",
+    "updatedAt": "2026-10-02T00:27:51.000Z",
+    "reply": "Done: the dashboard tracker and the Google Sheet Linear Tracker now use your BINSR colors for buyers -- yellow due diligence until the BINSR is sent, light orange for the seller's response period, blue for the buyer's final response, green once agreed; BNSR SENT / BNSR AGRD sit on white. Tap the three Confirms in order to record Bartko's BINSR dates in Navigator and rewrite his sheet line. From now on, just tell me (e.g. \"Louton BINSR sent Oct 9\", \"Louton BINSR agreed Oct 14\") and the colors follow.",
     "proposals": [
       {
+        "pid": "p-bartko-binsr-sent",
+        "label": "Bartko: BINSR delivered (sent) Mon Sep 21",
+        "op": "binsr",
+        "match": "Bartko",
+        "args": {
+          "stage": "delivered",
+          "date": "2026-09-21"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-bartko-binsr-agreed",
+        "label": "Bartko: BINSR agreed Sat Sep 26 (seller responded and it was signed the same day)",
+        "op": "binsr",
+        "match": "Bartko",
+        "args": {
+          "stage": "agreed",
+          "date": "2026-09-26"
+        },
+        "status": "pending"
+      },
+      {
         "pid": "p-bartko-recopy",
-        "label": "Re-copy Bartko's line onto the Google Sheet Linear Tracker",
+        "label": "Google Sheet Linear Tracker: rewrite Bartko's line with the new colors",
         "op": "copy_to_sheet",
         "match": "Bartko",
+        "args": {
+          "fresh": true
+        },
         "status": "pending"
       }
     ]

@@ -259,6 +259,8 @@
   .lt-c.gray{background:#D9D9D9;}
   .lt-c.dd{background:#FFF59D;}
   .lt-c.esc{background:#A9D18E;}
+  .lt-c.sr{background:#FFE599;}
+  .lt-c.br{background:#CFE2F3;}
   .lt-c.tom{background:#FFFF00;}
   .lt-c.future{opacity:.55;}
   .lt-c.ev{background:#fff;font-size:9px;line-height:1.05;text-align:center;white-space:normal;flex-direction:column;letter-spacing:-.01em;}
@@ -865,6 +867,8 @@
         <div class="lt-legend" aria-hidden="true">
           <span><i class="lt-swatch" style="background:#D9D9D9;"></i>Listing / seller escrow days</span>
           <span><i class="lt-swatch" style="background:#FFF59D;"></i>Buyer due diligence</span>
+          <span><i class="lt-swatch" style="background:#FFE599;"></i>Seller's BINSR response</span>
+          <span><i class="lt-swatch" style="background:#CFE2F3;"></i>Buyer's final BINSR response</span>
           <span><i class="lt-swatch" style="background:#A9D18E;"></i>Buyer escrow</span>
           <span><i class="lt-swatch" style="background:#FFFF00;"></i>TOM</span>
           <span><i class="lt-swatch" style="background:#8E2BFF;"></i>Open house</span>
@@ -2793,13 +2797,25 @@
           end = listEnd;
         }
       }
-      // Escrow days: seller rows stay gray like the sheet; buyer rows are
-      // yellow through due diligence, then green.
+      // Escrow days: seller rows stay gray like the sheet. Buyer rows follow
+      // Orit & Scott's BINSR colors: yellow due diligence until the BINSR
+      // is delivered, light orange for the seller's response period, blue
+      // for the buyer's final response period, then green once agreed.
       if (contract && coe) {
         const ddEnd = ltDay(d.ddEnd);
+        const b = l.binsr || {};
+        const delivered = ltDay(b.delivered && b.delivered.date) || ddEnd;
+        const response = ltDay(b.response && b.response.date);
+        const agreed = ltDay(b.agreed && b.agreed.date);
+        const buyerPhase = x => {
+          if (!delivered || x <= delivered) return 'dd';
+          if (response && x <= response) return 'sr';
+          if (agreed && x <= agreed) return 'br';
+          return 'esc';
+        };
         for (let x = contract; x < coe; x = ltAddDays(x, 1)) {
           const n = ltDiff(contract, x);
-          const cls = l.dealType === 'BUYER' ? (ddEnd && x <= ddEnd ? 'dd' : 'esc') : 'gray';
+          const cls = l.dealType === 'BUYER' ? buyerPhase(x) : 'gray';
           put(x, { cls: cls + (x > today ? ' future' : ''), text:String(n), title:`Escrow day ${n}` });
         }
         put(coe, { cls:'coe', text:'COE', title:'Close of escrow' });
