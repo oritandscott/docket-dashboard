@@ -4,9 +4,27 @@
     "text": "Create a new Tracker and Navigator (and new line in the old Google Linear sheet) for Elizabeth and Michael Louton, Buyers of 12406 S POTOMAC ST, Phoenix, AZ 85044 with contract acceptance today, inspection on Monday afternoon with a 4pm Executive Summary meeting (with inspector) and closing November 18.  Purchase price 330000 and they got a $12,500 credit for a 3-2-1 buy-down.  They got a $700 home warranty.",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-10-02T00:10:18.199Z",
-    "updatedAt": "2026-10-02T00:10:18.199Z"
+    "updatedAt": "2026-10-02T00:24:09.000Z",
+    "proposals": [
+      {
+        "pid": "p-louton-create",
+        "label": "Create new Navigator: Elizabeth & Michael Louton, BUYERS, 12406 S Potomac St, Phoenix, AZ 85044 -- price $330,000, contract Thu Oct 1, COE Wed Nov 18, 10-day due diligence (ends Oct 11). Also adds their line to the Google Sheet Linear Tracker.",
+        "op": "create_transaction",
+        "args": {
+          "dealType": "BUYER",
+          "address": "12406 S Potomac St, Phoenix, AZ 85044",
+          "clientName": "Elizabeth & Michael Louton",
+          "price": "330000",
+          "contractDate": "2026-10-01",
+          "closingDate": "2026-11-18",
+          "dueDiligenceDays": 10
+        },
+        "status": "pending"
+      }
+    ],
+    "reply": "One Confirm creates the Louton Navigator AND their blue buyer line on the Google Sheet Linear Tracker (contract Oct 1 = Day 0, COE Nov 18). I used the standard 10-day due diligence (ends Sun Oct 11) -- tell me if the contract says otherwise. Navigator's commands can't set these yet, so please add them in the Louton Navigator editor: inspection Mon Oct 5 (afternoon) with the 4pm Executive Summary meeting with the inspector; the $12,500 seller credit for the 3-2-1 buy-down; the $700 home warranty."
   },
   {
     "id": "note-muq6unrxwnvsj",
@@ -19,7 +37,7 @@
     "proposals": [
       {
         "pid": "p-louton-create",
-        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 — $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
+        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 \u2014 $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
         "op": "create_transaction",
         "args": {
           "dealType": "BUYER",
@@ -141,7 +159,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
