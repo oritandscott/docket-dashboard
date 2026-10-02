@@ -75,7 +75,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-09-30T13:55:53.493Z",
-    "updatedAt": "2026-10-02T01:12:12.488Z",
+    "updatedAt": "2026-10-02T01:12:18.863Z",
     "reply": "Done: the dashboard tracker and the Google Sheet Linear Tracker now use your BINSR colors for buyers -- yellow due diligence until the BINSR is sent, light orange for the seller's response period, blue for the buyer's final response, green once agreed; BNSR SENT / BNSR AGRD sit on white. Tap the three Confirms in order to record Bartko's BINSR dates in Navigator and rewrite his sheet line. From now on, just tell me (e.g. \"Louton BINSR sent Oct 9\", \"Louton BINSR agreed Oct 14\") and the colors follow.",
     "proposals": [
       {
@@ -101,7 +101,10 @@
           "stage": "agreed",
           "date": "2026-09-26"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "15428 S 15th Avenue Phoenix, AZ 85045: BINSR agreed 2026-09-26 Google Sheet Linear Tracker: Updated the line on the Google Sheet Linear Tracker (row 15, JZ-LU).",
+        "navId": "cmttckk8f000004l20kae6l0f",
+        "decidedAt": "2026-10-02T01:12:18.863Z"
       },
       {
         "pid": "p-bartko-recopy",
