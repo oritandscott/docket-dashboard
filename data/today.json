@@ -6,12 +6,6 @@
       "text": "Check Homebot — past-client outreach ops",
       "done": false,
       "source": "automation"
-    },
-    {
-      "id": "muo4nsp1h902i",
-      "text": "Publish Docket Dashboard fixes (Vercel limit reset)",
-      "done": false,
-      "source": "automation"
     }
   ]
 }
