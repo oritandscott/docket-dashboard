@@ -4,9 +4,26 @@
     "text": "Create a new Tracker and Navigator (and new line in the old Google Linear sheet) for Elizabeth and Michael Louton, Buyers of 12406 S POTOMAC ST, Phoenix, AZ 85044 with contract acceptance today, inspection on Monday afternoon with a 4pm Executive Summary meeting (with inspector) and closing November 18.  Purchase price 330000 and they got a $12,500 credit for a 3-2-1 buy-down.  They got a $700 home warranty.",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-10-01T23:51:48.957Z",
-    "updatedAt": "2026-10-01T23:51:48.957Z"
+    "updatedAt": "2026-10-02T00:00:00.000Z",
+    "proposals": [
+      {
+        "pid": "p-louton-create",
+        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 \u2014 $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
+        "op": "create_transaction",
+        "args": {
+          "dealType": "BUYER",
+          "address": "12406 S Potomac St, Phoenix, AZ 85044",
+          "clientName": "Elizabeth & Michael Louton",
+          "price": 330000,
+          "contractDate": "2026-10-01",
+          "closingDate": "2026-11-18"
+        },
+        "status": "pending"
+      }
+    ],
+    "reply": "Proposed one new Buyer Navigator for Elizabeth & Michael Louton (12406 S Potomac St, $330,000, contract 10/1/2026, closing 11/18/2026); Confirm will also add their line to the Google Sheet Linear Tracker. I took \"today\" as Thursday 10/1. I can't set the Monday 10/5 inspection / 4pm Executive Summary meeting, the $12,500 3-2-1 buy-down credit or the $700 home warranty through the tracker commands, so add those in Navigator after it's created. Their email wasn't given, so it's left blank."
   },
   {
     "id": "note-muoq1p3xsvc8v",
@@ -115,7 +132,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
