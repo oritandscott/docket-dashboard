@@ -6,11 +6,11 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-10-02T00:10:18.199Z",
-    "updatedAt": "2026-10-02T00:24:09.000Z",
+    "updatedAt": "2026-10-02T01:07:32.000Z",
     "proposals": [
       {
         "pid": "p-louton-create",
-        "label": "Create new Navigator: Elizabeth & Michael Louton, BUYERS, 12406 S Potomac St, Phoenix, AZ 85044 -- price $330,000, contract Thu Oct 1, COE Wed Nov 18, 10-day due diligence (ends Oct 11). Also adds their line to the Google Sheet Linear Tracker.",
+        "label": "Create new Navigator: Elizabeth & Michael Louton, BUYERS, 12406 S Potomac St, Phoenix 85044 -- $330,000, contract Thu Oct 1, COE Wed Nov 18, 10-day due diligence; inspection Mon Oct 5 (1:00pm placeholder for \"afternoon\") with the 4:00pm Executive Summary meeting; accepted-offer terms: $12,500 seller credit for a 3-2-1 buy-down, $700 home warranty. Also adds their line to the Google Sheet Linear Tracker.",
         "op": "create_transaction",
         "args": {
           "dealType": "BUYER",
@@ -19,12 +19,15 @@
           "price": "330000",
           "contractDate": "2026-10-01",
           "closingDate": "2026-11-18",
-          "dueDiligenceDays": 10
+          "dueDiligenceDays": 10,
+          "inspectionDateTime": "2026-10-05T13:00",
+          "inspectionSummaryDateTime": "2026-10-05T16:00",
+          "offerTerms": "$12,500 seller credit for a 3-2-1 buy-down; $700 home warranty"
         },
         "status": "pending"
       }
     ],
-    "reply": "One Confirm creates the Louton Navigator AND their blue buyer line on the Google Sheet Linear Tracker (contract Oct 1 = Day 0, COE Nov 18). I used the standard 10-day due diligence (ends Sun Oct 11) -- tell me if the contract says otherwise. Navigator's commands can't set these yet, so please add them in the Louton Navigator editor: inspection Mon Oct 5 (afternoon) with the 4pm Executive Summary meeting with the inspector; the $12,500 seller credit for the 3-2-1 buy-down; the $700 home warranty."
+    "reply": "One Confirm does it all: their Navigator (price, contract Oct 1, COE Nov 18, standard 10-day due diligence ending Sun Oct 11), the inspection Mon Oct 5 with the 4:00pm Executive Summary meeting, the $12,500 3-2-1 buy-down credit and $700 home warranty on the accepted offer, and their blue buyer line on the Google Sheet Linear Tracker. You said \"afternoon\" for the inspector's arrival, so I put 1:00pm -- change it in the editor if it's different."
   },
   {
     "id": "note-muq6unrxwnvsj",
