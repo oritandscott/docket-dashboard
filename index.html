@@ -271,6 +271,9 @@
   .lt-c.coe{background:#FF0000;color:#fff;font-size:13px;}
   .lt-c.lbl-name{justify-content:flex-start;z-index:1;overflow:visible;}
   .lt-c.lbl-name span{color:#E6189B;font-size:15px;font-weight:700;padding-left:6px;pointer-events:none;}
+  /* the same label before the line, right-aligned so it reads into the empty days on the left */
+  .lt-c.lbl-name.start span{position:absolute;right:0;padding:0 6px 0 0;}
+  .lt-c.lbl-name.buyer span{color:#1F4FE0;}
   .lt-c.tomtxt{font-size:15px;overflow:visible;}
   /* the today box: two black lines from the day numbers down through every row */
   .lt-today{position:absolute;top:36px;bottom:0;width:35px;border-left:2px solid #000;border-right:2px solid #000;pointer-events:none;z-index:2;}
@@ -2886,6 +2889,10 @@
     listings.forEach(l => {
       const m = ltRowModel(l, today, first, last);
       const labelKey = ltKey(m.labelAt);
+      // Label on both sides of the line, like the Google Sheet Linear Tracker.
+      const firstKey = m.cells.size ? [...m.cells.keys()].sort()[0] : null;
+      const startKey = firstKey ? ltKey(ltAddDays(ltDay(firstKey), -1)) : null;
+      const lblCls = l.dealType === 'BUYER' ? ' buyer' : '';
       const who = `${String(l.clientNames || '').toUpperCase()} - ${String(l.address || '').toUpperCase()}`;
       const kind = l.phase === 'off_market' ? 'TOM' : l.phase === 'escrow' ? (l.dealType === 'BUYER' ? 'BUYER · ESCROW' : 'SELLER · ESCROW') : 'LISTED';
       h += blankRow();
@@ -2898,7 +2905,9 @@
         if (c) {
           h += `<div class="lt-c ${c.cls}" title="${ltAttr(ltFmt(d, { month:'short', day:'numeric' }) + ' · ' + c.title)}">${c.html ? c.text : escapeHtml(c.text)}</div>`;
         } else if (k === labelKey) {
-          h += `<div class="lt-c lbl-name"><span>${escapeHtml(who)}</span></div>`;
+          h += `<div class="lt-c lbl-name${lblCls}"><span>${escapeHtml(who)}</span></div>`;
+        } else if (k === startKey) {
+          h += `<div class="lt-c lbl-name start${lblCls}"><span>${escapeHtml(who)}</span></div>`;
         } else {
           h += '<div class="lt-c"></div>';
         }
