@@ -260,6 +260,8 @@
   .lt-c.dd{background:#FFF59D;}
   .lt-c.esc{background:#A9D18E;}
   .lt-c.sr{background:#FFE599;}
+  .pickup-times{font-size:.78rem;color:var(--ink-soft);margin-top:.45rem;line-height:1.4;}
+  .pickup-times b{color:var(--gold);font-weight:600;}
   .lt-c.br{background:#CFE2F3;}
   .lt-c.tom{background:#FFFF00;}
   .lt-c.future{opacity:.55;}
@@ -842,13 +844,14 @@
       </details>
       <div class="inbox-box" style="margin-top:1.6rem;">
         <div class="subhead" style="margin-bottom:.4rem;color:var(--gold);">Notes for Claude · who should be on these lists</div>
-        <div class="panel-sub" style="margin:0 0 .6rem;">Type or dictate anything: "Add the Garcias from Sunday's open house to medium term", "Move Dan to #1". Claude reads these and acts on them when you work together in a Claude session.</div>
+        <div class="panel-sub" style="margin:0 0 .6rem;">Type or dictate anything: "Add the Garcias from Sunday's open house to medium term", "Move Dan to #1". Claude reads these at the pickup times below and acts on them.</div>
         <textarea id="inbox-text" rows="3" placeholder="Write a note, or tap 🎤 and talk…" style="width:100%;"></textarea>
         <div class="inline-form" style="align-items:center;">
           <button class="btn btn-ghost" type="button" id="inbox-mic">🎤 Dictate</button>
           <button class="btn" type="button" id="inbox-save">Save note</button>
           <span class="inbox-mic-status" id="inbox-mic-status"></span>
         </div>
+        <div class="pickup-times" data-pickup></div>
         <div id="inbox-list" style="margin-top:.7rem;"></div>
         <button class="btn btn-text inbox-old-btn" type="button" data-old-toggle="prospecting" style="display:none;"></button>
         <div id="inbox-old" style="display:none;"></div>
@@ -889,6 +892,7 @@
           <button class="btn" type="button" id="ltcmd-send">Send command</button>
           <span class="inbox-mic-status" id="ltcmd-status"></span>
         </div>
+        <div class="pickup-times" data-pickup></div>
         <div id="ltcmd-list" style="margin-top:.7rem;"></div>
         <button class="btn btn-text inbox-old-btn" type="button" data-old-toggle="tracker" style="display:none;"></button>
         <div id="ltcmd-old" style="display:none;"></div>
@@ -2965,6 +2969,28 @@
       scroller.innerHTML = `<div class="empty-hint" style="margin:.6rem;color:#333;">Couldn't load the tracker from Navigator: ${escapeHtml(e.message)}</div>`;
     }
   }
+
+  // ---------- When Claude picks up notes & commands ----------
+  // Mirrors the scheduled routine (Claude Code Routine "Docket inbox"):
+  // CRON_TZ=America/Phoenix 7 7-21/2 * * *. Change both together.
+  const PICKUP_HOURS = [7, 9, 11, 13, 15, 17, 19, 21];
+  const PICKUP_MIN = 7;
+  function fmtPickup(h){ return `${h % 12 || 12}:${String(PICKUP_MIN).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}`; }
+  function renderPickupTimes(){
+    // Phoenix is UTC-7 all year.
+    const now = new Date(Date.now() - 7 * 3600000);
+    const mins = now.getUTCHours() * 60 + now.getUTCMinutes();
+    let next = PICKUP_HOURS.find(h => h * 60 + PICKUP_MIN > mins);
+    const tomorrow = next === undefined;
+    if (tomorrow) next = PICKUP_HOURS[0];
+    const wait = (tomorrow ? 24 * 60 : 0) + next * 60 + PICKUP_MIN - mins;
+    const inTxt = wait < 60 ? `in ${wait} min` : `in ${Math.floor(wait / 60)} hr ${wait % 60} min`;
+    const html = `⏱ Claude picks these up every 2 hours: ${PICKUP_HOURS.map(fmtPickup).join(' · ')} (Arizona time). `
+      + `<b>Next pickup: ${fmtPickup(next)}${tomorrow ? ' tomorrow' : ''} (${inTxt}).</b> A note saved just after a pickup waits for the next one.`;
+    document.querySelectorAll('[data-pickup]').forEach(el => { el.innerHTML = html; });
+  }
+  renderPickupTimes();
+  setInterval(renderPickupTimes, 60000);
 
   // ---------- NAVIGATOR APP: every active seller & buyer ----------
   // Built from the same live Navigator snapshot as the tracker, so new
