@@ -1,11 +1,4 @@
 {
   "schedule": [],
-  "tasks": [
-    {
-      "id": "mth4y35g2ouly",
-      "text": "Check Homebot — past-client outreach ops",
-      "done": false,
-      "source": "automation"
-    }
-  ]
+  "tasks": []
 }
