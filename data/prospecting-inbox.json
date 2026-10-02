@@ -13,9 +13,9 @@
     "text": "Create a new Tracker and Navigator (and new line in the old Google Linear sheet) for Elizabeth and Michael Louton, Buyers of 12406 S POTOMAC ST, Phoenix, AZ 85044 with contract acceptance today, inspection on Monday afternoon with a 4pm Executive Summary meeting (with inspector) and closing November 18.  Purchase price 330000 and they got a $12,500 credit for a 3-2-1 buy-down.  They got a $700 home warranty.",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-10-01T23:51:48.957Z",
-    "updatedAt": "2026-10-02T00:00:00.000Z",
+    "updatedAt": "2026-10-02T00:10:25.496Z",
     "proposals": [
       {
         "pid": "p-louton-create",
