@@ -73,9 +73,9 @@
     "text": "IN THE bartko tracker check what's in the google sheet and match that-- the BINSR was received and agreed upon on Saturday so Saturday's box should show the \"BNSR AGRD\" over white and then all boxes after that green.   I use the yellow for the due diligence period (up to ten days or until buyer sends BINSR), then light orange for the seller's five-day response period (or until they send it) and then Blue for the buyer's five- day response period (or until they sent it)....so from BNSR SENT on the 21st, the Bartko tracker boxes should all be light orange and then the BNSR AGRD box on Saturday and then green-- since the BINSR was sent by Seller on Saturday, their last day, and was signed same day, so no blue boxes visible.",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-09-30T13:55:53.493Z",
-    "updatedAt": "2026-10-02T01:12:18.863Z",
+    "updatedAt": "2026-10-02T01:12:23.729Z",
     "reply": "Done: the dashboard tracker and the Google Sheet Linear Tracker now use your BINSR colors for buyers -- yellow due diligence until the BINSR is sent, light orange for the seller's response period, blue for the buyer's final response, green once agreed; BNSR SENT / BNSR AGRD sit on white. Tap the three Confirms in order to record Bartko's BINSR dates in Navigator and rewrite his sheet line. From now on, just tell me (e.g. \"Louton BINSR sent Oct 9\", \"Louton BINSR agreed Oct 14\") and the colors follow.",
     "proposals": [
       {
@@ -114,7 +114,10 @@
         "args": {
           "fresh": true
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "Updated the line on the Google Sheet Linear Tracker (row 15, JZ-LU).",
+        "navId": "cmttckk8f000004l20kae6l0f",
+        "decidedAt": "2026-10-02T01:12:23.729Z"
       }
     ]
   },
