@@ -1,38 +1,17 @@
 {
   "schedule": [
     {
-      "id": "muo4nsp1b4t8z",
+      "id": "muqv3dp8rxzax",
       "time": "09:00",
-      "title": "Flex Day (Wednesdays)",
-      "date": "2026-09-30",
+      "title": "SPHERE / Open House outreach (all day)",
+      "date": "2026-10-02",
       "source": "automation"
     },
     {
-      "id": "muo4nsp1j5e7f",
-      "time": "09:00",
-      "title": "Orit - Itamar",
-      "date": "2026-09-30",
-      "source": "automation"
-    },
-    {
-      "id": "muo4nsp1svi5h",
-      "time": "09:00",
-      "title": "Check GreatCall minutes (reminder)",
-      "date": "2026-09-30",
-      "source": "automation"
-    },
-    {
-      "id": "muo4nsp1kx3tl",
-      "time": "11:20",
-      "title": "Publish Docket Dashboard fixes (Vercel reset)",
-      "date": "2026-09-30",
-      "source": "automation"
-    },
-    {
-      "id": "muo4nsp1vod4g",
-      "time": "15:00",
-      "title": "Jeff 3pm Listing Mtg - Fremont",
-      "date": "2026-09-30",
+      "id": "muqv3dp85lqc3",
+      "time": "11:30",
+      "title": "Value Advantage Training w/ Patrick Ferry — KWIF (Red)",
+      "date": "2026-10-02",
       "source": "automation"
     }
   ],
