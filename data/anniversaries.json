@@ -158,8 +158,8 @@
     "address": "1426 East Grovers Avenue, Unit 10, Phoenix, AZ 85022",
     "purchaseDate": "2010-10-08",
     "emailVariant": "B",
-    "status": "upcoming",
-    "draftId": null,
+    "status": "actionable",
+    "draftId": "Congratulations on 16 Years in Your Home!",
     "addedAt": "2026-09-08T13:47:53.482Z"
   },
   {
