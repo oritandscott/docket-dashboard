@@ -74,14 +74,14 @@
   {
     "id": "proj-1a0b4e2cc8b0zib",
     "title": "Fitness Booking Reminders",
-    "notes": "Deployed Vercel app that texts Orit when Pilates booking windows open at Mountainside Fitness Ahwatukee. Already cloud-hosted, no machine dependency.",
+    "notes": "",
     "kind": "automation",
     "status": "running",
     "machine": "cloud",
     "redundancyNote": "",
-    "waitingOn": "",
+    "waitingOn": "Remove this automation and remind me to deactivate or repurpose the Twilio account.  We don't need this and it never worked.",
     "createdAt": "2026-09-18T12:00:00.000Z",
-    "updatedAt": "2026-09-18T12:00:00.000Z"
+    "updatedAt": "2026-10-03T15:12:28.634Z"
   },
   {
     "id": "proj-1a0b4e2cc8cyv7p",
