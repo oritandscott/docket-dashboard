@@ -1,30 +1,9 @@
 {
-  "schedule": [
-    {
-      "id": "musajbjfb78wl",
-      "time": "05:30",
-      "title": "KW Phoenix (Gold) bldg closed — power outage to 13:30",
-      "date": "2026-10-03",
-      "source": "automation"
-    },
-    {
-      "id": "musajbjfczesl",
-      "time": "09:00",
-      "title": "Open House — All Day",
-      "date": "2026-10-03",
-      "source": "automation"
-    }
-  ],
+  "schedule": [],
   "tasks": [
     {
       "id": "musajbjgvhoch",
       "text": "Prep today's Open House — signage & sign-in sheet",
-      "done": false,
-      "source": "automation"
-    },
-    {
-      "id": "musajbjgkgkma",
-      "text": "KW Phoenix bldg closed 5:30–1:30pm — plan around it",
       "done": false,
       "source": "automation"
     },
