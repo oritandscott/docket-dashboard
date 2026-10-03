@@ -4,9 +4,21 @@
     "text": "When a property has closed we need to have a plan for how the navigator app section below reflects it.  For Palm Lane, it should now say CLOSED in red and then I need to be able to dismiss them from that section as well-- but always leave the navigator app data saved and the old navigator available-- don't delete it. Also for the status indications in each navigator line below, make them in ALL-CAPS and make any UNDER CONTRACT a bright green color, make any CLOSED bright red, make any LISTED bright blue and any HOME SEARCH a bright pink like the color you used for the telephone numbers above.  Also add functionality to this command input box so that when I hit return, it sends the command and I don't have to hit the Send Command button",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "needs-you",
     "createdAt": "2026-10-03T11:48:29.346Z",
-    "updatedAt": "2026-10-03T11:48:29.346Z"
+    "updatedAt": "2026-10-03T14:08:25.000Z",
+    "proposals": [
+      {
+        "pid": "p-palm-lane-closed",
+        "label": "Mark the 8119 E. Palm Lane listing as CLOSED in Navigator (record stays saved)",
+        "op": "set_status",
+        "match": "Palm Lane",
+        "args": {
+          "status": "CLOSED"
+        }
+      }
+    ],
+    "reply": "Proposed: set Palm Lane to CLOSED (tap Confirm; Navigator data is kept, not deleted, and the Google Sheet Linear Tracker line updates automatically). I can't do the rest from here because it's changes to the dashboard's own screen, not Navigator/tracker commands: showing CLOSED in red, a dismiss button for closed lines (keeping the Navigator saved), ALL-CAPS status labels with bright green UNDER CONTRACT / red CLOSED / blue LISTED / pink HOME SEARCH, and pressing Return to send in the command box. Those need a dashboard code update in a live session."
   },
   {
     "id": "note-muq7ifo7lvkfj",
