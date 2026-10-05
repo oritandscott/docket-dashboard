@@ -217,7 +217,7 @@
   {
     "id": "hot-1a0ed5b95d9kdx2x",
     "name": "James Arendell",
-    "phone": "(509) 771-1986\u202c",
+    "phone": "(509) 771-1986‬",
     "email": "",
     "type": "buyer",
     "source": "referral",
@@ -357,11 +357,17 @@
     "source": "openhouse",
     "tier": "hot",
     "notes": "OH 3/21 8840 S 51st St (The Pointe). No agent. From Nazareth, PA -- looking for a winter home; Tim grew up in the Phoenix area. Tim: tim.duckworth@rochester.rr.com.",
+    "textChannel": "imessage",
+    "phoneFound": false,
+    "emailFound": false,
     "commandUrl": "",
+    "cmdNotesSynced": "OH 3/21 8840 S 51st St (The Pointe). No agent. From Nazareth, PA -- looking for a winter home; Tim grew up in the Phoenix area. Tim: tim.duckworth@rochester.rr.com.",
+    "cmdNotesAt": null,
+    "cmdNotesResult": "",
     "callCount": 0,
     "lastCalledAt": null,
     "createdAt": "2026-09-29T13:29:57.000Z",
-    "updatedAt": "2026-09-29T13:29:57.000Z"
+    "updatedAt": "2026-10-05T22:26:56.196Z"
   },
   {
     "id": "hot-01qwfm",
