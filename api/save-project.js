@@ -98,6 +98,7 @@ async function handleInbox(req, res, ghHeaders) {
 
 const HOT_TYPES = ['buyer', 'seller', 'both'];
 const HOT_TIERS = ['hot', 'medium', 'long'];
+const TEXT_CHANNELS = ['voice', 'imessage', 'whatsapp'];
 const HOT_SOURCES = ['referral', 'pastclient', 'youtube', 'online', 'openhouse', 'sphere', 'other'];
 
 async function handleHotlist(req, res, ghHeaders) {
@@ -149,6 +150,8 @@ async function handleHotlist(req, res, ghHeaders) {
     source: HOT_SOURCES.includes(body.source) ? body.source : existing ? existing.source : 'other',
     tier: HOT_TIERS.includes(body.tier) ? body.tier : existing ? existing.tier || 'hot' : 'hot',
     notes: pick('notes', 8000),
+    // Which app this contact is usually messaged on (the Message button follows it).
+    textChannel: TEXT_CHANNELS.includes(body.textChannel) ? body.textChannel : existing && TEXT_CHANNELS.includes(existing.textChannel) ? existing.textChannel : 'voice',
     // true = a phone/email Orit & Scott looked up themselves rather than one
     // the person gave them (pink on the sign-in sheet); shown in bright pink.
     phoneFound: typeof body.phoneFound === 'boolean' ? body.phoneFound : existing ? !!existing.phoneFound : false,
@@ -209,6 +212,7 @@ function buildProspect(input, existing, now) {
     reason: pick('reason', 300),
     notes: pick('notes', 2000),
     sourceId: pick('sourceId', 120),
+    textChannel: TEXT_CHANNELS.includes(input.textChannel) ? input.textChannel : existing && TEXT_CHANNELS.includes(existing.textChannel) ? existing.textChannel : 'voice',
     status,
     callCount: existing ? existing.callCount || 0 : 0,
     lastCalledAt: existing ? existing.lastCalledAt || null : null,

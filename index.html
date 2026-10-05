@@ -292,7 +292,7 @@
   .hot-tier-medium .hot-title{color:var(--gold);}
   .hot-tier-long .hot-title{color:var(--stamp-blue);}
   .hot-table{display:flex;flex-direction:column;gap:.45rem;}
-  .hot-row{display:grid;grid-template-columns:40px minmax(0,1.2fr) 100px 206px 72px minmax(0,1.3fr) 172px 18px;gap:.5rem;align-items:start;padding:.45rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;transition:outline-color .15s;}
+  .hot-row{display:grid;grid-template-columns:40px minmax(0,1.2fr) 100px 206px 92px minmax(0,1.3fr) 172px 18px;gap:.5rem;align-items:start;padding:.45rem .7rem;background:var(--paper-card);border:1px solid var(--line);border-radius:4px;transition:outline-color .15s;}
   .hot-row.selected{outline:2px solid var(--gold);outline-offset:-1px;}
   .hot-row.just-moved{animation:hotFlash .6s ease;}
   @keyframes hotFlash{from{background:rgba(201,161,93,.25);}to{background:var(--paper-card);}}
@@ -327,6 +327,7 @@
   .hot-row .hot-text{background:#1D5FAE;border-color:#1D5FAE;color:#fff;}
   .hot-row .hot-text:hover{background:#2670C7;}
   .hot-contact-actions{display:flex;flex-direction:column;gap:.3rem;}
+  .pr-actions select.hot-channel{font-size:.72rem;padding:.25rem .3rem;}
   .hot-move{margin-top:0;}
   .hot-notes-row{display:flex;align-items:flex-start;gap:.4rem;}
   .hot-notes-row textarea{flex:1 1 auto;min-width:0;min-height:40px;height:40px;font-size:.74rem;resize:vertical;}
@@ -3216,7 +3217,6 @@
       list.innerHTML = rows.map((p, i) => {
         const tel = (p.phone || '').replace(/[^\d+]/g, '');
         const voice = hotVoiceUrl(p.phone);
-        const text = hotTextUrl(p.phone);
         const rowCls = ['pr-row'];
         if (p.id === prSelectedId) rowCls.push('selected');
         if (p.id === prFlashId) rowCls.push('just-moved');
@@ -3240,7 +3240,7 @@
           <div class="pr-actions">
             ${voice ? `<a class="btn hot-call" data-act="voice" href="${prAttr(voice)}" target="oasis-voice" rel="noopener">📞 Call</a>`
               : `<button class="btn btn-ghost" type="button" data-act="addphone" title="Add a phone number">📞 Add</button>`}
-            ${text ? `<a class="btn hot-text" data-act="text" href="${prAttr(text)}" target="oasis-voice" rel="noopener">💬 Text</a>` : ''}
+            ${voice ? `${hotMsgButton(p, 'data-act="text"')}${hotChannelSelect(p, 'data-act="channel"')}` : ''}
             <button class="btn" type="button" data-act="call">Log call</button>
             <select data-act="status" aria-label="Status">
               ${Object.keys(PR_STATUS_LABEL).map(s => `<option value="${s}"${s === p.status ? ' selected' : ''}>${PR_STATUS_LABEL[s]}</option>`).join('')}
@@ -3365,15 +3365,7 @@
         .then(d => prUpsertLocal(d.record)).catch(() => {});
       return;
     }
-    if (el.dataset.act === 'text') {
-      // Voice's itemId=t.+{number} link only opens an EXISTING thread -
-      // copy the number so "+ Send new message" is one paste away instead
-      // of a lookup when this contact has never been texted before.
-      let d = String(p.phone || '').replace(/\D/g, '');
-      if (d.length === 10) d = '1' + d;
-      if (d.length >= 11) navigator.clipboard.writeText('+' + d).catch(() => {});
-      return;
-    }
+    if (el.dataset.act === 'text') { hotCopyNumberForVoice(p); return; }
     try {
       if (el.dataset.act === 'call') {
         const note = prompt(`Logging a call with ${p.name}. Any notes? (optional)`, '');
@@ -3414,6 +3406,17 @@
         await prPromote(p, promote.value);
       } catch (err) {
         alert(`Couldn't move: ${err.message}`);
+        renderProspects();
+      }
+      return;
+    }
+    const chan = e.target.closest('select[data-act="channel"]');
+    if (chan) {
+      const id = chan.closest('.pr-row').dataset.id;
+      try {
+        prUpsertLocal((await prSave({ id, textChannel: chan.value })).record);
+      } catch (err) {
+        alert(`Couldn't save: ${err.message}`);
         renderProspects();
       }
       return;
@@ -3541,18 +3544,48 @@
     return `https://voice.google.com/u/0/calls?a=nc,%2B${d}`;
   }
 
-  // Google Voice web link straight to this contact's text thread (opens
-  // the existing conversation if there is one, otherwise a fresh one).
-  // itemId=t.+{number} is Voice's own URL for a thread - confirmed by
-  // copying it out of the address bar while Voice had one open, since
-  // it isn't documented anywhere (unlike the call deep link above).
-  // Voice has no way to pre-fill the message body via URL, only which
-  // thread to open, so the message itself is typed there.
-  function hotTextUrl(phone){
+  // Where each contact is usually messaged. Voice is the default (it is
+  // the team number); some clients are used to iMessage or WhatsApp.
+  const MSG_CHANNELS = { voice:'Voice', imessage:'iMessage', whatsapp:'WhatsApp' };
+  function msgChannel(rec){ return MSG_CHANNELS[rec && rec.textChannel] ? rec.textChannel : 'voice'; }
+
+  // Link for the Message button, by channel. None of these can pre-fill a
+  // message for sending - each just opens the app on that contact and the
+  // message is typed (and sent) there.
+  //  voice: itemId=t.+{number} is Voice's own thread URL, copied out of the
+  //    address bar (undocumented). It only opens an EXISTING thread.
+  //  imessage: sms: hands off to the Mac Messages app (new or existing).
+  //  whatsapp: wa.me is WhatsApp's documented click-to-chat link.
+  function hotTextUrl(phone, channel){
     let d = String(phone || '').replace(/\D/g, '');
     if (d.length === 10) d = '1' + d;
     if (d.length < 11) return '';
+    if (channel === 'imessage') return `sms:+${d}`;
+    if (channel === 'whatsapp') return `https://wa.me/${d}`;
     return `https://voice.google.com/u/0/messages?itemId=t.%2B${d}`;
+  }
+  // sms: is a protocol hand-off, so it takes no window target; the web
+  // channels each reuse one named window instead of piling up new ones.
+  function hotTextTarget(channel){
+    if (channel === 'imessage') return '';
+    return channel === 'whatsapp' ? ' target="oasis-whatsapp" rel="noopener"' : ' target="oasis-voice" rel="noopener"';
+  }
+  function hotMsgButton(rec, attr){
+    const ch = msgChannel(rec);
+    const url = hotTextUrl(rec.phone, ch);
+    if (!url) return '';
+    return `<a class="btn hot-text" ${attr} href="${prAttr(url)}"${hotTextTarget(ch)} title="Opens ${MSG_CHANNELS[ch]}">💬 Message</a>`;
+  }
+  function hotChannelSelect(rec, attr){
+    return `<select class="hot-channel" ${attr} aria-label="Message through" title="Which app this contact is usually messaged on">${hotOptions(MSG_CHANNELS, msgChannel(rec))}</select>`;
+  }
+  // Voice only opens a thread that already exists; copy the number so a
+  // first-ever text is one paste into "+ Send new message".
+  function hotCopyNumberForVoice(rec){
+    if (msgChannel(rec) !== 'voice') return;
+    let d = String(rec.phone || '').replace(/\D/g, '');
+    if (d.length === 10) d = '1' + d;
+    if (d.length >= 11) navigator.clipboard.writeText('+' + d).catch(() => {});
   }
 
   function hotOptions(map, selected){
@@ -3583,7 +3616,6 @@
       const head = `<div class="hot-row hot-head"><div>#</div><div>Name</div><div>Type</div><div>Source · List</div><div>Call</div><div>Call notes</div><div>Command</div><div></div></div>`;
       wrap.innerHTML = head + rows.map((h, i) => {
         const voice = hotVoiceUrl(h.phone);
-        const text = hotTextUrl(h.phone);
         const called = h.lastCalledAt ? `Last call ${prShortDate(h.lastCalledAt)}${h.callCount > 1 ? ` · ${h.callCount} calls` : ''}` : '';
         const cls = ['hot-row'];
         if (h.id === hotSelectedId) cls.push('selected');
@@ -3614,7 +3646,7 @@
             <select class="hot-move" data-hot="tier" aria-label="Move to list">${hotOptions(HOT_TIERS, tier)}</select>
           </div>
           <div class="hot-contact-actions">${voice
-            ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="oasis-voice" rel="noopener">📞 Call</a><a class="btn hot-text" data-hot="text" href="${prAttr(text)}" target="oasis-voice" rel="noopener">💬 Text</a>`
+            ? `<a class="btn hot-call" data-hot="call" href="${prAttr(voice)}" target="oasis-voice" rel="noopener">📞 Call</a>${hotMsgButton(h, 'data-hot="text"')}${hotChannelSelect(h, 'data-hot="textChannel"')}`
             : `<button class="btn btn-ghost" type="button" data-hot="phone" title="Add a phone number">📞 Add</button>`}</div>
           <div class="hot-notes">
             ${h.lastCalledAt ? `<div class="hot-last-call">Last Call: ${escapeHtml(prShortDateTime(h.lastCalledAt))}</div>` : ''}
@@ -4021,14 +4053,7 @@
           h.lastCalledAt = d.record.lastCalledAt;
         }).catch(() => {});
       } else if (act === 'text') {
-        // Voice's itemId=t.+{number} link only opens an EXISTING thread -
-        // for a contact never texted before it lands on a blank screen,
-        // since Voice has no URL param that pre-fills the recipient for a
-        // new one. Copying the number means "+ Send new message" in Voice
-        // is one paste away instead of a manual lookup.
-        let d = String(h.phone || '').replace(/\D/g, '');
-        if (d.length === 10) d = '1' + d;
-        if (d.length >= 11) navigator.clipboard.writeText('+' + d).catch(() => {});
+        hotCopyNumberForVoice(h);
       } else if (act === 'phone') {
         const phone = prompt(`Phone number for ${h.name}:`, '');
         if (!phone || !phone.trim()) return;
