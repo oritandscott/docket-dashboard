@@ -4214,6 +4214,7 @@
     if (n.reply && !thread.some(m => m.from === 'claude' && m.text === n.reply)) {
       msgs.push(`<div class="inbox-reply"><strong>Claude:</strong> ${escapeHtml(n.reply)}</div>`);
     }
+    if (n.build) msgs.push(`<div class="inbox-reply"><strong>🛠 To build:</strong> ${escapeHtml(n.build)} <em>(bring this to a live Claude session)</em></div>`);
     return msgs.join('');
   }
 
