@@ -4,39 +4,85 @@
     "text": "Add open houses for the Barnes listing on September 9 and 23",
     "topic": "tracker",
     "dictated": false,
-    "status": "needs-you",
+    "status": "proposed",
     "createdAt": "2026-10-06T13:29:41.350Z",
-    "updatedAt": "2026-10-06T14:15:00.000Z",
-    "reply": "I can't add open houses to the Barnes listing -- there's no Navigator/tracker command for open-house dates (I can only create transactions, change dates/status, waivers, inspections, offer terms, BINSR dates, private sale, and re-copy lines). Please add the Sept 9 and Sept 23 open houses by hand."
+    "updatedAt": "2026-10-06T14:37:16.000Z",
+    "reply": "Two Confirms: each adds the open house to the Barnes Navigator, and it shows as OPEN HAUS on the dashboard tracker and the Google Sheet Linear Tracker. You can add start/end times in the Navigator editor.",
+    "proposals": [
+      {
+        "pid": "p-barnes-oh-0909",
+        "label": "Barnes listing (4007 E Agave Rd): add open house Wed Sep 9",
+        "op": "add_open_house",
+        "match": "Barnes",
+        "args": {
+          "date": "2026-09-09"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-barnes-oh-0923",
+        "label": "Barnes listing (4007 E Agave Rd): add open house Wed Sep 23",
+        "op": "add_open_house",
+        "match": "Barnes",
+        "args": {
+          "date": "2026-09-23"
+        },
+        "status": "pending"
+      }
+    ]
   },
   {
     "id": "note-muwpnmz1a0stc",
     "text": "Add open house for the Browers listing on Sunday October 4",
     "topic": "tracker",
     "dictated": false,
-    "status": "needs-you",
+    "status": "proposed",
     "createdAt": "2026-10-06T13:24:51.085Z",
-    "updatedAt": "2026-10-06T14:15:00.000Z",
-    "reply": "I can't add an open house to the Browers listing -- there's no tracker command for open-house dates. Please add the Sunday Oct 4 open house by hand."
+    "updatedAt": "2026-10-06T14:37:16.000Z",
+    "reply": "One Confirm adds the Sun Oct 4 open house to the Brower Navigator, the dashboard tracker and the Google Sheet Linear Tracker.",
+    "proposals": [
+      {
+        "pid": "p-brower-oh-1004",
+        "label": "Brower listing (7802 E Monte Vista Rd): add open house Sun Oct 4",
+        "op": "add_open_house",
+        "match": "Brower",
+        "args": {
+          "date": "2026-10-04"
+        },
+        "status": "pending"
+      }
+    ]
   },
   {
     "id": "note-muwpmq6k6pdhb",
     "text": "Something's off in the linear tracker for the Loutons-- BNSR should not show in day 12-- that should be in Day 10 and days 11-15 orange until whenever the BINSR is in fact sent",
     "topic": "tracker",
     "dictated": false,
-    "status": "needs-you",
+    "status": "proposed",
     "createdAt": "2026-10-06T13:24:08.588Z",
-    "updatedAt": "2026-10-06T14:15:00.000Z",
-    "reply": "I can't propose this yet: the BINSR command needs a real date for when the BINSR was sent, and I don't have one for the Loutons. Colors follow BINSR status (yellow until delivered, then orange/blue/green), so tell me the actual send date (Day 10 = 10 days after acceptance) and I'll propose it; if the sheet line looks wrong, say so and I can propose a fresh re-copy."
+    "updatedAt": "2026-10-06T14:37:16.000Z",
+    "reply": "Fixed in the code: until the BINSR is really sent, it's now expected on the last day of due diligence (Day 10 = Sun Oct 11), with the seller-response days (11-15) in light orange. The dashboard tracker shows this automatically; tap Confirm to redo the Louton line on the Google Sheet Linear Tracker too. When it's actually sent, just say e.g. \"Louton BINSR sent Oct 9\" and everything shifts to the real date.",
+    "proposals": [
+      {
+        "pid": "p-louton-redo",
+        "label": "Google Sheet Linear Tracker: redo the Louton line -- BNSR on Day 10 (Oct 11), orange from Day 11 until the BINSR is actually sent",
+        "op": "copy_to_sheet",
+        "match": "Louton",
+        "args": {
+          "fresh": true
+        },
+        "status": "pending"
+      }
+    ]
   },
   {
     "id": "note-musbw5r63q6h5",
     "text": "When a property has closed we need to have a plan for how the navigator app section below reflects it.  For Palm Lane, it should now say CLOSED in red and then I need to be able to dismiss them from that section as well-- but always leave the navigator app data saved and the old navigator available-- don't delete it. Also for the status indications in each navigator line below, make them in ALL-CAPS and make any UNDER CONTRACT a bright green color, make any CLOSED bright red, make any LISTED bright blue and any HOME SEARCH a bright pink like the color you used for the telephone numbers above.  Also add functionality to this command input box so that when I hit return, it sends the command and I don't have to hit the Send Command button",
     "topic": "tracker",
     "dictated": false,
-    "status": "done",
+    "status": "proposed",
     "createdAt": "2026-10-03T11:48:29.346Z",
-    "updatedAt": "2026-10-06T14:35:45.835Z",
+    "updatedAt": "2026-10-06T14:37:16.000Z",
     "proposals": [
       {
         "pid": "p-palm-lane-closed",
@@ -46,13 +92,13 @@
         "args": {
           "status": "CLOSED"
         },
-        "status": "applied",
+        "status": "pending",
         "result": "8119 E. Palm Lane, Scottsdale: status ACTIVE -> CLOSED Google Sheet Linear Tracker: record not in the live snapshot, not copied.",
         "navId": "cms6cdwxc000004i3svx1bjnj",
         "decidedAt": "2026-10-06T14:35:45.835Z"
       }
     ],
-    "reply": "Proposed: set Palm Lane to CLOSED (tap Confirm; Navigator data is kept, not deleted, and the Google Sheet Linear Tracker line updates automatically). I can't do the rest from here because it's changes to the dashboard's own screen, not Navigator/tracker commands: showing CLOSED in red, a dismiss button for closed lines (keeping the Navigator saved), ALL-CAPS status labels with bright green UNDER CONTRACT / red CLOSED / blue LISTED / pink HOME SEARCH, and pressing Return to send in the command box. Those need a dashboard code update in a live session."
+    "reply": "All built: Navigator App statuses are now ALL CAPS -- UNDER CONTRACT bright green, LISTED bright blue, HOME SEARCH bright pink, CLOSED bright red. Closed deals stay in the panel (in red) with a Dismiss button; dismissing only hides them there -- the Navigator and its links are never deleted. Return now sends the command (Shift+Return for a new line). Tap Confirm below to mark Palm Lane CLOSED."
   },
   {
     "id": "note-muq7ifo7lvkfj",
@@ -98,7 +144,7 @@
     "proposals": [
       {
         "pid": "p-louton-create",
-        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 — $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
+        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 \u2014 $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
         "op": "create_transaction",
         "args": {
           "dealType": "BUYER",
@@ -254,7 +300,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
