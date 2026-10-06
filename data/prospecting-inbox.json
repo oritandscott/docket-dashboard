@@ -5,13 +5,13 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-10-06T14:53:04.000Z",
-    "updatedAt": "2026-10-06T14:53:04.000Z",
+    "updatedAt": "2026-10-06T14:55:29.000Z",
     "text": "Barnes (4007 E Agave): remove the wrong open houses Sep 9 and Sep 23; add Sat Sep 12 and Sat Sep 26 (Zach Richards hosted).",
-    "reply": "Four Confirms, top to bottom. Navigator, the dashboard tracker and the Google Sheet Linear Tracker all follow. Heads-up: on your Google Sheet Linear Tracker, Sep 9 and Sep 23 used to say PRICE DROP; the wrong open-house entries wrote over those two cells. If those were real price drops, reply here with the new prices and I'll add them to Navigator so PRICE DROP shows everywhere again.",
+    "reply": "Updated from your email + sign-in sheets. Sep 9 and Sep 23 were the PRICE DROPS (to $550,000 and $539,500), not open houses -- so this removes those two open houses and records the price drops instead. Open houses: Aug 14, 22, 29 (yours), Fri Sep 11 3-5pm (in MLS, not yours -- skip it if that's wrong), Sat Sep 12 1-3pm (yours), Sat Sep 26 (Zach Richards). Ones already in Navigator are skipped automatically. Tap top to bottom.",
     "proposals": [
       {
         "pid": "p-barnes-oh-rm-0909",
-        "label": "Barnes: remove the open house on Wed Sep 9 (entered by mistake)",
+        "label": "Barnes: remove the open house on Wed Sep 9 (that was a price drop, not an open house)",
         "op": "remove_open_house",
         "match": "Barnes Agave",
         "args": {
@@ -21,7 +21,7 @@
       },
       {
         "pid": "p-barnes-oh-rm-0923",
-        "label": "Barnes: remove the open house on Wed Sep 23 (entered by mistake)",
+        "label": "Barnes: remove the open house on Wed Sep 23 (that was a price drop, not an open house)",
         "op": "remove_open_house",
         "match": "Barnes Agave",
         "args": {
@@ -30,8 +30,73 @@
         "status": "pending"
       },
       {
+        "pid": "p-barnes-price-0909",
+        "label": "Barnes: price drop Wed Sep 9, $575,000 -> $550,000 (per your Sep 21 emails with Nancy)",
+        "op": "price_change",
+        "match": "Barnes Agave",
+        "args": {
+          "date": "2026-09-09",
+          "price": "$550,000",
+          "originalPrice": "$575,000"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-barnes-price-0923",
+        "label": "Barnes: price drop Wed Sep 23, $550,000 -> $539,500 (Scott's Sep 23 email to Nancy)",
+        "op": "price_change",
+        "match": "Barnes Agave",
+        "args": {
+          "date": "2026-09-23",
+          "price": "$539,500"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-barnes-oh-0814",
+        "label": "Barnes: open house Fri Aug 14 (your sign-in sheet) -- skipped automatically if already there",
+        "op": "add_open_house",
+        "match": "Barnes Agave",
+        "args": {
+          "date": "2026-08-14"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-barnes-oh-0822",
+        "label": "Barnes: open house Sat Aug 22 (sign-in sheet + Magnus Title notice)",
+        "op": "add_open_house",
+        "match": "Barnes Agave",
+        "args": {
+          "date": "2026-08-22"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-barnes-oh-0829",
+        "label": "Barnes: open house Sat Aug 29 (sign-in sheet + Magnus Title notice)",
+        "op": "add_open_house",
+        "match": "Barnes Agave",
+        "args": {
+          "date": "2026-08-29"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-barnes-oh-0911",
+        "label": "Barnes: open house Fri Sep 11, 3:00-5:00pm (in MLS; not one of yours -- another agent?)",
+        "op": "add_open_house",
+        "match": "Barnes Agave",
+        "args": {
+          "date": "2026-09-11",
+          "startTime": "15:00",
+          "endTime": "17:00"
+        },
+        "status": "pending"
+      },
+      {
         "pid": "p-barnes-oh-0912",
-        "label": "Barnes: add open house Sat Sep 12, 1:00-3:00pm (Orit & Scott)",
+        "label": "Barnes: open house Sat Sep 12, 1:00-3:00pm (your sign-in sheet)",
         "op": "add_open_house",
         "match": "Barnes Agave",
         "args": {
@@ -43,7 +108,7 @@
       },
       {
         "pid": "p-barnes-oh-0926",
-        "label": "Barnes: add open house Sat Sep 26 (hosted by Zach Richards)",
+        "label": "Barnes: open house Sat Sep 26 (hosted by Zach Richards)",
         "op": "add_open_house",
         "match": "Barnes Agave",
         "args": {
