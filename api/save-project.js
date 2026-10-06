@@ -76,6 +76,22 @@ async function handleInbox(req, res, ghHeaders) {
       await writeJsonFile(ghHeaders, contentsUrl, sha, current, 'Prospecting inbox: remove note');
       return res.status(200).json({ ok: true });
     }
+    // A reply from Orit & Scott on an existing note: add it to the note's
+    // conversation and send it back to Claude (status 'new').
+    if (body.message !== undefined) {
+      const text = str(body.message, 4000);
+      if (!text) return res.status(400).json({ error: 'The reply is empty.' });
+      const n = current[idx];
+      const thread = Array.isArray(n.thread) ? n.thread.slice() : [];
+      // Keep Claude's latest answer in the conversation before the new reply.
+      if (n.reply && !thread.some(m => m.from === 'claude' && m.text === n.reply)) {
+        thread.push({ from: 'claude', text: n.reply, at: n.updatedAt || now });
+      }
+      thread.push({ from: 'you', text, at: now });
+      current[idx] = Object.assign({}, n, { thread, status: 'new', updatedAt: now });
+      await writeJsonFile(ghHeaders, contentsUrl, sha, current, 'Prospecting inbox: reply to Claude');
+      return res.status(200).json({ ok: true, record: current[idx] });
+    }
     if (!['new', 'done'].includes(body.status)) return res.status(400).json({ error: "status must be 'new' or 'done'." });
     current[idx] = Object.assign({}, current[idx], { status: body.status, updatedAt: now });
     await writeJsonFile(ghHeaders, contentsUrl, sha, current, `Prospecting inbox: mark ${body.status}`);

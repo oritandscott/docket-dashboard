@@ -44,20 +44,18 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-10-06T13:24:51.085Z",
-    "updatedAt": "2026-10-06T14:43:46.885Z",
-    "reply": "One Confirm adds the Sun Oct 4 open house to the Brower Navigator, the dashboard tracker and the Google Sheet Linear Tracker.",
+    "updatedAt": "2026-10-06T14:45:25.000Z",
+    "reply": "Fixed: \"Brower\" matched both Cindy & Myron's Monte Vista listing and their buyer search, so it wouldn't guess. It now points at the Monte Vista listing -- tap Confirm again.",
     "proposals": [
       {
         "pid": "p-brower-oh-1004",
         "label": "Brower listing (7802 E Monte Vista Rd): add open house Sun Oct 4",
         "op": "add_open_house",
-        "match": "Brower",
+        "match": "Brower Monte Vista",
         "args": {
           "date": "2026-10-04"
         },
-        "status": "failed",
-        "result": "\"Brower\" matches 2 Navigator records -- needs a more specific name",
-        "decidedAt": "2026-10-06T14:43:46.885Z"
+        "status": "pending"
       }
     ]
   },
@@ -155,7 +153,7 @@
     "proposals": [
       {
         "pid": "p-louton-create",
-        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 — $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
+        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 \u2014 $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
         "op": "create_transaction",
         "args": {
           "dealType": "BUYER",
@@ -311,7 +309,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",

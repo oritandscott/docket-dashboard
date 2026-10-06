@@ -260,6 +260,9 @@
   .lt-c.dd{background:#FFF59D;}
   .lt-c.esc{background:#A9D18E;}
   .lt-c.sr{background:#FFE599;}
+  .inbox-answer{display:flex;gap:.4rem;align-items:flex-start;margin-top:.45rem;}
+  .inbox-answer textarea{flex:1;min-height:30px;font-size:.8rem;resize:vertical;}
+  .inbox-reply.mine{opacity:.85;font-style:italic;}
   .pickup-times{font-size:.78rem;color:var(--ink-soft);margin-top:.45rem;line-height:1.4;}
   .pickup-times b{color:var(--gold);font-weight:600;}
   .lt-c.br{background:#CFE2F3;}
@@ -4203,7 +4206,17 @@
   // ---------- PROSPECTING: NOTES FOR CLAUDE (with dictation) ----------
   let inboxCache = [];
 
-  const INBOX_STATUS = { new:'Waiting for Claude', proposed:'Needs your OK', 'needs-you':'Claude needs more info', done:'Done' };
+  const INBOX_STATUS = { new:'Waiting for Claude', proposed:'Needs your OK', 'needs-you':'Claude needs more info -- reply below', 'needs-build':'🛠 New feature -- needs a live Claude session to build', done:'Done' };
+  // The back-and-forth on a note: earlier replies, then Claude's latest.
+  function inboxThreadHtml(n){
+    const thread = Array.isArray(n.thread) ? n.thread : [];
+    const msgs = thread.map(m => `<div class="inbox-reply${m.from === 'you' ? ' mine' : ''}"><strong>${m.from === 'you' ? 'You' : 'Claude'}:</strong> ${escapeHtml(m.text)}</div>`);
+    if (n.reply && !thread.some(m => m.from === 'claude' && m.text === n.reply)) {
+      msgs.push(`<div class="inbox-reply"><strong>Claude:</strong> ${escapeHtml(n.reply)}</div>`);
+    }
+    return msgs.join('');
+  }
+
   function inboxRow(n){
     const props = Array.isArray(n.proposals) ? n.proposals : [];
     const propHtml = props.map(pr => {
@@ -4220,8 +4233,12 @@
     return `<div class="inbox-note${n.status === 'done' ? ' done' : ''}" data-id="${prAttr(n.id)}">
       <div class="inbox-text">${escapeHtml(n.text)}
         <div class="pr-meta">${n.dictated ? '🎤 ' : ''}${escapeHtml(new Date(n.createdAt).toLocaleString(undefined, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }))} · ${escapeHtml(INBOX_STATUS[n.status] || n.status)}</div>
-        ${n.reply ? `<div class="inbox-reply"><strong>Claude:</strong> ${escapeHtml(n.reply)}</div>` : ''}
+        ${inboxThreadHtml(n)}
         ${propHtml}
+        ${n.status === 'done' ? '' : `<div class="inbox-answer">
+          <textarea rows="1" data-reply-text placeholder="Reply to Claude -- answer, give direction, or say &quot;build it&quot; (Return to send)"></textarea>
+          <button class="btn btn-ghost" type="button" data-reply-send style="padding:.25rem .6rem;font-size:.74rem;">Reply</button>
+        </div>`}
       </div>
       <button class="btn btn-ghost" type="button" data-inbox="${n.status === 'done' ? 'new' : 'done'}" style="padding:.25rem .55rem;font-size:.74rem;">${n.status === 'done' ? 'Reopen' : 'Mark done'}</button>
       <button class="del-btn" type="button" data-inbox="remove" aria-label="Delete">×</button>
@@ -4317,6 +4334,8 @@
       }
       return;
     }
+    const rs = e.target.closest('[data-reply-send]');
+    if (rs) return inboxSendReply(rs.closest('.inbox-note'));
     const b = e.target.closest('[data-inbox]');
     if (!b) return;
     const id = b.closest('.inbox-note').dataset.id;
@@ -4334,6 +4353,26 @@
       alert(`Couldn't save: ${err.message}`);
     }
   };
+  async function inboxSendReply(card){
+    const ta = card.querySelector('[data-reply-text]');
+    const text = ta.value.trim();
+    if (!text) return;
+    ta.disabled = true;
+    try {
+      const d = await inboxSave({ id: card.dataset.id, message: text });
+      inboxCache = inboxCache.map(n => n.id === d.record.id ? d.record : n);
+      renderInbox();
+    } catch (err) {
+      ta.disabled = false;
+      alert(`Couldn't send: ${err.message}`);
+    }
+  }
+  ['inbox-list', 'ltcmd-list'].forEach(id => document.getElementById(id).addEventListener('keydown', e => {
+    if (e.target.matches('[data-reply-text]') && e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+      e.preventDefault();
+      inboxSendReply(e.target.closest('.inbox-note'));
+    }
+  }));
   document.getElementById('inbox-list').addEventListener('click', onInboxClick);
   document.getElementById('ltcmd-list').addEventListener('click', onInboxClick);
   document.getElementById('inbox-old').addEventListener('click', onInboxClick);
