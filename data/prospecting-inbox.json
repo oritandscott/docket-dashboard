@@ -1,5 +1,14 @@
 [
   {
+    "id": "note-muwpmq6k6pdhb",
+    "text": "Something's off in the linear tracker for the Loutons-- BNSR should not show in day 12-- that should be in Day 10 and days 11-15 orange until whenever the BINSR is in fact sent",
+    "topic": "tracker",
+    "dictated": false,
+    "status": "new",
+    "createdAt": "2026-10-06T13:24:08.588Z",
+    "updatedAt": "2026-10-06T13:24:08.588Z"
+  },
+  {
     "id": "note-musbw5r63q6h5",
     "text": "When a property has closed we need to have a plan for how the navigator app section below reflects it.  For Palm Lane, it should now say CLOSED in red and then I need to be able to dismiss them from that section as well-- but always leave the navigator app data saved and the old navigator available-- don't delete it. Also for the status indications in each navigator line below, make them in ALL-CAPS and make any UNDER CONTRACT a bright green color, make any CLOSED bright red, make any LISTED bright blue and any HOME SEARCH a bright pink like the color you used for the telephone numbers above.  Also add functionality to this command input box so that when I hit return, it sends the command and I don't have to hit the Send Command button",
     "topic": "tracker",
