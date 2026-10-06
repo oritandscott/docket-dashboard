@@ -58,6 +58,9 @@ const FILES = {
   prospect: 'data/prospects.json',
   hotlist: 'data/hotlist.json',
   inbox: 'data/prospecting-inbox.json',
+  // Navigator App panel: ids of CLOSED Navigators Orit & Scott dismissed
+  // from the panel (the Navigator itself is never deleted).
+  navdismiss: 'data/nav-dismissed.json',
 };
 
 async function handleInbox(req, res, ghHeaders) {
@@ -335,7 +338,7 @@ export default async function handler(req, res) {
 
     const resource = (req.body || {}).resource;
     if (!FILES[resource]) {
-      return res.status(400).json({ error: "resource must be 'project', 'openhouse', 'prospect', 'hotlist' or 'inbox'." });
+      return res.status(400).json({ error: "resource must be 'project', 'openhouse', 'prospect', 'hotlist', 'inbox' or 'navdismiss'." });
     }
     const filePath = FILES[resource];
 
@@ -347,6 +350,31 @@ export default async function handler(req, res) {
     }
     if (resource === 'inbox') {
       return await handleInbox(req, res, ghHeaders);
+    }
+    if (resource === 'navdismiss') {
+      const id = str((req.body || {}).id, 80);
+      if (!id) return res.status(400).json({ error: 'Missing required field: id.' });
+      const url = `https://api.github.com/repos/${REPO}/contents/${FILES.navdismiss}`;
+      const got = await fetch(`${url}?ref=${BRANCH}`, { headers: ghHeaders });
+      let list = [];
+      let sha;
+      if (got.ok) {
+        const d = await got.json();
+        sha = d.sha;
+        list = JSON.parse(Buffer.from(d.content, 'base64').toString('utf-8'));
+      } else if (got.status !== 404) {
+        return res.status(502).json({ error: 'Could not read the dismissed list from GitHub' });
+      }
+      const undo = (req.body || {}).dismissed === false;
+      list = list.filter((x) => x !== id);
+      if (!undo) list.push(id);
+      const put = await fetch(url, {
+        method: 'PUT',
+        headers: { ...ghHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: `Navigator panel: ${undo ? 'restore' : 'dismiss'} ${id}`, branch: BRANCH, ...(sha ? { sha } : {}), content: Buffer.from(JSON.stringify(list, null, 2) + '\n').toString('base64') }),
+      });
+      if (!put.ok) return res.status(502).json({ error: 'Could not save to GitHub' });
+      return res.status(200).json({ ok: true, dismissed: list });
     }
 
     if (resource === 'openhouse') {

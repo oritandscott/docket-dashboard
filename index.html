@@ -849,7 +849,7 @@
       <div class="inbox-box" style="margin-top:1.6rem;">
         <div class="subhead" style="margin-bottom:.4rem;color:var(--gold);">Notes for Claude · who should be on these lists</div>
         <div class="panel-sub" style="margin:0 0 .6rem;">Type or dictate anything: "Add the Garcias from Sunday's open house to medium term", "Move Dan to #1". Claude reads these at the pickup times below and acts on them.</div>
-        <textarea id="inbox-text" rows="3" placeholder="Write a note, or tap 🎤 and talk…" style="width:100%;"></textarea>
+        <textarea id="inbox-text" rows="3" placeholder="Write a note and press Return, or tap 🎤 and talk… (Shift+Return for a new line)" style="width:100%;"></textarea>
         <div class="inline-form" style="align-items:center;">
           <button class="btn btn-ghost" type="button" id="inbox-mic">🎤 Dictate</button>
           <button class="btn" type="button" id="inbox-save">Save note</button>
@@ -890,7 +890,7 @@
       <div class="lt-cmd">
         <div class="subhead" style="margin-bottom:.4rem;color:var(--gold);">Tracker commands</div>
         <div class="panel-sub" style="margin:0 0 .6rem;">Tell Claude what changed: "Rahimzadeh COE moved to Oct 5", "Barnes price drop to $615k today", "New escrow: the Smiths, buyer, 123 Main St Mesa, COE Nov 14". Claude updates Navigator and the Google Sheet together so they always agree.</div>
-        <textarea id="ltcmd-text" rows="2" placeholder="Type a command, or tap 🎤 and say it…" style="width:100%;"></textarea>
+        <textarea id="ltcmd-text" rows="2" placeholder="Type a command and press Return, or tap 🎤 and say it…" style="width:100%;"></textarea>
         <div class="inline-form" style="align-items:center;">
           <button class="btn btn-ghost" type="button" id="ltcmd-mic">🎤 Dictate</button>
           <button class="btn" type="button" id="ltcmd-send">Send command</button>
@@ -3017,35 +3017,74 @@
     });
     return m;
   })();
-  const NAV_PHASE = { escrow:'Under contract', listed:'Listed', prep:'Prep', off_market:'Temporarily off market', search:'Home search' };
-  const NAV_ORDER = { escrow:0, listed:1, off_market:2, prep:3, search:4 };
+  // Status words: ALL CAPS in Orit & Scott's colors.
+  const NAV_PHASE = { escrow:'UNDER CONTRACT', listed:'LISTED', prep:'PREP', off_market:'TEMPORARILY OFF MARKET', search:'HOME SEARCH', closed:'CLOSED' };
+  const NAV_PHASE_COLOR = { escrow:'#22C55E', listed:'#2F7BFF', search:'#FF2FA8', closed:'#FF2A2A', off_market:'#FFD400', prep:'var(--ink-soft)' };
+  const NAV_ORDER = { escrow:0, listed:1, off_market:2, prep:3, search:4, closed:5 };
+  let navLastData = null;
+  let navDismissed = [];
+
+  async function loadNavDismissed(){
+    try {
+      const r = await fetch('/api/machine-status?job=data&file=nav-dismissed&t=' + Date.now());
+      const d = r.ok ? await r.json() : [];
+      navDismissed = Array.isArray(d) ? d : [];
+    } catch (e) { navDismissed = []; }
+    if (navLastData) renderNavigatorList(navLastData);
+  }
 
   function renderNavigatorList(data){
+    navLastData = data;
     const list = document.getElementById('navigator-list');
-    const all = data && Array.isArray(data.listings) ? data.listings.slice() : [];
+    // CLOSED Navigators stay listed (in red) until dismissed here; the
+    // Navigator itself is never deleted.
+    const all = data && Array.isArray(data.listings)
+      ? data.listings.filter(l => !(l.phase === 'closed' && navDismissed.includes(l.id))) : [];
     if (!all.length) return;
-    all.sort((a, b) => (a.dealType === b.dealType ? 0 : a.dealType === 'BUYER' ? 1 : -1)
+    all.sort((a, b) => ((a.phase === 'closed') - (b.phase === 'closed'))
+      || (a.dealType === b.dealType ? 0 : a.dealType === 'BUYER' ? 1 : -1)
       || (NAV_ORDER[a.phase] ?? 9) - (NAV_ORDER[b.phase] ?? 9)
       || String(a.address).localeCompare(String(b.address)));
     list.innerHTML = all.map(l => {
       const buyer = l.dealType === 'BUYER';
+      const hasAddress = l.phase === 'escrow' || l.phase === 'closed';
       const title = buyer
-        ? (l.phase === 'escrow' ? `Buyer - ${l.address}` : 'Buyer - Home Search')
-        : `${l.phase === 'escrow' && !(l.dates && (l.dates.active || l.dates.comingSoon)) ? 'Seller' : 'Listing'} - ${l.address}`;
+        ? (hasAddress ? `Buyer - ${l.address}` : 'Buyer - Home Search')
+        : `${hasAddress && !(l.dates && (l.dates.active || l.dates.comingSoon)) ? 'Seller' : 'Listing'} - ${l.address}`;
       const client = l.clientPath ? NAV_BASE + l.clientPath : navHandLinks.get(l.id);
-      return `<div class="row-card" style="justify-content:space-between;">
+      const closed = l.phase === 'closed';
+      return `<div class="row-card" style="justify-content:space-between;${closed ? 'opacity:.85;' : ''}">
         <div>
           <span class="client-name" style="color:var(--stamp-${buyer ? 'blue' : 'red'});font-weight:800;">${escapeHtml(title)}</span>
           <span style="font-size:.95rem;font-weight:400;margin-left:2.5rem;">${escapeHtml(l.clientNames || '')}</span>
-          <span style="font-size:.78rem;color:var(--ink-soft);margin-left:.8rem;">${escapeHtml(NAV_PHASE[l.phase] || '')}</span>
+          <span style="font-size:.8rem;font-weight:800;letter-spacing:.04em;margin-left:.8rem;color:${NAV_PHASE_COLOR[l.phase] || 'var(--ink-soft)'};">${escapeHtml(NAV_PHASE[l.phase] || '')}</span>
         </div>
         <div style="display:flex;gap:.5rem;flex-shrink:0;">
           ${client ? `<a class="btn btn-ghost" href="${escapeHtml(client)}" target="_blank" rel="noopener">Client View</a>` : ''}
           <a class="btn btn-ghost" href="${NAV_BASE}/admin/${encodeURIComponent(l.id)}" target="_blank" rel="noopener">Editor</a>
+          ${closed ? `<button class="btn btn-ghost" type="button" data-nav-dismiss="${escapeHtml(l.id)}" title="Hide from this list -- the Navigator stays saved and its links keep working">Dismiss</button>` : ''}
         </div>
       </div>`;
     }).join('');
   }
+
+  document.getElementById('navigator-list').addEventListener('click', async e => {
+    const b = e.target.closest('[data-nav-dismiss]');
+    if (!b) return;
+    b.disabled = true;
+    try {
+      const r = await fetch('/api/save-project', { method:'POST', headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ resource:'navdismiss', id: b.dataset.navDismiss }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || r.status);
+      navDismissed = d.dismissed || navDismissed.concat(b.dataset.navDismiss);
+      renderNavigatorList(navLastData);
+    } catch (err) {
+      b.disabled = false;
+      alert(`Couldn't dismiss: ${err.message}`);
+    }
+  });
+  loadNavDismissed();
 
   // ---------- PROSPECTING ----------
   // Shared call list in data/prospects.json, written through
@@ -4353,6 +4392,16 @@
   const ltcmdDictation = setupDictation('ltcmd-mic', 'ltcmd-text', 'ltcmd-status');
 
   // Tracker commands: same inbox file, topic 'tracker' (rendered by renderInbox).
+  // Return sends; Shift+Return adds a new line.
+  [['ltcmd-text', 'ltcmd-send'], ['inbox-text', 'inbox-save']].forEach(([ta, btn]) => {
+    document.getElementById(ta).addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+        e.preventDefault();
+        document.getElementById(btn).click();
+      }
+    });
+  });
+
   document.getElementById('ltcmd-send').addEventListener('click', async e => {
     const ta = document.getElementById('ltcmd-text');
     const status = document.getElementById('ltcmd-status');

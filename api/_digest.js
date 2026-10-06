@@ -517,7 +517,7 @@ async function loadNavigator(win, now) {
   const listings = snap && Array.isArray(snap.listings) ? snap.listings : [];
   if (listings.length) {
     const hand = new Map(handRows.map((r) => [r.id, r.url]));
-    rows = listings.map((l) => {
+    rows = listings.filter((l) => l.phase !== 'closed').map((l) => {
       const buyer = l.dealType === 'BUYER';
       const label = buyer ? (l.phase === 'escrow' ? `Buyer - ${l.address}` : 'Buyer - Home Search') : `Listing - ${l.address}`;
       const url = l.clientPath ? `https://nav.oasisgroupaz.com${l.clientPath}` : hand.get(l.id);
