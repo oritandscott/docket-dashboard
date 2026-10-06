@@ -91,9 +91,9 @@
     "text": "When a property has closed we need to have a plan for how the navigator app section below reflects it.  For Palm Lane, it should now say CLOSED in red and then I need to be able to dismiss them from that section as well-- but always leave the navigator app data saved and the old navigator available-- don't delete it. Also for the status indications in each navigator line below, make them in ALL-CAPS and make any UNDER CONTRACT a bright green color, make any CLOSED bright red, make any LISTED bright blue and any HOME SEARCH a bright pink like the color you used for the telephone numbers above.  Also add functionality to this command input box so that when I hit return, it sends the command and I don't have to hit the Send Command button",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-10-03T11:48:29.346Z",
-    "updatedAt": "2026-10-06T14:37:16.000Z",
+    "updatedAt": "2026-10-06T14:40:24.959Z",
     "proposals": [
       {
         "pid": "p-palm-lane-closed",
@@ -103,10 +103,10 @@
         "args": {
           "status": "CLOSED"
         },
-        "status": "pending",
-        "result": "8119 E. Palm Lane, Scottsdale: status ACTIVE -> CLOSED Google Sheet Linear Tracker: record not in the live snapshot, not copied.",
+        "status": "applied",
+        "result": "8119 E. Palm Lane, Scottsdale: status CLOSED -> CLOSED Google Sheet Linear Tracker: Updated the line on the Google Sheet Linear Tracker (row 9, JO-KT).",
         "navId": "cms6cdwxc000004i3svx1bjnj",
-        "decidedAt": "2026-10-06T14:35:45.835Z"
+        "decidedAt": "2026-10-06T14:40:24.959Z"
       }
     ],
     "reply": "All built: Navigator App statuses are now ALL CAPS -- UNDER CONTRACT bright green, LISTED bright blue, HOME SEARCH bright pink, CLOSED bright red. Closed deals stay in the panel (in red) with a Dismiss button; dismissing only hides them there -- the Navigator and its links are never deleted. Return now sends the command (Shift+Return for a new line). Tap Confirm below to mark Palm Lane CLOSED."
