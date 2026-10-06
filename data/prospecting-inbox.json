@@ -5,7 +5,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-10-06T14:53:04.000Z",
-    "updatedAt": "2026-10-06T17:43:07.424Z",
+    "updatedAt": "2026-10-06T17:43:11.008Z",
     "text": "Barnes (4007 E Agave): remove the wrong open houses Sep 9 and Sep 23; add Sat Sep 12 and Sat Sep 26 (Zach Richards hosted).",
     "reply": "Updated from your email + sign-in sheets. Sep 9 and Sep 23 were the PRICE DROPS (to $550,000 and $539,500), not open houses -- so this removes those two open houses and records the price drops instead. Open houses: Aug 14, 22, 29 (yours), Fri Sep 11 3-5pm (in MLS, not yours -- skip it if that's wrong), Sat Sep 12 1-3pm (yours), Sat Sep 26 (Zach Richards). Ones already in Navigator are skipped automatically. Tap top to bottom.",
     "proposals": [
@@ -128,7 +128,10 @@
           "startTime": "13:00",
           "endTime": "15:00"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "4007 E. Agave Rd., Phoenix: open house added 2026-09-12 Google Sheet Linear Tracker: Updated the line on the Google Sheet Linear Tracker (row 11, IT-KY).",
+        "navId": "cms99z74m000004l592xbroy4",
+        "decidedAt": "2026-10-06T17:43:11.008Z"
       },
       {
         "pid": "p-barnes-oh-0926",
