@@ -76,7 +76,9 @@ async function resolveTarget(match) {
     return words.every((w) => hay.includes(w));
   });
   if (hits.length !== 1) {
-    throw new Error(hits.length ? `"${match}" matches ${hits.length} Navigator records -- needs a more specific name` : `No active Navigator record matches "${match}"`);
+    throw new Error(hits.length
+      ? `"${match}" matches ${hits.length} Navigator records (${hits.map((h) => `${h.clientNames} - ${h.dealType === 'BUYER' ? 'buyer' : 'seller'} - ${h.address}`).join('; ')}) -- reply with which one`
+      : `No active Navigator record matches "${match}"`);
   }
   return hits[0];
 }
