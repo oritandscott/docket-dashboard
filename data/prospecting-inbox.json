@@ -1,5 +1,60 @@
 [
   {
+    "id": "note-barnes-oh-fix",
+    "topic": "tracker",
+    "dictated": false,
+    "status": "proposed",
+    "createdAt": "2026-10-06T14:53:04.000Z",
+    "updatedAt": "2026-10-06T14:53:04.000Z",
+    "text": "Barnes (4007 E Agave): remove the wrong open houses Sep 9 and Sep 23; add Sat Sep 12 and Sat Sep 26 (Zach Richards hosted).",
+    "reply": "Four Confirms, top to bottom. Navigator, the dashboard tracker and the Google Sheet Linear Tracker all follow. Heads-up: on your Google Sheet Linear Tracker, Sep 9 and Sep 23 used to say PRICE DROP; the wrong open-house entries wrote over those two cells. If those were real price drops, reply here with the new prices and I'll add them to Navigator so PRICE DROP shows everywhere again.",
+    "proposals": [
+      {
+        "pid": "p-barnes-oh-rm-0909",
+        "label": "Barnes: remove the open house on Wed Sep 9 (entered by mistake)",
+        "op": "remove_open_house",
+        "match": "Barnes Agave",
+        "args": {
+          "date": "2026-09-09"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-barnes-oh-rm-0923",
+        "label": "Barnes: remove the open house on Wed Sep 23 (entered by mistake)",
+        "op": "remove_open_house",
+        "match": "Barnes Agave",
+        "args": {
+          "date": "2026-09-23"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-barnes-oh-0912",
+        "label": "Barnes: add open house Sat Sep 12, 1:00-3:00pm (Orit & Scott)",
+        "op": "add_open_house",
+        "match": "Barnes Agave",
+        "args": {
+          "date": "2026-09-12",
+          "startTime": "13:00",
+          "endTime": "15:00"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-barnes-oh-0926",
+        "label": "Barnes: add open house Sat Sep 26 (hosted by Zach Richards)",
+        "op": "add_open_house",
+        "match": "Barnes Agave",
+        "args": {
+          "date": "2026-09-26",
+          "host": "Zach Richards"
+        },
+        "status": "pending"
+      }
+    ]
+  },
+  {
     "id": "note-muwptuxyqja3q",
     "text": "Add open houses for the Barnes listing on September 9 and 23",
     "topic": "tracker",

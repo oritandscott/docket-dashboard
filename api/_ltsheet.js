@@ -236,7 +236,9 @@ export async function writeTrackerLine(l, { today = Date.now(), fresh = false } 
     const want = v === null ? '' : String(v);
     const have = at(row, c);
     // fresh: rewrite every cell (fixes a line this code wrote earlier).
-    const keepHandTyped = clear && !fresh && have && !isNum(have) && have !== 'COE' && !norm(have).includes(key) && isNum(want);
+    // OPEN HAUS comes from Navigator's open houses, so it's never treated as
+    // hand-typed (a removed open house turns back into a day number).
+    const keepHandTyped = clear && !fresh && have && !isNum(have) && have !== 'COE' && have !== 'OPEN HAUS' && !norm(have).includes(key) && isNum(want);
     const keepLabel = clear && !fresh && want === label && have && norm(have).includes(key);
     // Day numbers are always rewritten so their phase colors stay current.
     if (clear && !fresh && ((want === have && !isNum(want)) || keepHandTyped || keepLabel)) { flush(); continue; }
