@@ -44,7 +44,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-10-06T13:24:51.085Z",
-    "updatedAt": "2026-10-06T14:37:16.000Z",
+    "updatedAt": "2026-10-06T14:39:49.915Z",
     "reply": "One Confirm adds the Sun Oct 4 open house to the Brower Navigator, the dashboard tracker and the Google Sheet Linear Tracker.",
     "proposals": [
       {
@@ -55,7 +55,9 @@
         "args": {
           "date": "2026-10-04"
         },
-        "status": "pending"
+        "status": "failed",
+        "result": "\"Brower\" matches 2 Navigator records -- needs a more specific name",
+        "decidedAt": "2026-10-06T14:39:49.915Z"
       }
     ]
   },
