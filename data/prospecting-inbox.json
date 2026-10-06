@@ -4,27 +4,30 @@
     "text": "Add open houses for the Barnes listing on September 9 and 23",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "needs-you",
     "createdAt": "2026-10-06T13:29:41.350Z",
-    "updatedAt": "2026-10-06T13:29:41.350Z"
+    "updatedAt": "2026-10-06T14:15:00.000Z",
+    "reply": "I can't add open houses to the Barnes listing -- there's no Navigator/tracker command for open-house dates (I can only create transactions, change dates/status, waivers, inspections, offer terms, BINSR dates, private sale, and re-copy lines). Please add the Sept 9 and Sept 23 open houses by hand."
   },
   {
     "id": "note-muwpnmz1a0stc",
     "text": "Add open house for the Browers listing on Sunday October 4",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "needs-you",
     "createdAt": "2026-10-06T13:24:51.085Z",
-    "updatedAt": "2026-10-06T13:24:51.085Z"
+    "updatedAt": "2026-10-06T14:15:00.000Z",
+    "reply": "I can't add an open house to the Browers listing -- there's no tracker command for open-house dates. Please add the Sunday Oct 4 open house by hand."
   },
   {
     "id": "note-muwpmq6k6pdhb",
     "text": "Something's off in the linear tracker for the Loutons-- BNSR should not show in day 12-- that should be in Day 10 and days 11-15 orange until whenever the BINSR is in fact sent",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "needs-you",
     "createdAt": "2026-10-06T13:24:08.588Z",
-    "updatedAt": "2026-10-06T13:24:08.588Z"
+    "updatedAt": "2026-10-06T14:15:00.000Z",
+    "reply": "I can't propose this yet: the BINSR command needs a real date for when the BINSR was sent, and I don't have one for the Loutons. Colors follow BINSR status (yellow until delivered, then orange/blue/green), so tell me the actual send date (Day 10 = 10 days after acceptance) and I'll propose it; if the sheet line looks wrong, say so and I can propose a fresh re-copy."
   },
   {
     "id": "note-musbw5r63q6h5",
@@ -91,7 +94,7 @@
     "proposals": [
       {
         "pid": "p-louton-create",
-        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 — $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
+        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 \u2014 $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
         "op": "create_transaction",
         "args": {
           "dealType": "BUYER",
@@ -247,7 +250,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
