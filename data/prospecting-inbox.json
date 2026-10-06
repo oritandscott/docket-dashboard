@@ -66,9 +66,9 @@
     "text": "Something's off in the linear tracker for the Loutons-- BNSR should not show in day 12-- that should be in Day 10 and days 11-15 orange until whenever the BINSR is in fact sent",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-10-06T13:24:08.588Z",
-    "updatedAt": "2026-10-06T14:37:16.000Z",
+    "updatedAt": "2026-10-06T14:40:05.965Z",
     "reply": "Fixed in the code: until the BINSR is really sent, it's now expected on the last day of due diligence (Day 10 = Sun Oct 11), with the seller-response days (11-15) in light orange. The dashboard tracker shows this automatically; tap Confirm to redo the Louton line on the Google Sheet Linear Tracker too. When it's actually sent, just say e.g. \"Louton BINSR sent Oct 9\" and everything shifts to the real date.",
     "proposals": [
       {
@@ -79,7 +79,10 @@
         "args": {
           "fresh": true
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "Updated the line on the Google Sheet Linear Tracker (row 21, KR-MP).",
+        "navId": "cmuq9ppag000004jprkna5f2y",
+        "decidedAt": "2026-10-06T14:40:05.965Z"
       }
     ]
   },
