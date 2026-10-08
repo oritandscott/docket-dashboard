@@ -1,8 +1,8 @@
 {
-  "state": "error",
-  "message": "Weekender build failed on the Mac mini: RuntimeError: input/angela_htmlbody.html is 123h old -- stale (last week's?). Stage today's Angela email and write a fresh week_manifest.json first.",
+  "state": "running",
+  "message": "Building this week's Weekender on the Mac mini...",
   "campaignTitle": null,
   "editUrl": null,
-  "updatedAt": "2026-10-06T22:48:50.094Z",
+  "updatedAt": "2026-10-08T20:32:45.598Z",
   "lastSuccessAt": "2026-10-01T21:11:57.772Z"
 }
