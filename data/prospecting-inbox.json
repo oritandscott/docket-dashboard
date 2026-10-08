@@ -4,9 +4,26 @@
     "text": "remove the appraisal from the Loutons-- they got a waiver",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-10-07T22:14:34.309Z",
-    "updatedAt": "2026-10-07T22:14:34.309Z"
+    "updatedAt": "2026-10-08T00:09:27.000Z",
+    "proposals": [
+      {
+        "pid": "p-louton-waive-appr",
+        "label": "Waive the appraisal for the Loutons (12406 S Potomac St)",
+        "op": "waive_appraisal",
+        "match": "Louton Potomac",
+        "status": "pending"
+      }
+    ],
+    "reply": "Got it, Orit & Scott -- since the Loutons got an appraisal waiver, I've proposed marking the appraisal waived on their Potomac St Navigator. Tap Confirm to apply it; it will update their line on the Google Sheet Linear Tracker too.",
+    "thread": [
+      {
+        "from": "claude",
+        "text": "Got it, Orit & Scott -- since the Loutons got an appraisal waiver, I've proposed marking the appraisal waived on their Potomac St Navigator. Tap Confirm to apply it; it will update their line on the Google Sheet Linear Tracker too.",
+        "at": "2026-10-08T00:09:27.000Z"
+      }
+    ]
   },
   {
     "id": "note-barnes-oh-fix",
@@ -312,7 +329,7 @@
     "proposals": [
       {
         "pid": "p-louton-create",
-        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 — $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
+        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 \u2014 $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
         "op": "create_transaction",
         "args": {
           "dealType": "BUYER",
@@ -468,7 +485,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
