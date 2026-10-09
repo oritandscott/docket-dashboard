@@ -4,18 +4,66 @@
     "text": "and remove the Appraisal indicator from the Louton escrow-- they got an appraisal waiver so there will not be one",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-10-09T13:30:44.709Z",
-    "updatedAt": "2026-10-09T13:30:44.709Z"
+    "updatedAt": "2026-10-09T14:16:27.000Z",
+    "reply": "Will do -- one proposal to waive the appraisal on the Louton escrow (12406 S Potomac St) so the Appraisal indicator comes off, on Navigator and the Google Sheet Linear Tracker. Tap Confirm to apply.",
+    "proposals": [
+      {
+        "pid": "p-louton-waive-appr2",
+        "label": "Waive the appraisal for the Loutons (12406 S Potomac St) -- appraisal waiver received",
+        "op": "waive_appraisal",
+        "match": "Louton Potomac",
+        "status": "pending"
+      }
+    ],
+    "thread": [
+      {
+        "from": "claude",
+        "text": "Will do -- one proposal to waive the appraisal on the Louton escrow (12406 S Potomac St) so the Appraisal indicator comes off, on Navigator and the Google Sheet Linear Tracker. Tap Confirm to apply.",
+        "at": "2026-10-09T14:16:27.000Z"
+      }
+    ]
   },
   {
     "id": "note-mv105qpzdi0tp",
     "text": "We sent the Louton BINSR last night, Thursday OCtober 8, which is day 7...so now adjust the timing of the seller's response time and our final response as buyer",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-10-09T13:29:56.614Z",
-    "updatedAt": "2026-10-09T13:29:56.614Z"
+    "updatedAt": "2026-10-09T14:16:27.000Z",
+    "reply": "Got it -- I'll record the Louton BINSR as sent Thu Oct 8 (Day 7; acceptance Oct 1 = Day 0). That starts the seller's 5-day response window (orange) and sets the buyer's final-response window (blue) after it. Tap Confirm to apply; it updates Navigator and the Google Sheet Linear Tracker line.",
+    "proposals": [
+      {
+        "pid": "p-louton-binsr-sent",
+        "label": "Louton (12406 S Potomac St): BINSR delivered Thu Oct 8 (Day 7)",
+        "op": "binsr",
+        "match": "Louton Potomac",
+        "args": {
+          "stage": "delivered",
+          "date": "2026-10-08"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-louton-resheet",
+        "label": "Google Sheet Linear Tracker: rewrite the Louton line with the new BINSR timing",
+        "op": "copy_to_sheet",
+        "match": "Louton Potomac",
+        "args": {
+          "fresh": true
+        },
+        "status": "pending"
+      }
+    ],
+    "thread": [
+      {
+        "from": "claude",
+        "text": "Got it -- I'll record the Louton BINSR as sent Thu Oct 8 (Day 7; acceptance Oct 1 = Day 0). That starts the seller's 5-day response window (orange) and sets the buyer's final-response window (blue) after it. Tap Confirm to apply; it updates Navigator and the Google Sheet Linear Tracker line.",
+        "at": "2026-10-09T14:16:27.000Z"
+      }
+    ]
   },
   {
     "id": "note-muyo0pqdnqx3s",
@@ -347,7 +395,7 @@
     "proposals": [
       {
         "pid": "p-louton-create",
-        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 — $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
+        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 \u2014 $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
         "op": "create_transaction",
         "args": {
           "dealType": "BUYER",
@@ -503,7 +551,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
