@@ -3083,7 +3083,7 @@
         <div>
           <span class="client-name" style="color:var(--stamp-${buyer ? 'blue' : 'red'});font-weight:800;">${escapeHtml(title)}</span>
           <span style="font-size:.95rem;font-weight:400;margin-left:2.5rem;">${escapeHtml(l.clientNames || '')}</span>
-          <span style="font-size:.8rem;font-weight:800;letter-spacing:.04em;margin-left:.8rem;color:${NAV_PHASE_COLOR[l.phase] || 'var(--ink-soft)'};">${escapeHtml(NAV_PHASE[l.phase] || '')}</span>
+          <span style="font-size:.8rem;font-weight:800;letter-spacing:.04em;margin-left:.8rem;color:${NAV_PHASE_COLOR[l.phase] || 'var(--ink-soft)'};">${escapeHtml(l.phase === 'escrow' ? (buyer ? 'BUYER ' : 'SELLER ') + NAV_PHASE.escrow : (NAV_PHASE[l.phase] || ''))}</span>
         </div>
         <div style="display:flex;gap:.5rem;flex-shrink:0;">
           ${client ? `<a class="btn btn-ghost" href="${escapeHtml(client)}" target="_blank" rel="noopener">Client View</a>` : ''}
