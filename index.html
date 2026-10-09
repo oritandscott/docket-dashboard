@@ -856,6 +856,7 @@
         <div class="inline-form" style="align-items:center;">
           <button class="btn btn-ghost" type="button" id="inbox-mic">🎤 Dictate</button>
           <button class="btn" type="button" id="inbox-save">Save note</button>
+          <button class="btn btn-ghost" type="button" data-run-now>▶ RUN NOW</button>
           <span class="inbox-mic-status" id="inbox-mic-status"></span>
         </div>
         <div class="pickup-times" data-pickup></div>
@@ -897,6 +898,7 @@
         <div class="inline-form" style="align-items:center;">
           <button class="btn btn-ghost" type="button" id="ltcmd-mic">🎤 Dictate</button>
           <button class="btn" type="button" id="ltcmd-send">Send command</button>
+          <button class="btn btn-ghost" type="button" data-run-now>▶ RUN NOW</button>
           <span class="inbox-mic-status" id="ltcmd-status"></span>
         </div>
         <div class="pickup-times" data-pickup></div>
@@ -3004,6 +3006,24 @@
   }
   renderPickupTimes();
   setInterval(renderPickupTimes, 60000);
+
+  // ---------- RUN NOW: ask Claude to process the inbox immediately ----------
+  document.querySelectorAll('[data-run-now]').forEach(btn => btn.addEventListener('click', async () => {
+    const status = btn.parentElement.querySelector('.inbox-mic-status');
+    const say = t => { if (status) status.textContent = t; };
+    btn.disabled = true; say('Starting Claude…');
+    try {
+      const r = await fetch('/api/machine-status?job=run-now', { method:'POST' });
+      const d = await r.json().catch(() => ({}));
+      if (r.status === 501) say('Run now isn\'t connected yet -- Claude will pick this up at the next pickup time.');
+      else if (!r.ok) say(d.error || `Couldn't start (HTTP ${r.status}).`);
+      else {
+        say('Claude is on it -- answers usually appear in a few minutes.');
+        [60000, 150000, 300000].forEach(ms => setTimeout(() => { if (typeof refreshInbox === 'function') refreshInbox(); }, ms));
+      }
+    } catch (e) { say('Couldn\'t reach the server.'); }
+    setTimeout(() => { btn.disabled = false; }, 120000);
+  }));
 
   // ---------- NAVIGATOR APP: every active seller & buyer ----------
   // Built from the same live Navigator snapshot as the tracker, so new

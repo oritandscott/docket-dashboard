@@ -96,6 +96,30 @@ export default async function handler(req, res) {
     return runCmdNotes(req, res);
   }
 
+  // "Run now" button: fires the Docket inbox routine on demand. Needs
+  // ROUTINE_FIRE_URL and ROUTINE_FIRE_TOKEN (the routine's API trigger) set
+  // in Vercel; without them it says so instead of failing.
+  if (req.query && req.query.job === 'run-now') {
+    if (req.method !== 'POST') return res.status(405).json({ error: 'POST only.' });
+    const url = process.env.ROUTINE_FIRE_URL, token = process.env.ROUTINE_FIRE_TOKEN;
+    if (!url || !token) return res.status(501).json({ error: 'not-connected' });
+    const now = Date.now();
+    if (globalThis.__runNowAt && now - globalThis.__runNowAt < 120000) return res.status(429).json({ error: 'Claude was just started -- give it a couple of minutes.' });
+    globalThis.__runNowAt = now;
+    try {
+      const r = await fetch(url, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'anthropic-version': '2023-06-01', 'anthropic-beta': 'experimental-cc-routine-2026-04-01', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: 'Run now: tapped on the dashboard' }),
+      });
+      if (!r.ok) { globalThis.__runNowAt = 0; return res.status(502).json({ error: `Trigger failed (HTTP ${r.status}).` }); }
+      return res.status(200).json({ ok: true });
+    } catch (e) {
+      globalThis.__runNowAt = 0;
+      return res.status(502).json({ error: e.message });
+    }
+  }
+
   if (req.query && (req.query.job === 'apply' || req.query.job === 'skip')) {
     const { runApply, runSkip } = await import('./_apply.js');
     return req.query.job === 'apply' ? runApply(req, res) : runSkip(req, res);
