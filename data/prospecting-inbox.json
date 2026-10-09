@@ -33,9 +33,9 @@
     "text": "We sent the Louton BINSR last night, Thursday OCtober 8, which is day 7...so now adjust the timing of the seller's response time and our final response as buyer",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-10-09T13:29:56.614Z",
-    "updatedAt": "2026-10-09T18:00:21.364Z",
+    "updatedAt": "2026-10-09T18:00:25.127Z",
     "reply": "Got it -- I'll record the Louton BINSR as sent Thu Oct 8 (Day 7; acceptance Oct 1 = Day 0). That starts the seller's 5-day response window (orange) and sets the buyer's final-response window (blue) after it. Tap Confirm to apply; it updates Navigator and the Google Sheet Linear Tracker line.",
     "proposals": [
       {
@@ -60,7 +60,10 @@
         "args": {
           "fresh": true
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "Updated the line on the Google Sheet Linear Tracker (row 21, KR-MP).",
+        "navId": "cmuq9ppag000004jprkna5f2y",
+        "decidedAt": "2026-10-09T18:00:25.127Z"
       }
     ],
     "thread": [
