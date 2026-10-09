@@ -1,5 +1,14 @@
 [
   {
+    "id": "note-mv105qpzdi0tp",
+    "text": "We sent the Louton BINSR last night, Thursday OCtober 8, which is day 7...so now adjust the timing of the seller's response time and our final response as buyer",
+    "topic": "tracker",
+    "dictated": false,
+    "status": "new",
+    "createdAt": "2026-10-09T13:29:56.614Z",
+    "updatedAt": "2026-10-09T13:29:56.614Z"
+  },
+  {
     "id": "note-muyo0pqdnqx3s",
     "text": "remove the appraisal from the Loutons-- they got a waiver",
     "topic": "tracker",
@@ -329,7 +338,7 @@
     "proposals": [
       {
         "pid": "p-louton-create",
-        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 \u2014 $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
+        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 — $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
         "op": "create_transaction",
         "args": {
           "dealType": "BUYER",
@@ -485,7 +494,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
