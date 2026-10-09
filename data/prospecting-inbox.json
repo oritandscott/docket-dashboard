@@ -35,7 +35,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-10-09T13:29:56.614Z",
-    "updatedAt": "2026-10-09T14:16:27.000Z",
+    "updatedAt": "2026-10-09T18:00:21.364Z",
     "reply": "Got it -- I'll record the Louton BINSR as sent Thu Oct 8 (Day 7; acceptance Oct 1 = Day 0). That starts the seller's 5-day response window (orange) and sets the buyer's final-response window (blue) after it. Tap Confirm to apply; it updates Navigator and the Google Sheet Linear Tracker line.",
     "proposals": [
       {
@@ -47,7 +47,10 @@
           "stage": "delivered",
           "date": "2026-10-08"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "12406 S Potomac St, Phoenix, AZ 85044: BINSR delivered 2026-10-08 Google Sheet Linear Tracker: Updated the line on the Google Sheet Linear Tracker (row 21, KR-MP).",
+        "navId": "cmuq9ppag000004jprkna5f2y",
+        "decidedAt": "2026-10-09T18:00:21.364Z"
       },
       {
         "pid": "p-louton-resheet",
