@@ -70,7 +70,7 @@
     "text": "remove the appraisal from the Loutons-- they got a waiver",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-10-07T22:14:34.309Z",
     "updatedAt": "2026-10-08T00:09:27.000Z",
     "proposals": [
@@ -79,10 +79,10 @@
         "label": "Waive the appraisal for the Loutons (12406 S Potomac St)",
         "op": "waive_appraisal",
         "match": "Louton Potomac",
-        "status": "pending"
+        "status": "skipped"
       }
     ],
-    "reply": "Got it, Orit & Scott -- since the Loutons got an appraisal waiver, I've proposed marking the appraisal waived on their Potomac St Navigator. Tap Confirm to apply it; it will update their line on the Google Sheet Linear Tracker too.",
+    "reply": "Got it, Orit & Scott -- since the Loutons got an appraisal waiver, I've proposed marking the appraisal waived on their Potomac St Navigator. Tap Confirm to apply it; it will update their line on the Google Sheet Linear Tracker too. (Same as your Oct 9 note -- use the Confirm there.)",
     "thread": [
       {
         "from": "claude",

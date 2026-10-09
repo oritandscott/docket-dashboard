@@ -263,6 +263,8 @@
   .inbox-answer{display:flex;gap:.4rem;align-items:flex-start;margin-top:.45rem;}
   .inbox-answer textarea{flex:1;min-height:30px;font-size:.8rem;resize:vertical;}
   .inbox-reply.mine{opacity:.85;font-style:italic;}
+  .lt-waiting{background:#FFD400;color:#111;font-weight:700;border-radius:6px;padding:.55rem .8rem;margin:0 0 .7rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;}
+  .lt-waiting button{background:#111;color:#FFD400;border:0;border-radius:4px;padding:.3rem .7rem;font-weight:700;cursor:pointer;}
   .pickup-times{font-size:.78rem;color:var(--ink-soft);margin-top:.45rem;line-height:1.4;}
   .pickup-times b{color:var(--gold);font-weight:600;}
   .lt-c.br{background:#CFE2F3;}
@@ -886,6 +888,7 @@
           <span><i class="lt-swatch" style="background:#FF0000;"></i>COE</span>
         </div>
       </div>
+      <div class="lt-waiting" id="lt-waiting" style="display:none;"></div>
       <div class="lt-scroll" id="lt-scroll">
         <div class="empty-hint" style="margin:.6rem;">Loading from Navigator&hellip;</div>
       </div>
@@ -4256,6 +4259,7 @@
         <div class="pr-meta">${n.dictated ? '🎤 ' : ''}${escapeHtml(new Date(n.createdAt).toLocaleString(undefined, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }))} · ${escapeHtml(INBOX_STATUS[n.status] || n.status)}</div>
         ${inboxThreadHtml(n)}
         ${propHtml}
+        ${props.filter(pr => !pr.status || pr.status === 'pending').length > 1 ? `<div style="margin-top:.4rem;"><button class="btn" type="button" data-confirm-all style="padding:.3rem .8rem;font-size:.78rem;">✓ Confirm all ${props.filter(pr => !pr.status || pr.status === 'pending').length}, in order</button></div>` : ''}
         ${n.status === 'done' ? '' : `<div class="inbox-answer">
           <textarea rows="1" data-reply-text placeholder="Reply to Claude -- answer, give direction, or say &quot;build it&quot; (Return to send)"></textarea>
           <button class="btn btn-ghost" type="button" data-reply-send style="padding:.25rem .6rem;font-size:.74rem;">Reply</button>
@@ -4282,7 +4286,22 @@
   function renderInbox(){
     renderInboxList('prospecting', 'inbox-list', 'inbox-old');
     renderInboxList('tracker', 'ltcmd-list', 'ltcmd-old');
+    renderWaitingBanner();
   }
+  // Changes only happen once Confirm is tapped -- make waiting ones obvious.
+  function renderWaitingBanner(){
+    const el = document.getElementById('lt-waiting');
+    if (!el) return;
+    const waiting = inboxCache.filter(n => n.topic === 'tracker' && n.status !== 'done')
+      .reduce((k, n) => k + (n.proposals || []).filter(p => !p.status || p.status === 'pending' || p.status === 'failed').length, 0);
+    el.style.display = waiting ? '' : 'none';
+    el.innerHTML = waiting ? `⚠ ${waiting} change${waiting === 1 ? ' is' : 's are'} waiting for your Confirm -- nothing updates until you tap it. <button type="button" id="lt-waiting-go">Show me</button>` : '';
+  }
+  document.getElementById('lt-waiting').addEventListener('click', e => {
+    if (!e.target.closest('#lt-waiting-go')) return;
+    const first = document.querySelector('#ltcmd-list [data-prop="apply"]');
+    (first ? first.closest('.inbox-note') : document.getElementById('ltcmd-list')).scrollIntoView({ behavior:'smooth', block:'center' });
+  });
   function renderTrackerCmds(){ renderInboxList('tracker', 'ltcmd-list', 'ltcmd-old'); }
   document.querySelectorAll('[data-old-toggle]').forEach(b => b.addEventListener('click', () => {
     inboxShowOld[b.dataset.oldToggle] = !inboxShowOld[b.dataset.oldToggle];
@@ -4330,6 +4349,26 @@
   });
 
   const onInboxClick = async e => {
+    const ca = e.target.closest('[data-confirm-all]');
+    if (ca) {
+      const noteId = ca.closest('.inbox-note').dataset.id;
+      const note = inboxCache.find(n => n.id === noteId);
+      const todo = (note && note.proposals || []).filter(p => !p.status || p.status === 'pending');
+      if (!todo.length || !confirm(`Apply these ${todo.length} changes to Navigator, top to bottom?\n\n${todo.map(p => '• ' + (p.label || p.op)).join('\n')}`)) return;
+      ca.disabled = true;
+      for (const [i, pr] of todo.entries()) {
+        ca.textContent = `Applying ${i + 1} of ${todo.length}…`;
+        try {
+          const resp = await fetch('/api/machine-status?job=apply', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ noteId, pid: pr.pid }) });
+          const data = await resp.json().catch(() => ({}));
+          if (data.note) inboxCache = inboxCache.map(n => n.id === noteId ? data.note : n);
+          if (!resp.ok) { alert(`Stopped at: ${pr.label || pr.op}\n${data.error || (data.proposal && data.proposal.result) || resp.status}`); break; }
+        } catch (err) { alert(`Stopped: ${err.message}`); break; }
+      }
+      renderInbox();
+      refreshLinearTracker();
+      return;
+    }
     const pb = e.target.closest('[data-prop]');
     if (pb) {
       const noteId = pb.closest('.inbox-note').dataset.id;
