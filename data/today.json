@@ -1,34 +1,5 @@
 {
-  "schedule": [
-    {
-      "id": "mv0v76bpk1qr8",
-      "time": "09:00",
-      "title": "SPHERE / Open House — prep needed",
-      "date": "2026-10-09",
-      "source": "automation"
-    },
-    {
-      "id": "mv0v76bpm51gw",
-      "time": "09:00",
-      "title": "Lone Wolf Q&A Office Hours — KWIF (Red, Zoom)",
-      "date": "2026-10-09",
-      "source": "automation"
-    },
-    {
-      "id": "mv0v76bpoxisn",
-      "time": "10:00",
-      "title": "PC Meeting — KW Phoenix (Gold)",
-      "date": "2026-10-09",
-      "source": "automation"
-    },
-    {
-      "id": "mv0v76bpv3vlq",
-      "time": "12:00",
-      "title": "Reverse Mortgage Workshop — KWIF Gilbert (Red)",
-      "date": "2026-10-09",
-      "source": "automation"
-    }
-  ],
+  "schedule": [],
   "tasks": [
     {
       "id": "musajbjgvhoch",
@@ -39,12 +10,6 @@
     {
       "id": "musajbjgunmnx",
       "text": "Follow up: 3 prospects viewed your listing emails",
-      "done": false,
-      "source": "automation"
-    },
-    {
-      "id": "muv5fkf8cs7l0",
-      "text": "Review updated LSU – Deaton/May to Bartko deal",
       "done": false,
       "source": "automation"
     }
