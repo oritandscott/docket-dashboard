@@ -1,24 +1,31 @@
 {
   "schedule": [
     {
-      "id": "muzfrvl4gvbq9",
+      "id": "mv0v76bpk1qr8",
       "time": "09:00",
-      "title": "Weekender newsletter sends — 1pm today",
-      "date": "2026-10-08",
+      "title": "SPHERE / Open House — prep needed",
+      "date": "2026-10-09",
       "source": "automation"
     },
     {
-      "id": "muzfrvl40760w",
+      "id": "mv0v76bpm51gw",
       "time": "09:00",
-      "title": "Thursday sphere contacts — past clients/referrals",
-      "date": "2026-10-08",
+      "title": "Lone Wolf Q&A Office Hours — KWIF (Red, Zoom)",
+      "date": "2026-10-09",
       "source": "automation"
     },
     {
-      "id": "muzfrvl48ssjb",
+      "id": "mv0v76bpoxisn",
+      "time": "10:00",
+      "title": "PC Meeting — KW Phoenix (Gold)",
+      "date": "2026-10-09",
+      "source": "automation"
+    },
+    {
+      "id": "mv0v76bpv3vlq",
       "time": "12:00",
-      "title": "Sarah Maslowski YouTube webinar (Zoom)",
-      "date": "2026-10-08",
+      "title": "Reverse Mortgage Workshop — KWIF Gilbert (Red)",
+      "date": "2026-10-09",
       "source": "automation"
     }
   ],
