@@ -83,63 +83,111 @@ async function resolveTarget(match) {
   return hits[0];
 }
 
+// Apply ONE proposal: Navigator (or the sheet), then record the outcome on
+// the note. Returns { code, body } for the HTTP response.
+async function applyOne(headers, noteId, pid, { auto = false } = {}) {
+  let { url, sha, notes } = await readInbox(headers);
+  let note = notes.find((n) => n.id === noteId);
+  let prop = note && Array.isArray(note.proposals) ? note.proposals.find((p) => p.pid === pid) : null;
+  if (!prop) return { code: 404, body: { error: 'That proposal no longer exists' } };
+  if (prop.status === 'applied') return { code: 200, body: { ok: true, already: true, proposal: prop } };
+  if (!OPS.includes(prop.op)) return { code: 400, body: { error: `Operation "${prop.op}" is not allowed` } };
+  if (auto && !AUTO_OPS.includes(prop.op)) return { code: 403, body: { error: `"${prop.op}" needs a Confirm tap` } };
+
+  let result;
+  try {
+    const payload = { ...(prop.args || {}), op: prop.op };
+    if (prop.op !== 'create_transaction') {
+      const target = await resolveTarget(prop.match);
+      payload.id = target.id;
+    }
+    if (prop.op === 'copy_to_sheet') {
+      // Google Sheet Linear Tracker only -- no Navigator write.
+      const rec = (await loadSnapshot()).listings.find((l) => l.id === payload.id);
+      const sheet = await writeTrackerLine(rec, { fresh: !!(prop.args && prop.args.fresh) });
+      await moveTodayBox().catch(() => {});
+      result = { status: 'applied', result: sheet, navId: payload.id };
+    } else {
+      const r = await fetch(APPLY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-docket-shared-secret': navSecret() },
+        body: JSON.stringify(payload),
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data.error || `Navigator answered ${r.status}`);
+      const navId = data.id || payload.id;
+      const sheet = navId ? await syncSheet(navId) : '';
+      result = { status: 'applied', result: [data.summary || 'Applied', sheet].filter(Boolean).join(' '), navId };
+    }
+  } catch (e) {
+    result = { status: 'failed', result: String(e.message || e) };
+  }
+  if (auto) result.auto = true;
+
+  // Record the outcome (re-read + retries in case the file moved on).
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (attempt) ({ url, sha, notes } = await readInbox(headers));
+    note = notes.find((n) => n.id === noteId);
+    prop = note && note.proposals.find((p) => p.pid === pid);
+    if (!prop) break;
+    Object.assign(prop, result, { decidedAt: new Date().toISOString() });
+    if (note.proposals.every((p) => p.status === 'applied' || p.status === 'skipped')) note.status = 'done';
+    note.updatedAt = new Date().toISOString();
+    const w = await writeInbox(headers, url, sha, notes, `Tracker command: ${auto ? 'auto-' : ''}${result.status} -- ${prop.label || prop.op}`);
+    if (w.ok) break;
+    if (w.status !== 409) break;
+  }
+  return { code: result.status === 'applied' ? 200 : 502, body: { ok: result.status === 'applied', proposal: prop, note } };
+}
+
 export async function runApply(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const { noteId, pid } = req.body || {};
   if (!noteId || !pid) return res.status(400).json({ error: 'noteId and pid are required' });
-
   try {
-    const headers = gh();
-    let { url, sha, notes } = await readInbox(headers);
-    let note = notes.find((n) => n.id === noteId);
-    let prop = note && Array.isArray(note.proposals) ? note.proposals.find((p) => p.pid === pid) : null;
-    if (!prop) return res.status(404).json({ error: 'That proposal no longer exists' });
-    if (prop.status === 'applied') return res.status(200).json({ ok: true, already: true, proposal: prop });
-    if (!OPS.includes(prop.op)) return res.status(400).json({ error: `Operation "${prop.op}" is not allowed` });
+    const { code, body } = await applyOne(gh(), noteId, pid);
+    return res.status(code).json(body);
+  } catch (err) {
+    return res.status(err.status || 500).json({ error: err.message });
+  }
+}
 
-    let result;
-    try {
-      const payload = { ...(prop.args || {}), op: prop.op };
-      if (prop.op !== 'create_transaction') {
-        const target = await resolveTarget(prop.match);
-        payload.id = target.id;
-      }
-      if (prop.op === 'copy_to_sheet') {
-        // Google Sheet Linear Tracker only -- no Navigator write.
-        const rec = (await loadSnapshot()).listings.find((l) => l.id === payload.id);
-        const sheet = await writeTrackerLine(rec, { fresh: !!(prop.args && prop.args.fresh) });
-        await moveTodayBox().catch(() => {});
-        result = { status: 'applied', result: sheet, navId: payload.id };
-      } else {
-        const r = await fetch(APPLY_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-docket-shared-secret': navSecret() },
-          body: JSON.stringify(payload),
-        });
-        const data = await r.json().catch(() => ({}));
-        if (!r.ok) throw new Error(data.error || `Navigator answered ${r.status}`);
-        const navId = data.id || payload.id;
-        const sheet = navId ? await syncSheet(navId) : '';
-        result = { status: 'applied', result: [data.summary || 'Applied', sheet].filter(Boolean).join(' '), navId };
-      }
-    } catch (e) {
-      result = { status: 'failed', result: String(e.message || e) };
-    }
+// Orit & Scott's choice (Oct 9): routine changes apply without a Confirm
+// tap. Creating a Navigator, changing a deal's status (closed/cancelled...)
+// and private sales still wait for their tap.
+export const AUTO_OPS = ['set_escrow_dates', 'waive_appraisal', 'waive_inspection', 'set_inspection', 'offer_terms',
+  'add_open_house', 'remove_open_house', 'price_change', 'binsr', 'copy_to_sheet'];
 
-    // Record the outcome (re-read + one retry in case the file moved on).
-    for (let attempt = 0; attempt < 2; attempt++) {
-      if (attempt) ({ url, sha, notes } = await readInbox(headers));
-      note = notes.find((n) => n.id === noteId);
-      prop = note && note.proposals.find((p) => p.pid === pid);
-      if (!prop) break;
-      Object.assign(prop, result, { decidedAt: new Date().toISOString() });
-      if (note.proposals.every((p) => p.status === 'applied' || p.status === 'skipped')) note.status = 'done';
-      note.updatedAt = new Date().toISOString();
-      const w = await writeInbox(headers, url, sha, notes, `Tracker command: ${result.status} -- ${prop.label || prop.op}`);
-      if (w.ok) break;
-      if (w.status !== 409) break;
+// Apply every pending AUTO_OPS proposal, oldest note first and in each
+// note's order. A step that needs a tap -- or fails -- stops that note,
+// since later steps may depend on it. Runs on each Oasis Mini heartbeat
+// (~every 30 min) and whenever the dashboard loads.
+export async function applyAllPending({ budgetMs = 45000 } = {}) {
+  const started = Date.now();
+  const headers = gh();
+  const { notes } = await readInbox(headers);
+  const queue = notes
+    .filter((n) => n.status !== 'done' && Array.isArray(n.proposals) && n.proposals.some((p) => !p.status || p.status === 'pending'))
+    .sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
+  let applied = 0;
+  let failed = 0;
+  for (const n of queue) {
+    for (const p of n.proposals) {
+      if (p.status === 'applied' || p.status === 'skipped') continue;
+      if (p.status === 'failed' || !AUTO_OPS.includes(p.op)) break;
+      if (Date.now() - started > budgetMs) return { applied, failed, more: true };
+      const { code } = await applyOne(headers, n.id, p.pid, { auto: true });
+      if (code === 200) applied++;
+      else { failed++; break; }
     }
-    return res.status(result.status === 'applied' ? 200 : 502).json({ ok: result.status === 'applied', proposal: prop, note });
+  }
+  return { applied, failed, more: false };
+}
+
+export async function runApplyPending(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  try {
+    return res.status(200).json({ ok: true, ...(await applyAllPending()) });
   } catch (err) {
     return res.status(err.status || 500).json({ error: err.message });
   }

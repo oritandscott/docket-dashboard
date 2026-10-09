@@ -120,6 +120,12 @@ export default async function handler(req, res) {
     }
   }
 
+  // Applies pending routine tracker changes (see AUTO_OPS in _apply.js).
+  if (req.query && req.query.job === 'apply-pending') {
+    const { runApplyPending } = await import('./_apply.js');
+    return runApplyPending(req, res);
+  }
+
   if (req.query && (req.query.job === 'apply' || req.query.job === 'skip')) {
     const { runApply, runSkip } = await import('./_apply.js');
     return req.query.job === 'apply' ? runApply(req, res) : runSkip(req, res);
@@ -197,7 +203,16 @@ export default async function handler(req, res) {
       return res.status(502).json({ error: 'Could not write machine-status.json to GitHub', detail: errText });
     }
 
-    return res.status(200).json({ ok: true, record: current[machine] });
+    // Each Mini heartbeat (~every 30 min) also applies pending routine
+    // tracker changes, so they go through without a Confirm tap.
+    let autoApplied = null;
+    try {
+      const { applyAllPending } = await import('./_apply.js');
+      autoApplied = await applyAllPending({ budgetMs: 40000 });
+    } catch (e) {
+      autoApplied = { error: e.message };
+    }
+    return res.status(200).json({ ok: true, record: current[machine], autoApplied });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

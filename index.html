@@ -4245,11 +4245,11 @@
     const props = Array.isArray(n.proposals) ? n.proposals : [];
     const propHtml = props.map(pr => {
       const st = pr.status || 'pending';
-      const badge = st === 'applied' ? '<span class="pill pill-running">Applied ✓</span>'
+      const badge = st === 'applied' ? `<span class="pill pill-running">${pr.auto ? 'Applied automatically ✓' : 'Applied ✓'}</span>`
         : st === 'failed' ? '<span class="pill pill-blocked">Didn\'t apply</span>'
         : st === 'skipped' ? '<span class="pill pill-idea">Skipped</span>' : '';
       const btns = (st === 'pending' || st === 'failed')
-        ? `<button class="btn" type="button" data-prop="apply" data-pid="${prAttr(pr.pid)}" style="padding:.25rem .6rem;font-size:.74rem;">${st === 'failed' ? 'Try again' : 'Confirm'}</button>
+        ? `${st === 'pending' && AUTO_OPS.includes(pr.op) ? '<span class="pr-meta" style="margin-right:.4rem;">applies automatically</span>' : ''}<button class="btn" type="button" data-prop="apply" data-pid="${prAttr(pr.pid)}" style="padding:.25rem .6rem;font-size:.74rem;">${st === 'failed' ? 'Try again' : AUTO_OPS.includes(pr.op) ? 'Apply now' : 'Confirm'}</button>
            <button class="btn btn-ghost" type="button" data-prop="skip" data-pid="${prAttr(pr.pid)}" style="padding:.25rem .6rem;font-size:.74rem;">Skip</button>` : '';
       return `<div class="inbox-prop"><div style="flex:1;">${escapeHtml(pr.label || pr.op)} ${badge}
         ${pr.result && st !== 'pending' ? `<div class="pr-meta">${escapeHtml(pr.result)}</div>` : ''}</div>${btns}</div>`;
@@ -4288,14 +4288,36 @@
     renderInboxList('tracker', 'ltcmd-list', 'ltcmd-old');
     renderWaitingBanner();
   }
+  // Routine changes (dates, open houses, prices, BINSR, waivers...) apply on
+  // their own; only new Navigators, status changes and private sales wait
+  // for a Confirm tap. Whenever the dashboard is open, push them through.
+  const AUTO_OPS = ['set_escrow_dates', 'waive_appraisal', 'waive_inspection', 'set_inspection', 'offer_terms',
+    'add_open_house', 'remove_open_house', 'price_change', 'binsr', 'copy_to_sheet'];
+  let autoApplying = false;
+  async function autoApplyPending(){
+    const due = inboxCache.some(n => n.status !== 'done' && (n.proposals || []).some(p => (!p.status || p.status === 'pending') && AUTO_OPS.includes(p.op)));
+    if (!due || autoApplying) return;
+    autoApplying = true;
+    try {
+      const r = await fetch('/api/machine-status?job=apply-pending', { method:'POST', headers:{ 'Content-Type':'application/json' }, body:'{}' });
+      const d = await r.json().catch(() => ({}));
+      if (d.applied || d.failed) {
+        const resp = await fetch('/api/machine-status?job=data&file=prospecting-inbox&t=' + Date.now());
+        if (resp.ok) { inboxCache = await resp.json(); renderInbox(); }
+        refreshLinearTracker();
+      }
+    } catch (e) { /* the Mini's heartbeat will catch it */ }
+    autoApplying = false;
+  }
+
   // Changes only happen once Confirm is tapped -- make waiting ones obvious.
   function renderWaitingBanner(){
     const el = document.getElementById('lt-waiting');
     if (!el) return;
     const waiting = inboxCache.filter(n => n.topic === 'tracker' && n.status !== 'done')
-      .reduce((k, n) => k + (n.proposals || []).filter(p => !p.status || p.status === 'pending' || p.status === 'failed').length, 0);
+      .reduce((k, n) => k + (n.proposals || []).filter(p => ((!p.status || p.status === 'pending') && !AUTO_OPS.includes(p.op)) || p.status === 'failed').length, 0);
     el.style.display = waiting ? '' : 'none';
-    el.innerHTML = waiting ? `⚠ ${waiting} change${waiting === 1 ? ' is' : 's are'} waiting for your Confirm -- nothing updates until you tap it. <button type="button" id="lt-waiting-go">Show me</button>` : '';
+    el.innerHTML = waiting ? `⚠ ${waiting} change${waiting === 1 ? ' is' : 's are'} waiting for your Confirm (new Navigators, closed/cancelled, or something that didn't work). <button type="button" id="lt-waiting-go">Show me</button>` : '';
   }
   document.getElementById('lt-waiting').addEventListener('click', e => {
     if (!e.target.closest('#lt-waiting-go')) return;
@@ -4314,6 +4336,7 @@
       const data = resp.ok ? await resp.json() : [];
       inboxCache = Array.isArray(data) ? data : [];
       renderInbox();
+      autoApplyPending();
     } catch (e) { /* the box still works for new notes */ }
   }
 
