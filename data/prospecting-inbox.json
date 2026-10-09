@@ -81,14 +81,17 @@
     "dictated": false,
     "status": "done",
     "createdAt": "2026-10-07T22:14:34.309Z",
-    "updatedAt": "2026-10-08T00:09:27.000Z",
+    "updatedAt": "2026-10-09T18:00:37.956Z",
     "proposals": [
       {
         "pid": "p-louton-waive-appr",
         "label": "Waive the appraisal for the Loutons (12406 S Potomac St)",
         "op": "waive_appraisal",
         "match": "Louton Potomac",
-        "status": "skipped"
+        "status": "applied",
+        "result": "12406 S Potomac St, Phoenix, AZ 85044: appraisal waived Google Sheet Linear Tracker: Updated the line on the Google Sheet Linear Tracker (row 21, KR-MP).",
+        "navId": "cmuq9ppag000004jprkna5f2y",
+        "decidedAt": "2026-10-09T18:00:37.956Z"
       }
     ],
     "reply": "Got it, Orit & Scott -- since the Loutons got an appraisal waiver, I've proposed marking the appraisal waived on their Potomac St Navigator. Tap Confirm to apply it; it will update their line on the Google Sheet Linear Tracker too. (Same as your Oct 9 note -- use the Confirm there.)",
