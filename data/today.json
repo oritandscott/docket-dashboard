@@ -1,5 +1,13 @@
 {
-  "schedule": [],
+  "schedule": [
+    {
+      "id": "mv2amaui31gyw",
+      "time": "09:00",
+      "title": "Open House — All Day",
+      "date": "2026-10-10",
+      "source": "automation"
+    }
+  ],
   "tasks": [
     {
       "id": "musajbjgvhoch",
@@ -10,6 +18,12 @@
     {
       "id": "musajbjgunmnx",
       "text": "Follow up: 3 prospects viewed your listing emails",
+      "done": false,
+      "source": "automation"
+    },
+    {
+      "id": "mv2amauiofj0m",
+      "text": "Follow up with Arman Talle — viewed listing email 3x this morning",
       "done": false,
       "source": "automation"
     }
