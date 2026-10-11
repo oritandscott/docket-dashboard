@@ -129,6 +129,42 @@
     border-top:1px solid rgba(237,233,221,.14);
   }
 
+  /* ---------- EVENTS ---------- */
+  .nav a[href="#events"]{background:#2A1A36;}
+  #events.panel{background:#2A1A36;}
+  .ev-card{border:1px solid var(--line);border-radius:var(--radius);background:rgba(0,0,0,.22);padding:1.1rem 1.2rem 1.2rem;margin-top:1rem;}
+  .ev-card + .ev-card{margin-top:1.2rem;}
+  .ev-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.4rem 1rem;}
+  .ev-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.3rem;color:var(--ink);margin:0;}
+  .ev-when{font-family:'IBM Plex Mono',monospace;font-size:.78rem;letter-spacing:.06em;color:var(--gold);text-transform:uppercase;}
+  .ev-meta{font-size:.8rem;color:var(--ink-soft);margin-top:.35rem;display:flex;flex-wrap:wrap;gap:.3rem 1.1rem;}
+  .ev-meta b{color:var(--ink);font-weight:600;}
+  .ev-meta a{color:var(--gold);}
+  .ev-score{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem;margin-top:.9rem;align-items:start;}
+  @media (max-width:760px){.ev-score{grid-template-columns:repeat(2,minmax(0,1fr));}.ev-tile[open]{grid-column:1/-1;}}
+  .ev-tile{border:1px solid var(--line);border-radius:5px;background:var(--paper-card);min-width:0;}
+  .ev-tile summary{list-style:none;cursor:pointer;padding:.7rem .8rem .65rem;display:grid;gap:.1rem;}
+  .ev-tile summary::-webkit-details-marker{display:none;}
+  .ev-tile summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  .ev-n{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:1.9rem;line-height:1.05;font-variant-numeric:tabular-nums;}
+  .ev-l{font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);display:flex;justify-content:space-between;gap:.4rem;}
+  .ev-l .chev{transition:transform .15s;}
+  .ev-tile[open] .ev-l .chev{transform:rotate(180deg);}
+  .ev-tile.yes{border-top:3px solid var(--stamp-green);} .ev-tile.yes .ev-n{color:var(--stamp-green);}
+  .ev-tile.maybe{border-top:3px solid var(--gold);} .ev-tile.maybe .ev-n{color:var(--gold);}
+  .ev-tile.no{border-top:3px solid var(--stamp-red);} .ev-tile.no .ev-n{color:var(--stamp-red);}
+  .ev-tile.unsub{border-top:3px solid var(--blueprint-line);} .ev-tile.unsub .ev-n{color:var(--ink-soft);}
+  .ev-list{list-style:none;margin:0;padding:.1rem .8rem .7rem;border-top:1px solid var(--line);}
+  .ev-list li{display:grid;grid-template-columns:1.4rem minmax(0,1fr);gap:.1rem .4rem;padding:.5rem 0;border-bottom:1px solid var(--line);font-size:.82rem;}
+  .ev-list li:last-child{border-bottom:0;}
+  .ev-list .i{font-family:'IBM Plex Mono',monospace;color:var(--ink-soft);text-align:right;}
+  .ev-list .nm{font-weight:600;color:var(--ink);overflow-wrap:anywhere;}
+  .ev-list .nt{grid-column:2;color:var(--ink-soft);font-size:.78rem;overflow-wrap:anywhere;}
+  .ev-list .rp{grid-column:2;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+  .ev-list .rp.done{color:var(--stamp-green);} .ev-list .rp.need{color:var(--gold);}
+  .ev-list .none{display:block;color:var(--ink-soft);font-size:.8rem;}
+  @media (prefers-reduced-motion:reduce){.ev-l .chev{transition:none;}}
+
   /* ---------- MAIN ---------- */
   .main{
     flex:1;
@@ -705,19 +741,20 @@
     <div class="side-date mono" id="side-date"></div>
     <ul class="nav">
       <li><a href="#today">Today <span class="num">01</span></a></li>
-      <li><a href="#prospecting">Prospecting <span class="num">02</span><span class="nav-badge" id="prospecting-nav-badge" style="display:none;"></span></a></li>
-      <li><a href="#escrow-tracker">Linear Escrow Tracker <span class="num">03</span></a></li>
-      <li><a href="#navigator">Navigator App <span class="num">04</span></a></li>
-      <li><a href="#video-production-mtp">Video Production - Moving to Phoenix <span class="num">05</span></a></li>
-      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">06</span></a></li>
-      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">07</span></a></li>
-      <li><a href="#anniversaries">Home Anniversaries <span class="num">08</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
-      <li><a href="#weekender">Thursday Weekender <span class="num">09</span></a></li>
-      <li><a href="#blogdrafts">Ghostwriter <span class="num">10</span></a></li>
-      <li><a href="#pipeline">Pipeline <span class="num">11</span></a></li>
-      <li><a href="#masterlist">Master Project List <span class="num">12</span><span class="nav-badge" id="masterlist-nav-badge" style="display:none;"></span></a></li>
-      <li hidden><a href="#tracker">Tracker <span class="num">13</span></a></li>
-      <li hidden><a href="#notes">Notes <span class="num">14</span></a></li>
+      <li><a href="#events">Events <span class="num">02</span></a></li>
+      <li><a href="#prospecting">Prospecting <span class="num">03</span><span class="nav-badge" id="prospecting-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#escrow-tracker">Linear Escrow Tracker <span class="num">04</span></a></li>
+      <li><a href="#navigator">Navigator App <span class="num">05</span></a></li>
+      <li><a href="#video-production-mtp">Video Production - Moving to Phoenix <span class="num">06</span></a></li>
+      <li><a href="#comments-channel2">Moving to Phoenix Comments <span class="num">07</span></a></li>
+      <li><a href="#comments-channel1">Oasis Arizona Living Comments <span class="num">08</span></a></li>
+      <li><a href="#anniversaries">Home Anniversaries <span class="num">09</span><span class="nav-badge" id="anniversaries-nav-badge" style="display:none;"></span></a></li>
+      <li><a href="#weekender">Thursday Weekender <span class="num">10</span></a></li>
+      <li><a href="#blogdrafts">Ghostwriter <span class="num">11</span></a></li>
+      <li><a href="#pipeline">Pipeline <span class="num">12</span></a></li>
+      <li><a href="#masterlist">Master Project List <span class="num">13</span><span class="nav-badge" id="masterlist-nav-badge" style="display:none;"></span></a></li>
+      <li hidden><a href="#tracker">Tracker <span class="num">14</span></a></li>
+      <li hidden><a href="#notes">Notes <span class="num">15</span></a></li>
     </ul>
     <div style="display:flex;flex-direction:column;gap:1.7rem;margin-top:2.1rem;">
       <img src="assets/kw-realty-phoenix.png" alt="Keller Williams Realty Phoenix" style="width:100%;max-width:180px;height:auto;display:block;">
@@ -767,9 +804,17 @@
       <div class="panel-sub" id="cal-other-note" style="display:none;margin-top:.9rem;"></div>
     </section>
 
+    <!-- EVENTS -->
+    <section class="panel" id="events">
+      <div class="tab-label">02 · Events</div>
+      <h2>Events</h2>
+      <div class="panel-sub">Client events we're hosting and who's coming. RSVPs update on their own from KW Command texts and the RSVP form. Tap any number to see who's in it.</div>
+      <div id="events-list"><div class="empty-hint">Loading events…</div></div>
+    </section>
+
     <!-- PROSPECTING -->
     <section class="panel" id="prospecting">
-      <div class="tab-label">02 · Prospecting</div>
+      <div class="tab-label">03 · Prospecting</div>
       <h2>Prospecting - Calls to Make</h2>
       <div class="panel-sub">One shared call list for past clients, open house guests, and anyone else worth a personal call. Saved for every device.</div>
 
@@ -870,7 +915,7 @@
 
     <!-- LINEAR ESCROW TRACKER (live from Navigator) -->
     <section class="panel" id="escrow-tracker">
-      <div class="tab-label">03 · Linear Escrow Tracker</div>
+      <div class="tab-label">04 · Linear Escrow Tracker</div>
       <h2>OASIS 2026 LINEAR ESCROW TRACKER</h2>
       <div class="panel-sub">Every active listing, TOM listing and buyer under contract, live from Navigator. Drag, swipe or use the arrows to look back and ahead.</div>
       <div class="lt-toolbar">
@@ -913,7 +958,7 @@
 
     <!-- NAVIGATOR APP -->
     <section class="panel" id="navigator">
-      <div class="tab-label">04 · Navigator App</div>
+      <div class="tab-label">05 · Navigator App</div>
       <h2>Navigator App - Active Sellers and Buyers</h2>
       <div class="panel-sub">Quick links into the Oasis Team Navigator app -- every active seller and buyer, straight from Navigator.</div>
       <a class="btn" href="https://nav.oasisgroupaz.com/admin" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:1.2rem;">Go to Main Editor (All Listings &amp; Buyers) &rarr;</a>
@@ -953,7 +998,7 @@
 
     <!-- VIDEO PRODUCTION: MOVING TO PHOENIX CHANNEL -->
     <section class="panel" id="video-production-mtp">
-      <div class="tab-label">05 · Video Production</div>
+      <div class="tab-label">06 · Video Production</div>
       <h2>Video Production - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">One-click links for producing Moving to Phoenix content -- Drive folders, the channel itself, and anything else worth having a click away.</div>
@@ -979,7 +1024,7 @@
 
     <!-- YOUTUBE COMMENTS: CHANNEL 2 -->
     <section class="panel" id="comments-channel2">
-      <div class="tab-label">06 · YouTube Comments</div>
+      <div class="tab-label">07 · YouTube Comments</div>
       <h2>YouTube Comments - Moving to Phoenix Channel</h2>
       <img class="channel-banner" src="assets/banner-moving-to-phoenix.jpg" alt="Moving to Phoenix channel banner">
       <div class="panel-sub">Recent comments from the Moving to Phoenix channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -994,7 +1039,7 @@
 
     <!-- YOUTUBE COMMENTS: CHANNEL 1 -->
     <section class="panel" id="comments-channel1">
-      <div class="tab-label">07 · YouTube Comments</div>
+      <div class="tab-label">08 · YouTube Comments</div>
       <h2>YouTube Comments - Oasis Arizona Living Channel</h2>
       <img class="channel-banner" src="assets/banner-oasis-arizona-living.jpg" alt="Oasis Arizona Living channel banner">
       <div class="panel-sub">Recent comments from the Oasis Arizona Living channel. Type a reply and hit Send -- nothing posts until you do.</div>
@@ -1009,7 +1054,7 @@
 
     <!-- HOME ANNIVERSARIES -->
     <section class="panel" id="anniversaries">
-      <div class="tab-label">08 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
+      <div class="tab-label">09 · Home Anniversaries<span class="tab-badge" id="anniversaries-tab-badge" style="display:none;"></span></div>
       <h2>Home Anniversaries</h2>
       <img class="channel-banner" src="assets/banner-command-header.png" alt="KW Command header">
       <div class="panel-sub">Clients with an upcoming Home Anniversary. 8&ndash;30 days out, pick a template or dismiss. At 7 days, the draft is created automatically from whatever template is selected -- nothing sends until you do.</div>
@@ -1037,7 +1082,7 @@
 
     <!-- THURSDAY WEEKENDER -->
     <section class="panel" id="weekender">
-      <div class="tab-label">09 · Thursday Weekender</div>
+      <div class="tab-label">10 · Thursday Weekender</div>
       <h2>Thursday Weekender</h2>
       <div class="panel-sub">The WEEKENDER Mailchimp draft builds itself every Thursday at 1:05pm from Angela Kiernan's event email. This tracks that run. <strong>Currently broken</strong> — the build that used to run on the MacBook Pro was abandoned; see the Master Project List for the fix in progress.</div>
       <div class="weekender-grid">
@@ -1077,7 +1122,7 @@
 
     <!-- BLOG DRAFTS -->
     <section class="panel" id="blogdrafts">
-      <div class="tab-label">10 · Ghostwriter</div>
+      <div class="tab-label">11 · Ghostwriter</div>
       <h2>Ghostwriter</h2>
       <img class="channel-banner" src="assets/banner-ghostwriter-oasis-blog.jpg" alt="The Oasis Blog">
       <div class="panel-sub">Your blog writer. Every morning, Ghostwriter researches a trending topic and drops a new draft here for your review. Nothing publishes until you approve it.</div>
@@ -1092,7 +1137,7 @@
 
     <!-- PIPELINE -->
     <section class="panel" id="pipeline">
-      <div class="tab-label">11 · Pipeline</div>
+      <div class="tab-label">12 · Pipeline</div>
       <h2>Pipeline</h2>
       <div class="panel-sub">Every active client, at a glance. Tap the stamp to move their stage.</div>
       <div id="pipeline-list"></div>
@@ -1110,7 +1155,7 @@
 
     <!-- MASTER PROJECT LIST -->
     <section class="panel" id="masterlist">
-      <div class="tab-label">12 · Master Project List</div>
+      <div class="tab-label">13 · Master Project List</div>
       <h2>Master Project List</h2>
       <div class="panel-sub">Every automation running on your behalf, every idea on deck, which machine each one runs on, and where you and Claude are still waiting on each other. Add a new idea any time — this is the one list.</div>
 
@@ -1179,7 +1224,7 @@
 
     <!-- TRACKER (hidden for now -- not in use) -->
     <section class="panel" id="tracker" hidden>
-      <div class="tab-label">13 · Tracker</div>
+      <div class="tab-label">14 · Tracker</div>
       <h2>One number I track</h2>
       <div class="panel-sub">Whatever matters most this month — deals, conversations, offers written.</div>
       <div class="tracker-wrap">
@@ -1202,7 +1247,7 @@
 
     <!-- NOTES -->
     <section class="panel" id="notes" hidden>
-      <div class="tab-label">14 · Notes</div>
+      <div class="tab-label">15 · Notes</div>
       <h2>Notes</h2>
       <div class="panel-sub">A scratchpad. It saves as you type.</div>
       <textarea id="notes-area" placeholder="Jot anything down — a lead's phone number, a follow-up reminder, an idea for the open house…"></textarea>
@@ -2516,6 +2561,48 @@
     if (stripEl) renderMachineStatusInto(stripEl, mini);
     const weekenderMiniEl = document.getElementById('weekender-mini-status-value');
     if (weekenderMiniEl) renderMachineStatusInto(weekenderMiniEl, mini);
+  }
+
+  // ---------- EVENTS ----------
+  // data/events.json: [{id, title, date (YYYY-MM-DD), when, rsvpPage, formResponses,
+  // lastChecked, guests:[{name,status:yes|maybe|no|unsub,note,says,count,replied,source,date}]}]
+  // Written by the "TorT RSVP Monitor + Print" scheduled task on the Oasis Mini.
+  const EV_GROUPS=[['yes','Confirmed'],['maybe','TBD (unsure)'],['no','Not coming'],['unsub','STOP / unsub']];
+  function renderEvents(data){
+    const box=document.getElementById('events-list');
+    const today=new Date().toISOString().slice(0,10);
+    const events=(data&&Array.isArray(data.events)?data.events:[]).filter(e=>!e.date||e.date>=today).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+    if(!events.length){box.innerHTML='<div class="empty-hint">No upcoming events yet.</div>';return;}
+    box.innerHTML=events.map(ev=>{
+      const g=Array.isArray(ev.guests)?ev.guests:[];
+      const by={yes:[],maybe:[],no:[],unsub:[]};
+      g.forEach(x=>(by[x.status]||by.maybe).push(x));
+      Object.values(by).forEach(l=>l.sort((a,b)=>String(a.name).localeCompare(String(b.name))));
+      const heads=by.yes.reduce((t,x)=>t+(Number(x.count)||0),0);
+      const need=g.filter(x=>x.status!=='unsub'&&!x.replied).length;
+      const tiles=EV_GROUPS.map(([k,label])=>{
+        const items=by[k].length?by[k].map((x,i)=>`<li><span class="i">${i+1}</span><span class="nm">${escapeHtml(x.name)}${x.count?` (${escapeHtml(String(x.count))})`:''}</span>${x.note?`<span class="nt">${escapeHtml(x.note)}</span>`:''}${k!=='unsub'?`<span class="rp ${x.replied?'done':'need'}">${x.replied?'You replied':'Needs your reply'}</span>`:''}</li>`).join(''):'<li><span class="none" style="grid-column:1/-1;">Nobody yet.</span></li>';
+        return `<details class="ev-tile ${k}"><summary><span class="ev-n">${by[k].length}</span><span class="ev-l">${label}<span class="chev" aria-hidden="true">▾</span></span></summary><ul class="ev-list">${items}</ul></details>`;
+      }).join('');
+      return `<div class="ev-card">
+        <div class="ev-head"><h3 class="ev-title">${escapeHtml(ev.title||'Event')}</h3><span class="ev-when">${escapeHtml(ev.when||ev.date||'')}</span></div>
+        <div class="ev-meta">
+          <span>Expected guests: <b>${by.yes.length?(heads?heads:'counts not given yet'):0}</b></span>
+          <span>Still need your reply: <b>${need}</b></span>
+          <span>RSVP form: <b>${escapeHtml(String(ev.formResponses??0))}</b></span>
+          ${ev.lastChecked?`<span>Last checked: <b>${escapeHtml(ev.lastChecked)}</b></span>`:''}
+          ${ev.rsvpPage?`<a href="${escapeHtml(ev.rsvpPage)}" target="_blank" rel="noopener">Full RSVP list ↗</a>`:''}
+        </div>
+        <div class="ev-score">${tiles}</div>
+      </div>`;
+    }).join('');
+  }
+  async function refreshEvents(){
+    try{
+      const resp=await fetch('/api/machine-status?job=data&file=events&t='+Date.now());
+      if(!resp.ok) throw new Error('Could not load events.json');
+      renderEvents(await resp.json());
+    }catch(e){document.getElementById('events-list').innerHTML='<div class="empty-hint">Couldn\'t load events right now.</div>';}
   }
 
   // ---------- OPEN HOUSE ----------
@@ -4593,6 +4680,7 @@
   refreshTodayCalendar();
   refreshMachineStatus();
   refreshOpenHouse();
+  refreshEvents();
   refreshProjects();
   refreshProspects();
   initSidebarScrollSpy();

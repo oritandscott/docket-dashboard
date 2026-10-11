@@ -1,0 +1,75 @@
+{
+  "events": [
+    {
+      "id": "tort-2026",
+      "title": "Trunk or Treat 2026",
+      "date": "2026-10-28",
+      "when": "Wed, Oct 28 · 5–7 PM",
+      "rsvpPage": "https://claude.ai/artifact/FDidUCPtvQfCQwCbDKK3Kh",
+      "formResponses": 0,
+      "lastChecked": "Sat Oct 10, 12:55 PM",
+      "guests": [
+        {
+          "name": "Cindy Brower",
+          "status": "maybe",
+          "note": "Checking her calendar",
+          "says": "Thank you I will check the calendar",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 9"
+        },
+        {
+          "name": "Elizabeth Schieferdecker",
+          "status": "maybe",
+          "note": "Reacted only, no answer yet",
+          "says": "❤️ Loved the invite text",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 9"
+        },
+        {
+          "name": "Gelly Charles",
+          "status": "maybe",
+          "note": "Reacted only, no answer yet",
+          "says": "❤️ Loved the invite text",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 9"
+        },
+        {
+          "name": "Robbie Shaw",
+          "status": "no",
+          "note": "At Moss Mountain Farms with childhood friends",
+          "says": "I'll be at Moss Mountain Farms w my childhood bffs. But thanks for the invite. Miss you guys",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 9"
+        },
+        {
+          "name": "Steve Streiff",
+          "status": "no",
+          "note": "In Hawaii",
+          "says": "sounds like fun, but I'll be in Hawaii!",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 9"
+        },
+        {
+          "name": "Alex Stoops",
+          "status": "unsub",
+          "note": "Replied STOP. Don't text again",
+          "says": "Stop",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 9"
+        }
+      ]
+    }
+  ]
+}
