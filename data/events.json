@@ -7,8 +7,18 @@
       "when": "Wed, Oct 28 · 5–7 PM",
       "rsvpPage": "https://claude.ai/artifact/FDidUCPtvQfCQwCbDKK3Kh",
       "formResponses": 0,
-      "lastChecked": "Sat Oct 10, 12:55 PM",
+      "lastChecked": "Sun Oct 11, 8:05 AM",
       "guests": [
+        {
+          "name": "Alex Stoops",
+          "status": "unsub",
+          "note": "STOP to texts; unsubscribed from emails too",
+          "says": "Stop",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 9"
+        },
         {
           "name": "Cindy Brower",
           "status": "maybe",
@@ -22,8 +32,8 @@
         {
           "name": "Elizabeth Schieferdecker",
           "status": "maybe",
-          "note": "Reacted only, no answer yet",
-          "says": "❤️ Loved the invite text",
+          "note": "Lives out of town; last in Phoenix Feb",
+          "says": "Haven't been to Phoenix since February! Retiring Feb 2028",
           "count": null,
           "replied": true,
           "source": "Text",
@@ -40,6 +50,66 @@
           "date": "Oct 9"
         },
         {
+          "name": "Karol Raszkiewicz",
+          "status": "unsub",
+          "note": "Replied STOP. Don't text again",
+          "says": "Stop",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 9"
+        },
+        {
+          "name": "Laura Fritsky",
+          "status": "maybe",
+          "note": "Will let you know (nephew's birthday)",
+          "says": "I will 😊",
+          "count": null,
+          "replied": false,
+          "source": "Text",
+          "date": "Oct 9"
+        },
+        {
+          "name": "Lucy Cindric",
+          "status": "maybe",
+          "note": "Will try; returning from Tucson that day",
+          "says": "Coming back from Tucson that night but will certainly try to make it!",
+          "count": null,
+          "replied": false,
+          "source": "Text",
+          "date": "Oct 9"
+        },
+        {
+          "name": "Mae Peterson",
+          "status": "unsub",
+          "note": "Replied STOP; invite email also bounced",
+          "says": "STOP",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 10"
+        },
+        {
+          "name": "Mike Bramlett",
+          "status": "no",
+          "note": "Prior plans",
+          "says": "Thanks for the invite we has prior plans",
+          "count": null,
+          "replied": false,
+          "source": "Text",
+          "date": "Oct 9"
+        },
+        {
+          "name": "Rick & Bonnie Sewick",
+          "status": "no",
+          "note": "Bonnie in Atlanta that week",
+          "says": "Bonnie will be in Atlanta all that week for business",
+          "count": null,
+          "replied": false,
+          "source": "Text",
+          "date": "Oct 9"
+        },
+        {
           "name": "Robbie Shaw",
           "status": "no",
           "note": "At Moss Mountain Farms with childhood friends",
@@ -50,6 +120,16 @@
           "date": "Oct 9"
         },
         {
+          "name": "Skylar & Emily Peterson",
+          "status": "yes",
+          "note": "Coming",
+          "says": "Hey we will be there!",
+          "count": 2,
+          "replied": false,
+          "source": "Text",
+          "date": "Oct 10"
+        },
+        {
           "name": "Steve Streiff",
           "status": "no",
           "note": "In Hawaii",
@@ -58,26 +138,6 @@
           "replied": true,
           "source": "Text",
           "date": "Oct 9"
-        },
-        {
-          "name": "Alex Stoops",
-          "status": "unsub",
-          "note": "Replied STOP. Don't text again",
-          "says": "Stop",
-          "count": null,
-          "replied": true,
-          "source": "Text",
-          "date": "Oct 9"
-        },
-        {
-          "name": "Skylar Peterson",
-          "status": "yes",
-          "note": "Said they'll be there (per Scott)",
-          "says": "",
-          "count": null,
-          "replied": false,
-          "source": "Text",
-          "date": "Oct 11"
         }
       ]
     }
