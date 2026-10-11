@@ -1,13 +1,5 @@
 {
-  "schedule": [
-    {
-      "id": "mv2amaui31gyw",
-      "time": "09:00",
-      "title": "Open House — All Day",
-      "date": "2026-10-10",
-      "source": "automation"
-    }
-  ],
+  "schedule": [],
   "tasks": [
     {
       "id": "musajbjgvhoch",
