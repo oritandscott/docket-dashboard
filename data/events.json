@@ -68,6 +68,16 @@
           "replied": true,
           "source": "Text",
           "date": "Oct 9"
+        },
+        {
+          "name": "Skylar Peterson",
+          "status": "yes",
+          "note": "Said they'll be there (per Scott)",
+          "says": "",
+          "count": null,
+          "replied": false,
+          "source": "Text",
+          "date": "Oct 11"
         }
       ]
     }
