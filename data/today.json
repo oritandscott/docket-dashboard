@@ -1,10 +1,24 @@
 {
   "schedule": [
     {
-      "id": "mv55i268d063c",
+      "id": "mv6ky3558pgl0",
+      "time": "08:00",
+      "title": "Scott: Dr. appt at HonorHealth (Tempe)",
+      "date": "2026-10-13",
+      "source": "automation"
+    },
+    {
+      "id": "mv6ky355x3yds",
       "time": "09:00",
-      "title": "Monday Follow-Up & Appts (all day)",
-      "date": "2026-10-12",
+      "title": "Tuesday Video Focus Day (content shoot)",
+      "date": "2026-10-13",
+      "source": "automation"
+    },
+    {
+      "id": "mv6ky355vipdh",
+      "time": "09:00",
+      "title": "Wesie visiting (family, through Oct 16)",
+      "date": "2026-10-13",
       "source": "automation"
     }
   ],
