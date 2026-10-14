@@ -238,8 +238,8 @@
     "address": "1733 W. Nighthawk Way, Phoenix, AZ 85045",
     "purchaseDate": "2021-10-21",
     "emailVariant": "B",
-    "status": "upcoming",
-    "draftId": null,
+    "status": "actionable",
+    "draftId": "Congratulations on 5 Years in Your Home!",
     "addedAt": "2026-09-22T11:24:34.787Z"
   },
   {
