@@ -218,9 +218,11 @@
           "note": "RSVP'd 3+; no chili entry",
           "says": "Yes — 3+ coming",
           "count": 3,
-          "replied": false,
+          "replied": true,
           "source": "RSVP form",
-          "date": "Oct 9"
+          "date": "Oct 9",
+          "editedAt": "2026-10-15T23:10:40.592Z",
+          "pageSync": true
         },
         {
           "id": "rick-sewick",
