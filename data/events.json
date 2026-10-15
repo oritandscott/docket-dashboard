@@ -62,9 +62,11 @@
           "note": "Skipped Tucson trip, staying around; no firm answer",
           "says": "FYI, we decided we're not going to Tucson. We're just gonna stick around.",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
-          "date": "Oct 11"
+          "date": "Oct 11",
+          "editedAt": "2026-10-15T23:10:50.968Z",
+          "pageSync": true
         },
         {
           "id": "daniel-hernandez",
