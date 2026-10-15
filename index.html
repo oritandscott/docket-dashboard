@@ -176,6 +176,14 @@
   .ev-edit .acts{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;}
   .ev-edit .msg{font-size:.78rem;color:var(--ink-soft);}
   .ev-add{margin-top:.8rem;}
+  .ev-contact{grid-column:2;margin-top:.25rem;}
+  .ev-contact summary{display:inline-block;cursor:pointer;list-style:none;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:.2rem .5rem;}
+  .ev-contact summary::-webkit-details-marker{display:none;}
+  .ev-contact summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  .ev-contact .ways{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.45rem;}
+  .ev-contact .ways a{font-size:.78rem;padding:.35rem .6rem;text-decoration:none;}
+  .ev-contact .ways .off{font-size:.74rem;color:var(--ink-soft);padding:.35rem 0;}
+  .ev-contact .who{display:block;font-size:.72rem;color:var(--ink-soft);margin-top:.35rem;}
   .ev-add .ev-edit{margin-top:.5rem;}
   @media (prefers-reduced-motion:reduce){.ev-l .chev{transition:none;}}
 
@@ -2581,8 +2589,8 @@
   // data/events.json: [{id, title, date (YYYY-MM-DD), when, rsvpPage, formResponses,
   // lastChecked, guests:[{id,name,status:yes|maybe|no|unsub,note,says,count,replied,source,date}]}]
   // The Oasis Mini's "TorT RSVP Monitor + Print" task keeps the event's RSVP
-  // page up to date; the Docket inbox routine copies that page into this file
-  // (and copies hand edits made here, flagged pageSync, back onto the page).
+  // page up to date and posts it here (api/_events.js), picking up hand edits
+  // made on the dashboard (flagged pageSync) to copy back onto the page.
   // Tap a name to record or change how someone answered.
   const EV_GROUPS=[['yes','Confirmed'],['maybe','TBD (unsure)'],['no','Not coming'],['unsub','STOP / unsub']];
   const EV_SOURCES=['Text','Email','Phone call','In person','RSVP form','Facebook','Voicemail','Other'];
@@ -2597,13 +2605,63 @@
         <label>How they answered<select name="source">${srcs.map(o=>`<option${o===x.source?' selected':''}>${escapeHtml(o)}</option>`).join('')}</select></label>
         <label># coming<input name="count" type="number" min="0" inputmode="numeric" value="${x.count??''}"></label>
       </div>
+      <div class="row">
+        <label>Phone<input name="phone" type="tel" value="${escapeHtml(x.phone||'')}" placeholder="For iMessage / WhatsApp"></label>
+        <label>Email<input name="email" type="email" value="${escapeHtml(x.email||'')}"></label>
+      </div>
       <label>What they said<textarea name="says" placeholder="Their words, if you have them">${escapeHtml(x.says||'')}</textarea></label>
       <label>Note for us<input name="note" value="${escapeHtml(x.note||'')}" placeholder="e.g. Bringing her sister"></label>
       <label class="chk"><input type="checkbox" name="replied"${x.replied?' checked':''}> We've replied to them</label>
       <div class="acts"><button type="submit" class="btn">Save</button><button type="button" class="btn btn-text ev-cancel">Cancel</button>${x.id?'<button type="button" class="btn btn-text ev-remove">Remove from list</button>':''}<span class="msg" role="status"></span></div>
     </form>`;
   }
-  function renderEvents(data){
+  // RSVP-form guests: a Contact drop-down to reach them in iMessage,
+  // WhatsApp, Command or email. Phone/email come from the guest (typed in
+  // the edit form) or, failing that, the Command contacts export
+  // (command-lookup), looked up once per page load.
+  const evCmd={}; // guest id -> Command match | null (none / not sure)
+  const evIsForm=x=>/form/i.test(x.source||'');
+  function evContactHtml(x){
+    const m=evCmd[x.id]||{};
+    const d=String(x.phone||m.phone||'').replace(/\D/g,'').slice(-10);
+    const email=x.email||m.email||'';
+    const cmd=x.commandUrl||m.url||'';
+    const ways=[
+      d.length===10?`<a class="btn btn-ghost" href="sms:+1${d}">iMessage</a>`:'',
+      d.length===10?`<a class="btn btn-ghost" href="https://wa.me/1${d}" target="_blank" rel="noopener">WhatsApp</a>`:'',
+      `<a class="btn btn-ghost" href="${escapeHtml(cmd||'https://console.command.kw.com/contacts')}" target="_blank" rel="noopener">${cmd?'Command':'Find in Command'}</a>`,
+      email?`<a class="btn btn-ghost" href="mailto:${escapeHtml(email)}">Email</a>`:'',
+    ].join('');
+    const missing=[d.length===10?'':'phone',email?'':'email'].filter(Boolean);
+    const who=m.name?`From Command: ${escapeHtml(m.name)}${d.length===10?' · '+escapeHtml(hotFmtPhone(d)):''}${email?' · '+escapeHtml(email):''}`:(x.phone||x.email?'':(x.id in evCmd?'Not found in the Command export.':'Looking them up in Command…'));
+    return `<details class="ev-contact"><summary>Contact ▾</summary><div class="ways">${ways}</div>${who?`<span class="who">${who}</span>`:''}${missing.length?`<span class="who">No ${missing.join(' or ')} yet -- tap their name to add it.</span>`:''}</details>`;
+  }
+  async function evLookupContacts(events){
+    const todo=[];
+    events.forEach(ev=>(ev.guests||[]).forEach(x=>{ if(evIsForm(x)&&x.status!=='unsub'&&!(x.id in evCmd)&&!(x.phone&&x.email&&x.commandUrl)) todo.push({id:x.id,name:x.name,phone:x.phone||'',email:x.email||''}); }));
+    if(!todo.length) return;
+    try{
+      const r=await fetch('/api/machine-status?job=command-lookup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contacts:todo})});
+      const d=await r.json().catch(()=>({}));
+      if(!r.ok) throw new Error(d.error||'lookup failed');
+      (d.results||[]).forEach(({id,matches})=>{
+        const m=(matches||[])[0];
+        // Only trust an obvious match: one candidate with a full-name, phone or email hit.
+        evCmd[id]=m&&matches.length===1&&(m.strong||m.score>=60)?m:null;
+      });
+    }catch(e){ todo.forEach(t=>{evCmd[t.id]=null;}); }
+    evRerender();
+  }
+  // Re-render keeping open tiles, contact menus and edit forms where they were.
+  function evRerender(){
+    const box=document.getElementById('events-list');
+    if(box.querySelector('.ev-edit')) return; // don't wipe a form being typed in
+    const open=[...box.querySelectorAll('.ev-tile[open], .ev-contact[open]')].map(el=>{const li=el.closest('li');return el.classList.contains('ev-contact')?'c:'+(li&&li.dataset.gid):'t:'+el.closest('.ev-card').dataset.ev+':'+[...el.classList].join('.');});
+    renderEvents(evData,true);
+    box.querySelectorAll('.ev-tile').forEach(el=>{if(open.includes('t:'+el.closest('.ev-card').dataset.ev+':'+[...el.classList].join('.'))) el.open=true;});
+    box.querySelectorAll('.ev-contact').forEach(el=>{if(open.includes('c:'+el.closest('li').dataset.gid)) el.open=true;});
+  }
+  function renderEvents(data,noLookup){
     evData=data;
     const box=document.getElementById('events-list');
     const today=new Date().toISOString().slice(0,10);
@@ -2617,7 +2675,7 @@
       const heads=by.yes.reduce((t,x)=>t+(Number(x.count)||0),0);
       const need=g.filter(x=>x.status!=='unsub'&&!x.replied).length;
       const tiles=EV_GROUPS.map(([k,label])=>{
-        const items=by[k].length?by[k].map((x,i)=>`<li data-gid="${escapeHtml(x.id||'')}"><span class="i">${i+1}</span><button type="button" class="nm-btn" title="Tap to record or change their answer">${escapeHtml(x.name)}${x.count?` (${escapeHtml(String(x.count))})`:''}</button>${x.source||x.date?`<span class="src">${escapeHtml([x.source,x.date].filter(Boolean).join(' · '))}</span>`:''}${x.note?`<span class="nt">${escapeHtml(x.note)}</span>`:''}${k!=='unsub'?`<span class="rp ${x.replied?'done':'need'}">${x.replied?'You replied':'Needs your reply'}</span>`:''}</li>`).join(''):'<li><span class="none" style="grid-column:1/-1;">Nobody yet.</span></li>';
+        const items=by[k].length?by[k].map((x,i)=>`<li data-gid="${escapeHtml(x.id||'')}"><span class="i">${i+1}</span><button type="button" class="nm-btn" title="Tap to record or change their answer">${escapeHtml(x.name)}${x.count?` (${escapeHtml(String(x.count))})`:''}</button>${x.source||x.date?`<span class="src">${escapeHtml([x.source,x.date].filter(Boolean).join(' · '))}</span>`:''}${x.note?`<span class="nt">${escapeHtml(x.note)}</span>`:''}${k!=='unsub'?`<span class="rp ${x.replied?'done':'need'}">${x.replied?'You replied':'Needs your reply'}</span>`:''}${k!=='unsub'&&evIsForm(x)?evContactHtml(x):''}</li>`).join(''):'<li><span class="none" style="grid-column:1/-1;">Nobody yet.</span></li>';
         return `<details class="ev-tile ${k}"><summary><span class="ev-n">${by[k].length}</span><span class="ev-l">${label}<span class="chev" aria-hidden="true">▾</span></span></summary><ul class="ev-list">${items}</ul></details>`;
       }).join('');
       return `<div class="ev-card" data-ev="${escapeHtml(ev.id)}">
@@ -2633,6 +2691,7 @@
         <div class="ev-add"><button type="button" class="btn btn-ghost ev-add-btn">+ Add someone who answered</button></div>
       </div>`;
     }).join('');
+    if(!noLookup) evLookupContacts(events);
   }
   function evFind(evId,gid){
     const ev=(evData&&evData.events||[]).find(e=>e.id===evId);
@@ -2673,7 +2732,7 @@
     const f=e.target.closest('.ev-edit'); if(!f) return;
     e.preventDefault();
     const fd=new FormData(f), msg=f.querySelector('.msg'), btn=f.querySelector('button[type=submit]');
-    const guest={id:f.dataset.gid||undefined,name:fd.get('name'),status:fd.get('status'),source:fd.get('source'),count:fd.get('count'),says:fd.get('says'),note:fd.get('note'),replied:fd.get('replied')==='on'};
+    const guest={id:f.dataset.gid||undefined,name:fd.get('name'),status:fd.get('status'),source:fd.get('source'),count:fd.get('count'),says:fd.get('says'),note:fd.get('note'),phone:fd.get('phone'),email:fd.get('email'),replied:fd.get('replied')==='on'};
     btn.disabled=true; msg.textContent='Saving…';
     try{
       const r=await fetch('/api/save-project',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({resource:'events',eventId:f.dataset.ev,guest})});

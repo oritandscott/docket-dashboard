@@ -65,17 +65,6 @@
           "date": "Oct 11"
         },
         {
-          "id": "daniel-hernandez",
-          "name": "Daniel Hernandez",
-          "status": "yes",
-          "note": "RSVP'd 3+; no chili entry",
-          "says": "Yes — 3+ coming",
-          "count": 3,
-          "replied": false,
-          "source": "RSVP form",
-          "date": "Oct 15"
-        },
-        {
           "id": "debbie-bednar",
           "name": "Debbie Bednar",
           "status": "no",
@@ -209,10 +198,10 @@
         },
         {
           "id": "pamela-elizondo",
-          "name": "Pamela Elizondo",
+          "name": "Pamela Elizondo & Daniel Hernandez",
           "status": "yes",
-          "note": "RSVP'd 3+; no chili entry",
-          "says": "Yes — 3+ coming",
+          "note": "Married couple; each sent the RSVP form (3+), counted once",
+          "says": "Yes — 3+ coming (both sent the form)",
           "count": 3,
           "replied": false,
           "source": "RSVP form",

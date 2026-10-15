@@ -120,6 +120,12 @@ export default async function handler(req, res) {
     }
   }
 
+  // Events RSVPs posted by the Oasis Mini (api/_events.js).
+  if (req.query && req.query.job === 'events-sync') {
+    const { runEventsSync } = await import('./_events.js');
+    return runEventsSync(req, res);
+  }
+
   // Applies pending routine tracker changes (see AUTO_OPS in _apply.js).
   if (req.query && req.query.job === 'apply-pending') {
     const { runApplyPending } = await import('./_apply.js');
