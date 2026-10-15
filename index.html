@@ -163,6 +163,20 @@
   .ev-list .rp{grid-column:2;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
   .ev-list .rp.done{color:var(--stamp-green);} .ev-list .rp.need{color:var(--gold);}
   .ev-list .none{display:block;color:var(--ink-soft);font-size:.8rem;}
+  .ev-list .nm-btn{all:unset;cursor:pointer;font-weight:600;color:var(--ink);overflow-wrap:anywhere;border-bottom:1px dashed var(--ink-soft);}
+  .ev-list .nm-btn:hover{color:var(--gold);border-bottom-color:var(--gold);}
+  .ev-list .nm-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  .ev-list .src{grid-column:2;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .ev-edit{grid-column:1/-1;display:grid;gap:.5rem;margin-top:.4rem;padding:.7rem;border:1px solid var(--line);border-radius:5px;background:rgba(0,0,0,.18);}
+  .ev-edit .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.5rem;}
+  .ev-edit label{display:grid;gap:.2rem;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .ev-edit input,.ev-edit select,.ev-edit textarea{font:inherit;font-size:.85rem;text-transform:none;letter-spacing:0;font-weight:400;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:.4rem .5rem;min-width:0;}
+  .ev-edit textarea{min-height:3.2rem;resize:vertical;}
+  .ev-edit .chk{display:flex;align-items:center;gap:.4rem;text-transform:none;letter-spacing:0;font-size:.82rem;font-weight:400;color:var(--ink);}
+  .ev-edit .acts{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;}
+  .ev-edit .msg{font-size:.78rem;color:var(--ink-soft);}
+  .ev-add{margin-top:.8rem;}
+  .ev-add .ev-edit{margin-top:.5rem;}
   @media (prefers-reduced-motion:reduce){.ev-l .chev{transition:none;}}
 
   /* ---------- MAIN ---------- */
@@ -808,7 +822,7 @@
     <section class="panel" id="events">
       <div class="tab-label">02 · Events</div>
       <h2>Events</h2>
-      <div class="panel-sub">Client events we're hosting and who's coming. RSVPs update on their own from KW Command texts and the RSVP form. Tap any number to see who's in it.</div>
+      <div class="panel-sub">Client events we're hosting and who's coming. RSVPs update on their own from KW Command texts and the RSVP form (every couple of hours). Tap any number to see who's in it, and tap a name to record how they answered.</div>
       <div id="events-list"><div class="empty-hint">Loading events…</div></div>
     </section>
 
@@ -2565,10 +2579,32 @@
 
   // ---------- EVENTS ----------
   // data/events.json: [{id, title, date (YYYY-MM-DD), when, rsvpPage, formResponses,
-  // lastChecked, guests:[{name,status:yes|maybe|no|unsub,note,says,count,replied,source,date}]}]
-  // Written by the "TorT RSVP Monitor + Print" scheduled task on the Oasis Mini.
+  // lastChecked, guests:[{id,name,status:yes|maybe|no|unsub,note,says,count,replied,source,date}]}]
+  // The Oasis Mini's "TorT RSVP Monitor + Print" task keeps the event's RSVP
+  // page up to date; the Docket inbox routine copies that page into this file
+  // (and copies hand edits made here, flagged pageSync, back onto the page).
+  // Tap a name to record or change how someone answered.
   const EV_GROUPS=[['yes','Confirmed'],['maybe','TBD (unsure)'],['no','Not coming'],['unsub','STOP / unsub']];
+  const EV_SOURCES=['Text','Email','Phone call','In person','RSVP form','Facebook','Voicemail','Other'];
+  let evData=null;
+  function evForm(ev,x){
+    x=x||{status:'yes',source:'Text',replied:false};
+    const srcs=EV_SOURCES.includes(x.source)||!x.source?EV_SOURCES:[x.source,...EV_SOURCES];
+    return `<form class="ev-edit" data-ev="${escapeHtml(ev.id)}" data-gid="${escapeHtml(x.id||'')}">
+      <div class="row">
+        <label>Name<input name="name" required value="${escapeHtml(x.name||'')}" placeholder="e.g. Pat &amp; Sam Lee"></label>
+        <label>Answer<select name="status">${EV_GROUPS.map(([k,l])=>`<option value="${k}"${k===x.status?' selected':''}>${l}</option>`).join('')}</select></label>
+        <label>How they answered<select name="source">${srcs.map(o=>`<option${o===x.source?' selected':''}>${escapeHtml(o)}</option>`).join('')}</select></label>
+        <label># coming<input name="count" type="number" min="0" inputmode="numeric" value="${x.count??''}"></label>
+      </div>
+      <label>What they said<textarea name="says" placeholder="Their words, if you have them">${escapeHtml(x.says||'')}</textarea></label>
+      <label>Note for us<input name="note" value="${escapeHtml(x.note||'')}" placeholder="e.g. Bringing her sister"></label>
+      <label class="chk"><input type="checkbox" name="replied"${x.replied?' checked':''}> We've replied to them</label>
+      <div class="acts"><button type="submit" class="btn">Save</button><button type="button" class="btn btn-text ev-cancel">Cancel</button>${x.id?'<button type="button" class="btn btn-text ev-remove">Remove from list</button>':''}<span class="msg" role="status"></span></div>
+    </form>`;
+  }
   function renderEvents(data){
+    evData=data;
     const box=document.getElementById('events-list');
     const today=new Date().toISOString().slice(0,10);
     const events=(data&&Array.isArray(data.events)?data.events:[]).filter(e=>!e.date||e.date>=today).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
@@ -2581,10 +2617,10 @@
       const heads=by.yes.reduce((t,x)=>t+(Number(x.count)||0),0);
       const need=g.filter(x=>x.status!=='unsub'&&!x.replied).length;
       const tiles=EV_GROUPS.map(([k,label])=>{
-        const items=by[k].length?by[k].map((x,i)=>`<li><span class="i">${i+1}</span><span class="nm">${escapeHtml(x.name)}${x.count?` (${escapeHtml(String(x.count))})`:''}</span>${x.note?`<span class="nt">${escapeHtml(x.note)}</span>`:''}${k!=='unsub'?`<span class="rp ${x.replied?'done':'need'}">${x.replied?'You replied':'Needs your reply'}</span>`:''}</li>`).join(''):'<li><span class="none" style="grid-column:1/-1;">Nobody yet.</span></li>';
+        const items=by[k].length?by[k].map((x,i)=>`<li data-gid="${escapeHtml(x.id||'')}"><span class="i">${i+1}</span><button type="button" class="nm-btn" title="Tap to record or change their answer">${escapeHtml(x.name)}${x.count?` (${escapeHtml(String(x.count))})`:''}</button>${x.source||x.date?`<span class="src">${escapeHtml([x.source,x.date].filter(Boolean).join(' · '))}</span>`:''}${x.note?`<span class="nt">${escapeHtml(x.note)}</span>`:''}${k!=='unsub'?`<span class="rp ${x.replied?'done':'need'}">${x.replied?'You replied':'Needs your reply'}</span>`:''}</li>`).join(''):'<li><span class="none" style="grid-column:1/-1;">Nobody yet.</span></li>';
         return `<details class="ev-tile ${k}"><summary><span class="ev-n">${by[k].length}</span><span class="ev-l">${label}<span class="chev" aria-hidden="true">▾</span></span></summary><ul class="ev-list">${items}</ul></details>`;
       }).join('');
-      return `<div class="ev-card">
+      return `<div class="ev-card" data-ev="${escapeHtml(ev.id)}">
         <div class="ev-head"><h3 class="ev-title">${escapeHtml(ev.title||'Event')}</h3><span class="ev-when">${escapeHtml(ev.when||ev.date||'')}</span></div>
         <div class="ev-meta">
           <span>Expected guests: <b>${by.yes.length?(heads?heads:'counts not given yet'):0}</b></span>
@@ -2594,9 +2630,63 @@
           ${ev.rsvpPage?`<a href="${escapeHtml(ev.rsvpPage)}" target="_blank" rel="noopener">Full RSVP list ↗</a>`:''}
         </div>
         <div class="ev-score">${tiles}</div>
+        <div class="ev-add"><button type="button" class="btn btn-ghost ev-add-btn">+ Add someone who answered</button></div>
       </div>`;
     }).join('');
   }
+  function evFind(evId,gid){
+    const ev=(evData&&evData.events||[]).find(e=>e.id===evId);
+    return {ev,guest:ev&&(ev.guests||[]).find(x=>x.id===gid)};
+  }
+  document.getElementById('events-list').addEventListener('click',async e=>{
+    const card=e.target.closest('.ev-card'); if(!card) return;
+    const evId=card.dataset.ev;
+    if(e.target.closest('.nm-btn')){
+      const li=e.target.closest('li'); const open=li.querySelector('.ev-edit');
+      if(open){open.remove();return;}
+      const {ev,guest}=evFind(evId,li.dataset.gid); if(!ev||!guest) return;
+      li.insertAdjacentHTML('beforeend',evForm(ev,guest));
+      li.querySelector('.ev-edit select[name=status]').focus();
+      return;
+    }
+    if(e.target.closest('.ev-add-btn')){
+      const wrap=e.target.closest('.ev-add'); const open=wrap.querySelector('.ev-edit');
+      if(open){open.remove();return;}
+      const {ev}=evFind(evId); if(!ev) return;
+      wrap.insertAdjacentHTML('beforeend',evForm(ev,null));
+      wrap.querySelector('.ev-edit input[name=name]').focus();
+      return;
+    }
+    if(e.target.closest('.ev-cancel')){e.target.closest('.ev-edit').remove();return;}
+    if(e.target.closest('.ev-remove')){
+      const f=e.target.closest('.ev-edit'); const {guest}=evFind(evId,f.dataset.gid);
+      if(!guest||!confirm(`Remove ${guest.name} from this event's list?`)) return;
+      const msg=f.querySelector('.msg'); msg.textContent='Removing…';
+      try{
+        const r=await fetch('/api/save-project',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({resource:'events',eventId:evId,guestId:guest.id})});
+        const d=await r.json().catch(()=>({})); if(!r.ok) throw new Error(d.error||'Could not remove');
+        refreshEvents();
+      }catch(err){msg.textContent=err.message;}
+    }
+  });
+  document.getElementById('events-list').addEventListener('submit',async e=>{
+    const f=e.target.closest('.ev-edit'); if(!f) return;
+    e.preventDefault();
+    const fd=new FormData(f), msg=f.querySelector('.msg'), btn=f.querySelector('button[type=submit]');
+    const guest={id:f.dataset.gid||undefined,name:fd.get('name'),status:fd.get('status'),source:fd.get('source'),count:fd.get('count'),says:fd.get('says'),note:fd.get('note'),replied:fd.get('replied')==='on'};
+    btn.disabled=true; msg.textContent='Saving…';
+    try{
+      const r=await fetch('/api/save-project',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({resource:'events',eventId:f.dataset.ev,guest})});
+      const d=await r.json().catch(()=>({})); if(!r.ok) throw new Error(d.error||'Could not save');
+      const openTile=f.closest('.ev-card')&&[...f.closest('.ev-card').querySelectorAll('.ev-tile')].map(t=>t.open);
+      const evId=f.dataset.ev;
+      refreshEvents().then(()=>{
+        const card=document.querySelector(`.ev-card[data-ev="${CSS.escape(evId)}"]`);
+        if(card&&openTile) card.querySelectorAll('.ev-tile').forEach((t,i)=>{t.open=!!openTile[i];});
+        const tile=card&&card.querySelector(`.ev-tile.${CSS.escape(guest.status)}`); if(tile) tile.open=true;
+      });
+    }catch(err){btn.disabled=false; msg.textContent=err.message;}
+  });
   async function refreshEvents(){
     try{
       const resp=await fetch('/api/machine-status?job=data&file=events&t='+Date.now());

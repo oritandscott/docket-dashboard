@@ -6,10 +6,11 @@
       "date": "2026-10-28",
       "when": "Wed, Oct 28 · 5–7 PM",
       "rsvpPage": "https://claude.ai/artifact/FDidUCPtvQfCQwCbDKK3Kh",
-      "formResponses": 0,
-      "lastChecked": "Sun Oct 11, 8:05 AM",
+      "formResponses": 7,
+      "lastChecked": "Thu Oct 15, 1:10 PM",
       "guests": [
         {
+          "id": "alex-stoops",
           "name": "Alex Stoops",
           "status": "unsub",
           "note": "STOP to texts; unsubscribed from emails too",
@@ -20,16 +21,73 @@
           "date": "Oct 9"
         },
         {
-          "name": "Cindy Brower",
+          "id": "austin-brasier",
+          "name": "Austin & Alyssa Brasier",
           "status": "maybe",
-          "note": "Checking her calendar",
-          "says": "Thank you I will check the calendar",
+          "note": "Checking with Alyssa; thinks they can come",
+          "says": "Let me check with Alyssa... I think we can make it",
           "count": null,
           "replied": true,
           "source": "Text",
           "date": "Oct 9"
         },
         {
+          "id": "bruce-masalcas",
+          "name": "Bruce Masalcas",
+          "status": "maybe",
+          "note": "Didn't recognize the number; asked not to share it",
+          "says": "Who are you and who do you represent?",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 12"
+        },
+        {
+          "id": "chelsea-pickett",
+          "name": "Chelsea Pickett & Derek Stoeckmann",
+          "status": "yes",
+          "note": "RSVP'd 3+; no chili entry",
+          "says": "Yes — 3+ coming",
+          "count": 3,
+          "replied": false,
+          "source": "RSVP form",
+          "date": "Oct 10"
+        },
+        {
+          "id": "cindy-brower",
+          "name": "Cindy Brower",
+          "status": "maybe",
+          "note": "Skipped Tucson trip, staying around; no firm answer",
+          "says": "FYI, we decided we're not going to Tucson. We're just gonna stick around.",
+          "count": null,
+          "replied": false,
+          "source": "Text",
+          "date": "Oct 11"
+        },
+        {
+          "id": "daniel-hernandez",
+          "name": "Daniel Hernandez",
+          "status": "yes",
+          "note": "RSVP'd 3+; no chili entry",
+          "says": "Yes — 3+ coming",
+          "count": 3,
+          "replied": false,
+          "source": "RSVP form",
+          "date": "Oct 15"
+        },
+        {
+          "id": "debbie-bednar",
+          "name": "Debbie Bednar",
+          "status": "no",
+          "note": "Emailed that they won't make it",
+          "says": "",
+          "count": null,
+          "replied": true,
+          "source": "Email",
+          "date": "Oct 11"
+        },
+        {
+          "id": "elizabeth-schieferdecker",
           "name": "Elizabeth Schieferdecker",
           "status": "maybe",
           "note": "Lives out of town; last in Phoenix Feb",
@@ -40,6 +98,7 @@
           "date": "Oct 9"
         },
         {
+          "id": "gelly-charles",
           "name": "Gelly Charles",
           "status": "maybe",
           "note": "Reacted only, no answer yet",
@@ -50,6 +109,7 @@
           "date": "Oct 9"
         },
         {
+          "id": "karol-raszkiewicz",
           "name": "Karol Raszkiewicz",
           "status": "unsub",
           "note": "Replied STOP. Don't text again",
@@ -60,6 +120,18 @@
           "date": "Oct 9"
         },
         {
+          "id": "kavon-rahimzadeh",
+          "name": "Kavon & Jess Rahimzadeh",
+          "status": "no",
+          "note": "RSVP form: not attending",
+          "says": "No",
+          "count": null,
+          "replied": false,
+          "source": "RSVP form",
+          "date": "Oct 15"
+        },
+        {
+          "id": "laura-fritsky",
           "name": "Laura Fritsky",
           "status": "maybe",
           "note": "Will let you know (nephew's birthday)",
@@ -70,16 +142,29 @@
           "date": "Oct 9"
         },
         {
+          "id": "leon-newcomb",
+          "name": "Leon & Mariah Newcomb",
+          "status": "no",
+          "note": "In California that day",
+          "says": "Unfortunately we will be in California that day",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 11"
+        },
+        {
+          "id": "lucy-cindric",
           "name": "Lucy Cindric",
           "status": "maybe",
           "note": "Will try; returning from Tucson that day",
           "says": "Coming back from Tucson that night but will certainly try to make it!",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
           "date": "Oct 9"
         },
         {
+          "id": "mae-peterson",
           "name": "Mae Peterson",
           "status": "unsub",
           "note": "Replied STOP; invite email also bounced",
@@ -90,6 +175,18 @@
           "date": "Oct 10"
         },
         {
+          "id": "margie-meyer",
+          "name": "Margie Meyer",
+          "status": "no",
+          "note": "Can't make it this year",
+          "says": "I won't be able to make it this year. Happy Halloween!",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 14"
+        },
+        {
+          "id": "mike-bramlett",
           "name": "Mike Bramlett",
           "status": "no",
           "note": "Prior plans",
@@ -100,6 +197,29 @@
           "date": "Oct 9"
         },
         {
+          "id": "nancy-carrels",
+          "name": "Nancy Carrels",
+          "status": "no",
+          "note": "RSVP form: not attending",
+          "says": "No",
+          "count": null,
+          "replied": false,
+          "source": "RSVP form",
+          "date": "Oct 15"
+        },
+        {
+          "id": "pamela-elizondo",
+          "name": "Pamela Elizondo",
+          "status": "yes",
+          "note": "RSVP'd 3+; no chili entry",
+          "says": "Yes — 3+ coming",
+          "count": 3,
+          "replied": false,
+          "source": "RSVP form",
+          "date": "Oct 9"
+        },
+        {
+          "id": "rick-sewick",
           "name": "Rick & Bonnie Sewick",
           "status": "no",
           "note": "Bonnie in Atlanta that week",
@@ -110,6 +230,7 @@
           "date": "Oct 9"
         },
         {
+          "id": "robbie-shaw",
           "name": "Robbie Shaw",
           "status": "no",
           "note": "At Moss Mountain Farms with childhood friends",
@@ -120,16 +241,73 @@
           "date": "Oct 9"
         },
         {
+          "id": "sandy-salvo",
+          "name": "Sandy Salvo",
+          "status": "no",
+          "note": "Plans that night; offered rose help",
+          "says": "We have plans that night and cannot make it. Maybe next year!",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 15"
+        },
+        {
+          "id": "scott-goodballet",
+          "name": "Scott & Teresa Goodballet",
+          "status": "no",
+          "note": "In Napa that week",
+          "says": "We are going to be in Napa that week.",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 15"
+        },
+        {
+          "id": "scott-oneil",
+          "name": "Scott O'Neil",
+          "status": "maybe",
+          "note": "Neighborhood party Halloween day; will try",
+          "says": "We will definitely try to come to your party.",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 15"
+        },
+        {
+          "id": "shannon-blum",
+          "name": "Shannon Blum",
+          "status": "no",
+          "note": "She and husband can't attend",
+          "says": "My husband and I aren't able to attend.",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 15"
+        },
+        {
+          "id": "skylar-peterson",
           "name": "Skylar & Emily Peterson",
           "status": "yes",
-          "note": "Coming",
+          "note": "Coming; also RSVP'd on form (2)",
           "says": "Hey we will be there!",
           "count": 2,
-          "replied": false,
+          "replied": true,
           "source": "Text",
           "date": "Oct 10"
         },
         {
+          "id": "stacy-skankey",
+          "name": "Stacy Skankey",
+          "status": "no",
+          "note": "Bad night for them",
+          "says": "Would love too but it's a bad night for us. Thanks!",
+          "count": null,
+          "replied": false,
+          "source": "Text",
+          "date": "Oct 15"
+        },
+        {
+          "id": "steve-streiff",
           "name": "Steve Streiff",
           "status": "no",
           "note": "In Hawaii",
@@ -138,6 +316,39 @@
           "replied": true,
           "source": "Text",
           "date": "Oct 9"
+        },
+        {
+          "id": "susan-stull",
+          "name": "Susan Stull",
+          "status": "no",
+          "note": "RSVP form: not attending",
+          "says": "No",
+          "count": null,
+          "replied": false,
+          "source": "RSVP form",
+          "date": "Oct 15"
+        },
+        {
+          "id": "tim-gatewood",
+          "name": "Tim Gatewood",
+          "status": "no",
+          "note": "Just back from 5 weeks of travel",
+          "says": "Thanks for the invite but we won't be able to attend.",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 14"
+        },
+        {
+          "id": "wayne-stockton",
+          "name": "Wayne Stockton",
+          "status": "no",
+          "note": "In Florida for his youngest's wedding",
+          "says": "I'll be in Florida for my youngest's wedding over Halloween",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Oct 15"
         }
       ]
     }

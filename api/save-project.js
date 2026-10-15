@@ -61,7 +61,63 @@ const FILES = {
   // Navigator App panel: ids of CLOSED Navigators Orit & Scott dismissed
   // from the panel (the Navigator itself is never deleted).
   navdismiss: 'data/nav-dismissed.json',
+  // Events panel RSVPs, edited by hand on the dashboard (see handleEvents).
+  events: 'data/events.json',
 };
+
+// Events panel: add or edit one guest's RSVP by hand -- how they answered
+// (text, email, call...), what they said, how many are coming. Body:
+// { resource: 'events', eventId, guest: { id?, name, status, source, says,
+// note, count, replied } }; DELETE { resource: 'events', eventId, guestId }.
+// Hand edits are flagged pageSync so the inbox routine copies them onto the
+// RSVP page the Oasis Mini keeps up to date (and doesn't overwrite them).
+const EV_STATUS = ['yes', 'maybe', 'no', 'unsub'];
+function guestSlug(name) {
+  return String(name).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'guest';
+}
+async function handleEvents(req, res, ghHeaders) {
+  const { parsed, contentsUrl, sha } = await readJsonFile(ghHeaders, FILES.events);
+  const body = req.body || {};
+  const ev = (parsed.events || []).find((e) => e.id === body.eventId);
+  if (!ev) return res.status(404).json({ error: 'No event with that id.' });
+  ev.guests = Array.isArray(ev.guests) ? ev.guests : [];
+  const now = new Date().toISOString();
+  if (req.method === 'DELETE') {
+    const g = ev.guests.find((x) => x.id === body.guestId);
+    if (!g) return res.status(404).json({ error: 'No guest with that id.' });
+    ev.guests = ev.guests.filter((x) => x !== g);
+    ev.removed = [...(ev.removed || []).filter((x) => x !== g.id), g.id];
+    await writeJsonFile(ghHeaders, contentsUrl, sha, parsed, `Events: remove ${g.name}`);
+    return res.status(200).json({ ok: true, event: ev });
+  }
+  const b = body.guest || {};
+  const name = str(b.name, 120);
+  if (!name) return res.status(400).json({ error: 'Name cannot be blank.' });
+  const status = EV_STATUS.includes(b.status) ? b.status : 'maybe';
+  const n = b.count === '' || b.count == null ? null : Number(b.count);
+  let g = b.id ? ev.guests.find((x) => x.id === b.id) : null;
+  const isNew = !g;
+  if (isNew) {
+    let id = guestSlug(name.split(/\s*&\s*/)[0]);
+    while (ev.guests.some((x) => x.id === id)) id += '-2';
+    g = { id, date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'America/Phoenix' }) };
+    ev.guests.push(g);
+    ev.removed = (ev.removed || []).filter((x) => x !== id);
+  }
+  Object.assign(g, {
+    name,
+    status,
+    source: str(b.source, 40) || g.source || 'Text',
+    says: str(b.says, 1000),
+    note: str(b.note, 300),
+    count: Number.isFinite(n) && n >= 0 ? n : null,
+    replied: !!b.replied,
+    editedAt: now,
+    pageSync: true,
+  });
+  await writeJsonFile(ghHeaders, contentsUrl, sha, parsed, `Events: ${isNew ? 'add' : 'update'} ${name} (${status})`);
+  return res.status(200).json({ ok: true, event: ev, guest: g });
+}
 
 async function handleInbox(req, res, ghHeaders) {
   const { parsed, contentsUrl, sha } = await readJsonFile(ghHeaders, FILES.inbox);
@@ -354,7 +410,7 @@ export default async function handler(req, res) {
 
     const resource = (req.body || {}).resource;
     if (!FILES[resource]) {
-      return res.status(400).json({ error: "resource must be 'project', 'openhouse', 'prospect', 'hotlist', 'inbox' or 'navdismiss'." });
+      return res.status(400).json({ error: "resource must be 'project', 'openhouse', 'prospect', 'hotlist', 'inbox', 'navdismiss' or 'events'." });
     }
     const filePath = FILES[resource];
 
@@ -366,6 +422,9 @@ export default async function handler(req, res) {
     }
     if (resource === 'inbox') {
       return await handleInbox(req, res, ghHeaders);
+    }
+    if (resource === 'events') {
+      return await handleEvents(req, res, ghHeaders);
     }
     if (resource === 'navdismiss') {
       const id = str((req.body || {}).id, 80);
