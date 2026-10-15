@@ -188,9 +188,13 @@
           "note": "Prior plans",
           "says": "Thanks for the invite we has prior plans",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
-          "date": "Oct 9"
+          "date": "Oct 9",
+          "phone": "",
+          "email": "",
+          "editedAt": "2026-10-15T23:24:55.929Z",
+          "pageSync": true
         },
         {
           "id": "nancy-carrels",
