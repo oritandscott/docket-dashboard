@@ -1,17 +1,31 @@
 {
   "schedule": [
     {
-      "id": "mv80e9dotf462",
+      "id": "mv9ftn858k1dn",
       "time": "09:00",
-      "title": "Flex Day — no fixed office commitments",
-      "date": "2026-10-14",
+      "title": "Wesie visiting us (family) — all day",
+      "date": "2026-10-15",
       "source": "automation"
     },
     {
-      "id": "mv80e9dphswm2",
+      "id": "mv9ftn86u5bu7",
       "time": "09:00",
-      "title": "Wesie Visiting Us — through Oct 15",
-      "date": "2026-10-14",
+      "title": "Sphere Contacts day — reach out to past clients",
+      "date": "2026-10-15",
+      "source": "automation"
+    },
+    {
+      "id": "mv9ftn86ikky6",
+      "time": "11:00",
+      "title": "Dr Horton Upper Canyon event & photos",
+      "date": "2026-10-15",
+      "source": "automation"
+    },
+    {
+      "id": "mv9ftn86cylbn",
+      "time": "13:00",
+      "title": "Weekender newsletter due",
+      "date": "2026-10-15",
       "source": "automation"
     }
   ],
