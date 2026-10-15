@@ -129,9 +129,13 @@
           "note": "Will let you know (nephew's birthday)",
           "says": "I will 😊",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
-          "date": "Oct 9"
+          "date": "Oct 9",
+          "phone": "",
+          "email": "",
+          "editedAt": "2026-10-15T23:11:37.637Z",
+          "pageSync": true
         },
         {
           "id": "leon-newcomb",
