@@ -73,9 +73,11 @@
           "note": "RSVP'd 3+; no chili entry",
           "says": "Yes — 3+ coming",
           "count": 3,
-          "replied": false,
+          "replied": true,
           "source": "RSVP form",
-          "date": "Oct 15"
+          "date": "Oct 15",
+          "editedAt": "2026-10-15T23:10:34.797Z",
+          "pageSync": true
         },
         {
           "id": "debbie-bednar",
