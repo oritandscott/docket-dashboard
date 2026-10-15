@@ -17,23 +17,6 @@
     "updatedAt": "2026-09-29T15:31:11.063Z"
   },
   {
-    "id": "hot-1a0edb531d05waf2",
-    "name": "Bonnie Lee",
-    "phone": "(978) 766-5570",
-    "email": "bonita@leebarber.com",
-    "type": "both",
-    "source": "pastclient",
-    "tier": "medium",
-    "notes": "Past client.",
-    "phoneFound": false,
-    "emailFound": false,
-    "commandUrl": "https://console.command.kw.com/command/contacts/6952b8c4f5647d485897a3a9",
-    "callCount": 0,
-    "lastCalledAt": null,
-    "createdAt": "2026-09-29T15:07:50.000Z",
-    "updatedAt": "2026-09-29T15:31:19.609Z"
-  },
-  {
     "id": "hot-1a0edb531d2f3mr5",
     "name": "Lee Newcomb",
     "phone": "(480) 584-9183",
@@ -392,5 +375,26 @@
     "lastCalledAt": null,
     "createdAt": "2026-09-29T13:29:57.000Z",
     "updatedAt": "2026-10-06T13:21:06.307Z"
+  },
+  {
+    "id": "hot-1a0edb531d05waf2",
+    "name": "Bonnie Lee",
+    "phone": "(978) 766-5570",
+    "email": "bonita@leebarber.com",
+    "type": "both",
+    "source": "pastclient",
+    "tier": "hot",
+    "notes": "Past client.",
+    "textChannel": "voice",
+    "phoneFound": false,
+    "emailFound": false,
+    "commandUrl": "https://console.command.kw.com/command/contacts/6952b8c4f5647d485897a3a9",
+    "cmdNotesSynced": "Past client.",
+    "cmdNotesAt": null,
+    "cmdNotesResult": "",
+    "callCount": 0,
+    "lastCalledAt": null,
+    "createdAt": "2026-09-29T15:07:50.000Z",
+    "updatedAt": "2026-10-15T14:57:09.220Z"
   }
 ]
