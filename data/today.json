@@ -1,31 +1,31 @@
 {
   "schedule": [
     {
-      "id": "mv9ftn858k1dn",
+      "id": "mvavdetrxje1j",
       "time": "09:00",
-      "title": "Wesie visiting us (family) — all day",
-      "date": "2026-10-15",
+      "title": "Sphere / Open House",
+      "date": "2026-10-16",
       "source": "automation"
     },
     {
-      "id": "mv9ftn86u5bu7",
-      "time": "09:00",
-      "title": "Sphere Contacts day — reach out to past clients",
-      "date": "2026-10-15",
-      "source": "automation"
-    },
-    {
-      "id": "mv9ftn86ikky6",
-      "time": "11:00",
-      "title": "Dr Horton Upper Canyon event & photos",
-      "date": "2026-10-15",
-      "source": "automation"
-    },
-    {
-      "id": "mv9ftn86cylbn",
+      "id": "mvavdetr42rse",
       "time": "13:00",
-      "title": "Weekender newsletter due",
-      "date": "2026-10-15",
+      "title": "1st Showing — 7802 E Monte Vista Rd, Scottsdale",
+      "date": "2026-10-16",
+      "source": "automation"
+    },
+    {
+      "id": "mvavdetrk56cp",
+      "time": "14:30",
+      "title": "2nd Showing — 7802 E Monte Vista Rd, Scottsdale",
+      "date": "2026-10-16",
+      "source": "automation"
+    },
+    {
+      "id": "mvavdetrq2839",
+      "time": "17:00",
+      "title": "KWIF Great Pumpkin Bash — Gilbert (Red)",
+      "date": "2026-10-16",
       "source": "automation"
     }
   ],
