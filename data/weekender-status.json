@@ -1,8 +1,8 @@
 {
-  "state": "error",
-  "message": "Weekender build failed on the Mac mini: RuntimeError: input/week_manifest.json is 46h old -- stale (last week's?). Stage today's Angela email and write a fresh week_manifest.json first.",
+  "state": "running",
+  "message": "Building this week's Weekender on the Mac mini...",
   "campaignTitle": null,
   "editUrl": null,
-  "updatedAt": "2026-10-17T21:05:53.135Z",
+  "updatedAt": "2026-10-17T21:06:01.039Z",
   "lastSuccessAt": "2026-10-15T23:23:45.423Z"
 }
