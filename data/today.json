@@ -1,31 +1,10 @@
 {
   "schedule": [
     {
-      "id": "mvavdetrxje1j",
+      "id": "mvcanzhc6tx5t",
       "time": "09:00",
-      "title": "Sphere / Open House",
-      "date": "2026-10-16",
-      "source": "automation"
-    },
-    {
-      "id": "mvavdetr42rse",
-      "time": "13:00",
-      "title": "1st Showing — 7802 E Monte Vista Rd, Scottsdale",
-      "date": "2026-10-16",
-      "source": "automation"
-    },
-    {
-      "id": "mvavdetrk56cp",
-      "time": "14:30",
-      "title": "2nd Showing — 7802 E Monte Vista Rd, Scottsdale",
-      "date": "2026-10-16",
-      "source": "automation"
-    },
-    {
-      "id": "mvavdetrq2839",
-      "time": "17:00",
-      "title": "KWIF Great Pumpkin Bash — Gilbert (Red)",
-      "date": "2026-10-16",
+      "title": "Open House — All Day",
+      "date": "2026-10-17",
       "source": "automation"
     }
   ],
