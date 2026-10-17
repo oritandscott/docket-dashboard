@@ -4,9 +4,9 @@
     "text": "the Loutons cancelled their purchase of Potomac yesterday and so that should should cancelled yesterday, and now continuing their home search",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-10-15T15:02:03.241Z",
-    "updatedAt": "2026-10-15T16:14:19.000Z",
+    "updatedAt": "2026-10-17T15:00:03.116Z",
     "proposals": [
       {
         "pid": "p-louton-potomac-cancel",
@@ -16,7 +16,10 @@
         "args": {
           "status": "CANCELLED"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "12406 S Potomac St, Phoenix, AZ 85044: status ACTIVE -> CANCELLED Google Sheet Linear Tracker: record not in the live snapshot, not copied.",
+        "navId": "cmuq9ppag000004jprkna5f2y",
+        "decidedAt": "2026-10-17T15:00:03.116Z"
       }
     ],
     "reply": "Got it, Orit & Scott. I've proposed marking the Louton purchase at Potomac as CANCELLED. It needs your tap on Confirm, and once confirmed the Google Sheet Linear Tracker line updates automatically. The status change can't carry a date, so the cancellation will show as the day you confirm it, not yesterday (Oct 14). If you want yesterday's date recorded, tell me and I'll describe a small feature to build. The Loutons' home search continuing isn't a Navigator change, so nothing is needed there. If they'd like a new buyer Navigator once they have a contract, send it over.",
@@ -439,7 +442,7 @@
     "proposals": [
       {
         "pid": "p-louton-create",
-        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 \u2014 $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
+        "label": "Create a new BUYER Navigator for Elizabeth & Michael Louton, 12406 S Potomac St, Phoenix, AZ 85044 — $330,000, contract accepted 2026-10-01, closing 2026-11-18 (also adds their line to the Google Sheet Linear Tracker)",
         "op": "create_transaction",
         "args": {
           "dealType": "BUYER",
@@ -595,7 +598,7 @@
     "status": "done",
     "createdAt": "2026-09-29T14:52:49.042Z",
     "updatedAt": "2026-09-29T15:07:50.000Z",
-    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap \u270e to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
+    "reply": "Added The Goodballets, Elaine Moreen, Bonnie Lee and Lee Newcomb to Watchlist - Medium Term as past clients. No phone/email found for them yet -- tap ✎ to add, or they'll fill in once the Command check is connected. Type set to Buyer & Seller; change if needed."
   },
   {
     "id": "note-mumso9szxzan9",
