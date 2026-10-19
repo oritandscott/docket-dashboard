@@ -1,5 +1,34 @@
 {
-  "schedule": [],
+  "schedule": [
+    {
+      "id": "mvf5ecx732xb8",
+      "time": "09:00",
+      "title": "Monday - Follow-Up & Appointments (all day)",
+      "date": "2026-10-19",
+      "source": "automation"
+    },
+    {
+      "id": "mvf5ecx7tifzs",
+      "time": "11:00",
+      "title": "Commercial Showing - 3167 Armstrong Dr, Chandler",
+      "date": "2026-10-19",
+      "source": "automation"
+    },
+    {
+      "id": "mvf5ecx76gowi",
+      "time": "11:45",
+      "title": "3380 S Price Rd Tour w/ CBRE (Mark Gustin) - Tempe",
+      "date": "2026-10-19",
+      "source": "automation"
+    },
+    {
+      "id": "mvf5ecx7lmwj0",
+      "time": "15:00",
+      "title": "Showing - 7639 E Thornwood Dr, Scottsdale",
+      "date": "2026-10-19",
+      "source": "automation"
+    }
+  ],
   "tasks": [
     {
       "id": "musajbjgvhoch",
