@@ -1,31 +1,38 @@
 {
   "schedule": [
     {
-      "id": "mvf5ecx732xb8",
+      "id": "mvgkw3nifk0ez",
       "time": "09:00",
-      "title": "Monday - Follow-Up & Appointments (all day)",
-      "date": "2026-10-19",
+      "title": "Video Focus Day — YouTube shoot block",
+      "date": "2026-10-20",
       "source": "automation"
     },
     {
-      "id": "mvf5ecx7tifzs",
-      "time": "11:00",
-      "title": "Commercial Showing - 3167 Armstrong Dr, Chandler",
-      "date": "2026-10-19",
+      "id": "mvgkw3nips2zl",
+      "time": "09:45",
+      "title": "WESERV Sky Harbor Tour — Aviation Dept HQ",
+      "date": "2026-10-20",
       "source": "automation"
     },
     {
-      "id": "mvf5ecx76gowi",
-      "time": "11:45",
-      "title": "3380 S Price Rd Tour w/ CBRE (Mark Gustin) - Tempe",
-      "date": "2026-10-19",
+      "id": "mvgkw3niqtmx6",
+      "time": "12:00",
+      "title": "Ryan Melville Mastermind — KW Phoenix (Gold) [Fave]",
+      "date": "2026-10-20",
       "source": "automation"
     },
     {
-      "id": "mvf5ecx7lmwj0",
-      "time": "15:00",
-      "title": "Showing - 7639 E Thornwood Dr, Scottsdale",
-      "date": "2026-10-19",
+      "id": "mvgkw3ni27elv",
+      "time": "12:35",
+      "title": "Showing confirmed: 4007 E Agave Rd (Redfin agent)",
+      "date": "2026-10-20",
+      "source": "automation"
+    },
+    {
+      "id": "mvgkw3niekq8d",
+      "time": "13:00",
+      "title": "3380 S Price Rd Tour — CBRE commercial (Scott)",
+      "date": "2026-10-20",
       "source": "automation"
     }
   ],
