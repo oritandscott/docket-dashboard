@@ -1,38 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mvgkw3nifk0ez",
+      "id": "mvi0chufn6dn6",
       "time": "09:00",
-      "title": "Video Focus Day — YouTube shoot block",
-      "date": "2026-10-20",
+      "title": "Flex Day — no office mastermind/seminar today",
+      "date": "2026-10-21",
       "source": "automation"
     },
     {
-      "id": "mvgkw3nips2zl",
-      "time": "09:45",
-      "title": "WESERV Sky Harbor Tour — Aviation Dept HQ",
-      "date": "2026-10-20",
-      "source": "automation"
-    },
-    {
-      "id": "mvgkw3niqtmx6",
-      "time": "12:00",
-      "title": "Ryan Melville Mastermind — KW Phoenix (Gold) [Fave]",
-      "date": "2026-10-20",
-      "source": "automation"
-    },
-    {
-      "id": "mvgkw3ni27elv",
-      "time": "12:35",
-      "title": "Showing confirmed: 4007 E Agave Rd (Redfin agent)",
-      "date": "2026-10-20",
-      "source": "automation"
-    },
-    {
-      "id": "mvgkw3niekq8d",
-      "time": "13:00",
-      "title": "3380 S Price Rd Tour — CBRE commercial (Scott)",
-      "date": "2026-10-20",
+      "id": "mvi0chufksl3m",
+      "time": "09:00",
+      "title": "ORIT – Itamar (personal appt)",
+      "date": "2026-10-21",
       "source": "automation"
     }
   ],
