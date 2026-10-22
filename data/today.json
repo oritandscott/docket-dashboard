@@ -1,17 +1,38 @@
 {
   "schedule": [
     {
-      "id": "mvi0chufn6dn6",
+      "id": "mvjfufeui0ata",
       "time": "09:00",
-      "title": "Flex Day — no office mastermind/seminar today",
-      "date": "2026-10-21",
+      "title": "Weekender email due — send by 1:00 PM",
+      "date": "2026-10-22",
       "source": "automation"
     },
     {
-      "id": "mvi0chufksl3m",
+      "id": "mvjfufeupa8iv",
       "time": "09:00",
-      "title": "ORIT – Itamar (personal appt)",
-      "date": "2026-10-21",
+      "title": "Sphere Contacts — Thursday outreach task",
+      "date": "2026-10-22",
+      "source": "automation"
+    },
+    {
+      "id": "mvjfufeu6sgai",
+      "time": "10:30",
+      "title": "All Agent Meeting — KWIF Gilbert (Red)",
+      "date": "2026-10-22",
+      "source": "automation"
+    },
+    {
+      "id": "mvjfufeu3ncpx",
+      "time": "12:00",
+      "title": "YouTube Made Simple Session 1 (Sarah Maslowski)",
+      "date": "2026-10-22",
+      "source": "automation"
+    },
+    {
+      "id": "mvjfufeu92587",
+      "time": "13:00",
+      "title": "Broker Class: Brokers Choice — KWIF Gilbert (Red)",
+      "date": "2026-10-22",
       "source": "automation"
     }
   ],
