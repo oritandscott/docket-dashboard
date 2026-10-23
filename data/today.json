@@ -1,38 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mvjfufeui0ata",
+      "id": "mvkvhw18339nr",
       "time": "09:00",
-      "title": "Weekender email due — send by 1:00 PM",
-      "date": "2026-10-22",
+      "title": "Open House / Sphere Day — lead-gen activity",
+      "date": "2026-10-23",
       "source": "automation"
     },
     {
-      "id": "mvjfufeupa8iv",
-      "time": "09:00",
-      "title": "Sphere Contacts — Thursday outreach task",
-      "date": "2026-10-22",
-      "source": "automation"
-    },
-    {
-      "id": "mvjfufeu6sgai",
-      "time": "10:30",
-      "title": "All Agent Meeting — KWIF Gilbert (Red)",
-      "date": "2026-10-22",
-      "source": "automation"
-    },
-    {
-      "id": "mvjfufeu3ncpx",
-      "time": "12:00",
-      "title": "YouTube Made Simple Session 1 (Sarah Maslowski)",
-      "date": "2026-10-22",
-      "source": "automation"
-    },
-    {
-      "id": "mvjfufeu92587",
-      "time": "13:00",
-      "title": "Broker Class: Brokers Choice — KWIF Gilbert (Red)",
-      "date": "2026-10-22",
+      "id": "mvkvhw18tjy5r",
+      "time": "10:00",
+      "title": "Valley Rising Econ Outlook — KWIF Chandler (Red)",
+      "date": "2026-10-23",
       "source": "automation"
     }
   ],
