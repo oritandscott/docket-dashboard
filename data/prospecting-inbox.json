@@ -6,14 +6,17 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-10-26T14:22:33.739Z",
-    "updatedAt": "2026-10-26T14:29:23.000Z",
+    "updatedAt": "2026-10-26T14:54:34.566Z",
     "proposals": [
       {
         "pid": "p-louton-sheet",
         "label": "Re-copy the cancelled Louton / Potomac line to the Google Sheet Linear Tracker",
         "op": "copy_to_sheet",
         "match": "Louton Potomac",
-        "status": "pending"
+        "status": "failed",
+        "result": "No active Navigator record matches \"Louton Potomac\"",
+        "auto": true,
+        "decidedAt": "2026-10-26T14:54:34.566Z"
       },
       {
         "pid": "p-agave-dates",
