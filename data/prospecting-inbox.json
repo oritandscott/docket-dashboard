@@ -6,7 +6,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-10-26T14:22:33.739Z",
-    "updatedAt": "2026-10-26T16:53:05.634Z",
+    "updatedAt": "2026-10-26T16:53:09.490Z",
     "proposals": [
       {
         "pid": "p-louton-sheet",
@@ -54,7 +54,10 @@
           "address": "2058 E. Fremont St., Tempe",
           "clientName": "Jeff Tucker"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "Created seller Navigator for Jeff Tucker - 2058 E. Fremont St., Tempe. Client link: https://nav.oasisgroupaz.com/t/fVBEmoH9VfMxsDV- Google Sheet Linear Tracker: Nothing to copy to the Google Sheet Linear Tracker yet (no dates).",
+        "navId": "cmvphwisf000004jvone7t2jk",
+        "decidedAt": "2026-10-26T16:53:09.490Z"
       }
     ],
     "reply": "Got it, Orit & Scott. Here's what I've lined up:\n1) Loutons / Potomac: the Navigator is already CANCELLED (from your earlier note), so I'm re-sending its line to the Google Sheet Linear Tracker (applies automatically, within about 30 min). If the sheet line is gone because cancelled deals drop off, I'll let you know.\n2) Agave (Barnes, 4007 E Agave Rd): closing set to Nov 6 with 10-day due diligence, and the inspection set for tomorrow, Tue Oct 27 -- I don't have a time, so I put 9:00am as a placeholder. These apply automatically and update the Google Sheet Linear Tracker. I did NOT set the contract (acceptance) date because I don't have it -- what day was it accepted? (Day 0 = acceptance day; Day 10 should land on the last day of due diligence.) Also tell me the real inspection time if it isn't 9:00.\n3) Jeff Tucker, 2058 E Fremont St, Tempe: I'm proposing a new Seller Navigator (needs your Confirm). I don't have a list price or listing agreement date -- add those in the Navigator editor. There's no Coming Soon / go-live-Saturday (Oct 31) step I can set yet, so please add that in the editor too; if you'd like it built as a feature, let me know.",
