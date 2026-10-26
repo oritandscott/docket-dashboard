@@ -6,7 +6,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-10-26T14:22:33.739Z",
-    "updatedAt": "2026-10-26T16:53:03.760Z",
+    "updatedAt": "2026-10-26T16:53:05.634Z",
     "proposals": [
       {
         "pid": "p-louton-sheet",
@@ -40,7 +40,10 @@
         "args": {
           "inspectionDateTime": "2026-10-27T09:00"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "4007 E. Agave Rd., Phoenix: inspection 2026-10-27T09:00 Google Sheet Linear Tracker: Updated the line on the Google Sheet Linear Tracker (row 11, IT-LS).",
+        "navId": "cms99z74m000004l592xbroy4",
+        "decidedAt": "2026-10-26T16:53:05.634Z"
       },
       {
         "pid": "p-fremont-new",
