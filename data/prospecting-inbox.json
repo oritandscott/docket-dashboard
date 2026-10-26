@@ -4,7 +4,7 @@
     "text": "The Loutons are not under contract...they cancelled on Potomac a couple of weeks ago.   Agave is under contract to close on November 6 with inspection being tomorrow, Tuesday.  10-day due diligence.  Please update the linear tracker in google.  Jeff Tucker's 2058 E. Fremont St. Tempe listing will be coming up Coming Soon today to be active on Saturday.",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "done",
     "createdAt": "2026-10-26T14:22:33.739Z",
     "updatedAt": "2026-10-26T16:54:57.175Z",
     "proposals": [
@@ -13,10 +13,10 @@
         "label": "Re-copy the cancelled Louton / Potomac line to the Google Sheet Linear Tracker",
         "op": "copy_to_sheet",
         "match": "Louton Potomac",
-        "status": "failed",
+        "status": "skipped",
         "result": "No active Navigator record matches \"Louton Potomac\"",
         "auto": true,
-        "decidedAt": "2026-10-26T16:53:54.608Z"
+        "decidedAt": "2026-10-26T16:55:12.458Z"
       },
       {
         "pid": "p-agave-dates",
