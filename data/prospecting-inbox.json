@@ -6,7 +6,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-10-26T14:22:33.739Z",
-    "updatedAt": "2026-10-26T14:54:34.566Z",
+    "updatedAt": "2026-10-26T16:53:03.760Z",
     "proposals": [
       {
         "pid": "p-louton-sheet",
@@ -27,7 +27,10 @@
           "closingDate": "2026-11-06",
           "dueDiligenceDays": 10
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "4007 E. Agave Rd., Phoenix: COE - -> 2026-11-06, due diligence 10 -> 10 days Google Sheet Linear Tracker: Updated the line on the Google Sheet Linear Tracker (row 11, IT-LS).",
+        "navId": "cms99z74m000004l592xbroy4",
+        "decidedAt": "2026-10-26T16:53:03.760Z"
       },
       {
         "pid": "p-agave-insp",
