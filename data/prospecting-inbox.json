@@ -4,9 +4,9 @@
     "text": "The Loutons are not under contract...they cancelled on Potomac a couple of weeks ago.   Agave is under contract to close on November 6 with inspection being tomorrow, Tuesday.  10-day due diligence.  Please update the linear tracker in google.  Jeff Tucker's 2058 E. Fremont St. Tempe listing will be coming up Coming Soon today to be active on Saturday.",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "new",
     "createdAt": "2026-10-26T14:22:33.739Z",
-    "updatedAt": "2026-10-26T16:53:54.608Z",
+    "updatedAt": "2026-10-26T16:54:57.175Z",
     "proposals": [
       {
         "pid": "p-louton-sheet",
@@ -66,6 +66,11 @@
         "from": "claude",
         "text": "Got it, Orit & Scott. Here's what I've lined up:\n1) Loutons / Potomac: the Navigator is already CANCELLED (from your earlier note), so I'm re-sending its line to the Google Sheet Linear Tracker (applies automatically, within about 30 min). If the sheet line is gone because cancelled deals drop off, I'll let you know.\n2) Agave (Barnes, 4007 E Agave Rd): closing set to Nov 6 with 10-day due diligence, and the inspection set for tomorrow, Tue Oct 27 -- I don't have a time, so I put 9:00am as a placeholder. These apply automatically and update the Google Sheet Linear Tracker. I did NOT set the contract (acceptance) date because I don't have it -- what day was it accepted? (Day 0 = acceptance day; Day 10 should land on the last day of due diligence.) Also tell me the real inspection time if it isn't 9:00.\n3) Jeff Tucker, 2058 E Fremont St, Tempe: I'm proposing a new Seller Navigator (needs your Confirm). I don't have a list price or listing agreement date -- add those in the Navigator editor. There's no Coming Soon / go-live-Saturday (Oct 31) step I can set yet, so please add that in the editor too; if you'd like it built as a feature, let me know.",
         "at": "2026-10-26T14:29:23.000Z"
+      },
+      {
+        "from": "you",
+        "text": "add to Nancy Barnes/Agave line that inspection is tomorrow and Contract Acceptance was Friday, and Closing is on November 6",
+        "at": "2026-10-26T16:54:57.175Z"
       }
     ]
   },
