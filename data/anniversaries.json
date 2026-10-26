@@ -301,5 +301,15 @@
     "status": "upcoming",
     "draftId": null,
     "addedAt": "2026-10-20T11:12:47.178Z"
+  },
+  {
+    "id": "672636d661600404a19dcdbd",
+    "name": "Beth Snyder",
+    "address": "9215 S 47th Place, Phoenix, AZ 85044",
+    "purchaseDate": "2024-11-25",
+    "emailVariant": "B",
+    "status": "upcoming",
+    "draftId": null,
+    "addedAt": "2026-10-26T11:12:56.585Z"
   }
 ]
