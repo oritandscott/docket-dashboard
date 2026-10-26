@@ -1,5 +1,13 @@
 {
-  "schedule": [],
+  "schedule": [
+    {
+      "id": "mvp5ngrnjrg3z",
+      "time": "09:00",
+      "title": "Monday Follow-Up & Appts (block)",
+      "date": "2026-10-26",
+      "source": "automation"
+    }
+  ],
   "tasks": [
     {
       "id": "musajbjgvhoch",
