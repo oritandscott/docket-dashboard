@@ -4,9 +4,58 @@
     "text": "The Loutons are not under contract...they cancelled on Potomac a couple of weeks ago.   Agave is under contract to close on November 6 with inspection being tomorrow, Tuesday.  10-day due diligence.  Please update the linear tracker in google.  Jeff Tucker's 2058 E. Fremont St. Tempe listing will be coming up Coming Soon today to be active on Saturday.",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-10-26T14:22:33.739Z",
-    "updatedAt": "2026-10-26T14:22:33.739Z"
+    "updatedAt": "2026-10-26T14:29:23.000Z",
+    "proposals": [
+      {
+        "pid": "p-louton-sheet",
+        "label": "Re-copy the cancelled Louton / Potomac line to the Google Sheet Linear Tracker",
+        "op": "copy_to_sheet",
+        "match": "Louton Potomac",
+        "status": "pending"
+      },
+      {
+        "pid": "p-agave-dates",
+        "label": "Barnes / 4007 E Agave Rd: closing Nov 6, 10-day due diligence",
+        "op": "set_escrow_dates",
+        "match": "Barnes Agave",
+        "args": {
+          "closingDate": "2026-11-06",
+          "dueDiligenceDays": 10
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-agave-insp",
+        "label": "Barnes / 4007 E Agave Rd: inspection Tue Oct 27, 9:00am (time assumed)",
+        "op": "set_inspection",
+        "match": "Barnes Agave",
+        "args": {
+          "inspectionDateTime": "2026-10-27T09:00"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-fremont-new",
+        "label": "New seller Navigator: Jeff Tucker, 2058 E Fremont St, Tempe (coming soon today, active Saturday)",
+        "op": "create_transaction",
+        "args": {
+          "dealType": "SELLER",
+          "address": "2058 E. Fremont St., Tempe",
+          "clientName": "Jeff Tucker"
+        },
+        "status": "pending"
+      }
+    ],
+    "reply": "Got it, Orit & Scott. Here's what I've lined up:\n1) Loutons / Potomac: the Navigator is already CANCELLED (from your earlier note), so I'm re-sending its line to the Google Sheet Linear Tracker (applies automatically, within about 30 min). If the sheet line is gone because cancelled deals drop off, I'll let you know.\n2) Agave (Barnes, 4007 E Agave Rd): closing set to Nov 6 with 10-day due diligence, and the inspection set for tomorrow, Tue Oct 27 -- I don't have a time, so I put 9:00am as a placeholder. These apply automatically and update the Google Sheet Linear Tracker. I did NOT set the contract (acceptance) date because I don't have it -- what day was it accepted? (Day 0 = acceptance day; Day 10 should land on the last day of due diligence.) Also tell me the real inspection time if it isn't 9:00.\n3) Jeff Tucker, 2058 E Fremont St, Tempe: I'm proposing a new Seller Navigator (needs your Confirm). I don't have a list price or listing agreement date -- add those in the Navigator editor. There's no Coming Soon / go-live-Saturday (Oct 31) step I can set yet, so please add that in the editor too; if you'd like it built as a feature, let me know.",
+    "thread": [
+      {
+        "from": "claude",
+        "text": "Got it, Orit & Scott. Here's what I've lined up:\n1) Loutons / Potomac: the Navigator is already CANCELLED (from your earlier note), so I'm re-sending its line to the Google Sheet Linear Tracker (applies automatically, within about 30 min). If the sheet line is gone because cancelled deals drop off, I'll let you know.\n2) Agave (Barnes, 4007 E Agave Rd): closing set to Nov 6 with 10-day due diligence, and the inspection set for tomorrow, Tue Oct 27 -- I don't have a time, so I put 9:00am as a placeholder. These apply automatically and update the Google Sheet Linear Tracker. I did NOT set the contract (acceptance) date because I don't have it -- what day was it accepted? (Day 0 = acceptance day; Day 10 should land on the last day of due diligence.) Also tell me the real inspection time if it isn't 9:00.\n3) Jeff Tucker, 2058 E Fremont St, Tempe: I'm proposing a new Seller Navigator (needs your Confirm). I don't have a list price or listing agreement date -- add those in the Navigator editor. There's no Coming Soon / go-live-Saturday (Oct 31) step I can set yet, so please add that in the editor too; if you'd like it built as a feature, let me know.",
+        "at": "2026-10-26T14:29:23.000Z"
+      }
+    ]
   },
   {
     "id": "note-mv9o3b3dqby0o",
