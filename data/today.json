@@ -1,10 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mvp5ngrnjrg3z",
+      "id": "mvql2up837ckc",
       "time": "09:00",
-      "title": "Monday Follow-Up & Appts (block)",
-      "date": "2026-10-26",
+      "title": "Tuesday Video Focus Day — content shoot",
+      "date": "2026-10-27",
+      "source": "automation"
+    },
+    {
+      "id": "mvql2up8cbivp",
+      "time": "13:30",
+      "title": "WeSERV Water Rundown Panel — Chandler/SE Valley",
+      "date": "2026-10-27",
       "source": "automation"
     }
   ],
