@@ -4,18 +4,47 @@
     "text": "Show contract acceptance for Agave on Friday",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-10-26T16:57:13.296Z",
-    "updatedAt": "2026-10-26T16:57:13.296Z"
+    "updatedAt": "2026-10-27T04:08:44.000Z",
+    "proposals": [
+      {
+        "pid": "p-agave-accept",
+        "label": "Barnes / 4007 E. Agave Rd: contract accepted Friday Oct 23 (Day 0)",
+        "op": "set_escrow_dates",
+        "match": "Barnes Agave",
+        "args": {
+          "contractDate": "2026-10-23"
+        },
+        "status": "pending"
+      }
+    ],
+    "reply": "Got it, Orit & Scott. I'm setting the Agave (Barnes, 4007 E Agave Rd) contract acceptance to Friday, Oct 23 (Day 0). With your 10-day due diligence, Day 10 lands on Mon, Nov 2, ahead of the Nov 6 close. This applies automatically within about 30 minutes and updates the Google Sheet Linear Tracker too. If Friday meant a different date, just reply.",
+    "thread": [
+      {
+        "from": "claude",
+        "text": "Got it, Orit & Scott. I'm setting the Agave (Barnes, 4007 E Agave Rd) contract acceptance to Friday, Oct 23 (Day 0). With your 10-day due diligence, Day 10 lands on Mon, Nov 2, ahead of the Nov 6 close. This applies automatically within about 30 minutes and updates the Google Sheet Linear Tracker too. If Friday meant a different date, just reply.",
+        "at": "2026-10-27T04:08:44.000Z"
+      }
+    ]
   },
   {
     "id": "note-mvpi0xjed5yw3",
     "text": "Jeff Tucker 2058 E. Fremont St. Tempe is coming soon as of today and will go live Saturday.  Add that to the tracker",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "needs-build",
     "createdAt": "2026-10-26T16:56:33.482Z",
-    "updatedAt": "2026-10-26T16:56:33.482Z"
+    "updatedAt": "2026-10-27T04:08:44.000Z",
+    "reply": "Noted, Orit & Scott. Jeff Tucker's 2058 E Fremont St, Tempe already has a Seller Navigator. There's no Coming Soon status or go-live-date step I can set yet: Coming Soon as of Mon Oct 26, going live Sat Oct 31. I've put it on the build list. It would add a Coming Soon stage with a go-live date to Navigator and show it on the dashboard and the Google Sheet Linear Tracker. If you want it on the tracker before then, tell me and I'll propose the closest fit, such as an open-house-style marker on Oct 31.",
+    "thread": [
+      {
+        "from": "claude",
+        "text": "Noted, Orit & Scott. Jeff Tucker's 2058 E Fremont St, Tempe already has a Seller Navigator. There's no Coming Soon status or go-live-date step I can set yet: Coming Soon as of Mon Oct 26, going live Sat Oct 31. I've put it on the build list. It would add a Coming Soon stage with a go-live date to Navigator and show it on the dashboard and the Google Sheet Linear Tracker. If you want it on the tracker before then, tell me and I'll propose the closest fit, such as an open-house-style marker on Oct 31.",
+        "at": "2026-10-27T04:08:44.000Z"
+      }
+    ],
+    "build": "Add a Coming Soon listing stage (start date + go-live date) to Navigator seller listings via a new op set_coming_soon {comingSoonDate, liveDate}, shown on the dashboard tracker and Google Sheet Linear Tracker (first use: Jeff Tucker, 2058 E. Fremont St., Tempe, Coming Soon 2026-10-26, live 2026-10-31)."
   },
   {
     "id": "note-mvpciw3v27pmj",
