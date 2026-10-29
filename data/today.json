@@ -1,52 +1,45 @@
 {
   "schedule": [
     {
-      "id": "mvs0f1tcs7tk1",
+      "id": "mvtfu95yzsnta",
       "time": "09:00",
-      "title": "Cromford Report — KWIF Gilbert (Red)",
-      "date": "2026-10-28",
+      "title": "Fremont Listing — Staging w/ Tracy Hosobe (Tempe)",
+      "date": "2026-10-29",
       "source": "automation"
     },
     {
-      "id": "mvs0f1tcivedv",
-      "time": "10:00",
-      "title": "Agent of Choice: AI Revolution — KWIF (Red)",
-      "date": "2026-10-28",
+      "id": "mvtfu95ygwsyk",
+      "time": "09:00",
+      "title": "Sarah Maslowski YouTube Class (Flagged Presenter)",
+      "date": "2026-10-29",
       "source": "automation"
     },
     {
-      "id": "mvs0f1tclik1r",
-      "time": "10:00",
-      "title": "PC Field Trip: Model Homes — Gilbert (KWEV)",
-      "date": "2026-10-28",
+      "id": "mvtfu95yod0ts",
+      "time": "09:00",
+      "title": "Sphere Contacts Day (reminder)",
+      "date": "2026-10-29",
       "source": "automation"
     },
     {
-      "id": "mvs0f1tcxufbz",
+      "id": "mvtfu95yya500",
+      "time": "09:00",
+      "title": "Weekender Email Due — 1PM",
+      "date": "2026-10-29",
+      "source": "automation"
+    },
+    {
+      "id": "mvtfu95yb2cl3",
       "time": "10:30",
-      "title": "KWRP All Agent Mtg + Lunch — KW Phoenix (Gold)",
-      "date": "2026-10-28",
+      "title": "Zoom: Sarah Perkins — KW Integrity First (FYI)",
+      "date": "2026-10-29",
       "source": "automation"
     },
     {
-      "id": "mvs0f1tc8wtq1",
-      "time": "11:30",
-      "title": "Fremont Cleaning — Rosa Logue/Instaclean",
-      "date": "2026-10-28",
-      "source": "automation"
-    },
-    {
-      "id": "mvs0f1tcj5jgr",
-      "time": "14:00",
-      "title": "Commercial Connection Power Hour — Zoom",
-      "date": "2026-10-28",
-      "source": "automation"
-    },
-    {
-      "id": "mvs0f1tct77ka",
-      "time": "17:00",
-      "title": "Trunk or Treat — KWRP Tempe (Blue)",
-      "date": "2026-10-28",
+      "id": "mvtfu95yauiom",
+      "time": "12:00",
+      "title": "YouTube Session 2: Content Planning & Script Writing",
+      "date": "2026-10-29",
       "source": "automation"
     }
   ],
