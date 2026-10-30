@@ -1,8 +1,8 @@
 {
-  "state": "done",
-  "message": "Draft built and test sent to oritandscott@gmail.com. Not sent to the list -- waiting on Orit & Scott's go-ahead.",
-  "campaignTitle": "Weekly Weekender - October 29–November 4, 2026",
-  "editUrl": "https://us5.admin.mailchimp.com/campaigns/edit?id=10154492",
-  "updatedAt": "2026-10-30T00:28:54.126Z",
+  "state": "running",
+  "message": "Building this week's Weekender on the Mac mini...",
+  "campaignTitle": null,
+  "editUrl": null,
+  "updatedAt": "2026-10-30T00:37:22.629Z",
   "lastSuccessAt": "2026-10-30T00:28:54.126Z"
 }
