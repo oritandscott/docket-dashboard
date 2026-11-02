@@ -1,5 +1,27 @@
 {
-  "schedule": [],
+  "schedule": [
+    {
+      "id": "mvz5lmsgaawzu",
+      "time": "09:00",
+      "title": "Monday Follow-Up & Appts Block (all day)",
+      "date": "2026-11-02",
+      "source": "automation"
+    },
+    {
+      "id": "mvz5lmsg65bqc",
+      "time": "09:30",
+      "title": "Rob & Renata Gerlings — The Pointe courthome",
+      "date": "2026-11-02",
+      "source": "automation"
+    },
+    {
+      "id": "mvz5lmsge6u2b",
+      "time": "14:00",
+      "title": "Karen & Mark Bernhardt — 5915 E Aire Libre Ln",
+      "date": "2026-11-02",
+      "source": "automation"
+    }
+  ],
   "tasks": [
     {
       "id": "musajbjgvhoch",
