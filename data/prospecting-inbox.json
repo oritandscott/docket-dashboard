@@ -62,7 +62,7 @@
     "dictated": false,
     "status": "needs-you",
     "createdAt": "2026-11-04T13:54:21.805Z",
-    "updatedAt": "2026-11-04T14:09:29.000Z",
+    "updatedAt": "2026-11-04T14:11:03.408Z",
     "reply": "Got it. I'm adding two open houses to Jeff Tucker's Fremont listing: Sat Oct 31, 1:30-3:30pm, and this Sat Nov 7. They apply automatically within about 30 minutes and show as OPEN HAUS on both trackers. I don't have a time for Nov 7: what are the start and end times? (I'll add it without times until then.)",
     "thread": [
       {
@@ -82,7 +82,11 @@
           "startTime": "13:30",
           "endTime": "15:30"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "2058 E. Fremont St., Tempe: open house added 2026-10-31 Google Sheet Linear Tracker: Added the line on the Google Sheet Linear Tracker (row 9, LV-LX).",
+        "navId": "cmvphwisf000004jvone7t2jk",
+        "auto": true,
+        "decidedAt": "2026-11-04T14:11:03.408Z"
       },
       {
         "pid": "p-fremont-oh-1107",
