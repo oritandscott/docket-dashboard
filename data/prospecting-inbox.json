@@ -103,7 +103,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-11-04T13:53:51.110Z",
-    "updatedAt": "2026-11-04T14:09:29.000Z",
+    "updatedAt": "2026-11-04T14:10:58.269Z",
     "reply": "Got it, Orit & Scott. 1) Agave (Barnes, 4007 E Agave Rd): closing date moved to today, Wed Nov 4. This applies automatically within about 30 minutes and updates the Google Sheet Linear Tracker. Once it has actually closed, tell me and I'll propose marking it CLOSED (that one needs your Confirm). 2) Jeff Tucker / 2058 E Fremont St, Tempe: one Confirm below sets him to ACTIVE so he shows on the scoreboard. There's no field for the exact go-live date (Fri Oct 30) yet; I can put that on the build list if you'd like it recorded.",
     "thread": [
       {
@@ -121,7 +121,11 @@
         "args": {
           "closingDate": "2026-11-04"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "4007 E. Agave Rd., Phoenix: COE 2026-11-06 -> 2026-11-04 Google Sheet Linear Tracker: Updated the line on the Google Sheet Linear Tracker (row 11, IT-MG).",
+        "navId": "cms99z74m000004l592xbroy4",
+        "auto": true,
+        "decidedAt": "2026-11-04T14:10:58.269Z"
       },
       {
         "pid": "p-tucker-fremont-active",
