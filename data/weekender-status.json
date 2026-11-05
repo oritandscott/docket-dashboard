@@ -1,8 +1,8 @@
 {
-  "state": "error",
-  "message": "Weekender build failed on the Mac mini: FileNotFoundError: [Errno 2] No such file or directory: 'openhouse-tempe-fremont.jpg'",
+  "state": "running",
+  "message": "Building this week's Weekender on the Mac mini...",
   "campaignTitle": null,
   "editUrl": null,
-  "updatedAt": "2026-11-05T20:42:46.544Z",
+  "updatedAt": "2026-11-05T20:43:00.993Z",
   "lastSuccessAt": "2026-10-30T01:36:26.531Z"
 }
