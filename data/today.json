@@ -1,17 +1,38 @@
 {
   "schedule": [
     {
-      "id": "mw20g9ct43gjq",
+      "id": "mw3fw459tff2f",
       "time": "09:00",
-      "title": "Orit - Itamar (personal)",
-      "date": "2026-11-04",
+      "title": "Sarah Maslowski YouTube Class — flagged favorite",
+      "date": "2026-11-05",
       "source": "automation"
     },
     {
-      "id": "mw20g9ctda3iu",
-      "time": "12:00",
-      "title": "Tina Tamboer Cromford Report — KW Tempe (Blue)",
-      "date": "2026-11-04",
+      "id": "mw3fw459x8l8c",
+      "time": "09:00",
+      "title": "Weekender email send — 1:00 PM",
+      "date": "2026-11-05",
+      "source": "automation"
+    },
+    {
+      "id": "mw3fw4590an30",
+      "time": "09:00",
+      "title": "Sphere Contacts — Thursday calls",
+      "date": "2026-11-05",
+      "source": "automation"
+    },
+    {
+      "id": "mw3fw459sp2z4",
+      "time": "13:00",
+      "title": "YouTube Session 3: Filming & B-Roll (1:00-2:30pm)",
+      "date": "2026-11-05",
+      "source": "automation"
+    },
+    {
+      "id": "mw3fw459ckwp5",
+      "time": "15:00",
+      "title": "Call Cliff Jones Insurance — 3:00pm",
+      "date": "2026-11-05",
       "source": "automation"
     }
   ],
