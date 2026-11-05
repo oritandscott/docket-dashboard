@@ -116,9 +116,9 @@
     "text": "Nancy Barnes Agave is closing today, earlier than originally planned.  Jeff Tucker Fremont is active as of Friday, so that needs to be on the scoreboard here.  make these edits",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-11-04T13:53:51.110Z",
-    "updatedAt": "2026-11-04T14:10:58.269Z",
+    "updatedAt": "2026-11-05T15:05:08.300Z",
     "reply": "Got it, Orit & Scott. 1) Agave (Barnes, 4007 E Agave Rd): closing date moved to today, Wed Nov 4. This applies automatically within about 30 minutes and updates the Google Sheet Linear Tracker. Once it has actually closed, tell me and I'll propose marking it CLOSED (that one needs your Confirm). 2) Jeff Tucker / 2058 E Fremont St, Tempe: one Confirm below sets him to ACTIVE so he shows on the scoreboard. There's no field for the exact go-live date (Fri Oct 30) yet; I can put that on the build list if you'd like it recorded.",
     "thread": [
       {
@@ -150,7 +150,10 @@
         "args": {
           "status": "ACTIVE"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "2058 E. Fremont St., Tempe: status ACTIVE -> ACTIVE Google Sheet Linear Tracker: The Google Sheet Linear Tracker already matches.",
+        "navId": "cmvphwisf000004jvone7t2jk",
+        "decidedAt": "2026-11-05T15:05:08.300Z"
       }
     ]
   },
