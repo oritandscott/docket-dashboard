@@ -21,9 +21,9 @@
     "text": "alex bartko closed a week ago",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-11-04T13:55:05.683Z",
-    "updatedAt": "2026-11-04T14:11:13.298Z",
+    "updatedAt": "2026-11-05T15:05:03.546Z",
     "reply": "Got it. Taking your follow-up (\"on Thursday, that is\") to mean Alex Bartko closed Thursday, Oct 29. The closing date is set to that automatically within about 30 minutes (and updates the Google Sheet Linear Tracker). One Confirm below marks the Bartko deal CLOSED; it stays in the dashboard's Navigator panel in red until you dismiss it. If you meant a different day, just reply.",
     "thread": [
       {
@@ -55,7 +55,10 @@
         "args": {
           "status": "CLOSED"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "15428 S 15th Avenue Phoenix, AZ 85045: status ACTIVE -> CLOSED Google Sheet Linear Tracker: Updated the line on the Google Sheet Linear Tracker (row 15, JZ-LV).",
+        "navId": "cmttckk8f000004l20kae6l0f",
+        "decidedAt": "2026-11-05T15:05:03.546Z"
       }
     ]
   },
