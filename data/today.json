@@ -1,38 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mw3fw459tff2f",
+      "id": "mw4vb8m1hs143",
       "time": "09:00",
-      "title": "Sarah Maslowski YouTube Class — flagged favorite",
-      "date": "2026-11-05",
+      "title": "Sphere / Open House Day",
+      "date": "2026-11-06",
       "source": "automation"
     },
     {
-      "id": "mw3fw459x8l8c",
-      "time": "09:00",
-      "title": "Weekender email send — 1:00 PM",
-      "date": "2026-11-05",
-      "source": "automation"
-    },
-    {
-      "id": "mw3fw4590an30",
-      "time": "09:00",
-      "title": "Sphere Contacts — Thursday calls",
-      "date": "2026-11-05",
-      "source": "automation"
-    },
-    {
-      "id": "mw3fw459sp2z4",
-      "time": "13:00",
-      "title": "YouTube Session 3: Filming & B-Roll (1:00-2:30pm)",
-      "date": "2026-11-05",
-      "source": "automation"
-    },
-    {
-      "id": "mw3fw459ckwp5",
+      "id": "mw4vb8m1e18wt",
       "time": "15:00",
-      "title": "Call Cliff Jones Insurance — 3:00pm",
-      "date": "2026-11-05",
+      "title": "East Valley Pop-Up Market — KWIF Gilbert (Red)",
+      "date": "2026-11-06",
       "source": "automation"
     }
   ],
