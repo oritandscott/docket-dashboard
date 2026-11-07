@@ -1,17 +1,10 @@
 {
   "schedule": [
     {
-      "id": "mw4vb8m1hs143",
+      "id": "mw6aqgq8dnno0",
       "time": "09:00",
-      "title": "Sphere / Open House Day",
-      "date": "2026-11-06",
-      "source": "automation"
-    },
-    {
-      "id": "mw4vb8m1e18wt",
-      "time": "15:00",
-      "title": "East Valley Pop-Up Market — KWIF Gilbert (Red)",
-      "date": "2026-11-06",
+      "title": "Open House — All Day",
+      "date": "2026-11-07",
       "source": "automation"
     }
   ],
