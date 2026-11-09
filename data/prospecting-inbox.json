@@ -50,9 +50,9 @@
     "text": "Add 2058 e fremont temp to the tracker here and also to the google sheet.  Also add Rob Gerlings being under contract as of Saturday on 4701 E. Euclid Phoenix, with Due Diligence extended to the 21st of November, and close of escrow on January 28th, and inspection set for November 17th",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-11-09T12:47:43.672Z",
-    "updatedAt": "2026-11-09T14:19:53.515Z",
+    "updatedAt": "2026-11-09T15:29:07.305Z",
     "reply": "Got it, Orit & Scott. 1) Jeff Tucker's 2058 E Fremont, Tempe already has a Navigator; I'm re-sending its line to the Google Sheet Linear Tracker (applies automatically within about 30 minutes). 2) New Buyer Navigator for Rob Gerlings, 4701 E Euclid Ave, Phoenix: under contract Sat Nov 7, due diligence through Sat Nov 21 (Day 14 from acceptance), close of escrow Thu Jan 28, 2027, inspection Tue Nov 17 (no time given, so I used 9:00am). Creating it needs your Confirm; I assumed Euclid Ave and Phoenix. It will also be added to the Google Sheet Linear Tracker. Send an arrival time and his email if you'd like them added.",
     "thread": [
       {
@@ -86,7 +86,10 @@
           "dueDiligenceDays": 14,
           "inspectionDateTime": "2026-11-17T09:00"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "Created buyer Navigator for Rob Gerlings - 4701 E. Euclid Ave., Phoenix, COE 2027-01-28. Client link: https://nav.oasisgroupaz.com/t/6iJ0eazXnVoxcnqg Google Sheet Linear Tracker: Added the line on the Google Sheet Linear Tracker (row 15, MC-PI).",
+        "navId": "cmw9f2d7o000204l3ku86zaok",
+        "decidedAt": "2026-11-09T15:29:07.305Z"
       }
     ]
   },
