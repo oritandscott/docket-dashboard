@@ -4,9 +4,39 @@
     "text": "adjust the navigators for 4007 e agave and 4824 e la puente as closed",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-11-09T15:30:27.125Z",
-    "updatedAt": "2026-11-09T15:30:27.125Z"
+    "updatedAt": "2026-11-09T16:11:59.000Z",
+    "proposals": [
+      {
+        "pid": "p-agave-closed",
+        "label": "Barnes (4007 E Agave Rd): set status to CLOSED",
+        "op": "set_status",
+        "match": "Barnes Agave",
+        "args": {
+          "status": "CLOSED"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-lapuente-closed",
+        "label": "Tucker (4824 E La Puente): set status to CLOSED",
+        "op": "set_status",
+        "match": "Tucker La Puente",
+        "args": {
+          "status": "CLOSED"
+        },
+        "status": "pending"
+      }
+    ],
+    "reply": "Got it, Orit & Scott. I've lined up two status changes to CLOSED: Barnes (4007 E Agave Rd) and Tucker (4824 E La Puente, the Offerpad sale). Please tap Confirm on each below -- status changes wait for your OK. Once confirmed they stay in red in the Navigator App panel until you dismiss them, nothing is deleted, and the Google Sheet Linear Tracker lines update automatically.",
+    "thread": [
+      {
+        "from": "claude",
+        "text": "Got it, Orit & Scott. I've lined up two status changes to CLOSED: Barnes (4007 E Agave Rd) and Tucker (4824 E La Puente, the Offerpad sale). Please tap Confirm on each below -- status changes wait for your OK. Once confirmed they stay in red in the Navigator App panel until you dismiss them, nothing is deleted, and the Google Sheet Linear Tracker lines update automatically.",
+        "at": "2026-11-09T16:11:59.000Z"
+      }
+    ]
   },
   {
     "id": "note-mw99darcm3z6w",
