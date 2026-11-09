@@ -6,7 +6,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-11-09T12:49:37.463Z",
-    "updatedAt": "2026-11-09T14:20:00.000Z",
+    "updatedAt": "2026-11-09T15:28:32.807Z",
     "reply": "Got it, Orit & Scott. I'm proposing a new Seller Navigator for Renata Gerlings at 4810 E Hazel Dr #2 (I assumed Phoenix; no price given yet). It needs your Confirm, and the Sat Nov 14 open house after it applies automatically once you confirm (I have no times for it; send them and I'll add them). I did NOT set it Active yet, since that's Fri Nov 13: tell me then, or ask me to propose it now. Coming Soon as of Wed Nov 11 can't be recorded yet; it's on the build list with Jeff Tucker's Fremont one. What's the list price and her email, if you'd like them on the Navigator?",
     "thread": [
       {
@@ -25,7 +25,10 @@
           "address": "4810 E. Hazel Dr. #2, Phoenix",
           "clientName": "Renata Gerlings"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "Created seller Navigator for Renata Gerlings - 4810 E. Hazel Dr. #2, Phoenix. Client link: https://nav.oasisgroupaz.com/t/NqSOll4X6Pq5IZV- Google Sheet Linear Tracker: Nothing to copy to the Google Sheet Linear Tracker yet (no dates).",
+        "navId": "cmw9f1mgj000004l329a02bx1",
+        "decidedAt": "2026-11-09T15:28:32.807Z"
       },
       {
         "pid": "p-hazel-oh-1114",
