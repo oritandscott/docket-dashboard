@@ -1,10 +1,31 @@
 {
   "schedule": [
     {
-      "id": "mw7q61wn81ufu",
+      "id": "mw95s00gmqehv",
+      "time": "09:00",
+      "title": "Monday Follow-Up & Appts (planning block)",
+      "date": "2026-11-09",
+      "source": "automation"
+    },
+    {
+      "id": "mw95s00g0r0yk",
+      "time": "09:00",
+      "title": "KW Industry Event w/ Jason Abrams - ASU Stadium (Blue)",
+      "date": "2026-11-09",
+      "source": "automation"
+    },
+    {
+      "id": "mw95s00gsuce2",
+      "time": "10:00",
+      "title": "Armstrong Warehouse visit - Chandler (Scott)",
+      "date": "2026-11-09",
+      "source": "automation"
+    },
+    {
+      "id": "mw95s00gvttsp",
       "time": "15:30",
-      "title": "Showing: 2058 E Fremont Dr, Tempe (AJ Steeber)",
-      "date": "2026-11-08",
+      "title": "Showing: Christensons - 7802 E Monte Vista Rd",
+      "date": "2026-11-09",
       "source": "automation"
     }
   ],
