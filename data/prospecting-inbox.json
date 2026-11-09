@@ -4,18 +4,81 @@
     "text": "Also add the listing of 4810 e hazel drive unit 2 to the tracker - Renata Gerlings (Seller) to be Coming Soon as of Wednesday, Active on the market Friday and Open House Saturday...and create a Navigator for it",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-11-09T12:49:37.463Z",
-    "updatedAt": "2026-11-09T12:49:37.463Z"
+    "updatedAt": "2026-11-09T14:20:00.000Z",
+    "reply": "Got it, Orit & Scott. I'm proposing a new Seller Navigator for Renata Gerlings at 4810 E Hazel Dr #2 (I assumed Phoenix; no price given yet). It needs your Confirm, and the Sat Nov 14 open house after it applies automatically once you confirm (I have no times for it; send them and I'll add them). I did NOT set it Active yet, since that's Fri Nov 13: tell me then, or ask me to propose it now. Coming Soon as of Wed Nov 11 can't be recorded yet; it's on the build list with Jeff Tucker's Fremont one. What's the list price and her email, if you'd like them on the Navigator?",
+    "thread": [
+      {
+        "from": "claude",
+        "text": "Got it, Orit & Scott. I'm proposing a new Seller Navigator for Renata Gerlings at 4810 E Hazel Dr #2 (I assumed Phoenix; no price given yet). It needs your Confirm, and the Sat Nov 14 open house after it applies automatically once you confirm (I have no times for it; send them and I'll add them). I did NOT set it Active yet, since that's Fri Nov 13: tell me then, or ask me to propose it now. Coming Soon as of Wed Nov 11 can't be recorded yet; it's on the build list with Jeff Tucker's Fremont one. What's the list price and her email, if you'd like them on the Navigator?",
+        "at": "2026-11-09T14:20:00.000Z"
+      }
+    ],
+    "proposals": [
+      {
+        "pid": "p-hazel-create",
+        "label": "Create Seller Navigator: Renata Gerlings, 4810 E Hazel Dr #2, Phoenix",
+        "op": "create_transaction",
+        "args": {
+          "dealType": "SELLER",
+          "address": "4810 E. Hazel Dr. #2, Phoenix",
+          "clientName": "Renata Gerlings"
+        },
+        "status": "pending"
+      },
+      {
+        "pid": "p-hazel-oh-1114",
+        "label": "Gerlings (Hazel): open house Sat Nov 14 (times to come)",
+        "op": "add_open_house",
+        "match": "Gerlings Hazel",
+        "args": {
+          "date": "2026-11-14"
+        },
+        "status": "pending"
+      }
+    ]
   },
   {
     "id": "note-mw99auygv5l4j",
     "text": "Add 2058 e fremont temp to the tracker here and also to the google sheet.  Also add Rob Gerlings being under contract as of Saturday on 4701 E. Euclid Phoenix, with Due Diligence extended to the 21st of November, and close of escrow on January 28th, and inspection set for November 17th",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "proposed",
     "createdAt": "2026-11-09T12:47:43.672Z",
-    "updatedAt": "2026-11-09T12:47:43.672Z"
+    "updatedAt": "2026-11-09T14:20:00.000Z",
+    "reply": "Got it, Orit & Scott. 1) Jeff Tucker's 2058 E Fremont, Tempe already has a Navigator; I'm re-sending its line to the Google Sheet Linear Tracker (applies automatically within about 30 minutes). 2) New Buyer Navigator for Rob Gerlings, 4701 E Euclid Ave, Phoenix: under contract Sat Nov 7, due diligence through Sat Nov 21 (Day 14 from acceptance), close of escrow Thu Jan 28, 2027, inspection Tue Nov 17 (no time given, so I used 9:00am). Creating it needs your Confirm; I assumed Euclid Ave and Phoenix. It will also be added to the Google Sheet Linear Tracker. Send an arrival time and his email if you'd like them added.",
+    "thread": [
+      {
+        "from": "claude",
+        "text": "Got it, Orit & Scott. 1) Jeff Tucker's 2058 E Fremont, Tempe already has a Navigator; I'm re-sending its line to the Google Sheet Linear Tracker (applies automatically within about 30 minutes). 2) New Buyer Navigator for Rob Gerlings, 4701 E Euclid Ave, Phoenix: under contract Sat Nov 7, due diligence through Sat Nov 21 (Day 14 from acceptance), close of escrow Thu Jan 28, 2027, inspection Tue Nov 17 (no time given, so I used 9:00am). Creating it needs your Confirm; I assumed Euclid Ave and Phoenix. It will also be added to the Google Sheet Linear Tracker. Send an arrival time and his email if you'd like them added.",
+        "at": "2026-11-09T14:20:00.000Z"
+      }
+    ],
+    "proposals": [
+      {
+        "pid": "p-fremont-sheet",
+        "label": "Re-copy Tucker (2058 E Fremont, Tempe) line to the Google Sheet Linear Tracker",
+        "op": "copy_to_sheet",
+        "match": "Tucker Fremont",
+        "status": "pending"
+      },
+      {
+        "pid": "p-euclid-create",
+        "label": "Create Buyer Navigator: Rob Gerlings, 4701 E Euclid Ave, Phoenix; contract Sat Nov 7, due diligence to Nov 21 (14 days), COE Jan 28, 2027, inspection Nov 17 9:00am",
+        "op": "create_transaction",
+        "args": {
+          "dealType": "BUYER",
+          "address": "4701 E. Euclid Ave., Phoenix",
+          "clientName": "Rob Gerlings",
+          "contractDate": "2026-11-07",
+          "closingDate": "2027-01-28",
+          "dueDiligenceDays": 14,
+          "inspectionDateTime": "2026-11-17T09:00"
+        },
+        "status": "pending"
+      }
+    ]
   },
   {
     "id": "note-mw3s9oseqppu5",
