@@ -15,7 +15,7 @@
     "dictated": false,
     "status": "proposed",
     "createdAt": "2026-11-09T15:30:27.125Z",
-    "updatedAt": "2026-11-09T16:11:59.000Z",
+    "updatedAt": "2026-11-10T02:08:03.475Z",
     "proposals": [
       {
         "pid": "p-agave-closed",
@@ -25,7 +25,10 @@
         "args": {
           "status": "CLOSED"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "4007 E. Agave Rd., Phoenix: status ACTIVE -> CLOSED Google Sheet Linear Tracker not updated: This transaction starts before the Google Sheet Linear Tracker does.",
+        "navId": "cms99z74m000004l592xbroy4",
+        "decidedAt": "2026-11-10T02:08:03.475Z"
       },
       {
         "pid": "p-lapuente-closed",
