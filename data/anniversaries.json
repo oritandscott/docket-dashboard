@@ -278,8 +278,8 @@
     "address": "47367 West Coe Street, Maricopa, AZ 85139",
     "purchaseDate": "2025-11-17",
     "emailVariant": "A",
-    "status": "upcoming",
-    "draftId": null,
+    "status": "actionable",
+    "draftId": "Happy Home Anniversary, Mike!",
     "addedAt": "2026-10-18T11:12:57.318Z"
   },
   {
