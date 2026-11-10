@@ -1,31 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mw95s00gmqehv",
+      "id": "mwal392vy4dbr",
       "time": "09:00",
-      "title": "Monday Follow-Up & Appts (planning block)",
-      "date": "2026-11-09",
+      "title": "Tuesday - Video Focus Day",
+      "date": "2026-11-10",
       "source": "automation"
     },
     {
-      "id": "mw95s00g0r0yk",
+      "id": "mwal392vhi2ou",
       "time": "09:00",
-      "title": "KW Industry Event w/ Jason Abrams - ASU Stadium (Blue)",
-      "date": "2026-11-09",
-      "source": "automation"
-    },
-    {
-      "id": "mw95s00gsuce2",
-      "time": "10:00",
-      "title": "Armstrong Warehouse visit - Chandler (Scott)",
-      "date": "2026-11-09",
-      "source": "automation"
-    },
-    {
-      "id": "mw95s00gvttsp",
-      "time": "15:30",
-      "title": "Showing: Christensons - 7802 E Monte Vista Rd",
-      "date": "2026-11-09",
+      "title": "Photo/Video/3D Shoot — Gerlings, Hazel Dr (til 12pm)",
+      "date": "2026-11-10",
       "source": "automation"
     }
   ],
