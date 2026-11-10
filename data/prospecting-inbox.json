@@ -13,9 +13,9 @@
     "text": "adjust the navigators for 4007 e agave and 4824 e la puente as closed",
     "topic": "tracker",
     "dictated": false,
-    "status": "proposed",
+    "status": "done",
     "createdAt": "2026-11-09T15:30:27.125Z",
-    "updatedAt": "2026-11-10T02:08:03.475Z",
+    "updatedAt": "2026-11-10T02:08:05.547Z",
     "proposals": [
       {
         "pid": "p-agave-closed",
@@ -38,7 +38,10 @@
         "args": {
           "status": "CLOSED"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "4824 E. La Puente, Phoenix: status ACTIVE -> CLOSED Google Sheet Linear Tracker: Updated the line on the Google Sheet Linear Tracker (row 19, KL-LL).",
+        "navId": "cmumqg8ky000004l3r08sk65f",
+        "decidedAt": "2026-11-10T02:08:05.547Z"
       }
     ],
     "reply": "Got it, Orit & Scott. I've lined up two status changes to CLOSED: Barnes (4007 E Agave Rd) and Tucker (4824 E La Puente, the Offerpad sale). Please tap Confirm on each below -- status changes wait for your OK. Once confirmed they stay in red in the Navigator App panel until you dismiss them, nothing is deleted, and the Google Sheet Linear Tracker lines update automatically.",
