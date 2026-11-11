@@ -1,17 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mwal392vy4dbr",
+      "id": "mwc0pzac0la0p",
       "time": "09:00",
-      "title": "Tuesday - Video Focus Day",
-      "date": "2026-11-10",
+      "title": "Wednesdays – Flex Day",
+      "date": "2026-11-11",
       "source": "automation"
     },
     {
-      "id": "mwal392vhi2ou",
-      "time": "09:00",
-      "title": "Photo/Video/3D Shoot — Gerlings, Hazel Dr (til 12pm)",
-      "date": "2026-11-10",
+      "id": "mwc0pzacz342d",
+      "time": "10:00",
+      "title": "Lee & Drake Barber – Showing",
+      "date": "2026-11-11",
       "source": "automation"
     }
   ],
