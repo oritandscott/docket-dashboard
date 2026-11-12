@@ -352,6 +352,102 @@
           "date": "Oct 15"
         }
       ]
+    },
+    {
+      "id": "tg-pie-2026",
+      "title": "Thanksgiving Pie Party 2026",
+      "date": "2026-11-24",
+      "when": "Tue, Nov 24 · 3–6 PM",
+      "pies": true,
+      "rsvpPage": "https://claude.ai/artifact/XkS9ptpREMLdpWFCK4buFy",
+      "formResponses": 0,
+      "lastChecked": "Thu Nov 12, 3:10 PM",
+      "guests": [
+        {
+          "id": "jeff-tucker",
+          "name": "Jeff Tucker",
+          "status": "yes",
+          "pie": "Pumpkin",
+          "note": "Pumpkin",
+          "says": "Pumpkin please.",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Nov 12"
+        },
+        {
+          "id": "lucy-cindric",
+          "name": "Lucy Cindric",
+          "status": "yes",
+          "pie": "Pumpkin",
+          "note": "Pumpkin",
+          "says": "We would love pumpkin please!",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Nov 12"
+        },
+        {
+          "id": "robbie-shaw",
+          "name": "Robbie Shaw",
+          "status": "maybe",
+          "pie": null,
+          "note": "Hasn't picked a pie yet; chatting about Sedona creek",
+          "says": "It would be nice to catch up.",
+          "count": null,
+          "replied": false,
+          "source": "Text",
+          "date": "Nov 12"
+        },
+        {
+          "id": "nicole-parsons",
+          "name": "Nicole Parsons",
+          "status": "no",
+          "pie": null,
+          "note": "Baby #3 due by 11/21",
+          "says": "No need for a pie, we'll eat whichever my parents get",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Nov 12"
+        },
+        {
+          "id": "nathan-skankey",
+          "name": "Nathan & Stacy Skankey",
+          "status": "no",
+          "pie": null,
+          "note": "Out of town that week",
+          "says": "We are going to be out of town that entire week.",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Nov 12"
+        },
+        {
+          "id": "debbie-bednar",
+          "name": "Debbie & Bill Bednar",
+          "status": "no",
+          "pie": null,
+          "note": "Out of town with family",
+          "says": "We'll be out of town with our family on 11/23 for Thanksgiving!",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Nov 12"
+        },
+        {
+          "id": "michael-louton",
+          "name": "Michael & Betty Louton",
+          "status": "no",
+          "pie": null,
+          "note": "Out of town",
+          "says": "Thanks for offer, but we will be out of town.",
+          "count": null,
+          "replied": true,
+          "source": "Text",
+          "date": "Nov 12"
+        }
+      ]
     }
   ]
 }

@@ -68,7 +68,7 @@ const FILES = {
 // Events panel: add or edit one guest's RSVP by hand -- how they answered
 // (text, email, call...), what they said, how many are coming. Body:
 // { resource: 'events', eventId, guest: { id?, name, status, source, says,
-// note, count, phone, email, replied } }; DELETE { resource: 'events', eventId, guestId }.
+// note, count, phone, email, replied, pie? } }; DELETE { resource: 'events', eventId, guestId }.
 // Hand edits are flagged pageSync so the inbox routine copies them onto the
 // RSVP page the Oasis Mini keeps up to date (and doesn't overwrite them).
 const EV_STATUS = ['yes', 'maybe', 'no', 'unsub'];
@@ -114,6 +114,7 @@ async function handleEvents(req, res, ghHeaders) {
     phone: str(b.phone, 40),
     email: str(b.email, 120),
     replied: !!b.replied,
+    ...(b.pie !== undefined ? { pie: ['Pumpkin', 'Apple'].includes(b.pie) ? b.pie : null } : {}),
     editedAt: now,
     pageSync: true,
   });

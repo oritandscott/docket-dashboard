@@ -2604,6 +2604,7 @@
         <label>Answer<select name="status">${EV_GROUPS.map(([k,l])=>`<option value="${k}"${k===x.status?' selected':''}>${l}</option>`).join('')}</select></label>
         <label>How they answered<select name="source">${srcs.map(o=>`<option${o===x.source?' selected':''}>${escapeHtml(o)}</option>`).join('')}</select></label>
         <label># coming<input name="count" type="number" min="0" inputmode="numeric" value="${x.count??''}"></label>
+        ${ev.pies?`<label>Pie<select name="pie">${['','Pumpkin','Apple'].map(o=>`<option value="${o}"${o===(x.pie||'')?' selected':''}>${o||'Not chosen'}</option>`).join('')}</select></label>`:''}
       </div>
       <div class="row">
         <label>Phone<input name="phone" type="tel" value="${escapeHtml(x.phone||'')}" placeholder="For iMessage / WhatsApp"></label>
@@ -2675,13 +2676,13 @@
       const heads=by.yes.reduce((t,x)=>t+(Number(x.count)||0),0);
       const need=g.filter(x=>x.status!=='unsub'&&!x.replied).length;
       const tiles=EV_GROUPS.map(([k,label])=>{
-        const items=by[k].length?by[k].map((x,i)=>`<li data-gid="${escapeHtml(x.id||'')}"><span class="i">${i+1}</span><button type="button" class="nm-btn" title="Tap to record or change their answer">${escapeHtml(x.name)}${x.count?` (${escapeHtml(String(x.count))})`:''}</button>${x.source||x.date?`<span class="src">${escapeHtml([x.source,x.date].filter(Boolean).join(' · '))}</span>`:''}${x.note?`<span class="nt">${escapeHtml(x.note)}</span>`:''}${k!=='unsub'?`<span class="rp ${x.replied?'done':'need'}">${x.replied?'You replied':'Needs your reply'}</span>`:''}${k!=='unsub'&&evIsForm(x)?evContactHtml(x):''}</li>`).join(''):'<li><span class="none" style="grid-column:1/-1;">Nobody yet.</span></li>';
+        const items=by[k].length?by[k].map((x,i)=>`<li data-gid="${escapeHtml(x.id||'')}"><span class="i">${i+1}</span><button type="button" class="nm-btn" title="Tap to record or change their answer">${escapeHtml(x.name)}${x.count?` (${escapeHtml(String(x.count))})`:''}${x.pie?` · ${escapeHtml(x.pie)}`:''}</button>${x.source||x.date?`<span class="src">${escapeHtml([x.source,x.date].filter(Boolean).join(' · '))}</span>`:''}${x.note?`<span class="nt">${escapeHtml(x.note)}</span>`:''}${k!=='unsub'?`<span class="rp ${x.replied?'done':'need'}">${x.replied?'You replied':'Needs your reply'}</span>`:''}${k!=='unsub'&&evIsForm(x)?evContactHtml(x):''}</li>`).join(''):'<li><span class="none" style="grid-column:1/-1;">Nobody yet.</span></li>';
         return `<details class="ev-tile ${k}"><summary><span class="ev-n">${by[k].length}</span><span class="ev-l">${label}<span class="chev" aria-hidden="true">▾</span></span></summary><ul class="ev-list">${items}</ul></details>`;
       }).join('');
       return `<div class="ev-card" data-ev="${escapeHtml(ev.id)}">
         <div class="ev-head"><h3 class="ev-title">${escapeHtml(ev.title||'Event')}</h3><span class="ev-when">${escapeHtml(ev.when||ev.date||'')}</span></div>
         <div class="ev-meta">
-          <span>Expected guests: <b>${by.yes.length?(heads?heads:'counts not given yet'):0}</b></span>
+          ${ev.pies?`<span>Pies: <b>${by.yes.filter(x=>x.pie==='Pumpkin').length} Pumpkin · ${by.yes.filter(x=>x.pie==='Apple').length} Apple</b></span>`:`<span>Expected guests: <b>${by.yes.length?(heads?heads:'counts not given yet'):0}</b></span>`}
           <span>Still need your reply: <b>${need}</b></span>
           <span>RSVP form: <b>${escapeHtml(String(ev.formResponses??0))}</b></span>
           ${ev.lastChecked?`<span>Last checked: <b>${escapeHtml(ev.lastChecked)}</b></span>`:''}
@@ -2732,7 +2733,7 @@
     const f=e.target.closest('.ev-edit'); if(!f) return;
     e.preventDefault();
     const fd=new FormData(f), msg=f.querySelector('.msg'), btn=f.querySelector('button[type=submit]');
-    const guest={id:f.dataset.gid||undefined,name:fd.get('name'),status:fd.get('status'),source:fd.get('source'),count:fd.get('count'),says:fd.get('says'),note:fd.get('note'),phone:fd.get('phone'),email:fd.get('email'),replied:fd.get('replied')==='on'};
+    const guest={id:f.dataset.gid||undefined,name:fd.get('name'),status:fd.get('status'),source:fd.get('source'),count:fd.get('count'),says:fd.get('says'),note:fd.get('note'),phone:fd.get('phone'),email:fd.get('email'),replied:fd.get('replied')==='on',pie:fd.has('pie')?fd.get('pie'):undefined};
     btn.disabled=true; msg.textContent='Saving…';
     try{
       const r=await fetch('/api/save-project',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({resource:'events',eventId:f.dataset.ev,guest})});
