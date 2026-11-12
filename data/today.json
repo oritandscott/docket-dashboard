@@ -1,17 +1,38 @@
 {
   "schedule": [
     {
-      "id": "mwc0pzac0la0p",
+      "id": "mwdfyaz678m2h",
       "time": "09:00",
-      "title": "Wednesdays – Flex Day",
-      "date": "2026-11-11",
+      "title": "Sarah Maslowski YouTube Class (favorite presenter)",
+      "date": "2026-11-12",
       "source": "automation"
     },
     {
-      "id": "mwc0pzacz342d",
-      "time": "10:00",
-      "title": "Lee & Drake Barber – Showing",
-      "date": "2026-11-11",
+      "id": "mwdfyaz65ik4u",
+      "time": "09:00",
+      "title": "Weekender Email — due 1PM",
+      "date": "2026-11-12",
+      "source": "automation"
+    },
+    {
+      "id": "mwdfyaz6we4sk",
+      "time": "09:00",
+      "title": "Sphere Contacts day (recurring Thursday reminder)",
+      "date": "2026-11-12",
+      "source": "automation"
+    },
+    {
+      "id": "mwdfyaz6z9eok",
+      "time": "13:00",
+      "title": "YouTube Training: On-Camera Confidence Session 4",
+      "date": "2026-11-12",
+      "source": "automation"
+    },
+    {
+      "id": "mwdfyaz6a376d",
+      "time": "15:15",
+      "title": "Personal: Eye Care Appointment",
+      "date": "2026-11-12",
       "source": "automation"
     }
   ],
