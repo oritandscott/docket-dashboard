@@ -361,7 +361,7 @@
       "pies": true,
       "rsvpPage": "https://claude.ai/artifact/XkS9ptpREMLdpWFCK4buFy",
       "formResponses": 3,
-      "lastChecked": "Fri Nov 13, 9:59 AM",
+      "lastChecked": "Fri Nov 13, 1:10 PM",
       "guests": [
         {
           "id": "austin-brasier",
@@ -542,6 +542,18 @@
           "replied": false,
           "source": "Text",
           "date": "Nov 12"
+        },
+        {
+          "id": "rick-sewick",
+          "name": "Rick & Bonnie Sewick",
+          "status": "no",
+          "pie": null,
+          "note": "Declined with love",
+          "says": "We will decline your generous offer, but love you all the same!",
+          "count": null,
+          "replied": false,
+          "source": "Text",
+          "date": "Nov 13"
         },
         {
           "id": "robbie-shaw",
