@@ -361,7 +361,7 @@
       "pies": true,
       "rsvpPage": "https://claude.ai/artifact/XkS9ptpREMLdpWFCK4buFy",
       "formResponses": 3,
-      "lastChecked": "Fri Nov 13, 1:10 PM",
+      "lastChecked": "Fri Nov 13, 4:02 PM",
       "guests": [
         {
           "id": "austin-brasier",
@@ -566,6 +566,18 @@
           "replied": false,
           "source": "Text",
           "date": "Nov 12"
+        },
+        {
+          "id": "sandy-salvo",
+          "name": "Sandy Salvo & Steve",
+          "status": "yes",
+          "pie": "Apple",
+          "note": "Apple — needs place & time (didn't get email)",
+          "says": "Apple, pls. I did not get the email, so I need place and time, pls.",
+          "count": null,
+          "replied": false,
+          "source": "Text",
+          "date": "Nov 13"
         },
         {
           "id": "trisha-margarone",
