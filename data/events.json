@@ -360,8 +360,8 @@
       "when": "Tue, Nov 24 · 3–6 PM",
       "pies": true,
       "rsvpPage": "https://claude.ai/artifact/XkS9ptpREMLdpWFCK4buFy",
-      "formResponses": 0,
-      "lastChecked": "Thu Nov 12, 3:10 PM",
+      "formResponses": 1,
+      "lastChecked": "Thu Nov 12, 6:10 PM",
       "guests": [
         {
           "id": "jeff-tucker",
@@ -445,6 +445,30 @@
           "count": null,
           "replied": true,
           "source": "Text",
+          "date": "Nov 12"
+        },
+        {
+          "id": "laura-fritsky",
+          "name": "Laura Fritsky",
+          "status": "yes",
+          "pie": "Pumpkin",
+          "note": "Pumpkin (replied to the invite email)",
+          "says": "",
+          "count": null,
+          "replied": false,
+          "source": "Email",
+          "date": "Nov 12"
+        },
+        {
+          "id": "val-allen",
+          "name": "Val & Jeff Allen",
+          "status": "yes",
+          "pie": "Pumpkin",
+          "note": "Pumpkin (RSVP form)",
+          "says": "",
+          "count": null,
+          "replied": false,
+          "source": "RSVP form",
           "date": "Nov 12"
         }
       ]
