@@ -361,7 +361,7 @@
       "pies": true,
       "rsvpPage": "https://claude.ai/artifact/XkS9ptpREMLdpWFCK4buFy",
       "formResponses": 3,
-      "lastChecked": "Fri Nov 13, 4:02 PM",
+      "lastChecked": "Fri Nov 13, 7:00 PM",
       "guests": [
         {
           "id": "austin-brasier",
@@ -422,6 +422,18 @@
           "replied": true,
           "source": "Text",
           "date": "Nov 12"
+        },
+        {
+          "id": "derek-stoeckmann",
+          "name": "Derek Stoeckmann",
+          "status": "yes",
+          "pie": "Pumpkin",
+          "note": "Pumpkin",
+          "says": "Woohoo! Pumpkin!",
+          "count": null,
+          "replied": false,
+          "source": "Text",
+          "date": "Nov 13"
         },
         {
           "id": "gelly-charles",
