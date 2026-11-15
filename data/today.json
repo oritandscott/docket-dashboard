@@ -1,27 +1,5 @@
 {
-  "schedule": [
-    {
-      "id": "mwgatzys02r0q",
-      "time": "09:00",
-      "title": "Open House — All Day",
-      "date": "2026-11-14",
-      "source": "automation"
-    },
-    {
-      "id": "mwgatzysaisba",
-      "time": "10:30",
-      "title": "Buyer Showing — 2058 E Fremont Dr, Tempe",
-      "date": "2026-11-14",
-      "source": "automation"
-    },
-    {
-      "id": "mwgatzys3jsmo",
-      "time": "17:30",
-      "title": "Lucy Cindric T1D Gala — Biltmore",
-      "date": "2026-11-14",
-      "source": "automation"
-    }
-  ],
+  "schedule": [],
   "tasks": [
     {
       "id": "musajbjgvhoch",
