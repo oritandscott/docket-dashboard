@@ -361,7 +361,7 @@
       "pies": true,
       "rsvpPage": "https://claude.ai/artifact/XkS9ptpREMLdpWFCK4buFy",
       "formResponses": 3,
-      "lastChecked": "Sun Nov 15, 8:21 AM",
+      "lastChecked": "Sun Nov 15, 9:59 AM",
       "guests": [
         {
           "id": "austin-brasier",
@@ -371,7 +371,7 @@
           "note": "Coming; pie not chosen yet",
           "says": "Yes! That would be great! Thank you!",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
           "date": "Nov 12"
         },
@@ -383,7 +383,7 @@
           "note": "Apple",
           "says": "Let's do apple! See you that Tuesday!",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
           "date": "Nov 12"
         },
@@ -395,7 +395,7 @@
           "note": "Apple (RSVP form)",
           "says": "",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "RSVP form",
           "date": "Nov 12"
         },
@@ -405,11 +405,11 @@
           "status": "no",
           "pie": null,
           "note": "Not in AZ until December",
-          "says": "We won't be in AZ until December",
+          "says": "We won't be in AZ until December … You, too!",
           "count": null,
           "replied": false,
           "source": "Text",
-          "date": "Nov 12"
+          "date": "Nov 15"
         },
         {
           "id": "debbie-bednar",
@@ -429,11 +429,11 @@
           "status": "yes",
           "pie": "Pumpkin",
           "note": "Pumpkin",
-          "says": "Woohoo! Pumpkin!",
+          "says": "Woohoo! Pumpkin! … Can't wait",
           "count": null,
           "replied": false,
           "source": "Text",
-          "date": "Nov 13"
+          "date": "Nov 15"
         },
         {
           "id": "gelly-charles",
@@ -455,7 +455,7 @@
           "note": "Replied by email — read it in oasis@kw.com",
           "says": "",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Email",
           "date": "Nov 14"
         },
@@ -479,7 +479,7 @@
           "note": "Pumpkin (replied to the invite email)",
           "says": "",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Email",
           "date": "Nov 12"
         },
@@ -491,7 +491,7 @@
           "note": "Pumpkin (Joe confirmed by text)",
           "says": "We would love pumpkin please!",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
           "date": "Nov 12"
         },
@@ -525,11 +525,11 @@
           "status": "yes",
           "pie": "Pumpkin",
           "note": "Pumpkin (also on RSVP form)",
-          "says": "Thanks for the invite pumpkin please.",
+          "says": "Hanging in there see you on the 24th.",
           "count": null,
           "replied": false,
           "source": "Text",
-          "date": "Nov 12"
+          "date": "Nov 15"
         },
         {
           "id": "nathan-skankey",
@@ -563,7 +563,7 @@
           "note": "Pumpkin",
           "says": "Hi, guys!! Pumpkin. THANKS SO MUCH!!",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
           "date": "Nov 12"
         },
@@ -587,7 +587,7 @@
           "note": "Hasn't picked a pie yet; chatting about Sedona creek",
           "says": "It would be nice to catch up.",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
           "date": "Nov 12"
         },
@@ -596,12 +596,12 @@
           "name": "Sandy Salvo & Steve",
           "status": "yes",
           "pie": "Apple",
-          "note": "Apple — needs place & time (didn't get email)",
-          "says": "Apple, pls. I did not get the email, so I need place and time, pls.",
+          "note": "Apple — new email: sandi.salvo@gmail.com",
+          "says": "Thanks for the info… Looking forward to seeing u there!",
           "count": null,
           "replied": false,
           "source": "Text",
-          "date": "Nov 13"
+          "date": "Nov 15"
         },
         {
           "id": "trisha-margarone",
@@ -611,7 +611,7 @@
           "note": "Apple",
           "says": "Apple please! Thank you so much for your generosity.",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
           "date": "Nov 12"
         },
@@ -623,7 +623,7 @@
           "note": "Pumpkin (RSVP form)",
           "says": "",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "RSVP form",
           "date": "Nov 12"
         }
