@@ -361,7 +361,7 @@
       "pies": true,
       "rsvpPage": "https://claude.ai/artifact/XkS9ptpREMLdpWFCK4buFy",
       "formResponses": 3,
-      "lastChecked": "Sat Nov 14, 3:57 PM",
+      "lastChecked": "Sat Nov 14, 7:02 PM",
       "guests": [
         {
           "id": "austin-brasier",
@@ -446,6 +446,18 @@
           "replied": false,
           "source": "Email",
           "date": "Nov 12"
+        },
+        {
+          "id": "jason-snyder",
+          "name": "Jason Snyder",
+          "status": "maybe",
+          "pie": null,
+          "note": "Replied by email — read it in oasis@kw.com",
+          "says": "",
+          "count": null,
+          "replied": false,
+          "source": "Email",
+          "date": "Nov 14"
         },
         {
           "id": "jeff-tucker",
