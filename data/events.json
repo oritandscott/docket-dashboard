@@ -361,7 +361,7 @@
       "pies": true,
       "rsvpPage": "https://claude.ai/artifact/XkS9ptpREMLdpWFCK4buFy",
       "formResponses": 3,
-      "lastChecked": "Mon Nov 16, 10:00 AM",
+      "lastChecked": "Mon Nov 16, 1:05 PM",
       "guests": [
         {
           "id": "austin-brasier",
@@ -389,7 +389,7 @@
         },
         {
           "id": "daniel-hernandez",
-          "name": "Daniel Hernández",
+          "name": "Daniel Hernández & Pamela Elizondo",
           "status": "yes",
           "pie": "Apple",
           "note": "Apple (RSVP form)",
@@ -425,7 +425,7 @@
         },
         {
           "id": "derek-stoeckmann",
-          "name": "Derek Stoeckmann",
+          "name": "Derek Stoeckmann & Chelsea Pickett",
           "status": "yes",
           "pie": "Pumpkin",
           "note": "Pumpkin",
