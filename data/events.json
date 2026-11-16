@@ -361,19 +361,19 @@
       "pies": true,
       "rsvpPage": "https://claude.ai/artifact/XkS9ptpREMLdpWFCK4buFy",
       "formResponses": 3,
-      "lastChecked": "Sun Nov 15, 3:59 PM",
+      "lastChecked": "Sun Nov 15, 6:58 PM",
       "guests": [
         {
           "id": "austin-brasier",
           "name": "Austin & Alyssa Brasier",
           "status": "yes",
-          "pie": null,
-          "note": "Coming; pie not chosen yet",
-          "says": "Yes! That would be great! Thank you!",
+          "pie": "Apple",
+          "note": "Apple",
+          "says": "If you get pumpkin I'll get apple.",
           "count": null,
-          "replied": true,
+          "replied": false,
           "source": "Text",
-          "date": "Nov 12"
+          "date": "Nov 15"
         },
         {
           "id": "calvin-streeter",
