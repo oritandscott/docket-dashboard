@@ -4,9 +4,30 @@
     "text": "We're missing a tracker for Renata Gerlings - listed at 4810 e hazel drive suite 2 went coming soon Tuesday and active THursday....first open house was Saturday",
     "topic": "tracker",
     "dictated": false,
-    "status": "new",
+    "status": "needs-build",
     "createdAt": "2026-11-16T14:05:03.045Z",
-    "updatedAt": "2026-11-16T14:05:03.045Z"
+    "updatedAt": "2026-11-16T14:20:00.000Z",
+    "proposals": [
+      {
+        "pid": "p-hazel-active",
+        "label": "Gerlings (Hazel): set Navigator status to ACTIVE (went active Thu Nov 12)",
+        "op": "set_status",
+        "match": "Gerlings Hazel",
+        "args": {
+          "status": "ACTIVE"
+        },
+        "status": "pending"
+      }
+    ],
+    "build": "Add a set_listing_dates tracker op (args {comingSoon?, active?} YYYY-MM-DD, auto-apply) that writes the Navigator listing's dates.comingSoon/dates.active and refreshes both trackers -- first use: Gerlings Hazel, Coming Soon 2026-11-10, Active 2026-11-12.",
+    "reply": "Thanks, Orit & Scott -- Renata Gerlings' Navigator for 4810 E Hazel Dr #2 does exist (you confirmed it Nov 9), and her line is on the Google Sheet Linear Tracker (row 9) with the Sat Nov 14 open house. Why it looks missing: the trackers start a listing's line from its Coming Soon / Active dates, and I have no command that can set those dates, so the line has no listing days yet. What I CAN do now: I've proposed setting her Navigator to ACTIVE -- that one needs your Confirm. What needs building (take it to a live Claude session): a 'listing dates' command so I can record Coming Soon Tue Nov 10 and Active Thu Nov 12; then her line will show CS on Nov 10, A on Nov 12, day counts from there and the Nov 14 OPEN HAUS. One question: what was the list price and the open house times on Saturday? I'll add them to the line.",
+    "thread": [
+      {
+        "from": "claude",
+        "text": "Thanks, Orit & Scott -- Renata Gerlings' Navigator for 4810 E Hazel Dr #2 does exist (you confirmed it Nov 9), and her line is on the Google Sheet Linear Tracker (row 9) with the Sat Nov 14 open house. Why it looks missing: the trackers start a listing's line from its Coming Soon / Active dates, and I have no command that can set those dates, so the line has no listing days yet. What I CAN do now: I've proposed setting her Navigator to ACTIVE -- that one needs your Confirm. What needs building (take it to a live Claude session): a 'listing dates' command so I can record Coming Soon Tue Nov 10 and Active Thu Nov 12; then her line will show CS on Nov 10, A on Nov 12, day counts from there and the Nov 14 OPEN HAUS. One question: what was the list price and the open house times on Saturday? I'll add them to the line.",
+        "at": "2026-11-16T14:20:00.000Z"
+      }
+    ]
   },
   {
     "id": "note-mwa1vrfumrcvw",
