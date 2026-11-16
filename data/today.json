@@ -1,5 +1,13 @@
 {
-  "schedule": [],
+  "schedule": [
+    {
+      "id": "mwj5qh0kl3g1d",
+      "time": "09:00",
+      "title": "Monday Follow-Up & Appointments (admin day)",
+      "date": "2026-11-16",
+      "source": "automation"
+    }
+  ],
   "tasks": [
     {
       "id": "musajbjgvhoch",
