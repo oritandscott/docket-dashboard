@@ -407,7 +407,7 @@
           "note": "Not in AZ until December",
           "says": "We won't be in AZ until December … You, too!",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
           "date": "Nov 15"
         },
@@ -431,7 +431,7 @@
           "note": "Pumpkin",
           "says": "Woohoo! Pumpkin! … Can't wait",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
           "date": "Nov 15"
         },
@@ -450,9 +450,9 @@
         {
           "id": "jason-snyder",
           "name": "Jason Snyder",
-          "status": "maybe",
-          "pie": null,
-          "note": "Replied by email — read it in oasis@kw.com",
+          "status": "yes",
+          "pie": "Pumpkin",
+          "note": "Pumpkin (per Orit & Scott)",
           "says": "",
           "count": null,
           "replied": true,
@@ -539,7 +539,7 @@
           "note": "Pumpkin (also on RSVP form)",
           "says": "Hanging in there see you on the 24th.",
           "count": null,
-          "replied": false,
+          "replied": true,
           "source": "Text",
           "date": "Nov 15"
         },
@@ -594,9 +594,9 @@
         {
           "id": "robbie-shaw",
           "name": "Robbie Shaw",
-          "status": "maybe",
+          "status": "no",
           "pie": null,
-          "note": "Hasn't picked a pie yet; chatting about Sedona creek",
+          "note": "Not coming (per Orit & Scott)",
           "says": "It would be nice to catch up.",
           "count": null,
           "replied": true,
@@ -639,7 +639,11 @@
           "source": "RSVP form",
           "date": "Nov 12"
         }
-      ]
+      ],
+      "backupPies": {
+        "Pumpkin": 1,
+        "Apple": 1
+      }
     }
   ]
 }
