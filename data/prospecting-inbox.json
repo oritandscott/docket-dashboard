@@ -4,9 +4,9 @@
     "text": "We're missing a tracker for Renata Gerlings - listed at 4810 e hazel drive suite 2 went coming soon Tuesday and active THursday....first open house was Saturday",
     "topic": "tracker",
     "dictated": false,
-    "status": "needs-build",
+    "status": "done",
     "createdAt": "2026-11-16T14:05:03.045Z",
-    "updatedAt": "2026-11-16T14:20:00.000Z",
+    "updatedAt": "2026-11-16T14:12:50.143Z",
     "proposals": [
       {
         "pid": "p-hazel-active",
@@ -16,7 +16,10 @@
         "args": {
           "status": "ACTIVE"
         },
-        "status": "pending"
+        "status": "applied",
+        "result": "4810 E. Hazel Dr. #2, Phoenix: status ACTIVE -> ACTIVE Google Sheet Linear Tracker: The Google Sheet Linear Tracker already matches.",
+        "navId": "cmw9f1mgj000004l329a02bx1",
+        "decidedAt": "2026-11-16T14:12:50.143Z"
       }
     ],
     "build": "Add a set_listing_dates tracker op (args {comingSoon?, active?} YYYY-MM-DD, auto-apply) that writes the Navigator listing's dates.comingSoon/dates.active and refreshes both trackers -- first use: Gerlings Hazel, Coming Soon 2026-11-10, Active 2026-11-12.",
