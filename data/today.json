@@ -1,10 +1,66 @@
 {
   "schedule": [
     {
-      "id": "mwj5qh0kl3g1d",
+      "id": "mwkl7hpx08no7",
       "time": "09:00",
-      "title": "Monday Follow-Up & Appointments (admin day)",
-      "date": "2026-11-16",
+      "title": "Video Focus Day (personal content routine)",
+      "date": "2026-11-17",
+      "source": "automation"
+    },
+    {
+      "id": "mwkl7hpx9qyk1",
+      "time": "09:30",
+      "title": "FIRPTA: Close Without Surprises — KW Phx (Gold)",
+      "date": "2026-11-17",
+      "source": "automation"
+    },
+    {
+      "id": "mwkl7hpx0oel4",
+      "time": "10:00",
+      "title": "Commercial Curious w/ Jess Janssen — KWIF (Red)",
+      "date": "2026-11-17",
+      "source": "automation"
+    },
+    {
+      "id": "mwkl7hpximz2c",
+      "time": "11:00",
+      "title": "Holiday Marketing Lab (in-person) — KW Phx (Gold)",
+      "date": "2026-11-17",
+      "source": "automation"
+    },
+    {
+      "id": "mwkl7hpxf2b9p",
+      "time": "11:00",
+      "title": "Broker Class: Disclosure — KWRP",
+      "date": "2026-11-17",
+      "source": "automation"
+    },
+    {
+      "id": "mwkl7hpx67w91",
+      "time": "12:00",
+      "title": "RYAN MELVILLE MASTERMIND (FAVORITE) — KW Phx (Gold)",
+      "date": "2026-11-17",
+      "source": "automation"
+    },
+    {
+      "id": "mwkl7hpxx01y5",
+      "time": "12:30",
+      "title": "Command Websites Training (Zoom)",
+      "date": "2026-11-17",
+      "source": "automation"
+    },
+    {
+      "id": "mwkl7hpxq65jg",
+      "time": "13:00",
+      "title": "UMC Orientation (Zoom)",
+      "date": "2026-11-17",
+      "source": "automation"
+    },
+    {
+      "id": "mwkl7hpxcm8p6",
+      "time": "14:00",
+      "title": "Agent Lone Q&A: Wolf Office Hours (Zoom)",
+      "date": "2026-11-17",
       "source": "automation"
     }
   ],
