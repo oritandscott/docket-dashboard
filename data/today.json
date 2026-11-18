@@ -1,66 +1,66 @@
 {
   "schedule": [
     {
-      "id": "mwkl7hpx08no7",
+      "id": "mwm0o5xdzvt98",
       "time": "09:00",
-      "title": "Video Focus Day (personal content routine)",
-      "date": "2026-11-17",
+      "title": "Flex Day — no fixed office today",
+      "date": "2026-11-18",
       "source": "automation"
     },
     {
-      "id": "mwkl7hpx9qyk1",
-      "time": "09:30",
-      "title": "FIRPTA: Close Without Surprises — KW Phx (Gold)",
-      "date": "2026-11-17",
+      "id": "mwm0o5xdzta2s",
+      "time": "09:00",
+      "title": "Orit call w/ Itamar",
+      "date": "2026-11-18",
       "source": "automation"
     },
     {
-      "id": "mwkl7hpx0oel4",
+      "id": "mwm0o5xdmc2qg",
+      "time": "09:00",
+      "title": "Cromford Report study session — KWIF (Red)",
+      "date": "2026-11-18",
+      "source": "automation"
+    },
+    {
+      "id": "mwm0o5xd8xidm",
       "time": "10:00",
-      "title": "Commercial Curious w/ Jess Janssen — KWIF (Red)",
-      "date": "2026-11-17",
+      "title": "Reviews & Referrals Workshop — KWIF (Red)",
+      "date": "2026-11-18",
       "source": "automation"
     },
     {
-      "id": "mwkl7hpximz2c",
+      "id": "mwm0o5xdplftp",
+      "time": "10:00",
+      "title": "KWEV PC Meeting (Zoom)",
+      "date": "2026-11-18",
+      "source": "automation"
+    },
+    {
+      "id": "mwm0o5xd4kjr2",
+      "time": "10:30",
+      "title": "KWRP All Agent Meeting — Scottsdale (Gold)",
+      "date": "2026-11-18",
+      "source": "automation"
+    },
+    {
+      "id": "mwm0o5xd54jop",
       "time": "11:00",
-      "title": "Holiday Marketing Lab (in-person) — KW Phx (Gold)",
-      "date": "2026-11-17",
+      "title": "Get Found on Google webinar (Zoom)",
+      "date": "2026-11-18",
       "source": "automation"
     },
     {
-      "id": "mwkl7hpxf2b9p",
-      "time": "11:00",
-      "title": "Broker Class: Disclosure — KWRP",
-      "date": "2026-11-17",
-      "source": "automation"
-    },
-    {
-      "id": "mwkl7hpx67w91",
-      "time": "12:00",
-      "title": "RYAN MELVILLE MASTERMIND (FAVORITE) — KW Phx (Gold)",
-      "date": "2026-11-17",
-      "source": "automation"
-    },
-    {
-      "id": "mwkl7hpxx01y5",
-      "time": "12:30",
-      "title": "Command Websites Training (Zoom)",
-      "date": "2026-11-17",
-      "source": "automation"
-    },
-    {
-      "id": "mwkl7hpxq65jg",
-      "time": "13:00",
-      "title": "UMC Orientation (Zoom)",
-      "date": "2026-11-17",
-      "source": "automation"
-    },
-    {
-      "id": "mwkl7hpxcm8p6",
+      "id": "mwm0o5xdv6tim",
       "time": "14:00",
-      "title": "Agent Lone Q&A: Wolf Office Hours (Zoom)",
-      "date": "2026-11-17",
+      "title": "Commercial Connection Power Hour w/Hani (Zoom)",
+      "date": "2026-11-18",
+      "source": "automation"
+    },
+    {
+      "id": "mwm0o5xd45rq3",
+      "time": "17:00",
+      "title": "Private event — KWIF (Gilbert)",
+      "date": "2026-11-18",
       "source": "automation"
     }
   ],
