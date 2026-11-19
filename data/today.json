@@ -1,66 +1,10 @@
 {
   "schedule": [
     {
-      "id": "mwm0o5xdzvt98",
-      "time": "09:00",
-      "title": "Flex Day — no fixed office today",
-      "date": "2026-11-18",
-      "source": "automation"
-    },
-    {
-      "id": "mwm0o5xdzta2s",
-      "time": "09:00",
-      "title": "Orit call w/ Itamar",
-      "date": "2026-11-18",
-      "source": "automation"
-    },
-    {
-      "id": "mwm0o5xdmc2qg",
-      "time": "09:00",
-      "title": "Cromford Report study session — KWIF (Red)",
-      "date": "2026-11-18",
-      "source": "automation"
-    },
-    {
-      "id": "mwm0o5xd8xidm",
-      "time": "10:00",
-      "title": "Reviews & Referrals Workshop — KWIF (Red)",
-      "date": "2026-11-18",
-      "source": "automation"
-    },
-    {
-      "id": "mwm0o5xdplftp",
-      "time": "10:00",
-      "title": "KWEV PC Meeting (Zoom)",
-      "date": "2026-11-18",
-      "source": "automation"
-    },
-    {
-      "id": "mwm0o5xd4kjr2",
-      "time": "10:30",
-      "title": "KWRP All Agent Meeting — Scottsdale (Gold)",
-      "date": "2026-11-18",
-      "source": "automation"
-    },
-    {
-      "id": "mwm0o5xd54jop",
-      "time": "11:00",
-      "title": "Get Found on Google webinar (Zoom)",
-      "date": "2026-11-18",
-      "source": "automation"
-    },
-    {
-      "id": "mwm0o5xdv6tim",
-      "time": "14:00",
-      "title": "Commercial Connection Power Hour w/Hani (Zoom)",
-      "date": "2026-11-18",
-      "source": "automation"
-    },
-    {
-      "id": "mwm0o5xd45rq3",
-      "time": "17:00",
-      "title": "Private event — KWIF (Gilbert)",
-      "date": "2026-11-18",
+      "id": "mwng1u23fotq3",
+      "time": "13:00",
+      "title": "YouTube Class: Lead Capture & Conversion (Sarah Maslowski)",
+      "date": "2026-11-19",
       "source": "automation"
     }
   ],
