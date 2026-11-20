@@ -1,8 +1,8 @@
 {
-  "state": "error",
-  "message": "Weekender build failed on the Mac mini: NameError: name 'insert_after_row' is not defined",
+  "state": "running",
+  "message": "Building this week's Weekender on the Mac mini...",
   "campaignTitle": null,
   "editUrl": null,
-  "updatedAt": "2026-11-20T00:01:56.629Z",
+  "updatedAt": "2026-11-20T00:02:11.733Z",
   "lastSuccessAt": "2026-11-19T23:50:17.430Z"
 }
