@@ -1,10 +1,24 @@
 {
   "schedule": [
     {
-      "id": "mwng1u23fotq3",
-      "time": "13:00",
-      "title": "YouTube Class: Lead Capture & Conversion (Sarah Maslowski)",
-      "date": "2026-11-19",
+      "id": "mwovicrxjlpjk",
+      "time": "09:00",
+      "title": "Sphere / Open House outreach day",
+      "date": "2026-11-20",
+      "source": "automation"
+    },
+    {
+      "id": "mwovicrxkzsfl",
+      "time": "10:00",
+      "title": "PC Meeting - Field Trip (KW Phoenix, Gold)",
+      "date": "2026-11-20",
+      "source": "automation"
+    },
+    {
+      "id": "mwovicrxlmupd",
+      "time": "12:00",
+      "title": "Office Holiday Pot Luck - KW Phoenix (Gold)",
+      "date": "2026-11-20",
       "source": "automation"
     }
   ],
