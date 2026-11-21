@@ -1,24 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mwovicrxjlpjk",
+      "id": "mwqawty2s1mva",
       "time": "09:00",
-      "title": "Sphere / Open House outreach day",
-      "date": "2026-11-20",
+      "title": "Open House — All Day",
+      "date": "2026-11-21",
       "source": "automation"
     },
     {
-      "id": "mwovicrxkzsfl",
-      "time": "10:00",
-      "title": "PC Meeting - Field Trip (KW Phoenix, Gold)",
-      "date": "2026-11-20",
-      "source": "automation"
-    },
-    {
-      "id": "mwovicrxlmupd",
-      "time": "12:00",
-      "title": "Office Holiday Pot Luck - KW Phoenix (Gold)",
-      "date": "2026-11-20",
+      "id": "mwqawty2xqv3v",
+      "time": "10:30",
+      "title": "Calendly booking (unclear/possible duplicate) w/ connected SSA",
+      "date": "2026-11-21",
       "source": "automation"
     }
   ],
