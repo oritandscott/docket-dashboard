@@ -50,14 +50,14 @@
   {
     "id": "proj-1a0b4e2cc8b0zib",
     "title": "Fitness Booking Reminders",
-    "notes": "",
+    "notes": "Stop this Fitness Booking Reminders",
     "kind": "automation",
     "status": "running",
     "machine": "cloud",
     "redundancyNote": "",
     "waitingOn": "Remove this automation and remind me to deactivate or repurpose the Twilio account.  We don't need this and it never worked.",
     "createdAt": "2026-09-18T12:00:00.000Z",
-    "updatedAt": "2026-10-03T15:12:28.634Z"
+    "updatedAt": "2026-11-21T13:28:13.490Z"
   },
   {
     "id": "proj-1a0b4e2cc8cyv7p",
