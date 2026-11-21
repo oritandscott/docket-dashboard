@@ -24,18 +24,6 @@
     "updatedAt": "2026-09-22T22:06:55.000Z"
   },
   {
-    "id": "proj-1a0b4e2cc88e2nv",
-    "title": "Thursday Weekender — weekly Mailchimp event campaign build",
-    "notes": "Confirmed running as a Routine on the Oasis Mini — built during a long work session last Thursday (9/17-18); the Routine's own \"last edited\" date matches, so this is the real, current build, not something to redo. On Scott's MacBook Pro (checked via Settings > Scheduled tasks, 9/22 screenshot): two old predecessor entries, \"OLD Weekender Automation (Mac Mini)\" and \"OLD Weekender AutO 2 *CORRECT ONE IS A ROUTINE\", both already show status Paused — no live redundancy on the Pro, nothing further to do there for Weekender.",
-    "kind": "automation",
-    "status": "running",
-    "machine": "mini",
-    "redundancyNote": "Name collision, not redundancy: this is a completely different project from 'Mailchimp Weekender list-hygiene' below. Same nickname, two unrelated things — worth renaming one to avoid confusion. (Also, cosmetically: the two old Paused entries on the MacBook Pro could be deleted for tidiness, but that's optional — they're inert.)",
-    "waitingOn": "",
-    "createdAt": "2026-09-18T12:00:00.000Z",
-    "updatedAt": "2026-09-22T23:06:58.000Z"
-  },
-  {
     "id": "proj-1a0b4e2cc892nwv",
     "title": "Home Anniversary Outreach",
     "notes": "Confirmed running as a Routine on the Oasis Mini. Resolved (9/22): the live duplicate on Scott's MacBook Pro, \"OLD HOME ANNIV on MACBOOK PRO - PAUSED\" (a misleadingly-named routine that was actually still Active, firing daily ~8am), has been Archived by Scott directly in the app. Confirmed via the session's own \"This session is archived\" banner — no longer running on the Pro. Mini is now the sole source for this automation.",
