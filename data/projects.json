@@ -12,18 +12,6 @@
     "updatedAt": "2026-09-18T12:00:00.000Z"
   },
   {
-    "id": "proj-1a0b4e2cc85vzdn",
-    "title": "Weekly Database Email Draft (Market Pulse / Tip / Personal Note)",
-    "notes": "Cloud scheduled task, Mondays ~9am Phoenix. Confirmed healthy: last run 9/21 succeeded. Drafts a genuinely separate relationship email from the Thursday Weekender's Valley-events content — never sends, and Command building happens live with Orit & Scott present.",
-    "kind": "automation",
-    "status": "running",
-    "machine": "cloud",
-    "redundancyNote": "",
-    "waitingOn": "",
-    "createdAt": "2026-09-18T12:00:00.000Z",
-    "updatedAt": "2026-09-22T22:06:55.000Z"
-  },
-  {
     "id": "proj-1a0b4e2cc86pwo1",
     "title": "Daily Morning Brief — The Docket",
     "notes": "Cloud scheduled task, daily ~4am Phoenix. Server-only, doesn't need a browser or a specific computer. Confirmed firing daily (last fired 9/22); run status briefly shows PENDING right after firing, that's normal.",
