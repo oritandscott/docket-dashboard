@@ -1,20 +1,5 @@
 {
-  "schedule": [
-    {
-      "id": "mwqawty2s1mva",
-      "time": "09:00",
-      "title": "Open House — All Day",
-      "date": "2026-11-21",
-      "source": "automation"
-    },
-    {
-      "id": "mwqawty2xqv3v",
-      "time": "10:30",
-      "title": "Calendly booking (unclear/possible duplicate) w/ connected SSA",
-      "date": "2026-11-21",
-      "source": "automation"
-    }
-  ],
+  "schedule": [],
   "tasks": [
     {
       "id": "musajbjgvhoch",
