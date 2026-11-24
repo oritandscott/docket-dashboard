@@ -361,7 +361,7 @@
       "pies": true,
       "rsvpPage": "https://claude.ai/artifact/XkS9ptpREMLdpWFCK4buFy",
       "formResponses": 3,
-      "lastChecked": "Tue Nov 24, 9:59 AM",
+      "lastChecked": "Tue Nov 24, 1:15 PM",
       "guests": [
         {
           "id": "austin-brasier",
@@ -461,15 +461,15 @@
         },
         {
           "id": "jeff-tucker",
-          "name": "Jeff Tucker",
+          "name": "Jeff Tucker & Joe Seelye",
           "status": "yes",
           "pie": "Pumpkin",
-          "note": "Pumpkin",
-          "says": "Pumpkin please.",
+          "note": "Pumpkin — Joe picking up; asked what time",
+          "says": "Joe will be stopping by. What time should he drop by?",
           "count": null,
-          "replied": true,
+          "replied": false,
           "source": "Text",
-          "date": "Nov 12"
+          "date": "Nov 24"
         },
         {
           "id": "laura-fritsky",
