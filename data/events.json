@@ -361,7 +361,7 @@
       "pies": true,
       "rsvpPage": "https://claude.ai/artifact/XkS9ptpREMLdpWFCK4buFy",
       "formResponses": 3,
-      "lastChecked": "Fri Nov 20, 6:57 PM",
+      "lastChecked": "Mon Nov 23, 7:15 PM",
       "guests": [
         {
           "id": "austin-brasier",
@@ -498,14 +498,14 @@
         {
           "id": "lucy-cindric",
           "name": "Lucy & Joe Cindric",
-          "status": "yes",
-          "pie": "Pumpkin",
-          "note": "Pumpkin (Joe confirmed by text)",
-          "says": "We would love pumpkin please!",
+          "status": "no",
+          "pie": null,
+          "note": "Can't pick up — family busy this week",
+          "says": "We will not be able to pick up the pumpkin pie Lucy ordered at this time.",
           "count": null,
           "replied": true,
           "source": "Text",
-          "date": "Nov 12"
+          "date": "Nov 23"
         },
         {
           "id": "meg-malmanger",
