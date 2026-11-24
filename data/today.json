@@ -1,38 +1,38 @@
 {
   "schedule": [
     {
-      "id": "mwt5sy6gr2bc3",
+      "id": "mwulazy50ubns",
       "time": "09:00",
-      "title": "Monday Follow-Up & Appointments (block)",
-      "date": "2026-11-23",
+      "title": "Video Focus Day (recurring block)",
+      "date": "2026-11-24",
       "source": "automation"
     },
     {
-      "id": "mwt5sy6gcn6ex",
-      "time": "10:00",
-      "title": "PC Meeting (Zoom) — KW Realty Phoenix (Gold)",
-      "date": "2026-11-23",
+      "id": "mwulazy5f1wae",
+      "time": "09:30",
+      "title": "Can I Post That? w/Summer Beydler — KW Phx (Gold)",
+      "date": "2026-11-24",
       "source": "automation"
     },
     {
-      "id": "mwt5sy6g680tl",
-      "time": "10:30",
-      "title": "Gorden Group Broker Class — KW Realty Phoenix (Gold)",
-      "date": "2026-11-23",
+      "id": "mwulazy6z2ebl",
+      "time": "11:00",
+      "title": "Broker Class w/RJ: Bullet Proof Transaction (Gold)",
+      "date": "2026-11-24",
       "source": "automation"
     },
     {
-      "id": "mwt5sy6gmblh8",
+      "id": "mwulazy6pgiii",
       "time": "12:00",
-      "title": "Techsgiving Power Hour — KWIF/KWRP (virtual)",
-      "date": "2026-11-23",
+      "title": "Scott & Orit in Bullpen — KW Phoenix (Gold)",
+      "date": "2026-11-24",
       "source": "automation"
     },
     {
-      "id": "mwt5sy6gqo6a4",
-      "time": "12:00",
-      "title": "Armstrong (AZ) Lease Review — Lawyers + Broker",
-      "date": "2026-11-23",
+      "id": "mwulazy61y34a",
+      "time": "12:30",
+      "title": "Command Class: Build/Launch Website (Zoom)",
+      "date": "2026-11-24",
       "source": "automation"
     }
   ],
