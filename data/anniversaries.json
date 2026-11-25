@@ -318,8 +318,8 @@
     "address": "9215 South 47th Place, Phoenix, AZ 85044",
     "purchaseDate": "2024-11-25",
     "emailVariant": "B",
-    "status": "upcoming",
-    "draftId": null,
+    "status": "actionable",
+    "draftId": "Congratulations on 2 Years in Your Home!",
     "addedAt": "2026-10-26T11:12:58.261Z"
   },
   {
