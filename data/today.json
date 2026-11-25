@@ -1,38 +1,38 @@
 {
   "schedule": [
     {
-      "id": "mwulazy50ubns",
+      "id": "mww0phs3dff5d",
       "time": "09:00",
-      "title": "Video Focus Day (recurring block)",
-      "date": "2026-11-24",
+      "title": "Flex Day (Wednesdays) — no fixed appts",
+      "date": "2026-11-25",
       "source": "automation"
     },
     {
-      "id": "mwulazy5f1wae",
-      "time": "09:30",
-      "title": "Can I Post That? w/Summer Beydler — KW Phx (Gold)",
-      "date": "2026-11-24",
+      "id": "mww0phs33vhf4",
+      "time": "09:00",
+      "title": "Cromford Report (Tina Tamboer) — KWIF (Red)",
+      "date": "2026-11-25",
       "source": "automation"
     },
     {
-      "id": "mwulazy6z2ebl",
+      "id": "mww0phs3zdna9",
       "time": "11:00",
-      "title": "Broker Class w/RJ: Bullet Proof Transaction (Gold)",
-      "date": "2026-11-24",
+      "title": "Short Form Video Class — KW Phoenix Zoom (Gold)",
+      "date": "2026-11-25",
       "source": "automation"
     },
     {
-      "id": "mwulazy6pgiii",
+      "id": "mww0phs3dcsi4",
       "time": "12:00",
-      "title": "Scott & Orit in Bullpen — KW Phoenix (Gold)",
-      "date": "2026-11-24",
+      "title": "KW Phoenix Office Closing at Noon (Gold)",
+      "date": "2026-11-25",
       "source": "automation"
     },
     {
-      "id": "mwulazy61y34a",
-      "time": "12:30",
-      "title": "Command Class: Build/Launch Website (Zoom)",
-      "date": "2026-11-24",
+      "id": "mww0phs3zu2ge",
+      "time": "14:00",
+      "title": "Commercial Power Hour w/Hani — Zoom",
+      "date": "2026-11-25",
       "source": "automation"
     }
   ],
