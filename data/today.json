@@ -1,38 +1,24 @@
 {
   "schedule": [
     {
-      "id": "mww0phs3dff5d",
+      "id": "mwxg3vxotlpqp",
       "time": "09:00",
-      "title": "Flex Day (Wednesdays) — no fixed appts",
-      "date": "2026-11-25",
+      "title": "Office Closed — Happy Thanksgiving (all 3 KW offices)",
+      "date": "2026-11-26",
       "source": "automation"
     },
     {
-      "id": "mww0phs33vhf4",
+      "id": "mwxg3vxo1mday",
       "time": "09:00",
-      "title": "Cromford Report (Tina Tamboer) — KWIF (Red)",
-      "date": "2026-11-25",
+      "title": "Sphere Contacts — weekly outreach reminder",
+      "date": "2026-11-26",
       "source": "automation"
     },
     {
-      "id": "mww0phs3zdna9",
-      "time": "11:00",
-      "title": "Short Form Video Class — KW Phoenix Zoom (Gold)",
-      "date": "2026-11-25",
-      "source": "automation"
-    },
-    {
-      "id": "mww0phs3dcsi4",
-      "time": "12:00",
-      "title": "KW Phoenix Office Closing at Noon (Gold)",
-      "date": "2026-11-25",
-      "source": "automation"
-    },
-    {
-      "id": "mww0phs3zu2ge",
-      "time": "14:00",
-      "title": "Commercial Power Hour w/Hani — Zoom",
-      "date": "2026-11-25",
+      "id": "mwxg3vxo7yqba",
+      "time": "13:00",
+      "title": "Weekender 1PM — Mailchimp review/send",
+      "date": "2026-11-26",
       "source": "automation"
     }
   ],
