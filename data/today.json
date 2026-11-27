@@ -1,24 +1,17 @@
 {
   "schedule": [
     {
-      "id": "mwxg3vxotlpqp",
+      "id": "mwyvk3jh5tn64",
       "time": "09:00",
-      "title": "Office Closed — Happy Thanksgiving (all 3 KW offices)",
-      "date": "2026-11-26",
+      "title": "Sphere / Open House — daily sphere task",
+      "date": "2026-11-27",
       "source": "automation"
     },
     {
-      "id": "mwxg3vxo1mday",
-      "time": "09:00",
-      "title": "Sphere Contacts — weekly outreach reminder",
-      "date": "2026-11-26",
-      "source": "automation"
-    },
-    {
-      "id": "mwxg3vxo7yqba",
-      "time": "13:00",
-      "title": "Weekender 1PM — Mailchimp review/send",
-      "date": "2026-11-26",
+      "id": "mwyvk3jhihbkp",
+      "time": "10:00",
+      "title": "Lone Wolf Office Hours (Charles) — KWIF Gilbert (Red)",
+      "date": "2026-11-27",
       "source": "automation"
     }
   ],
