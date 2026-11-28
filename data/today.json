@@ -1,17 +1,10 @@
 {
   "schedule": [
     {
-      "id": "mwyvk3jh5tn64",
+      "id": "mx0azvfsi16uz",
       "time": "09:00",
-      "title": "Sphere / Open House — daily sphere task",
-      "date": "2026-11-27",
-      "source": "automation"
-    },
-    {
-      "id": "mwyvk3jhihbkp",
-      "time": "10:00",
-      "title": "Lone Wolf Office Hours (Charles) — KWIF Gilbert (Red)",
-      "date": "2026-11-27",
+      "title": "Open House — All Day",
+      "date": "2026-11-28",
       "source": "automation"
     }
   ],
